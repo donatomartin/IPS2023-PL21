@@ -1,4 +1,4 @@
-package giis.demo.util;
+package ip2023pl21.util;
 
 /**
  * Excepcion producida por la aplicacion antes situaciones que no deberian ocurrir pero que son controladas

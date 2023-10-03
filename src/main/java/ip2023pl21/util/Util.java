@@ -1,4 +1,4 @@
-package giis.demo.util;
+package ip2023pl21.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.Format;
