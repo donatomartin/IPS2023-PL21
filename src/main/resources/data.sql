@@ -1,10 +1,12 @@
 --Datos para carga inicial de la base de datos
 
 --Para giis.demo.tkrun:
-delete from carreras;
-insert into carreras(id,inicio,fin,fecha,descr) values 
-	(100,'2016-10-05','2016-10-25','2016-11-09','finalizada'),
-	(101,'2016-10-05','2016-10-25','2016-11-10','en fase 3'),
-	(102,'2016-11-05','2016-11-09','2016-11-20','en fase 2'),
-	(103,'2016-11-10','2016-11-15','2016-11-21','en fase 1'),
-	(104,'2016-11-11','2016-11-15','2016-11-22','antes inscripcion');
+	
+delete from empleado;
+insert into empleado(id,nombre,apellido,dni,fechaNacimiento,salarioAnual,telefono) values
+	(1,'aaa','bbb','12345678K','1985-02-04',10000000, '1234567890'),
+	(2,'ccc','ddd', '12345678K','1985-02-04',10000000, '1234567890');
+	
+delete from empleadodeportivo;
+insert into empleadodeportivo(id,nombre,apellido,dni,fechaNacimiento,salarioAnual,telefono,posicion) values
+	(3, 'eee','fff','12345678K','1985-02-04',10000000, '1234567890', 'Delantero');
