@@ -28,3 +28,17 @@ create table EmpleadoDeportivo(
 	foreign key (id) references Empleado(id), 
 	check(salarioAnual>0)
 );
+
+drop table Merchandaising;
+create table Merchandaising(
+	nombre varchar(30) primary key not null,
+	tipo varchar(30) not null,
+	precio real not null,
+	check(precio>0)
+);
+
+drop table Venta;
+create table Venta(
+	id int primary key not null,
+	cantidad real not null
+);

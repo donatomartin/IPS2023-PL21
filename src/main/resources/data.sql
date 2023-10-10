@@ -10,3 +10,8 @@ insert into empleado(id,nombre,apellido,dni,fechaNacimiento,salarioAnual,telefon
 delete from empleadodeportivo;
 insert into empleadodeportivo(id,nombre,apellido,dni,fechaNacimiento,salarioAnual,telefono,posicion) values
 	(3, 'eee','fff','12345678K','1985-02-04',10000000, '1234567890', 'Delantero');
+
+delete from merchandaising;
+insert into merchandaising(nombre,tipo,precio) values ('Gorra','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('Balon','Material deportivo',20);
+insert into merchandaising(nombre,tipo,precio) values ('Poster','Decoracion',5);
