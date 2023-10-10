@@ -7,11 +7,13 @@ public class TiendaLogica {
 	
 	List<Merchandaising> merchandaising = new ArrayList<Merchandaising>();
 	List<Merchandaising> seleccionado = new ArrayList<Merchandaising>(); 
-	int precioTotal;
+	double precioTotal;
+	int id;
 	
 	public TiendaLogica() {
 		cargarArticulos();
 		this.precioTotal = 0;
+		this.id = 0;
 	}
 	
 	public List<Merchandaising> getMerchandaising() {
@@ -32,7 +34,7 @@ public class TiendaLogica {
 	 * Devuelve el precio total
 	 * @return
 	 */
-	public int getPrecioTotal() {
+	public double getPrecioTotal() {
 		return this.precioTotal;
 	}
 	
@@ -40,12 +42,15 @@ public class TiendaLogica {
 	 * Carga los articulos de la BD
 	 */
 	public void cargarArticulos() {
-		//TODO hace consulta para cargar datos
-		merchandaising.add(new Merchandaising("Gorra", "Ropa", 10));
-		merchandaising.add(new Merchandaising("Bufanda", "Ropa", 20));
-		merchandaising.add(new Merchandaising("Camiseta", "Ropa", 10));
-		merchandaising.add(new Merchandaising("Taza", "Decoracion", 20));
-		merchandaising.add(new Merchandaising("Balon","Material Deportivo",1000));
+//		merchandaising.add(new Merchandaising("Gorra", "Ropa", 10));
+//		merchandaising.add(new Merchandaising("Bufanda", "Ropa", 20));
+//		merchandaising.add(new Merchandaising("Camiseta", "Ropa", 10));
+//		merchandaising.add(new Merchandaising("Taza", "Decoracion", 20));
+//		merchandaising.add(new Merchandaising("Balon","Material Deportivo",1000));
+		
+		List<Merchandaising> articulos = TiendaData.cargarArticulos();
+		merchandaising.addAll(articulos);
+		
 	}
 	
 	/**
@@ -94,7 +99,7 @@ public class TiendaLogica {
 	 * Calcula el precio cada vez que se realiza una operacion en la tienda
 	 */
 	private void calcularPrecioTotal() {
-		int precioTotal = 0;
+		double precioTotal = 0;
 		for(int i = 0; i < seleccionado.size(); i++) {
 			precioTotal = precioTotal + seleccionado.get(i).getPrecioTotalArticulo();
 		}
@@ -106,8 +111,8 @@ public class TiendaLogica {
 	 * Guarda el precio en la BD
 	 */
 	public void guardarPrecio() {
-		//Guardar el precio en la base de datos
-		
+		TiendaData.añadirPrecio(id,precioTotal);
+		id++;
 	}
 
 	

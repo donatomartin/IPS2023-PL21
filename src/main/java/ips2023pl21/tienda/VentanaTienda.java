@@ -223,8 +223,8 @@ public class VentanaTienda {
 		modeloListArticulosSeleccionados.removeAllElements();
 		modeloListArticulosSeleccionados.addAll(tl.getSeleccionado());;
 		//calcula el precio
-		int precioTotal = tl.getPrecioTotal();
-		getLbPrecioTienda().setText("Precio: " + Integer.toString(precioTotal));
+		double precioTotal = tl.getPrecioTotal();
+		getLbPrecioTienda().setText("Precio: " + Double.toString(precioTotal));
 	}
 	
 	private JList<Merchandaising> getListArticulosSeleccionados() {
@@ -269,7 +269,7 @@ public class VentanaTienda {
 		if(res == 0) {
 			tl.eliminarSeleccion();
 			
-			getLbPrecioTienda().setText("Precio: " + Integer.toString( tl.getPrecioTotal()));
+			getLbPrecioTienda().setText("Precio: " + Double.toString( tl.getPrecioTotal()));
 
 			modeloListArticulosSeleccionados.removeAllElements();		
 			getSpUnidades().setValue(1);
@@ -306,7 +306,7 @@ public class VentanaTienda {
 			if(res == 0) {
 				tl.actualizarArticulosEnCesta(m, - unidades);
 				
-				int precio = tl.getPrecioTotal();
+				double precio = tl.getPrecioTotal();
 				getLbPrecioTienda().setText("Precio: " + precio);
 				
 				modeloListArticulosSeleccionados.removeAllElements();

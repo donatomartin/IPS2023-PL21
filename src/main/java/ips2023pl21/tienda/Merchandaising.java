@@ -4,7 +4,7 @@ public class Merchandaising {
 
 	private String nombre;
 	private String tipo;
-	private int precio;
+	private double precio;
 	private int unidades;
 	
 	public Merchandaising(String nombre, String tipo, int precio) {
@@ -20,7 +20,7 @@ public class Merchandaising {
 	public String getTipo() {
 		return tipo;
 	}
-	public int getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 	
@@ -36,7 +36,7 @@ public class Merchandaising {
 		this.unidades = un;
 	}
 	
-	public int getPrecioTotalArticulo() {
+	public double getPrecioTotalArticulo() {
 		return this.precio*this.unidades;
 	}
 
