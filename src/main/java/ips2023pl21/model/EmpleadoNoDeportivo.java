@@ -1,6 +1,6 @@
-package ips2023pl21.main;
+package ips2023pl21.model;
 
-public class Empleado {
+public class EmpleadoNoDeportivo {
 	private int id;
 	private String nombre;
 	private String apellido;
@@ -10,7 +10,7 @@ public class Empleado {
 	private float salarioAnual;
 	
 	
-	public Empleado(int id, String nombre, String apellido, String dni, String fechaNacimiento,
+	public EmpleadoNoDeportivo(int id, String nombre, String apellido, String dni, String fechaNacimiento,
 			float salarioAnual, String telefono) {
 		this.id = id;
 		this.nombre = nombre;
@@ -21,7 +21,7 @@ public class Empleado {
 		this.salarioAnual = salarioAnual;
 	}
 	
-	public Empleado() {}
+	public EmpleadoNoDeportivo() {}
 	
 	
 	public int getId() {
@@ -77,5 +77,17 @@ public class Empleado {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
+	public int[] fechaAEnteros() {
+		String[] fecha = fechaNacimiento.split("-");
+		int[] fechaEnteros = new int[3];
+		for (int i=0; i<fecha.length;i++) {
+			fechaEnteros[i] = Integer.parseInt(fecha[i]);
+		}
+		return fechaEnteros;
+	}
+	
+	public String toString() {
+		return (this.nombre + " - "+ this.apellido+" - "+this.dni);
+	}
 	
 }

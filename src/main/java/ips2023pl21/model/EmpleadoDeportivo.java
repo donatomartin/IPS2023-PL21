@@ -1,6 +1,6 @@
-package ips2023pl21.main;
+package ips2023pl21.model;
 
-public class EmpleadoDeportivo extends Empleado{
+public class EmpleadoDeportivo extends EmpleadoNoDeportivo{
 	private String posicion;
 	
 
