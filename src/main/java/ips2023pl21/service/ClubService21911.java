@@ -7,7 +7,7 @@ import ip2023pl21.util.Database;
 import ips2023pl21.model.EmpleadoDeportivo;
 import ips2023pl21.model.EmpleadoNoDeportivo;
 
-public class ClubService {
+public class ClubService21911 {
 	
 	public static final String TODOS_EMPLEADOS_DEPORTIVOS = "select * from empleadodeportivo";
 	public static final String TODOS_EMPLEADOS_NO_DEPORTIVOS = "select * from empleadonodeportivo";
@@ -45,7 +45,7 @@ public class ClubService {
 		ELIMINAR;
 	}
 	
-	public ClubService() {
+	public ClubService21911() {
 		db = new Database();
 		db.createDatabase(false);
 		db.loadDatabase();

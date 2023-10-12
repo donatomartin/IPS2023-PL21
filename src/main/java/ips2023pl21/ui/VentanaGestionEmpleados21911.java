@@ -8,9 +8,9 @@ import javax.swing.border.EmptyBorder;
 
 import ips2023pl21.model.EmpleadoDeportivo;
 import ips2023pl21.model.EmpleadoNoDeportivo;
-import ips2023pl21.service.ClubService;
-import ips2023pl21.service.ClubService.StateAction;
-import ips2023pl21.service.ClubService.StateTipoEmpleado;
+import ips2023pl21.service.ClubService21911;
+import ips2023pl21.service.ClubService21911.StateAction;
+import ips2023pl21.service.ClubService21911.StateTipoEmpleado;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -42,7 +42,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	
-	private ClubService cs;
+	private ClubService21911 cs;
 	private JPanel contentPane;
 	private JPanel pnTitulo;
 	private JLabel lbTitulo;
@@ -181,7 +181,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 	/**
 	 * Constructor de la ventana para añadir, modificar o eliminar empleados
 	 */
-	public VentanaGestionEmpleados21911(ClubService cs) {
+	public VentanaGestionEmpleados21911(ClubService21911 cs) {
 		this.cs = cs;
 		addWindowListener(new WindowAdapter() {
 			@Override
