@@ -3,28 +3,36 @@
 
 --Para giis.demo.tkrun:
 
-drop table if exists Empleado;
-create table Empleado(
-	id int primary key not null, 
+drop table if exists EmpleadoNoDeportivo;
+create table EmpleadoNoDeportivo( 
 	nombre varchar(30) not null, 
 	apellido varchar(30) not null, 
 	dni varchar(9) not null, 
 	fechaNacimiento varchar(10) not null, 
 	salarioAnual real not null, 
-	telefono varchar(30) not null, 
+	telefono varchar(30) not null,
+	primary key (nombre, apellido, dni), 
 	check(salarioAnual>0)
 );
 
 drop table EmpleadoDeportivo;
 create table EmpleadoDeportivo(
-	id int primary key not null, 
 	nombre varchar(30) not null, 
 	apellido varchar(30) not null, 
 	dni varchar(9) not null, 
 	fechaNacimiento varchar(10) not null, 
 	salarioAnual real not null, 
 	telefono varchar(30) not null, 
-	posicion varchar(30) not null, 
-	foreign key (id) references Empleado(id), 
+	posicion varchar(30) not null,
+	primary key (nombre, apellido, dni),
 	check(salarioAnual>0)
+);
+
+drop table Reserva;
+create table Reserva(
+	nombreUsuario varchar(30) not null,
+	cuentaBancaria varchar(30) not null,
+	precioReserva real not null,
+	fechaReserva varchar(30) not null
+	
 );
