@@ -1,32 +1,28 @@
 package ips2023pl21.model;
 
-public class EmpleadoNoDeportivo {
-	private int id;
+public class EmpleadoNoDeportivo implements Empleado{
 	private String nombre;
 	private String apellido;
 	private String dni;
 	private String telefono;
 	private String fechaNacimiento;
 	private float salarioAnual;
+	private String posicion;
 	
 	
 	public EmpleadoNoDeportivo(int id, String nombre, String apellido, String dni, String fechaNacimiento,
-			float salarioAnual, String telefono) {
-		this.id = id;
+			float salarioAnual, String telefono, String posicion) {
 		this.nombre = nombre;
 		this.apellido = apellido;
 		this.dni = dni;
 		this.telefono = telefono;
 		this.fechaNacimiento = fechaNacimiento;
 		this.salarioAnual = salarioAnual;
+		this.posicion = posicion;
 	}
 	
 	public EmpleadoNoDeportivo() {}
 	
-	
-	public int getId() {
-		return id;
-	}
 
 
 	public String getFechaNacimiento() {
@@ -50,6 +46,9 @@ public class EmpleadoNoDeportivo {
 		return salarioAnual;
 	}
 	
+	public String getPosicion(){
+		return this.posicion;
+	}
 	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
@@ -68,10 +67,9 @@ public class EmpleadoNoDeportivo {
 	}
 
 
-	public void setId(int id) {
-		this.id = id;
+	public void setPosicion(String pos) {
+		this.posicion = pos;
 	}
-
 
 	public void setFechaNacimiento(String fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;

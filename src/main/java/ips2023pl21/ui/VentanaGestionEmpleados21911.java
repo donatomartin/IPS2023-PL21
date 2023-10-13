@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import ips2023pl21.model.Empleado;
 import ips2023pl21.model.EmpleadoDeportivo;
 import ips2023pl21.model.EmpleadoNoDeportivo;
 import ips2023pl21.service.ClubService21911;
@@ -103,8 +104,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 	private JLabel lbAño;
 	private JLabel lbSalario;
 	private JTextField txSalario;
-	private JLabel lblNewLabel;
-	private JTextField txPosicion;
+	private JLabel lbPosicion;
 	private JButton btVolver;
 	private JPanel pnEtiqueta4;
 	private JLabel lbIntroducirFiltros;
@@ -175,6 +175,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 	private DefaultListModel<String> modelListEmpleados_1;
 	private JLabel lbExplicacion;
 	private JLabel lbExplicacion_1;
+	private JComboBox<String> cbPosicion;
 	
 	
 
@@ -438,6 +439,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 					mostrarPantallaAccion();
 					cargarListaEmpleados();
 					rellenarListaDeSeleccion();
+					rellenarCbPosicion();
 				}
 			});
 			btAceptar.setForeground(Color.BLACK);
@@ -580,8 +582,8 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		if (pnPosicion == null) {
 			pnPosicion = new JPanel();
 			pnPosicion.setLayout(new GridLayout(0, 3, 0, 0));
-			pnPosicion.add(getLblNewLabel());
-			pnPosicion.add(getTxPosicion());
+			pnPosicion.add(getLbPosicion());
+			pnPosicion.add(getCbPosicion());
 		}
 		return pnPosicion;
 	}
@@ -780,34 +782,18 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		}
 		return txSalario;
 	}
-	private JLabel getLblNewLabel() {
-		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel("Posición:");
-			lblNewLabel.setForeground(new Color(0, 0, 0));
-			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	private JLabel getLbPosicion() {
+		if (lbPosicion == null) {
+			lbPosicion = new JLabel("Posición:");
+			lbPosicion.setForeground(new Color(0, 0, 0));
+			lbPosicion.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			lbPosicion.setHorizontalAlignment(SwingConstants.CENTER);
 		}
-		return lblNewLabel;
-	}
-	private JTextField getTxPosicion() {
-		if (txPosicion == null) {
-			txPosicion = new JTextField();
-			txPosicion.setFont(new Font("Tahoma", Font.PLAIN, 15));
-			txPosicion.setColumns(10);
-		}
-		return txPosicion;
+		return lbPosicion;
 	}
 	
 	private void mostrarPantallaAñadir() {
 		((CardLayout) getPnCentral().getLayout()).show(getPnCentral(), "pnAñadirYModificar");
-
-		if (getRdbtNoDeportivo().isSelected()) {
-			txPosicion.setEnabled(false);
-			txPosicion.setEditable(false);
-		}else {
-			txPosicion.setEnabled(true);
-			txPosicion.setEditable(true);
-		}
 	}
 	private JButton getBtVolver() {
 		if (btVolver == null) {
@@ -917,6 +903,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 						resetearPantallaModificar();
 						rellenarValoresAModificar();
 						mostrarPantallaAñadir();
+						rellenarCbPosicion();
 					}
 				}
 			});
@@ -1015,7 +1002,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 						getTxSeleccDni().getText().isBlank()) {
 						JOptionPane.showMessageDialog(null, "Los tres campos de búsqueda están vacíos.");
 						modelListEmpleados.removeAllElements();
-						for(EmpleadoNoDeportivo end : cs.getListaEmpleados()) {
+						for(Empleado end : cs.getListaEmpleados()) {
 							modelListEmpleados.addElement(end.toString());
 						}
 					}
@@ -1379,7 +1366,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 						getTxSeleccDni_1().getText().isBlank()) {
 						JOptionPane.showMessageDialog(null, "Los tres campos de búsqueda están vacíos.");
 						modelListEmpleados_1.removeAllElements();
-						for(EmpleadoNoDeportivo end : cs.getListaEmpleados()) {
+						for(Empleado end : cs.getListaEmpleados()) {
 							modelListEmpleados_1.addElement(end.toString());
 						}
 					}
@@ -1452,18 +1439,17 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		getCbDia().setSelectedIndex(0);
 		getCbMes().setSelectedIndex(0);
 		getTxSalario().setText("");
-		getTxPosicion().setText("");
 	}
 	private void rellenarListaDeSeleccion() {
 		modelListEmpleados.removeAllElements();
 		modelListEmpleados_1.removeAllElements();
 		if(cs.getStateAction() == StateAction.MODIFICAR) {
-		for (EmpleadoNoDeportivo end: cs.getListaEmpleados()) {
+		for (Empleado end: cs.getListaEmpleados()) {
 			modelListEmpleados.addElement(end.toString());
 			}
 		}
 		else if(cs.getStateAction() == StateAction.ELIMINAR) {
-			for (EmpleadoNoDeportivo end: cs.getListaEmpleados()) {
+			for (Empleado end: cs.getListaEmpleados()) {
 				modelListEmpleados_1.addElement(end.toString());
 			}
 		}
@@ -1495,7 +1481,6 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 			getCbMes().setSelectedItem(fechaEnteros[1]);
 			getCbDia().setSelectedItem(fechaEnteros[2]);
 			getTxSalario().setText(String.valueOf(ed.getSalarioAnual()));
-			getTxPosicion().setText(ed.getPosicion());
 		}
 		else if(cs.getStateTipo() == StateTipoEmpleado.NO_DEPORTIVO) {
 			EmpleadoNoDeportivo end = cs.cargarEmpleadoNoDeportivoAGestionar();
@@ -1546,19 +1531,10 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		}
 	}
 	private boolean camposVacios() {
-		if (cs.getStateTipo() == StateTipoEmpleado.DEPORTIVO) {
-			if (getTxNombre().getText().isBlank() || getTxApellido().getText().isBlank() ||
-				getTxDni().getText().isBlank() || getTxTelefono().getText().isBlank() ||
-				getTxSalario().getText().isBlank() || getTxPosicion().getText().isBlank()) {
-				return true;
-			}
-		}
-		else {
-			if (getTxNombre().getText().isBlank() || getTxApellido().getText().isBlank() ||
-					getTxDni().getText().isBlank() || getTxTelefono().getText().isBlank() ||
-					getTxSalario().getText().isBlank()) {
-					return true;
-				}
+		if (getTxNombre().getText().isBlank() || getTxApellido().getText().isBlank() ||
+			getTxDni().getText().isBlank() || getTxTelefono().getText().isBlank() ||
+			getTxSalario().getText().isBlank()) {
+			return true;
 		}
 		return false;
 	}
@@ -1568,13 +1544,13 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 				cs.añadirEmpleadoDeportivo(getTxNombre().getText(), getTxApellido().getText(), 
 				getTxDni().getText(), getTxTelefono().getText(), getCbAño().getSelectedItem(), 
 				getCbMes().getSelectedItem(), getCbDia().getSelectedItem(), 
-				getTxSalario().getText(), getTxPosicion().getText());
+				getTxSalario().getText(), getCbPosicion().getSelectedItem());
 			}
 			else if (cs.getStateTipo() == StateTipoEmpleado.NO_DEPORTIVO) {
 				cs.añadirEmpleadoNoDeportivo(getTxNombre().getText(), getTxApellido().getText(), 
 				getTxDni().getText(), getTxTelefono().getText(), getCbAño().getSelectedItem(), 
 				getCbMes().getSelectedItem(), getCbDia().getSelectedItem(), 
-				getTxSalario().getText());
+				getTxSalario().getText(), getCbPosicion().getSelectedItem());
 			}
 			
 		}
@@ -1583,13 +1559,13 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 				cs.modificarEmpleadoDeportivo(getTxNombre().getText(), getTxApellido().getText(), 
 				getTxDni().getText(), getTxTelefono().getText(), getCbAño().getSelectedItem(), 
 				getCbMes().getSelectedItem(), getCbDia().getSelectedItem(), 
-				getTxSalario().getText(), getTxPosicion().getText());
+				getTxSalario().getText(), getCbPosicion().getSelectedItem());
 			}
 			else if (cs.getStateTipo() == StateTipoEmpleado.NO_DEPORTIVO) {
 				cs.modificarEmpleadoNoDeportivo(getTxNombre().getText(), getTxApellido().getText(), 
 				getTxDni().getText(), getTxTelefono().getText(), getCbAño().getSelectedItem(), 
 				getCbMes().getSelectedItem(), getCbDia().getSelectedItem(), 
-				getTxSalario().getText());
+				getTxSalario().getText(), getCbPosicion().getSelectedItem());
 			}
 		}
 	}
@@ -1607,7 +1583,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		String dni = getTxSeleccDni().getText();
 		List<String> listaDeBusqueda = new ArrayList<String>();
 		
-		for (EmpleadoNoDeportivo e : cs.getListaEmpleados()) {
+		for (Empleado e : cs.getListaEmpleados()) {
 			if ((e.getNombre().equals(nombre) || nombre.isBlank()) &&
 				(e.getApellido().equals(apellido) || apellido.isBlank()) &&
 				(e.getDni().equals(dni) || dni.isBlank())) {
@@ -1630,7 +1606,7 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		String dni = getTxSeleccDni_1().getText();
 		List<String> listaDeBusqueda = new ArrayList<String>();
 		
-		for (EmpleadoNoDeportivo e : cs.getListaEmpleados()) {
+		for (Empleado e : cs.getListaEmpleados()) {
 			if ((e.getNombre().equals(nombre) || nombre.isBlank()) &&
 				(e.getApellido().equals(apellido) || apellido.isBlank()) &&
 				(e.getDni().equals(dni) || dni.isBlank())) {
@@ -1647,5 +1623,27 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 			JOptionPane.showMessageDialog(null, "No se ha encontrado ningún empleado con esas características.");
 		}
 		
+	}
+	private JComboBox<String> getCbPosicion() {
+		if (cbPosicion == null) {
+			cbPosicion = new JComboBox<String>();
+			cbPosicion.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		}
+		return cbPosicion;
+	}
+	private void rellenarCbPosicion() {
+		cbPosicion.removeAllItems();
+		if (cs.getStateTipo()==StateTipoEmpleado.DEPORTIVO) {
+			
+			for(String s : cs.getListaPosicionDeportiva()) {
+				cbPosicion.addItem(s);
+			}
+		}
+		else {
+			
+			for(String s : cs.getListaPosicionNoDeportiva()) {
+				cbPosicion.addItem(s);
+			}
+		}
 	}
 }
