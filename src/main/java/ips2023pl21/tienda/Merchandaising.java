@@ -7,7 +7,7 @@ public class Merchandaising {
 	private double precio;
 	private int unidades;
 	
-	public Merchandaising(String nombre, String tipo, int precio) {
+	public Merchandaising(String nombre, String tipo, double precio) {
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.precio = precio;

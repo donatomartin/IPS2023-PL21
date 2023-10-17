@@ -49,6 +49,7 @@ public class TiendaLogica {
 //		merchandaising.add(new Merchandaising("Balon","Material Deportivo",1000));
 		
 		List<Merchandaising> articulos = TiendaData.cargarArticulos();
+
 		merchandaising.addAll(articulos);
 		
 	}
