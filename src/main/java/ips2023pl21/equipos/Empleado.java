@@ -1,4 +1,4 @@
-package ips2023pl21.main;
+package ips2023pl21.equipos;
 
 public class Empleado {
 	private int id;
