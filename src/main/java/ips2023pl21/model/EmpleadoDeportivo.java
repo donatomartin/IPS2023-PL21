@@ -1,6 +1,7 @@
 package ips2023pl21.model;
 
 public class EmpleadoDeportivo implements Empleado{
+	private Integer eid;
 	private String nombre;
 	private String apellido;
 	private String dni;
@@ -27,6 +28,10 @@ public class EmpleadoDeportivo implements Empleado{
 		return posicion;
 	}
 
+	public Integer getId() {
+		return eid;
+	}
+	
 	public void setPosicion(String posicion) {
 		this.posicion = posicion;
 	}
@@ -58,6 +63,10 @@ public class EmpleadoDeportivo implements Empleado{
 	@Override
 	public float getSalarioAnual() {
 		return salarioAnual;
+	}
+	
+	public void setId(Integer id) {
+		this.eid = id;
 	}
 
 	@Override

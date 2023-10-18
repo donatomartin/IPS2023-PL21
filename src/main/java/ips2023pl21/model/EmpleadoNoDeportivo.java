@@ -1,6 +1,7 @@
 package ips2023pl21.model;
 
 public class EmpleadoNoDeportivo implements Empleado{
+	private Integer eid;
 	private String nombre;
 	private String apellido;
 	private String dni;
@@ -29,6 +30,9 @@ public class EmpleadoNoDeportivo implements Empleado{
 		return fechaNacimiento;
 	}
 
+	public Integer getId() {
+		return eid;
+	}
 
 	public String getNombre() {
 		return nombre;
@@ -66,7 +70,10 @@ public class EmpleadoNoDeportivo implements Empleado{
 		this.salarioAnual = salario;
 	}
 
-
+	public void setId(Integer id) {
+	this.eid = id;
+}
+	
 	public void setPosicion(String pos) {
 		this.posicion = pos;
 	}

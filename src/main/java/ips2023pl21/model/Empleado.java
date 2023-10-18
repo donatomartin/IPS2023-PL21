@@ -2,6 +2,7 @@ package ips2023pl21.model;
 
 public interface Empleado {
 
+	Integer getId();
 	String getFechaNacimiento();
 	String getNombre();
 	String getApellido();
@@ -16,6 +17,7 @@ public interface Empleado {
 	void setSalarioAnual(float salario);
 	public void setFechaNacimiento(String fechaNacimiento);
 	void setPosicion(String pos);
+	void setId(Integer id);
 	int[] fechaAEnteros();
 	String toString();
 }
