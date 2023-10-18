@@ -1,4 +1,4 @@
-package ip2023pl21.util;
+package ips2023pl21.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.Format;
@@ -119,21 +119,34 @@ public class Util {
 		sb.append("\n");
 	}
 	
-	/** 
-	 * Convierte fecha repesentada como un string iso a fecha java (para conversion de entradas de tipo fecha)
-	 */
-	public static Date isoStringToDate(String isoDateString) {
+//	/** 
+//	 * Convierte fecha repesentada como un string iso a fecha java (para conversion de entradas de tipo fecha)
+//	 */
+//	public static Date isoStringToDate(String isoDateString) {
+//		try {
+//		return new SimpleDateFormat("yyyy-MM-dd").parse(isoDateString);
+//		} catch (ParseException e) {
+//			throw new ApplicationException("Formato ISO incorrecto para fecha: "+isoDateString);
+//		}
+//	}
+//	/** 
+//	 * Convierte fecha java a un string formato iso (para display o uso en sql) 
+//	 */
+//	public static String dateToIsoString(Date javaDate) {
+//		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+//		return formatter.format(javaDate);
+//	}
+	
+	public static Date isoStringToDate2(String isoDateString) {
 		try {
-		return new SimpleDateFormat("yyyy-MM-dd").parse(isoDateString);
+			return new SimpleDateFormat("dd-MM-yyyy").parse(isoDateString);
 		} catch (ParseException e) {
 			throw new ApplicationException("Formato ISO incorrecto para fecha: "+isoDateString);
 		}
 	}
-	/** 
-	 * Convierte fecha java a un string formato iso (para display o uso en sql) 
-	 */
-	public static String dateToIsoString(Date javaDate) {
-		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+	public static String dateToIsoString2(Date javaDate) {
+		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
 		return formatter.format(javaDate);
 	}
 	
