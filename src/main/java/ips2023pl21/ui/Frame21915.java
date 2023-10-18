@@ -1,7 +1,5 @@
 package ips2023pl21.ui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -29,6 +27,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -534,9 +533,17 @@ public class Frame21915 extends JFrame {
 		return addEntrevista;
 	}
 	private void addEntrevista() {
-		if (service.addEntrevista(getTxMedio().getText()) == 0) {
+		int res = service.addEntrevista(getTxMedio().getText());
+		
+		if (res == 0) {
 			getTxEmpleadoSeleccionado().setText("NONE");
 			getTxMedio().setText("");
+		}
+		if (res == 1) {
+			JOptionPane.showMessageDialog(null, "Error: Jugador no seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		if (res == 2) {
+			JOptionPane.showMessageDialog(null, "Error: Medio no especificado.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
 		loadListModel(getTxFilterEmpleado().getText());

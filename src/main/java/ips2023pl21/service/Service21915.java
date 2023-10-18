@@ -58,17 +58,21 @@ public class Service21915 {
 
 	    // Crea una lista para almacenar los IDs de los jugadores que tienen entrevistas
 	    List<Integer> idsJugadoresConEntrevista = new ArrayList<>();
-
 	    
 	    // Crea una lista para almacenar los jugadores libres
 	    List<JugadorProfesional> jugadoresLibres = new ArrayList<>();
 	    
 	    // Recorre todas las entrevistas y agrega los IDs de los jugadores a la lista
 	    for (Entrevista entrevista : todasLasEntrevistas) {
-	        // Comprueba si la franja horaria seleccionada se solapa con la de la entrevista
+	        
+	    	// Comprueba si la franja horaria seleccionada se solapa con la de la entrevista
 	        if (solapa(horaInicio, horaFin, entrevista)) {
 	            return jugadoresLibres;
 	        }
+	        
+	        // Comprueba si un jugador ya tiene entrevista ese día
+	        if (entrevista.getFechaEntrevista().equals(fechaSel))
+	        	idsJugadoresConEntrevista.add(entrevista.getEid());
 	        
 	    }
 
@@ -126,7 +130,7 @@ public class Service21915 {
 			return 1; // JUGADOR NULL
 		
 		if (datosMedio.isBlank())
-			return 2; // NO HAY MEDIo
+			return 2; // NO HAY MEDIO
 		
 		try {
 			db.executeUpdate("insert into Entrevista(fechaEntrevista, datosMedio, horaInicio, horaFin, eid) values (?,?,?,?,?)", fechaSel, datosMedio, horaInicio, horaFin, jugadorSel.getEid());			
