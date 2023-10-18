@@ -1,7 +1,5 @@
 package ips2023pl21.ui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -11,6 +9,8 @@ import ips2023pl21.service.Service21912;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -29,6 +29,7 @@ import javax.swing.SpinnerDateModel;
 import javax.swing.BoxLayout;
 import javax.swing.DefaultListModel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import java.awt.GridLayout;
@@ -125,27 +126,6 @@ public class Frame21912 extends JFrame {
 	private JSpinner spHoraFinPuntual;
 	private JPanel pnFechaPuntual3;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Service21912 service = new Service21912();
-					Frame21912 frame = new Frame21912(service);
-					frame.setLocationRelativeTo(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
-	/**
-	 * Create the frame.
-	 */
 	/**
 	 * Create the frame.
 	 */
@@ -523,14 +503,21 @@ public class Frame21912 extends JFrame {
 	}
 
 	private JComboBox<String> getCbDiaSemana() {
-		if (cbDiaSemana == null) {
-			cbDiaSemana = new JComboBox<String>();
-			cbDiaSemana.setFont(new Font("Tahoma", Font.PLAIN, 16));
-			cbDiaSemana.setBackground(new Color(255, 255, 255));
-			cbDiaSemana.setModel(new DefaultComboBoxModel<String>(
-					new String[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" }));
-		}
-		return cbDiaSemana;
+	    if (cbDiaSemana == null) {
+	        cbDiaSemana = new JComboBox<String>();
+	        cbDiaSemana.setFont(new Font("Tahoma", Font.PLAIN, 16));
+	        cbDiaSemana.setBackground(new Color(255, 255, 255));
+	        cbDiaSemana.setModel(new DefaultComboBoxModel<String>(
+	                new String[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" }));
+
+	        // Añadir ActionListener
+	        cbDiaSemana.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                service.deseleccionadHorarioSemanal();
+	            }
+	        });
+	    }
+	    return cbDiaSemana;
 	}
 
 	private JPanel getPnDiaSemana() {
@@ -675,12 +662,31 @@ public class Frame21912 extends JFrame {
 	}
 
 	private void addToHorarioSemanal() {
-
-		service.addToHorarioSemanal((Date) getSpHoraInicioSemanal().getValue(),
+		
+		int res = service.addToHorarioSemanal((Date) getSpHoraInicioSemanal().getValue(),
 				(Date) getSpHoraFinSemanal().getValue(), getCbDiaSemana().getSelectedItem().toString(), (Date) getSpFechaInicio().getValue());
+			
+		if (res == 2) {
+			// FIN ANTES QUE PRINCIPIO
+			JOptionPane.showMessageDialog(null, "Error: La hora de finalización es anterior a la hora de inicio.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		else if (res == 3) {
+			// SOLAPA ENTRE FRANJAS
+			JOptionPane.showMessageDialog(null, "Error: Solapamiento entre franjas horarias.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		else if (res == 4) {
+			// SOBREPASADO LIMITE DIARIO
+			JOptionPane.showMessageDialog(null, "Error: Se ha sobrepasado el límite diario.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		else if (res == 5) {
+			// SOBREPASADO LIMITE SEMANAL
+			JOptionPane.showMessageDialog(null, "Error: Se ha sobrepasado el límite semanal.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+			
 		loadSemanalListModel();
 
 	}
+
 
 	private JLabel getLbNombreEmpleadoSemanal() {
 		if (lbNombreEmpleado == null) {
@@ -854,6 +860,12 @@ public class Frame21912 extends JFrame {
 			JSpinner.DateEditor editor = new JSpinner.DateEditor(spFechaPuntual, "dd-MM-yyyy");
 			
 			spFechaPuntual.setEditor(editor);
+			
+			spFechaPuntual.addChangeListener(new ChangeListener() {
+			    public void stateChanged(ChangeEvent e) {
+			    	service.deseleccionaHorarioPuntual();
+			    }
+			});
 		}
 		return spFechaPuntual;
 	}
@@ -895,6 +907,12 @@ public class Frame21912 extends JFrame {
 			// Establece el formato de la fecha para que no muestre las horas
 			JSpinner.DateEditor editor = new JSpinner.DateEditor(spFechaInicio, "dd-MM-yyyy");
 			spFechaInicio.setEditor(editor);
+			
+			spFechaInicio.addChangeListener(new ChangeListener() {
+			    public void stateChanged(ChangeEvent e) {
+			    	service.deseleccionadHorarioSemanal();
+			    }
+			});
 		}
 		return spFechaInicio;
 	}
@@ -1006,8 +1024,26 @@ public class Frame21912 extends JFrame {
 	}
 
 	private void addToHorarioPuntual() {
-		service.addToHorarioPuntual((Date) getSpHoraInicioPuntual().getValue(),
+		int res = service.addToHorarioPuntual((Date) getSpHoraInicioPuntual().getValue(),
 				(Date) getSpHoraFinPuntual().getValue(), (Date) getSpFechaPuntual().getValue());
+		
+		if (res == 2) {
+			// FIN ANTES QUE PRINCIPIO
+			JOptionPane.showMessageDialog(null, "Error: La hora de finalización es anterior a la hora de inicio.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		else if (res == 3) {
+			// SOLAPA ENTRE FRANJAS
+			JOptionPane.showMessageDialog(null, "Error: Solapamiento entre franjas horarias.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		else if (res == 4) {
+			// SOBREPASADO LIMITE DIARIO
+			JOptionPane.showMessageDialog(null, "Error: Se ha sobrepasado el límite diario.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		else if (res == 5) {
+			// SOBREPASADO LIMITE SEMANAL
+			JOptionPane.showMessageDialog(null, "Error: Se ha sobrepasado el límite semanal.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
 		loadPuntualListModel();
 	}
 

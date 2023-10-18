@@ -126,7 +126,7 @@ public class Service21912 {
 	public void actualizarHorariosSemanales() {
 	    List<HorarioSemanal> horarios = getHorariosSemanales();
 	    
-	    if (horarios.size() <= 1) {
+	    if (horarios.size() == 0) {
 	    	return;
 	    }
 	    
@@ -170,6 +170,7 @@ public class Service21912 {
 		}	
 		else if (res == 1) {
 			addHorarioSemanal(diaSemana, fechaInicio);
+			return 1;
 		}
 		else
 			return res;
@@ -268,16 +269,16 @@ public class Service21912 {
 			return 4; // Horas diarias sobrepasadas
 
 		int[] minutosTotalesArr = new int[7];
-		minutosTotalesArr[getDiaSemanaSel()] = minutosTotalesDiarios;
+		minutosTotalesArr[getDiaSemanaSel()-1] = minutosTotalesDiarios;
 
 		for (HorarioSemanal h : getHorariosSemanales()) {
 
 			if (h.getDiaSemana() == getDiaSemanaSel())
 				continue;
 
-			minutosTotalesArr[h.getDiaSemana()] = 0;
+			minutosTotalesArr[h.getDiaSemana()-1] = 0;
 			for (Franja f : getFranjasSemanales(h.getDiaSemana(), h.getFechaInicio()))
-				minutosTotalesArr[h.getDiaSemana()] += f.getMinutosTotales();
+				minutosTotalesArr[h.getDiaSemana()-1] += f.getMinutosTotales();
 
 		}
 
@@ -291,6 +292,10 @@ public class Service21912 {
 
 		return 0;
 
+	}
+	
+	public void deseleccionadHorarioSemanal() {
+		horarioSemanalSeleccionado = null;
 	}
 
 	// Horario Puntual
@@ -349,6 +354,7 @@ public class Service21912 {
 		}	
 		else if (res == 1) {
 			addHorarioPuntual(fechaPuntual);
+			return res;
 		}
 		else
 			return res;
@@ -443,9 +449,9 @@ public class Service21912 {
 			if (Util.isoStringToDate2(h.getFechaInicio()).after(Util.isoStringToDate2(getFechaPunSel())))	// Skipea si todavía no está vigente el horario
 				continue;
 			
-			minutosTotalesArr[h.getDiaSemana()] = 0;
+			minutosTotalesArr[h.getDiaSemana()-1] = 0;
 			for (Franja f : getFranjasSemanales(h.getDiaSemana(), h.getFechaInicio()))
-				minutosTotalesArr[h.getDiaSemana()] += f.getMinutosTotales();
+				minutosTotalesArr[h.getDiaSemana()-1] += f.getMinutosTotales();
 
 		}
 
@@ -459,6 +465,10 @@ public class Service21912 {
 
 		return 0;
 
+	}
+	
+	public void deseleccionaHorarioPuntual() {
+		horarioPuntualSeleccionado = null;
 	}
 	
 	
