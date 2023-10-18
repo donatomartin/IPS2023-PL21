@@ -3,19 +3,18 @@ package ips2023pl21.main;
 import java.util.List;
 
 import ip2023pl21.util.Database;
+import ips2023pl21.model8.VentasController;
+import ips2023pl21.model8.VentasModel;
+import ips2023pl21.service7.Service;
+import ips2023pl21.ui8.VentasView;
 
 public class Main {
 
 	public static void main(String[] args) {
-		Database db = new Database();
-		db.createDatabase(false);
-		db.loadDatabase();
-		List<EmpleadoDeportivo> lista = db.executeQueryPojo(EmpleadoDeportivo.class, 
-				"select * from empleadodeportivo");
+		Service s=new Service();
+		s.run();
 		
-		for(EmpleadoDeportivo ed : lista) {
-			System.out.println(ed.getNombre());
-		}
+		
 	}
 
 }
