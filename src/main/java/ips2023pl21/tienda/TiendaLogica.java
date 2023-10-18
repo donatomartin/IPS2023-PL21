@@ -41,13 +41,7 @@ public class TiendaLogica {
 	/**
 	 * Carga los articulos de la BD
 	 */
-	public void cargarArticulos() {
-//		merchandaising.add(new Merchandaising("Gorra", "Ropa", 10));
-//		merchandaising.add(new Merchandaising("Bufanda", "Ropa", 20));
-//		merchandaising.add(new Merchandaising("Camiseta", "Ropa", 10));
-//		merchandaising.add(new Merchandaising("Taza", "Decoracion", 20));
-//		merchandaising.add(new Merchandaising("Balon","Material Deportivo",1000));
-		
+	public void cargarArticulos() {		
 		List<Merchandaising> articulos = TiendaData.cargarArticulos();
 
 		merchandaising.addAll(articulos);
@@ -112,8 +106,9 @@ public class TiendaLogica {
 	 * Guarda el precio en la BD
 	 */
 	public void guardarPrecio() {
-		TiendaData.añadirPrecio(id,precioTotal);
-		id++;
+		//TODO
+//		TiendaData.añadirPrecio(id,precioTotal);
+//		id++;
 	}
 
 	
