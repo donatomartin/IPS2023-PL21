@@ -155,3 +155,15 @@ create table VentaMerchandising(
 	precioPorProducto real,
 	foreign key (id) references Venta(id)
 );
+
+--Entrada
+drop table Entrada;
+create table Entrada(
+	tribuna varchar(30) not null,
+	seccion varchar(30) not null,
+	fila int not null,
+	asiento int not null,
+	precio int,
+	check(precio=30),
+	primary key(tribuna, seccion, fila, asiento)
+);
