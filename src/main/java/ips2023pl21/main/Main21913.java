@@ -1,25 +1,25 @@
 package ips2023pl21.main;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
+import java.awt.EventQueue;
+
+import ips2023pl21.service.ClubService21913;
+import ips2023pl21.ui.VentanaReservaInstalaciones21013;
 
 public class Main21913 {
 
 	public static void main(String[] args) {
-		Timestamp a = Timestamp.valueOf("2023-10-13 01:31:00");
-		System.out.println(a);
-		Timestamp b = Timestamp.valueOf(LocalDateTime.now());
-		System.out.println(b);
-		LocalDateTime l = LocalDateTime.of(2023, 01, 01, 21, 10);
-		System.out.println(l.toString());
+		ClubService21913 cs = new ClubService21913();
 		
-		System.out.println(l.getChronology());
-		
-		System.out.println(l.getYear());
-		System.out.println(l.getMonthValue());
-		System.out.println(l.getDayOfMonth());
-		System.out.println(l.getHour());
-		System.out.println(l.getMinute());
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					VentanaReservaInstalaciones21013 frame = new VentanaReservaInstalaciones21013(cs);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 
 }
