@@ -1,14 +1,14 @@
-package ips2023pl21.service;
+package ips2023pl21.p21915.service;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ips2023pl21.model.Entrevista;
-import ips2023pl21.model.JugadorProfesional;
-import ips2023pl21.util.Database;
-import ips2023pl21.util.Util;
+import ips2023pl21.p21915.model.Entrevista;
+import ips2023pl21.p21915.model.JugadorProfesional;
+import ips2023pl21.p21915.util.Database;
+import ips2023pl21.p21915.util.Util;
 
 public class Service21915 {
 

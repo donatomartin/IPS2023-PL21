@@ -1,4 +1,4 @@
-package ips2023pl21.util;
+package ips2023pl21.p21915.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.Format;

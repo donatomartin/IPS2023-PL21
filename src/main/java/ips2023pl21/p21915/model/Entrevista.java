@@ -1,9 +1,9 @@
-package ips2023pl21.model;
+package ips2023pl21.p21915.model;
 
 import java.time.LocalTime;
 
-import ips2023pl21.service.Service21915;
-import ips2023pl21.util.Util;
+import ips2023pl21.p21915.service.Service21915;
+import ips2023pl21.p21915.util.Util;
 
 public class Entrevista {
 	

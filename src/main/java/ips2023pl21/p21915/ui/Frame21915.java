@@ -1,10 +1,8 @@
-package ips2023pl21.ui;
+package ips2023pl21.p21915.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import ips2023pl21.service.Service21915;
 
 import java.awt.BorderLayout;
 
@@ -12,6 +10,8 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import ips2023pl21.p21915.service.Service21915;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;

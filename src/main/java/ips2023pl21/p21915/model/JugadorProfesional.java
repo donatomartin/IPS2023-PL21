@@ -1,4 +1,4 @@
-package ips2023pl21.model;
+package ips2023pl21.p21915.model;
 
 public class JugadorProfesional extends EmpleadoDeportivo {
 	
