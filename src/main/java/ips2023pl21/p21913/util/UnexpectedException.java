@@ -1,4 +1,4 @@
-package ip2023pl21.p21913.util;
+package ips2023pl21.p21913.util;
 
 /**
  * Excepcion producida por la aplicacion antes situaciones incontroladas
