@@ -1,9 +1,9 @@
-package ips2023pl21;
+package ips2023pl21.p21912;
 
 import java.awt.EventQueue;
 
-import ips2023pl21.service.Service21912;
-import ips2023pl21.ui.Frame21912;
+import ips2023pl21.p21912.service.Service21912;
+import ips2023pl21.p21912.ui.Frame21912;
 
 public class Main {
 	

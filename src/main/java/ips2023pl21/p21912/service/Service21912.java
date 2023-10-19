@@ -1,4 +1,4 @@
-package ips2023pl21.service;
+package ips2023pl21.p21912.service;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -7,15 +7,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ips2023pl21.model.EmpleadoNoDeportivo;
-import ips2023pl21.model.Franja;
-import ips2023pl21.model.FranjaPuntual;
-import ips2023pl21.model.FranjaSemanal;
-import ips2023pl21.model.HorarioPuntual;
-import ips2023pl21.model.HorarioSemanal;
-import ips2023pl21.util.Database;
-import ips2023pl21.util.UnexpectedException;
-import ips2023pl21.util.Util;
+import ips2023pl21.p21912.model.EmpleadoNoDeportivo;
+import ips2023pl21.p21912.model.Franja;
+import ips2023pl21.p21912.model.FranjaPuntual;
+import ips2023pl21.p21912.model.FranjaSemanal;
+import ips2023pl21.p21912.model.HorarioPuntual;
+import ips2023pl21.p21912.model.HorarioSemanal;
+import ips2023pl21.p21912.util.Database;
+import ips2023pl21.p21912.util.UnexpectedException;
+import ips2023pl21.p21912.util.Util;
 
 public class Service21912 {
 

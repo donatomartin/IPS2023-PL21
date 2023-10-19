@@ -1,9 +1,9 @@
-package ips2023pl21.model;
+package ips2023pl21.p21912.model;
 
 import java.util.Date;
 
-import ips2023pl21.service.Service21912;
-import ips2023pl21.util.Util;
+import ips2023pl21.p21912.service.Service21912;
+import ips2023pl21.p21912.util.Util;
 
 public class HorarioSemanal implements Comparable<HorarioSemanal> {
 
