@@ -1,12 +1,12 @@
-package ips2023pl21.ui;
+package ips2023pl21.p21913.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import ips2023pl21.model.Franja;
-import ips2023pl21.service.ClubService21913;
+import ips2023pl21.p21913.model.Franja;
+import ips2023pl21.p21913.service.ClubService21913;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;

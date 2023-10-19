@@ -1,4 +1,4 @@
-package ip2023pl21.util;
+package ip2023pl21.p21913.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;

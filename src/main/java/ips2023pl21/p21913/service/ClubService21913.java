@@ -1,4 +1,4 @@
-package ips2023pl21.service;
+package ips2023pl21.p21913.service;
 
 
 import java.time.Duration;
@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ip2023pl21.util.Database;
-import ip2023pl21.util.Util;
-import ips2023pl21.model.Franja;
-import ips2023pl21.model.HorariosEquipos;
-import ips2023pl21.model.Reservas;
+import ip2023pl21.p21913.util.Database;
+import ip2023pl21.p21913.util.Util;
+import ips2023pl21.p21913.model.Franja;
+import ips2023pl21.p21913.model.HorariosEquipos;
+import ips2023pl21.p21913.model.Reservas;
 
 public class ClubService21913 {
 	

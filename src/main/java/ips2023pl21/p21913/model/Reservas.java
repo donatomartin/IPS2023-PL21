@@ -1,4 +1,4 @@
-package ips2023pl21.model;
+package ips2023pl21.p21913.model;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

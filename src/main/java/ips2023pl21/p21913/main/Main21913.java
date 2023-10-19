@@ -1,9 +1,9 @@
-package ips2023pl21.main;
+package ips2023pl21.p21913.main;
 
 import java.awt.EventQueue;
 
-import ips2023pl21.service.ClubService21913;
-import ips2023pl21.ui.VentanaReservaInstalaciones21013;
+import ips2023pl21.p21913.service.ClubService21913;
+import ips2023pl21.p21913.ui.VentanaReservaInstalaciones21013;
 
 public class Main21913 {
 
