@@ -1,9 +1,9 @@
-package ips2023pl21.main;
+package ips2023pl21.p21916;
 
 import java.util.List;
 
 import ip2023pl21.util.Database;
-import ips2023pl21.tienda.VentanaTienda;
+import ips2023pl21.p21916.tienda.VentanaTienda;
 
 public class Main {
 
