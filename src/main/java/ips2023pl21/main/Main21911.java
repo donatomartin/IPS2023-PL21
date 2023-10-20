@@ -8,7 +8,7 @@ public class Main21911 {
 
 	public static void main(String[] args) {
 		ClubService21911 cs = new ClubService21911();
-		System.out.println("Cambios en la rama");
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

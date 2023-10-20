@@ -3,10 +3,10 @@ package ips2023pl21.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import ip2023pl21.util.Database;
 import ips2023pl21.model.Empleado;
 import ips2023pl21.model.EmpleadoDeportivo;
 import ips2023pl21.model.EmpleadoNoDeportivo;
+import ips2023pl21.util.Database;
 
 public class ClubService21911 {
 	
@@ -128,11 +128,10 @@ public class ClubService21911 {
 		}
 	}
 	
-	public void stringToEmpleado(String toString) {
-		String[] datos = toString.split(" - ");
-		nombreEmpleadoGestion = datos[0];
-		apellidoEmpleadoGestion = datos[1];
-		dniEmpleadoGestion = datos[2];
+	public void tableToEmpleado(String nombre, String apellido, String dni) {
+		nombreEmpleadoGestion = nombre;
+		apellidoEmpleadoGestion = apellido;
+		dniEmpleadoGestion = dni;
 	}
 	
 	public EmpleadoNoDeportivo cargarEmpleadoNoDeportivoAGestionar() {

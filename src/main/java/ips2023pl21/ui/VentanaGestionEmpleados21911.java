@@ -5,6 +5,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import ips2023pl21.model.Empleado;
 import ips2023pl21.model.EmpleadoDeportivo;
@@ -15,8 +16,6 @@ import ips2023pl21.service.ClubService21911.StateTipoEmpleado;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -29,14 +28,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultListModel;
 
 import java.awt.BorderLayout;
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
 import javax.swing.ListSelectionModel;
+import javax.swing.JTable;
 
 
 public class VentanaGestionEmpleados21911 extends JFrame {
@@ -125,8 +123,6 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 	private JButton btBuscar;
 	private JLabel lbInfoSelecc;
 	private JScrollPane scrSeleccion;
-	private JList<String> listEmpleados;
-	private DefaultListModel<String> modelListEmpleados;
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_2;
 	private JLabel lblNewLabel_3;
@@ -171,11 +167,39 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 	private JPanel pnSeleccionBusqueda_1;
 	private JLabel lbInfoSelecc_1;
 	private JScrollPane scrSeleccion_1;
-	private JList<String> listEmpleados_1;
-	private DefaultListModel<String> modelListEmpleados_1;
 	private JLabel lbExplicacion;
 	private JLabel lbExplicacion_1;
 	private JComboBox<String> cbPosicion;
+	private JTable tableModificar;
+	private DefaultTableModel tableModelModificar = new DefaultTableModel(
+			new String[][] {
+			},
+			new String[] {
+				"Nombre", "Apellido", "DNI"
+			}
+		) {
+			private static final long serialVersionUID = 1L;
+	
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+	    }
+	};
+	private JTable tableEliminar;
+	private DefaultTableModel tableModelEliminar = new DefaultTableModel(
+			new String[][] {
+			},
+			new String[] {
+				"Nombre", "Apellido", "DNI"
+			}
+		) {
+			private static final long serialVersionUID = 1L;
+	
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+	    }
+	};
 	
 	
 
@@ -893,12 +917,14 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 			btModificarFin = new JButton("Modificar");
 			btModificarFin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (getListEmpleados().getSelectedValue() == null) {
+					if (getTableModificar().getSelectedRow() == -1) {
 						JOptionPane.showMessageDialog(null, "No ha seleccionado ningún empleado");
 					}
 					else {
+						int row = getTableModificar().getSelectedRow();
 						//Logica
-						cs.stringToEmpleado(getListEmpleados().getSelectedValue());
+						cs.tableToEmpleado(getTableModificar().getValueAt(row,0).toString(), 
+								getTableModificar().getValueAt(row, 1).toString(), getTableModificar().getValueAt(row, 2).toString());
 						//UI
 						resetearPantallaModificar();
 						rellenarValoresAModificar();
@@ -1001,9 +1027,9 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 						getTxSeleccApellido().getText().isBlank() &&
 						getTxSeleccDni().getText().isBlank()) {
 						JOptionPane.showMessageDialog(null, "Los tres campos de búsqueda están vacíos.");
-						modelListEmpleados.removeAllElements();
+						tableModelModificar.setRowCount(0);
 						for(Empleado end : cs.getListaEmpleados()) {
-							modelListEmpleados.addElement(end.toString());
+							tableModelModificar.addRow(new Object[]{end.getNombre(), end.getApellido(), end.getDni()});
 						}
 					}
 					else {
@@ -1029,18 +1055,9 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 	private JScrollPane getScrSeleccion() {
 		if (scrSeleccion == null) {
 			scrSeleccion = new JScrollPane();
-			scrSeleccion.setViewportView(getListEmpleados());
+			scrSeleccion.setViewportView(getTableModificar());
 		}
 		return scrSeleccion;
-	}
-	private JList<String> getListEmpleados() {
-		if (listEmpleados == null) {
-			modelListEmpleados = new DefaultListModel<String>();
-			listEmpleados = new JList<String>(modelListEmpleados);
-			listEmpleados.setFont(new Font("Tahoma", Font.PLAIN, 16));
-			listEmpleados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		}
-		return listEmpleados;
 	}
 	private JLabel getLblNewLabel_1() {
 		if (lblNewLabel_1 == null) {
@@ -1317,12 +1334,14 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 			btEliminarFin = new JButton("Eliminar");
 			btEliminarFin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (getListEmpleados_1().getSelectedValue() == null) {
+					if (getTableEliminar().getSelectedRow() == -1) {
 						JOptionPane.showMessageDialog(null, "No ha seleccionado ningún empleado");
 					}
 					else {
+						int row = getTableEliminar().getSelectedRow();
 						//Logica
-						cs.stringToEmpleado(getListEmpleados_1().getSelectedValue());
+						cs.tableToEmpleado(getTableEliminar().getValueAt(row,0).toString(), 
+								getTableEliminar().getValueAt(row, 1).toString(), getTableEliminar().getValueAt(row, 2).toString());
 						//UI y Logica
 						eliminarEmpleado();
 					}
@@ -1365,9 +1384,9 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 						getTxSeleccApellido_1().getText().isBlank() &&
 						getTxSeleccDni_1().getText().isBlank()) {
 						JOptionPane.showMessageDialog(null, "Los tres campos de búsqueda están vacíos.");
-						modelListEmpleados_1.removeAllElements();
+						tableModelEliminar.setRowCount(0);
 						for(Empleado end : cs.getListaEmpleados()) {
-							modelListEmpleados_1.addElement(end.toString());
+							tableModelEliminar.addRow(new Object[]{end.getNombre(), end.getApellido(), end.getDni()});
 						}
 					}
 					else {
@@ -1401,18 +1420,9 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 	private JScrollPane getScrSeleccion_1() {
 		if (scrSeleccion_1 == null) {
 			scrSeleccion_1 = new JScrollPane();
-			scrSeleccion_1.setViewportView(getListEmpleados_1());
+			scrSeleccion_1.setViewportView(getTableEliminar());
 		}
 		return scrSeleccion_1;
-	}
-	private JList<String> getListEmpleados_1() {
-		if (listEmpleados_1 == null) {
-			modelListEmpleados_1 = new DefaultListModel<String>();
-			listEmpleados_1 = new JList<String>(modelListEmpleados_1);
-			listEmpleados_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
-			listEmpleados_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		}
-		return listEmpleados_1;
 	}
 	private void mostrarPantallaAccion() {
 		if (cs.getStateAction()==StateAction.AÑADIR) {
@@ -1441,16 +1451,16 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		getTxSalario().setText("");
 	}
 	private void rellenarListaDeSeleccion() {
-		modelListEmpleados.removeAllElements();
-		modelListEmpleados_1.removeAllElements();
+		tableModelModificar.setRowCount(0);
+		tableModelEliminar.setRowCount(0);
 		if(cs.getStateAction() == StateAction.MODIFICAR) {
 		for (Empleado end: cs.getListaEmpleados()) {
-			modelListEmpleados.addElement(end.toString());
+			tableModelModificar.addRow(new Object[]{end.getNombre(), end.getApellido(), end.getDni()});
 			}
 		}
 		else if(cs.getStateAction() == StateAction.ELIMINAR) {
 			for (Empleado end: cs.getListaEmpleados()) {
-				modelListEmpleados_1.addElement(end.toString());
+				tableModelEliminar.addRow(new Object[]{end.getNombre(), end.getApellido(), end.getDni()});
 			}
 		}
 	}
@@ -1458,13 +1468,13 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		((CardLayout) getPnCentral().getLayout()).show(getPnCentral(), "pnConfirmacion");
 	}
 	private void resetearPantallaModificar() {
-		modelListEmpleados.removeAllElements();
+		tableModelModificar.setRowCount(0);
 		getTxSeleccNombre().setText("");
 		getTxSeleccApellido().setText("");
 		getTxSeleccDni().setText("");
 	}
 	private void resetearPantallaEliminar() {
-		modelListEmpleados_1.removeAllElements();
+		tableModelEliminar.setRowCount(0);
 		getTxSeleccNombre_1().setText("");
 		getTxSeleccApellido_1().setText("");
 		getTxSeleccDni_1().setText("");
@@ -1578,51 +1588,77 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 		getRdbtDeportivo().setSelected(true);
 	}
 	private void buscarEmpleadoModificar() {
-		String nombre = getTxSeleccNombre().getText();
-		String apellido = getTxSeleccApellido().getText();
-		String dni = getTxSeleccDni().getText();
-		List<String> listaDeBusqueda = new ArrayList<String>();
-		
-		for (Empleado e : cs.getListaEmpleados()) {
-			if ((e.getNombre().equals(nombre) || nombre.isBlank()) &&
-				(e.getApellido().equals(apellido) || apellido.isBlank()) &&
-				(e.getDni().equals(dni) || dni.isBlank())) {
-					listaDeBusqueda.add(e.toString());
-			}
-		}
-		
-		if (listaDeBusqueda.size() >0) {
-			modelListEmpleados.removeAllElements();
-			for (String s : listaDeBusqueda) {
-				modelListEmpleados.addElement(s);
-			}
-		}else {
-			JOptionPane.showMessageDialog(null, "No se ha encontrado ningún empleado con esas características.");
-		}
+	    tableModelModificar.setRowCount(0);
+
+	    String nombre = getTxSeleccNombre().getText();
+	    String apellido = getTxSeleccApellido().getText();
+	    String dni = getTxSeleccDni().getText();
+	    boolean encontrado = false;
+
+	    for (Empleado e : cs.getListaEmpleados()) {
+	        boolean mostrar = true;
+
+	        if (!nombre.isBlank() && !e.getNombre().equals(nombre)) {
+	            mostrar = false;
+	        }
+
+	        if (!apellido.isBlank() && !e.getApellido().equals(apellido)) {
+	            mostrar = false;
+	        }
+
+	        if (!dni.isBlank() && !e.getDni().equals(dni)) {
+	            mostrar = false;
+	        }
+
+	        if (mostrar) {
+	            tableModelModificar.addRow(new Object[]{e.getNombre(), e.getApellido(), e.getDni()});
+	            encontrado = true;
+	        }
+	    }
+
+	    if (!encontrado) {
+	        for (Empleado e : cs.getListaEmpleados()) {
+	            tableModelModificar.addRow(new Object[]{e.getNombre(), e.getApellido(), e.getDni()});
+	        }
+	        JOptionPane.showMessageDialog(null, "No se ha encontrado ningún empleado con esas características. Se muestran todos los empleados.");
+	    }
 	}
+
 	private void buscarEmpleadoEliminar() {
-		String nombre = getTxSeleccNombre_1().getText();
-		String apellido = getTxSeleccApellido_1().getText();
-		String dni = getTxSeleccDni_1().getText();
-		List<String> listaDeBusqueda = new ArrayList<String>();
-		
-		for (Empleado e : cs.getListaEmpleados()) {
-			if ((e.getNombre().equals(nombre) || nombre.isBlank()) &&
-				(e.getApellido().equals(apellido) || apellido.isBlank()) &&
-				(e.getDni().equals(dni) || dni.isBlank())) {
-					listaDeBusqueda.add(e.toString());
-			}
-		}
-		
-		if (listaDeBusqueda.size() >0) {
-			modelListEmpleados_1.removeAllElements();
-			for (String s : listaDeBusqueda) {
-				modelListEmpleados_1.addElement(s);
-			}
-		}else {
-			JOptionPane.showMessageDialog(null, "No se ha encontrado ningún empleado con esas características.");
-		}
-		
+		tableModelEliminar.setRowCount(0);
+
+	    String nombre = getTxSeleccNombre_1().getText();
+	    String apellido = getTxSeleccApellido_1().getText();
+	    String dni = getTxSeleccDni_1().getText();
+	    boolean encontrado = false;
+
+	    for (Empleado e : cs.getListaEmpleados()) {
+	        boolean mostrar = true;
+
+	        if (!nombre.isBlank() && !e.getNombre().equals(nombre)) {
+	            mostrar = false;
+	        }
+
+	        if (!apellido.isBlank() && !e.getApellido().equals(apellido)) {
+	            mostrar = false;
+	        }
+
+	        if (!dni.isBlank() && !e.getDni().equals(dni)) {
+	            mostrar = false;
+	        }
+
+	        if (mostrar) {
+	            tableModelEliminar.addRow(new Object[]{e.getNombre(), e.getApellido(), e.getDni()});
+	            encontrado = true;
+	        }
+	    }
+
+	    if (!encontrado) {
+	        for (Empleado e : cs.getListaEmpleados()) {
+	            tableModelEliminar.addRow(new Object[]{e.getNombre(), e.getApellido(), e.getDni()});
+	        }
+	        JOptionPane.showMessageDialog(null, "No se ha encontrado ningún empleado con esas características. Se muestran todos los empleados.");
+	    }
 	}
 	private JComboBox<String> getCbPosicion() {
 		if (cbPosicion == null) {
@@ -1645,5 +1681,25 @@ public class VentanaGestionEmpleados21911 extends JFrame {
 				cbPosicion.addItem(s);
 			}
 		}
+	}
+	private JTable getTableModificar() {
+		if (tableModificar == null) {
+			tableModificar = new JTable();
+			tableModificar.setForeground(new Color(0, 0, 0));
+			tableModificar.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			tableModificar.setModel(tableModelModificar);
+			tableModificar.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		}
+		return tableModificar;
+	}
+	private JTable getTableEliminar() {
+		if (tableEliminar == null) {
+			tableEliminar = new JTable();
+			tableEliminar.setForeground(new Color(0, 0, 0));
+			tableEliminar.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			tableEliminar.setModel(tableModelEliminar);
+			tableEliminar.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		}
+		return tableEliminar;
 	}
 }
