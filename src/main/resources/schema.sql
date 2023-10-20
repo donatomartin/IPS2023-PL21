@@ -82,8 +82,10 @@ create table HorarioEquipo(
 	horaSalida int not null,
 	minutoEntrada int not null,
 	minutoSalida int not null,
+	idInstalacion varchar(30) not null,
 	primary key(idEquipo, fecha, horaEntrada),
-    foreign key(idEquipo) references Equipo(id)
+    foreign key(idEquipo) references Equipo(id),
+    foreign key(idInstalacion) references Instalacion(id)
 );
 
 drop table Equipo;
@@ -110,6 +112,7 @@ drop table Reserva;
 create table Reserva(
 	nombreUsuario varchar(30) not null,
 	cuentaBancaria varchar(30) not null,
+	idInstalacion varchar(30) not null,
 	precioReserva int not null,
 	fechaReserva varchar(30) not null,
 	horaEntrada int not null,
@@ -119,7 +122,8 @@ create table Reserva(
 	fechaVenta varchar(10) not null,
 	horaVenta int not null,
 	minutoVenta int not null,
-	primary key (nombreUsuario, fechaReserva, horaEntrada)
+	primary key (nombreUsuario, fechaReserva, horaEntrada),
+	foreign key (idInstalacion) references Instalacion(id)
 );
 
 -- Mercho
@@ -166,4 +170,12 @@ create table Entrada(
 	precio int,
 	check(precio=30),
 	primary key(tribuna, seccion, fila, asiento)
+);
+
+--Instalaciones
+drop table Instalacion;
+create table Instalacion(
+	id varchar(30) not null,
+	nombreInstalacion varchar(30) not null,
+	primary key (id)
 );

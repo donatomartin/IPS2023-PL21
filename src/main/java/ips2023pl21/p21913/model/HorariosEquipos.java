@@ -12,6 +12,7 @@ public class HorariosEquipos {
 	private int minutoEntrada;
 	private int horaSalida;
 	private int minutoSalida;
+	private String idInstalacion;
 	
 	//Fecha exacta cuando empieza, cuando termina
 	private LocalDateTime empieza;
@@ -38,7 +39,14 @@ public class HorariosEquipos {
 	public int getHoraEntrada() {
 		return horaEntrada;
 	}
+	public String getIdInstalacion() {
+		return idInstalacion;
+	}
 
+	public void setIdInstalacion(String id) {
+		this.idInstalacion = id;
+	}
+	
 	public void setHoraEntrada(int horaEntrada) {
 		this.horaEntrada = horaEntrada;
 	}
@@ -68,19 +76,18 @@ public class HorariosEquipos {
 	}
 	
 	public LocalDateTime getEmpieza() {
-		CharSequence f = this.fecha;
-		LocalDate fecha = LocalDate.parse(f);
+		LocalDate f = LocalDate.parse(fecha);
 		LocalTime time = LocalTime.of(horaEntrada, minutoEntrada);
-		empieza = LocalDateTime.of(fecha, time);
+		
+		empieza = LocalDateTime.of(f, time);
 		
 		return empieza;
 	}
 	
 	public LocalDateTime getAcaba() {
-		CharSequence f = this.fecha;
-		LocalDate fecha = LocalDate.parse(f);
+		LocalDate f = LocalDate.parse(fecha);
 		LocalTime time = LocalTime.of(horaSalida, minutoSalida);
-		acaba = LocalDateTime.of(fecha, time).plusMinutes(90);
+		acaba = LocalDateTime.of(f, time).plusMinutes(90);
 		
 		return acaba;
 	}

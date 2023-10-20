@@ -6,10 +6,12 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ips2023pl21.p21913.model.Franja;
+import ips2023pl21.p21913.model.Instalaciones;
 import ips2023pl21.p21913.service.ClubService21913;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.text.ParseException;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -40,7 +42,7 @@ import javax.swing.ListCellRenderer;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class VentanaReservaInstalaciones21013 extends JFrame {
+public class VentanaReservaInstalaciones21913 extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private ClubService21913 cs;
@@ -110,11 +112,15 @@ public class VentanaReservaInstalaciones21013 extends JFrame {
 	private JLabel lblNewLabel_1;
 	private JLabel lblNewLabel_5;
 	private JLabel lblNewLabel_6;
+	private JPanel pnCampo;
+	private JLabel lbCampo;
+	private JComboBox<String> cbCampos;
+	private JPanel panel_3;
 
 	/**
 	 * Create the frame.
 	 */
-	public VentanaReservaInstalaciones21013(ClubService21913 cs) {
+	public VentanaReservaInstalaciones21913(ClubService21913 cs) {
 		this.cs = cs;
 		addWindowListener(new WindowAdapter() {
 			@Override
@@ -186,11 +192,12 @@ public class VentanaReservaInstalaciones21013 extends JFrame {
 	private JPanel getPnFecha() {
 		if (pnFecha == null) {
 			pnFecha = new JPanel();
-			pnFecha.setLayout(new GridLayout(5, 1, 0, 0));
+			pnFecha.setLayout(new GridLayout(6, 1, 0, 0));
 			pnFecha.add(getLbFecha());
 			pnFecha.add(getPnDia());
 			pnFecha.add(getPnMes());
 			pnFecha.add(getPnAño());
+			pnFecha.add(getPnCampo());
 			pnFecha.add(getPnBuscar());
 		}
 		return pnFecha;
@@ -207,7 +214,7 @@ public class VentanaReservaInstalaciones21013 extends JFrame {
 	}
 	private JLabel getLbFecha() {
 		if (lbFecha == null) {
-			lbFecha = new JLabel("Introduzca la fecha de la reserva:");
+			lbFecha = new JLabel("Introduzca la datos de la reserva:");
 			lbFecha.setForeground(new Color(0, 0, 0));
 			lbFecha.setFont(new Font("Tahoma", Font.PLAIN, 22));
 		}
@@ -317,6 +324,7 @@ public class VentanaReservaInstalaciones21013 extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 					if (isFechaValida()) {
 						getBtAvanzar().setEnabled(true);
+						cargarInstalacionSeleccionada();
 						cargarFechaSeleccionada();
 						cargarHorariosEquipos();
 						cargarReservas();
@@ -807,7 +815,11 @@ public class VentanaReservaInstalaciones21013 extends JFrame {
 		String month = String.valueOf(getCbMes().getSelectedItem());
 		String day = String.valueOf(getCbDia().getSelectedItem());
 		
-		cs.cargarFechaSeleccioanda(year, month, day);
+		try {
+			cs.cargarFechaSeleccioanda(year, month, day);
+		} catch (ParseException e) {
+			JOptionPane.showMessageDialog(null, "Ha habido un problema con la fecha introducida.");
+		}
 	}
 	private void cargarHorariosEquipos() {
 		cs.cargarHorariosEquipos();
@@ -891,20 +903,16 @@ public class VentanaReservaInstalaciones21013 extends JFrame {
 		
 		//Comprobaciones
 		if (salida.isBefore(entrada)) {
-			System.out.println("salida antes que entrada");
 			return true;
 		}
 		else if(entrada.isBefore(cs.getFranjaSeleccionada().getInicio()) || 
 				salida.isAfter(cs.getFranjaSeleccionada().getFin())){
-			System.out.println("entrada o salida fuera de franja");
 			return true;
 		}
 		else if (entrada.isBefore(LocalDateTime.now())) {
-			System.out.println("la entrada es anterior a la hora actual");
 			return true;
 		}
 		else if (Duration.between(entrada, salida).toMinutes() < 60 ) {
-			System.out.println("la duracion es menor de 1h");
 			return true;
 		}
 		return false;
@@ -930,5 +938,43 @@ public class VentanaReservaInstalaciones21013 extends JFrame {
 
         return renderer;
 		}
+	}
+	private JPanel getPnCampo() {
+		if (pnCampo == null) {
+			pnCampo = new JPanel();
+			pnCampo.setLayout(new GridLayout(2, 2, 0, 0));
+			pnCampo.add(getLbCampo());
+			pnCampo.add(getCbCampos());
+			pnCampo.add(getPanel_3());
+		}
+		return pnCampo;
+	}
+	private JLabel getLbCampo() {
+		if (lbCampo == null) {
+			lbCampo = new JLabel("Campo:");
+			lbCampo.setForeground(new Color(0, 0, 0));
+			lbCampo.setHorizontalAlignment(SwingConstants.CENTER);
+			lbCampo.setFont(new Font("Tahoma", Font.PLAIN, 22));
+		}
+		return lbCampo;
+	}
+	private JComboBox<String> getCbCampos() {
+		if (cbCampos == null) {
+			cbCampos = new JComboBox<String>();
+			cbCampos.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			for (Instalaciones s : cs.cargarInstalaciones()) {
+				cbCampos.addItem(s.getNombreInstalacion());
+			}
+		}
+		return cbCampos;
+	}
+	private JPanel getPanel_3() {
+		if (panel_3 == null) {
+			panel_3 = new JPanel();
+		}
+		return panel_3;
+	}
+	private void cargarInstalacionSeleccionada() {
+		cs.cargarInstalacionSeleccionada(getCbCampos().getSelectedItem().toString());
 	}
 }

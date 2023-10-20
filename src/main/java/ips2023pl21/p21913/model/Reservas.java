@@ -9,6 +9,7 @@ public class Reservas {
 	//Atributos de la propia reserva
 	private String nombreUsuario;
 	private String cuentaBancaria;
+	private String idInstalacion;
 	private int precioReserva;
 	private String fechaReserva;
 	private int horaEntrada;
@@ -103,7 +104,14 @@ public class Reservas {
 		return minutoSalida;
 	}
 
+	public String getId() {
+		return idInstalacion;
+	}
 
+	public void setId(String id) {
+		this.idInstalacion = id;
+	}
+	
 	public void setMinutoSalida(int minutoSalida) {
 		this.minutoSalida = minutoSalida;
 	}
@@ -139,18 +147,18 @@ public class Reservas {
 	}
 	
 	public LocalDateTime getEmpieza() {
-		CharSequence f = this.fechaReserva;
-		LocalDate fecha = LocalDate.parse(f);
+		LocalDate fecha = LocalDate.parse(fechaReserva);
 		LocalTime time = LocalTime.of(horaEntrada, minutoEntrada);
+		
 		empieza = LocalDateTime.of(fecha, time);
 		
 		return empieza;
 	}
 	
 	public LocalDateTime getAcaba() {
-		CharSequence f = this.fechaReserva;
-		LocalDate fecha = LocalDate.parse(f);
+		LocalDate fecha = LocalDate.parse(fechaReserva);
 		LocalTime time = LocalTime.of(horaSalida, minutoSalida);
+		
 		acaba = LocalDateTime.of(fecha, time);
 		
 		return acaba;
