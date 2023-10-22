@@ -1,4 +1,4 @@
-package ips2023pl21.p21912.ui;
+package ips2023pl21.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -12,7 +12,7 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-import ips2023pl21.p21912.service.Service21912;
+import ips2023pl21.service.Service21912;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
