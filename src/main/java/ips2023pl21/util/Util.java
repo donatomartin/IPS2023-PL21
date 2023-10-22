@@ -137,4 +137,17 @@ public class Util {
 		return formatter.format(javaDate);
 	}
 	
+	public static Date isoStringToDate2(String isoDateString) {
+		try {
+			return new SimpleDateFormat("dd-MM-yyyy").parse(isoDateString);
+		} catch (ParseException e) {
+			throw new ApplicationException("Formato ISO incorrecto para fecha: "+isoDateString);
+		}
+	}
+
+	public static String dateToIsoString2(Date javaDate) {
+		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
+		return formatter.format(javaDate);
+	}
+	
 }

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- Empleado
 drop table EmpleadoNoDeportivo;
 create table EmpleadoNoDeportivo(
@@ -156,3 +157,5 @@ create table VentaMerchandising(
 	precioPorProducto real,
 	foreign key (id) references Venta(id)
 );
+=======
+>>>>>>> refs/remotes/origin/master

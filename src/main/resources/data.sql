@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 delete from empleadodeportivo;
 insert into empleadodeportivo(id,nombre,apellido,dni,fechaNacimiento,salarioAnual,telefono,posicion) values
@@ -19,3 +20,5 @@ insert into empleadodeportivo(id,nombre,apellido,dni,fechaNacimiento,salarioAnua
 	(6, 'g','b','72345678X','2020-02-04',10000000, '1234567890', 'jugador');
 	insert into empleadodeportivo(id,nombre,apellido,dni,fechaNacimiento,salarioAnual,telefono,posicion) values
 	(7, 'h','b','82345678X','2020-02-04',10000000, '1234567890', 'jugador');
+=======
+>>>>>>> refs/remotes/origin/master
