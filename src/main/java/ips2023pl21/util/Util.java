@@ -4,6 +4,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +149,10 @@ public class Util {
 	public static String dateToIsoString2(Date javaDate) {
 		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
 		return formatter.format(javaDate);
+	}
+	
+	public static LocalTime stringHoraToLocalTime(String hora) {
+		return LocalTime.parse(hora);
 	}
 	
 }

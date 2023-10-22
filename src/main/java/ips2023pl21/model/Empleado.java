@@ -61,5 +61,14 @@ public class Empleado {
 	public String toString() {
 	    return String.format("%4d %-30s %s", eid, apellido + " " + nombre, dni);
 	}
+	
+	public int[] fechaAEnteros() {
+		String[] fecha = fechaNacimiento.split("-");
+		int[] fechaEnteros = new int[3];
+		for (int i=0; i<fecha.length;i++) {
+			fechaEnteros[i] = Integer.parseInt(fecha[i]);
+		}
+		return fechaEnteros;
+	}
 
 }

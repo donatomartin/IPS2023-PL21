@@ -88,9 +88,10 @@ create table HorarioEquipo(
 
 drop table Equipo;
 create table Equipo(
-    id integer primary key not null,
-    nombre varchar(30) not null,
-    categoria varchar(30) not null
+    id integer primary key autoincrement,
+    nombre varchar(30),
+    categoria varchar(30),
+    esFilial boolean
 );
 
 -- Entrevista
