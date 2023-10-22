@@ -1,26 +1,31 @@
 delete from EmpleadoNoDeportivo;
-insert into EmpleadoNoDeportivo(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono) values
-	(1, 'Donato', 'Martin', '21080919Q', '2003-05-15', 1000000, '666666666'),
-    (2, 'Angel', 'Fernandez', '11111111A', '2003-05-15', 1000000, '666666665'),
-    (3, 'Yago', 'Navajas', '11111111B', '2003-05-15', 1000000, '666666664'),
-    (4, 'Carmen', 'Espinosa', '11111111C', '2003-05-15', 1000000, '666666663'),
-    (5, 'Ana', 'Garcia', '11111111D', '2003-05-15', 1000000, '666666662'),
-    (6, 'David', 'Fernandez', '11111111E', '2003-05-15', 1000000, '666666661'),
-    (7, 'Jose', 'Torres', '11111111F', '2003-05-15', 1000000, '666666660'),
-    (8, 'Miguel', 'Sanchez', '11111111G', '2003-05-15', 1000000, '666666659'),
-    (9, 'Juan', 'Castro', '11111111H', '2003-05-15', 1000000, '666666658'),
-    (10, 'Pedro', 'Ortiz', '11111111I', '2003-05-15', 1000000, '666666657'),
-    (11, 'Sergio', 'Ramirez', '11111111J', '2003-05-15', 1000000, '666666656'),
-    (12, 'Rafael', 'Ruiz', '11111111K', '2003-05-15', 1000000, '666666655'),
-    (13, 'Alejandro', 'García', '11111111L', '2003-05-15', 1000000, '666666654'),
-    (14, 'Antonio', 'Rodríguez', '11111111M', '2003-05-15', 1000000, '666666653'),
-    (15, 'Carlos', 'González', '11111111N', '2003-05-15', 1000000, '666666652'),
-    (16, 'Diego', 'Fernández', '11111111O', '2003-05-15', 1000000, '666666651'),
-    (17, 'Enrique', 'López', '11111111P', '2003-05-15', 1000000, '666666650'),
-    (18, 'Ernesto', 'Martínez', '11111111Q', '2003-05-15', 1000000, '666666649'),
-    (19, 'Felipe', 'Sánchez', '11111111R', '2003-05-15', 1000000, '666666648'),
-    (20, 'Javier', 'Pérez', '11111111S', '2003-05-15', 1000000, '666666647');
+insert into EmpleadoNoDeportivo(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, posicion) values
+	(1, 'Donato', 'Martin', '21080919Q', '2003-05-15', 1000000, '666666666', 'Tienda'),
+    (2, 'Angel', 'Fernandez', '11111111A', '2003-05-15', 1000000, '666666665', 'Tienda'),
+    (3, 'Yago', 'Navajas', '11111111B', '2003-05-15', 1000000, '666666664', 'Tienda'),
+    (4, 'Carmen', 'Espinosa', '11111111C', '2003-05-15', 1000000, '666666663', 'Tienda'),
+    (5, 'Ana', 'Garcia', '11111111D', '2003-05-15', 1000000, '666666662', 'Tienda'),
+    (6, 'David', 'Fernandez', '11111111E', '2003-05-15', 1000000, '666666661', 'Tienda'),
+    (7, 'Jose', 'Torres', '11111111F', '2003-05-15', 1000000, '666666660', 'Tienda'),
+    (8, 'Miguel', 'Sanchez', '11111111G', '2003-05-15', 1000000, '666666659', 'Tienda'),
+    (9, 'Juan', 'Castro', '11111111H', '2003-05-15', 1000000, '666666658', 'Tienda'),
+    (10, 'Pedro', 'Ortiz', '11111111I', '2003-05-15', 1000000, '666666657', 'Tienda'),
+    (11, 'Sergio', 'Ramirez', '11111111J', '2003-05-15', 1000000, '666666656', 'Tienda'),
+    (12, 'Rafael', 'Ruiz', '11111111K', '2003-05-15', 1000000, '666666655', 'Tienda'),
+    (13, 'Alejandro', 'García', '11111111L', '2003-05-15', 1000000, '666666654', 'Tienda'),
+    (14, 'Antonio', 'Rodríguez', '11111111M', '2003-05-15', 1000000, '666666653', 'Tienda'),
+    (15, 'Carlos', 'González', '11111111N', '2003-05-15', 1000000, '666666652', 'Tienda'),
+    (16, 'Diego', 'Fernández', '11111111O', '2003-05-15', 1000000, '666666651', 'Tienda'),
+    (17, 'Enrique', 'López', '11111111P', '2003-05-15', 1000000, '666666650', 'Tienda'),
+    (18, 'Ernesto', 'Martínez', '11111111Q', '2003-05-15', 1000000, '666666649', 'Tienda'),
+    (19, 'Felipe', 'Sánchez', '11111111R', '2003-05-15', 1000000, '666666648', 'Tienda'),
+    (20, 'Javier', 'Pérez', '11111111S', '2003-05-15', 1000000, '666666647', 'Tienda');
 
+delete from empleadoDeportivo;
+insert into empleadoDeportivo(nombre,apellido,dni,fechaNacimiento,salarioAnual,telefono,posicion) values
+	('eee','fff','12345678K','1985-02-04',10000000, '1234567890', 'Jugador'),
+	('ggg','hhh','12345678K','1985-02-04',10000000, '1234567890', 'Tecnico'),
+	('iii','jjj','12345678K','1985-02-04',10000000, '1234567890', 'Jugador');
 
 delete from JugadorProfesional;
 insert into JugadorProfesional(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, posicion) values

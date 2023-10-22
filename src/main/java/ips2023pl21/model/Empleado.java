@@ -8,6 +8,7 @@ public class Empleado {
 	private String telefono;
 	private String fechaNacimiento;
 	private float salarioAnual;
+	private String posicion;
 	
 	public Empleado() {}
 	
@@ -55,6 +56,14 @@ public class Empleado {
 	}
 	public void setFechaNacimiento(String fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
+	}
+	
+	public String getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(String posicion) {
+		this.posicion = posicion;
 	}
 	
 	@Override

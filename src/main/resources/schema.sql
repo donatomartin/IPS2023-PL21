@@ -7,7 +7,8 @@ create table EmpleadoNoDeportivo(
 	dni varchar(9) not null, 
 	fechaNacimiento varchar(10) not null, 
 	salarioAnual real not null, 
-	telefono varchar(30) not null
+	telefono varchar(30) not null,
+	posicion varchar(30) not null
 );
 
 drop table EmpleadoDeportivo;
