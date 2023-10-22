@@ -1,9 +1,6 @@
 package ips2023pl21;
 
-import java.util.List;
-
 import ips2023pl21.ui.VentanaTienda;
-import ips2023pl21.util.Database;
 
 public class Main21916 {
 
