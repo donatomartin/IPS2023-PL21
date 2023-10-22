@@ -1,4 +1,4 @@
-package ips2023pl21.equipos;
+package ips2023pl21.ui;
 
 import javax.swing.JFrame;
 import java.awt.CardLayout;
@@ -23,6 +23,12 @@ import javax.swing.ListSelectionModel;
 import java.awt.FlowLayout;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+
+import ips2023pl21.model.CategoriaEquipo;
+import ips2023pl21.model.EmpleadoDeportivo;
+import ips2023pl21.model.EquipoDeportivo;
+import ips2023pl21.model.EquipoEnFormacion;
+import ips2023pl21.model.EquipoProfesional;
 
 public class VentanaAñadirEquipo {
 

@@ -1,7 +1,7 @@
-package ips2023pl21.main;
+package ips2023pl21;
 
 
-import ips2023pl21.equipos.VentanaAñadirEquipo;
+import ips2023pl21.ui.VentanaAñadirEquipo;
 
 public class Main {
 

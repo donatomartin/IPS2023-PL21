@@ -1,9 +1,13 @@
-package ips2023pl21.equipos;
+package ips2023pl21.persistence;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ip2023pl21.util.Database;
+import ips2023pl21.model.EmpleadoDeportivo;
+import ips2023pl21.model.EquipoDeportivo;
+import ips2023pl21.model.EquipoEnFormacion;
+import ips2023pl21.model.EquipoProfesional;
+import ips2023pl21.util.Database;
 
 public class EquipoData {
 

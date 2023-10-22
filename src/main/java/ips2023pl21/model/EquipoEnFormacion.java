@@ -1,4 +1,4 @@
-package ips2023pl21.equipos;
+package ips2023pl21.model;
 
 public class EquipoEnFormacion extends EquipoDeportivo{
 	
@@ -10,7 +10,7 @@ public class EquipoEnFormacion extends EquipoDeportivo{
 	private static final int EDAD_MAX_BENJAMIN = 9;
 	private static final int EDAD_MAX_PREBENJAMIN = 7;
 	
-	CategoriaEquipo categoria;
+	public CategoriaEquipo categoria;
 	
 	
 	public EquipoEnFormacion() {
