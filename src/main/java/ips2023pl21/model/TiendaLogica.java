@@ -1,7 +1,9 @@
-package ips2023pl21.tienda;
+package ips2023pl21.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ips2023pl21.persistence.TiendaData;
 
 public class TiendaLogica {
 	

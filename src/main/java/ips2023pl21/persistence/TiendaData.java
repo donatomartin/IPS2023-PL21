@@ -1,10 +1,12 @@
-package ips2023pl21.tienda;
+package ips2023pl21.persistence;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import ip2023pl21.util.Database;
+import ips2023pl21.model.Merchandaising;
+import ips2023pl21.model.TiendaLogica;
+import ips2023pl21.util.Database;
 
 public class TiendaData {
 	

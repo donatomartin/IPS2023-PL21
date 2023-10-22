@@ -1,4 +1,4 @@
-package ips2023pl21.tienda;
+package ips2023pl21.ui;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -9,6 +9,10 @@ import java.awt.Component;
 
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
+
+import ips2023pl21.model.Merchandaising;
+import ips2023pl21.model.TiendaLogica;
+
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;

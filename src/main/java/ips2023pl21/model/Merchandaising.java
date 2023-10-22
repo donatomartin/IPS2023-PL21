@@ -1,4 +1,4 @@
-package ips2023pl21.tienda;
+package ips2023pl21.model;
 
 public class Merchandaising {
 

@@ -1,4 +1,4 @@
-package ip2023pl21.util;
+package ips2023pl21.util;
 import java.io.FileInputStream;
 import java.io.IOException;
 
