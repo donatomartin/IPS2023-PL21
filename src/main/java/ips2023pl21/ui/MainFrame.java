@@ -7,6 +7,7 @@ import javax.swing.JPanel;
 
 import ips2023pl21.service.Service21911;
 import ips2023pl21.service.Service21912;
+import ips2023pl21.service.Service21913;
 import ips2023pl21.service.Service21915;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -40,22 +41,6 @@ public class MainFrame extends JFrame {
 	private JButton btnNewButton_5;
 	private JButton btnNewButton_6;
 	private JButton btnNewButton_7;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					MainFrame frame = new MainFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
@@ -93,6 +78,21 @@ public class MainFrame extends JFrame {
 				try {
 					Service21912 service = new Service21912();
 					Frame21912 frame = new Frame21912(service);
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	private static void run21913() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service21913 service = new Service21913();
+					Frame21913 frame = new Frame21913(service);
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -180,6 +180,11 @@ public class MainFrame extends JFrame {
 	private JButton getBtn21913() {
 		if (btn21913 == null) {
 			btn21913 = new JButton("21913");
+			btn21913.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run21913();
+				}
+			});
 		}
 		return btn21913;
 	}
