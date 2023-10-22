@@ -1,12 +1,13 @@
 package ips2023pl21;
 
 import java.awt.EventQueue;
-
 import ips2023pl21.service.Service21911;
 import ips2023pl21.service.Service21912;
+import ips2023pl21.service.Service21913;
 import ips2023pl21.service.Service21915;
 import ips2023pl21.ui.Frame21911;
 import ips2023pl21.ui.Frame21912;
+import ips2023pl21.ui.Frame21913;
 import ips2023pl21.ui.Frame21915;
 
 public class Main {
@@ -17,6 +18,7 @@ public class Main {
 	public static void main(String[] args) {
 		run21911();
 		run21912();
+		run21913();
 		run21915();
 	}
 
@@ -42,6 +44,20 @@ public class Main {
 					Service21912 service = new Service21912();
 					Frame21912 frame = new Frame21912(service);
 					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public static void run21913() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service21913 cs = new Service21913();
+					Frame21913 frame = new Frame21913(cs);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

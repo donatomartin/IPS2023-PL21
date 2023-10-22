@@ -146,6 +146,15 @@ public class Util {
 		}
 	}
 
+	/** 
+	 * Convierte fecha java a un string formato iso (para display o uso en sql) 
+	 */
+	public static String dateToIsoString(Date javaDate) {
+		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+		return formatter.format(javaDate);
+	}
+	
+	
 	public static String dateToIsoString2(Date javaDate) {
 		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
 		return formatter.format(javaDate);
