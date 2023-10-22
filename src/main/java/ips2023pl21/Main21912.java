@@ -5,7 +5,7 @@ import java.awt.EventQueue;
 import ips2023pl21.service.Service21912;
 import ips2023pl21.ui.Frame21912;
 
-public class Main {
+public class Main21912 {
 	
 	/**
 	 * Launch the application.
