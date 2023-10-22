@@ -1,4 +1,4 @@
-package ips2023pl21.model;
+package ips2023pl21.model.empleados;
 
 public class Empleado {
 	private int eid;

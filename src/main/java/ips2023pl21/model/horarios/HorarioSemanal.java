@@ -1,8 +1,8 @@
-package ips2023pl21.model;
+package ips2023pl21.model.horarios;
 
 import java.util.Date;
 
-import ips2023pl21.service.Service21912;
+import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 
 public class HorarioSemanal implements Comparable<HorarioSemanal> {
@@ -44,7 +44,7 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 		
 		result += ") ";
 
-		for (FranjaSemanal f : Service21912.getFranjasSemanales(diaSemana, fechaInicio)) {
+		for (FranjaSemanal f : Persistence.getInstance().getFranjasSemanales(diaSemana, fechaInicio)) {
 			result += f.toString() + " || ";
 		}
 
@@ -100,8 +100,8 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 	        return comparacionDia;
 	    }
 
-        Date fechaInicioThis = Util.isoStringToDate2(fechaInicio);
-        Date fechaInicioO = Util.isoStringToDate2(o.getFechaInicio());
+        Date fechaInicioThis = Util.isoStringToDate(fechaInicio);
+        Date fechaInicioO = Util.isoStringToDate(o.getFechaInicio());
 
         // Si los días de la semana son iguales, compara las fechas de inicio
         return fechaInicioThis.compareTo(fechaInicioO);

@@ -7,9 +7,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import ips2023pl21.model.Empleado;
-import ips2023pl21.model.EmpleadoDeportivo;
-import ips2023pl21.model.EmpleadoNoDeportivo;
+import ips2023pl21.model.empleados.Empleado;
+import ips2023pl21.model.empleados.EmpleadoDeportivo;
+import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
 import ips2023pl21.service.Service21911;
 import ips2023pl21.service.Service21911.StateAction;
 import ips2023pl21.service.Service21911.StateTipoEmpleado;
@@ -235,7 +235,7 @@ public class Frame21911 extends JFrame {
 		int respuesta = JOptionPane.showConfirmDialog(this, 
 				"¿Está seguro de que quiere cerrar la aplicación?");
 		if (respuesta == JOptionPane.YES_OPTION) {
-			System.exit(0);
+			dispose();
 		}
 	}
 	private JLabel getLbTitulo() {

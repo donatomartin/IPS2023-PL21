@@ -1,7 +1,4 @@
-package ips2023pl21.model;
-
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+package ips2023pl21.model.horarios;
 
 public class FranjaSemanal extends Franja {
 	
@@ -22,12 +19,6 @@ public class FranjaSemanal extends Franja {
 	}
 	public void setFechaInicio(String fechaInicio) {
 		this.fechaInicio = fechaInicio;
-	}
-
-	public static String localTimeToString(LocalTime dateToLocalTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String formattedTime = dateToLocalTime.format(formatter);
-        return formattedTime;
 	}
 	
 }

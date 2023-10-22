@@ -95,7 +95,7 @@ public class Frame21915 extends JFrame {
 		setTitle("Gestion Entrevistas");
         this.service = service;
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setBounds(100, 100, 750, 350);
         setMinimumSize(getSize());
         contentPane = new JPanel();

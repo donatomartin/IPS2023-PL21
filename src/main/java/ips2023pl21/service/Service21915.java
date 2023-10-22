@@ -2,7 +2,8 @@ package ips2023pl21.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-import ips2023pl21.model.JugadorProfesional;
+
+import ips2023pl21.model.empleados.JugadorProfesional;
 import ips2023pl21.persistence.Persistence;
 
 public class Service21915 {
@@ -30,7 +31,7 @@ public class Service21915 {
 	}
 
 	public List<String> getEntrevistas() {
-		return persistence.getEntrevistas().stream().map(x -> x.toString()).collect(Collectors.toList());
+		return persistence.selectEntrevistas().stream().map(x -> x.toString()).collect(Collectors.toList());
 	}
 
 	public List<String> getJugadoresLibresString(String filter) {

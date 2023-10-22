@@ -1,7 +1,8 @@
-package ips2023pl21.model;
+package ips2023pl21.model.horarios;
 
 import java.time.LocalTime;
 
+import ips2023pl21.model.empleados.JugadorProfesional;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 

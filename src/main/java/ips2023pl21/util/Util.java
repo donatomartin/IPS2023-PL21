@@ -5,6 +5,8 @@ import java.text.Format;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -120,32 +122,17 @@ public class Util {
 		sb.append("\n");
 	}
 	
-//	/** 
-//	 * Convierte fecha repesentada como un string iso a fecha java (para conversion de entradas de tipo fecha)
-//	 */
-//	public static Date isoStringToDate(String isoDateString) {
-//		try {
-//		return new SimpleDateFormat("yyyy-MM-dd").parse(isoDateString);
-//		} catch (ParseException e) {
-//			throw new ApplicationException("Formato ISO incorrecto para fecha: "+isoDateString);
-//		}
-//	}
-//	/** 
-//	 * Convierte fecha java a un string formato iso (para display o uso en sql) 
-//	 */
-//	public static String dateToIsoString(Date javaDate) {
-//		Format formatter = new SimpleDateFormat("yyyy-MM-dd");
-//		return formatter.format(javaDate);
-//	}
-	
-	public static Date isoStringToDate2(String isoDateString) {
+	/** 
+	 * Convierte fecha repesentada como un string iso a fecha java (para conversion de entradas de tipo fecha)
+	 */
+	public static Date isoStringToDate(String isoDateString) {
 		try {
-			return new SimpleDateFormat("dd-MM-yyyy").parse(isoDateString);
+		return new SimpleDateFormat("yyyy-MM-dd").parse(isoDateString);
 		} catch (ParseException e) {
 			throw new ApplicationException("Formato ISO incorrecto para fecha: "+isoDateString);
 		}
 	}
-
+	
 	/** 
 	 * Convierte fecha java a un string formato iso (para display o uso en sql) 
 	 */
@@ -154,14 +141,20 @@ public class Util {
 		return formatter.format(javaDate);
 	}
 	
-	
-	public static String dateToIsoString2(Date javaDate) {
-		Format formatter = new SimpleDateFormat("dd-MM-yyyy");
-		return formatter.format(javaDate);
-	}
-	
+	/**
+	 * Convierte un string de hora a localtime
+	 */
 	public static LocalTime stringHoraToLocalTime(String hora) {
 		return LocalTime.parse(hora);
+	}
+	
+	/**
+	 * Convierte un localtime a string
+	 */
+	public static String localTimeToString(LocalTime dateToLocalTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        String formattedTime = dateToLocalTime.format(formatter);
+        return formattedTime;
 	}
 	
 }

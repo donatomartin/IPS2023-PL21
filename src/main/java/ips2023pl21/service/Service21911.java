@@ -3,9 +3,9 @@ package ips2023pl21.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import ips2023pl21.model.Empleado;
-import ips2023pl21.model.EmpleadoDeportivo;
-import ips2023pl21.model.EmpleadoNoDeportivo;
+import ips2023pl21.model.empleados.Empleado;
+import ips2023pl21.model.empleados.EmpleadoDeportivo;
+import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
 import ips2023pl21.util.Database;
 
 public class Service21911 {

@@ -5,8 +5,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import ips2023pl21.model.FranjaReservas;
-import ips2023pl21.model.Instalaciones;
+import ips2023pl21.model.activos.Instalaciones;
+import ips2023pl21.model.horarios.FranjaReservas;
 import ips2023pl21.service.Service21913;
 
 import java.awt.event.WindowAdapter;
@@ -143,7 +143,7 @@ public class Frame21913 extends JFrame {
 	private void confirmarSalida() {
 		int respuesta = JOptionPane.showConfirmDialog(null, "¿Está seguro de que desea cerrar la aplicación?");
 		if (respuesta == JOptionPane.YES_OPTION) {
-			System.exit(0);
+			dispose();
 		}
 	}
 
