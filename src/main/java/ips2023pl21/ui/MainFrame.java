@@ -6,11 +6,13 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import ips2023pl21.model.entradas.EntradasModel;
+import ips2023pl21.model.ventas.VentasModel;
 import ips2023pl21.service.Service21911;
 import ips2023pl21.service.Service21912;
 import ips2023pl21.service.Service21913;
 import ips2023pl21.service.Service21915;
 import ips2023pl21.service.Service21917;
+import ips2023pl21.service.Service21918;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -131,6 +133,17 @@ public class MainFrame extends JFrame {
 		});
 	}
 
+	private static void run21918() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service21918 service = new Service21918( new Frame21918(),new VentasModel());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
 			pnCentro = new JPanel();
@@ -245,6 +258,11 @@ public class MainFrame extends JFrame {
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new JButton("New button");
+			btn21918.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run21918();
+				}
+			});
 		}
 		return btnNewButton;
 	}

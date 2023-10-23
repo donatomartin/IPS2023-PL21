@@ -54,7 +54,7 @@ public class SwingUtil {
 	 * Ajusta todas las columnas de la tabla al tamanyo correspondiente al contenido del tablemodel
 	 */
 	public static void autoAdjustColumns(JTable table) {
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); //si se usa ON la ultima columna se expandra en el panel
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS); //si se usa ON la ultima columna se expandra en el panel
 		TableColumnAdjuster tca=new TableColumnAdjuster(table);
 		tca.adjustColumns();
 	}
@@ -65,7 +65,8 @@ public class SwingUtil {
 	public static String getSelectedKey(JTable table) {
 		int row=table.getSelectedRow(); //el item de primera columna es el id de carrera
 		if (row>=0)
-			return (String)table.getModel().getValueAt(row,0);
+			//return (String)table.getModel().getValueAt(row,0);
+			return table.getModel().getValueAt(row,0).toString();
 		else //no hay filas seleccionadas
 			return "";
 	}

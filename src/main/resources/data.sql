@@ -67,3 +67,14 @@ insert into instalacion(id, nombreinstalacion) values
 	('c3', 'Campo 3'),
 	('c4', 'Campo 4'),
 	('c5', 'Campo 5');
+	
+delete from venta;
+insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchandising', '2023-10-13', '20','05',30),
+(2,'entradas', '2020-02-04','20','20',20),
+(3, 'merchandising','2013-02-02','20','00',50),
+(4, 'reserva','2013-09-09','21','11',30);
+
+delete from ventaMerchandising;
+insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, producto, unidades, precioPorProducto) VALUES
+(1,'merchandising','2023-10-13', '20','05',30, 'camiseta', 3,10),
+(3, 'merchandising','2013-02-02','20','00',50,'pantalon',5,10);
