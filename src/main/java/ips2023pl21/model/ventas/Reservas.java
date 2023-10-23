@@ -1,4 +1,4 @@
-package ips2023pl21.model;
+package ips2023pl21.model.ventas;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
