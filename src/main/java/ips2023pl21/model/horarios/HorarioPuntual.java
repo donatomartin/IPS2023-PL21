@@ -1,8 +1,8 @@
-package ips2023pl21.model;
+package ips2023pl21.model.horarios;
 
 import java.util.Calendar;
 
-import ips2023pl21.service.Service21912;
+import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 
 public class HorarioPuntual implements Comparable<HorarioPuntual> {
@@ -22,7 +22,7 @@ public class HorarioPuntual implements Comparable<HorarioPuntual> {
 	public int getDiaDeLaSemana() {
 		
 	    Calendar calendar = Calendar.getInstance();
-	    calendar.setTime(Util.isoStringToDate2(this.fechaPuntual));
+	    calendar.setTime(Util.isoStringToDate(this.fechaPuntual));
 	    
 	    // Los calendarios empiezan en domingo
 	    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
@@ -38,7 +38,7 @@ public class HorarioPuntual implements Comparable<HorarioPuntual> {
 		
 	    String result = "%-10s".formatted(fechaPuntual);;
 	    
-	    for (FranjaPuntual f: Service21912.getFranjasPuntuales(fechaPuntual)) {
+	    for (FranjaPuntual f: Persistence.getInstance().getFranjasPuntuales(fechaPuntual)) {
 	        result += " || " + f.toString();
 	    }
 
@@ -47,7 +47,7 @@ public class HorarioPuntual implements Comparable<HorarioPuntual> {
 
 	@Override
 	public int compareTo(HorarioPuntual o) {
-		return Util.isoStringToDate2(getFechaPuntual()).compareTo(Util.isoStringToDate2(o.getFechaPuntual()));
+		return Util.isoStringToDate(getFechaPuntual()).compareTo(Util.isoStringToDate(o.getFechaPuntual()));
 	}
 
 }

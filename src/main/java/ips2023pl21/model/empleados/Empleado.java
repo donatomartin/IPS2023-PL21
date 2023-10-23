@@ -1,4 +1,4 @@
-package ips2023pl21.model;
+package ips2023pl21.model.empleados;
 
 public class Empleado {
 	private int eid;
@@ -8,9 +8,21 @@ public class Empleado {
 	private String telefono;
 	private String fechaNacimiento;
 	private float salarioAnual;
+	private String posicion;
 	
 	public Empleado() {}
 	
+	public Empleado(int id, String nombre, String apellido, String dni, String fechaNacimiento, 
+			float salarioAnual, String telefono) {
+		this.eid = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.dni = dni;
+		this.fechaNacimiento = fechaNacimiento;
+		this.salarioAnual = salarioAnual;
+		this.telefono = telefono;
+	}
+
 	public int getEid() {
 		return eid;
 	}
@@ -57,9 +69,26 @@ public class Empleado {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	
+	public String getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(String posicion) {
+		this.posicion = posicion;
+	}
+	
 	@Override
 	public String toString() {
 	    return String.format("%4d %-30s %s", eid, apellido + " " + nombre, dni);
+	}
+	
+	public int[] fechaAEnteros() {
+		String[] fecha = fechaNacimiento.split("-");
+		int[] fechaEnteros = new int[3];
+		for (int i=0; i<fecha.length;i++) {
+			fechaEnteros[i] = Integer.parseInt(fecha[i]);
+		}
+		return fechaEnteros;
 	}
 
 }

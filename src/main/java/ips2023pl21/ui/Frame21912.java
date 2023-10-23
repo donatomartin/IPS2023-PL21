@@ -133,7 +133,7 @@ public class Frame21912 extends JFrame {
 		setTitle("Gestion Horarios");
 		this.service = service;
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 500, 350);
 		setMinimumSize(getSize());
 		contentPane = new JPanel();
@@ -289,7 +289,7 @@ public class Frame21912 extends JFrame {
 
 	private void loadEmpleadoListModel(String filter) {
 		empleadoListModel.removeAllElements();
-		empleadoListModel.addAll(service.getEmpleadosNoDeportivosString(filter));
+		empleadoListModel.addAll(service.getEmpleadosNoDeportivos(filter));
 	}
 
 	private JPanel getPnSelectHorarioModalidad() {
@@ -595,7 +595,7 @@ public class Frame21912 extends JFrame {
 
 	private void loadSemanalListModel() {
 		semanalListModel.removeAllElements();
-		List<String> horariosSemanales = service.getHorariosSemanalesString();
+		List<String> horariosSemanales = service.getHorariosSemanales();
 		semanalListModel.addAll(horariosSemanales);
 	}
 
