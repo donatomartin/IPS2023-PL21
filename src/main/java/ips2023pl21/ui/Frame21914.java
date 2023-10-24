@@ -12,6 +12,7 @@ import javax.swing.SwingConstants;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -36,6 +37,7 @@ public class Frame21914 {
 	
 	DefaultTableModel modeloTablaEntrenadores;
 	DefaultTableModel modeloTablaJugadores;
+	DefaultTableModel modeloTablaJugadoresSeleccionados;
 	
 	private JFrame frame;
 	private JPanel pnSeleccionTipoEquipo;
@@ -58,7 +60,6 @@ public class Frame21914 {
 	private JButton btAñadirSegundo;
 	private JButton btAñadirJugador;
 	private JScrollPane spJugadores;
-	private JList<EmpleadoDeportivo> listJugadores;
 	private DefaultListModel<EmpleadoDeportivo> modeloListJugador;
 	private JButton btEliminarTodos;
 	private JButton btEliminarEntrenador;
@@ -80,6 +81,7 @@ public class Frame21914 {
 	private JPanel pnAñadirJugador;
 	private JPanel pnJugadoresSeleccionados;
 	private JPanel pnBotonesEliminar;
+	private JTable tbJugadoresSeleccionados;
 
 	/**
 	 * Create the application
@@ -453,8 +455,9 @@ public class Frame21914 {
 			EmpleadoDeportivo jugador = equipo.getJugador(selected);
 			if(!equipo.getJugadoresEquipo().contains(jugador)){
 				if(equipo.añadirJugador(jugador)) {
-					modeloListJugador.removeAllElements();
-					modeloListJugador.addAll(equipo.getJugadoresEquipo());
+					Object[] añadir = {jugador.getAtributoTabla(0),jugador.getAtributoTabla(1),
+							jugador.getAtributoTabla(2),jugador.getAtributoTabla(3)};
+					modeloTablaJugadoresSeleccionados.addRow(añadir);
 					getBtEliminarTodos().setEnabled(true);
 					getBtEliminarJugador().setEnabled(true);
 					
@@ -475,17 +478,9 @@ public class Frame21914 {
 	private JScrollPane getSpJugadores() {
 		if (spJugadores == null) {
 			spJugadores = new JScrollPane();
-			spJugadores.setViewportView(getListJugadores());
+			spJugadores.setViewportView(getTbJugadoresSeleccionados());
 		}
 		return spJugadores;
-	}
-	private JList<EmpleadoDeportivo> getListJugadores() {
-		if (listJugadores == null) {
-			modeloListJugador = new DefaultListModel<EmpleadoDeportivo>();
-			listJugadores = new JList<EmpleadoDeportivo>(modeloListJugador);
-			listJugadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		}
-		return listJugadores;
 	}
 	private JButton getBtEliminarTodos() {
 		if (btEliminarTodos == null) {
@@ -503,7 +498,11 @@ public class Frame21914 {
 	
 	private void eliminarTodosLosJugadores() {
 		equipo.eliminarTodosLosJugadores();
-		modeloListJugador.removeAllElements();
+		
+		for(int i = modeloTablaJugadoresSeleccionados.getRowCount() - 1; i >= 0; i--) {
+			modeloTablaJugadoresSeleccionados.removeRow(i);
+		}
+		
 		getBtEliminarTodos().setEnabled(false);
 		getBtEliminarJugador().setEnabled(false);
 		
@@ -564,15 +563,19 @@ public class Frame21914 {
 	}
 	
 	private void eliminarJugador() {
-		if(!getListJugadores().isSelectionEmpty()) {
-			int index  = getListJugadores().getSelectedIndex();
+		int selected = getTbJugadoresSeleccionados().getSelectedRow();
+		if(selected != -1) {
+			modeloTablaJugadoresSeleccionados.removeRow(selected);;
 			
-			equipo.eliminarJugador(index);
-			
-			modeloListJugador.removeAllElements();
-			modeloListJugador.addAll(equipo.getJugadoresEquipo());
+			equipo.eliminarJugador(selected);
+			if(equipo.getJugadoresEquipo().isEmpty()) {
+				getBtEliminarJugador().setEnabled(false);
+				getBtEliminarTodos().setEnabled(false);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "selecciona un jugador para eliminar");
 		}
-		
+	
 	}
 	private JPanel getPnCategoria() {
 		if (pnCategoria == null) {
@@ -718,5 +721,17 @@ public class Frame21914 {
 			pnBotonesEliminar.add(getBtEliminarJugador());
 		}
 		return pnBotonesEliminar;
+	}
+	private JTable getTbJugadoresSeleccionados() {
+		if (tbJugadoresSeleccionados == null) {
+			modeloTablaJugadoresSeleccionados = new DefaultTableModel();
+			modeloTablaJugadoresSeleccionados.addColumn("Nombre");
+			modeloTablaJugadoresSeleccionados.addColumn("Apellido");
+			modeloTablaJugadoresSeleccionados.addColumn("DNI");
+			modeloTablaJugadoresSeleccionados.addColumn("Nacimiento");
+			tbJugadoresSeleccionados = new JTable(modeloTablaJugadoresSeleccionados);
+			tbJugadoresSeleccionados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		}
+		return tbJugadoresSeleccionados;
 	}
 }
