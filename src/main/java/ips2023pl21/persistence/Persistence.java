@@ -176,5 +176,12 @@ public class Persistence {
 		;
 		return result;
 	}
+	
+	// JARDINEROS
+	
+	public List<EmpleadoNoDeportivo> selectJardineros() {
+		List<EmpleadoNoDeportivo> result = db.executeQueryPojo(EmpleadoNoDeportivo.class, "select * from empleadonodeportivo where posicion=jardinero");
+		return result;
+	}
 
 }

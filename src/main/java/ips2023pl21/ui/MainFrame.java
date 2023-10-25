@@ -7,12 +7,7 @@ import javax.swing.JPanel;
 
 import ips2023pl21.model.entradas.EntradasModel;
 import ips2023pl21.model.ventas.VentasModel;
-import ips2023pl21.service.Service21911;
-import ips2023pl21.service.Service21912;
-import ips2023pl21.service.Service21913;
-import ips2023pl21.service.Service21915;
-import ips2023pl21.service.Service21917;
-import ips2023pl21.service.Service21918;
+import ips2023pl21.service.*;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -159,6 +154,20 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
+	
+	private static void run22784() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame22784 frame = new Frame22784(new Service22784());
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	private static void run21918() {
 		EventQueue.invokeLater(new Runnable() {
@@ -289,17 +298,17 @@ public class MainFrame extends JFrame {
 	private JButton getBtn21918() {
 		if (btn21918 == null) {
 			btn21918 = new JButton("21918");
+			btn21918.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run21918();
+				}
+			});
 		}
 		return btn21918;
 	}
 	private JButton getBtn22733() {
 		if (btn22733 == null) {
 			btn22733 = new JButton("22733");
-			btn21918.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					run21918();
-				}
-			});
 		}
 		return btn22733;
 	}
@@ -336,6 +345,14 @@ public class MainFrame extends JFrame {
 	private JButton getBtn22784() {
 		if (btn22784 == null) {
 			btn22784 = new JButton("22784");
+			btn22784.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					run22784();
+				}
+				
+			});
 		}
 		return btn22784;
 	}
