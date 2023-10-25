@@ -92,6 +92,24 @@ insert into merchandaising(nombre,tipo,precio) values ('Poster','Decoracion',5);
 insert into merchandaising(nombre,tipo,precio) values ('Bufanda','Ropa',10);
 insert into merchandaising(nombre,tipo,precio) values ('Camiseta','Ropa',20);
 insert into merchandaising(nombre,tipo,precio) values ('Cono','Material',5);
+insert into merchandaising(nombre,tipo,precio) values ('a','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('B','Material',20);
+insert into merchandaising(nombre,tipo,precio) values ('c','Decoracion',5);
+insert into merchandaising(nombre,tipo,precio) values ('d','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('e','Ropa',20);
+insert into merchandaising(nombre,tipo,precio) values ('f','Material',5);
+insert into merchandaising(nombre,tipo,precio) values ('g','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('h','Material',20);
+insert into merchandaising(nombre,tipo,precio) values ('i','Decoracion',5);
+insert into merchandaising(nombre,tipo,precio) values ('j','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('k','Ropa',20);
+insert into merchandaising(nombre,tipo,precio) values ('l','Material',5);
+insert into merchandaising(nombre,tipo,precio) values ('m','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('n','Material',20);
+insert into merchandaising(nombre,tipo,precio) values ('o','Decoracion',5);
+insert into merchandaising(nombre,tipo,precio) values ('p','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('q','Ropa',20);
+insert into merchandaising(nombre,tipo,precio) values ('r','Material',5);
 
 delete from ventaMerchandising;
 insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, producto, unidades, precioPorProducto) VALUES
