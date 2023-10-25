@@ -11,6 +11,7 @@ public class Service21915 {
 	public static final int SUCCESS = 100;
 	public static final int JUGADOR_NULL = 200;
 	public static final int MEDIO_NULL = 300;
+	public static final int CONCURRENCE_ERROR = 400;
 
 	private JugadorProfesional jugadorSel;
 	private String fechaSel;
@@ -59,8 +60,13 @@ public class Service21915 {
 
 		if (datosMedio.isBlank())
 			return Service21915.MEDIO_NULL;
-
-		persistence.insertEntrevista(fechaSel, datosMedio, horaInicioSel, horaFinSel, jugadorSel.getEid());
+		
+		try {
+			persistence.insertEntrevista(fechaSel, datosMedio, horaInicioSel, horaFinSel, jugadorSel.getEid());			
+		} catch (Exception e) {
+			return Service21915.CONCURRENCE_ERROR;
+		}
+		
 		jugadorSel = null;
 		
 		return Service21915.SUCCESS;

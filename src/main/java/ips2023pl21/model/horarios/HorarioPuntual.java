@@ -2,6 +2,7 @@ package ips2023pl21.model.horarios;
 
 import java.util.Calendar;
 
+import ips2023pl21.model.horarios.franjas.FranjaPuntual;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 

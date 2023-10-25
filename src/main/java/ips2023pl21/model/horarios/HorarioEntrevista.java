@@ -6,9 +6,9 @@ import ips2023pl21.model.empleados.JugadorProfesional;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 
-public class Entrevista {
+public class HorarioEntrevista {
 	
-	public Entrevista() {}
+	public HorarioEntrevista() {}
 	
 	private String fechaEntrevista;
 	private String datosMedio;
@@ -51,7 +51,7 @@ public class Entrevista {
 	public String toString() {
 		JugadorProfesional j = Persistence.getInstance().getJugador(eid);
 		String js = j.getNombre() + " " + j.getApellido();
-		return "(%s | %s - %s) %-30s %s".formatted(fechaEntrevista, horaInicio, horaFin, js, datosMedio);
+		return "(%s | %s - %s) %-20s %s".formatted(fechaEntrevista, horaInicio, horaFin, js, datosMedio);
 	}
 	public LocalTime getHoraInicioParsed() {
 		return Util.stringHoraToLocalTime(horaInicio);

@@ -1,4 +1,4 @@
-package ips2023pl21.model.horarios;
+package ips2023pl21.model.horarios.franjas;
 
 import java.time.LocalDateTime;
 

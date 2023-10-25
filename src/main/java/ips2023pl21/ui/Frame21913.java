@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import ips2023pl21.model.activos.Instalaciones;
-import ips2023pl21.model.horarios.FranjaReservas;
+import ips2023pl21.model.horarios.franjas.FranjaReservas;
 import ips2023pl21.service.Service21913;
 
 import java.awt.event.WindowAdapter;
