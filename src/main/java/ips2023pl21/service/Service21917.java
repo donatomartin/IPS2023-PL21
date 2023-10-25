@@ -1,6 +1,5 @@
 package ips2023pl21.service;
 
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import ips2023pl21.model.entradas.EntradasModel;

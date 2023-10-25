@@ -111,7 +111,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Frame21914 frame = new Frame21914();
+					new Frame21914();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -139,7 +139,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Frame21916 frame = new Frame21916();
+					new Frame21916();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -152,7 +152,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Service21917 service = new Service21917( new EntradasModel(),new Frame21917());
+					new Service21917( new EntradasModel(),new Frame21917());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -164,7 +164,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Service21918 service = new Service21918( new Frame21918(),new VentasModel());
+					new Service21918( new Frame21918(),new VentasModel());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
