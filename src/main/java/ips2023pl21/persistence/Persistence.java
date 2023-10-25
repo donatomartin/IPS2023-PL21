@@ -6,11 +6,11 @@ import java.util.stream.Collectors;
 
 import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
 import ips2023pl21.model.empleados.JugadorProfesional;
-import ips2023pl21.model.horarios.Entrevista;
-import ips2023pl21.model.horarios.FranjaPuntual;
-import ips2023pl21.model.horarios.FranjaSemanal;
+import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
+import ips2023pl21.model.horarios.franjas.FranjaPuntual;
+import ips2023pl21.model.horarios.franjas.FranjaSemanal;
 import ips2023pl21.util.Database;
 
 public class Persistence {
@@ -32,8 +32,8 @@ public class Persistence {
 
 	// ENTREVISTAS
 
-	public List<Entrevista> selectEntrevistas() {
-		List<Entrevista> result = db.executeQueryPojo(Entrevista.class, "select * from Entrevista");
+	public List<HorarioEntrevista> selectEntrevistas() {
+		List<HorarioEntrevista> result = db.executeQueryPojo(HorarioEntrevista.class, "select * from Entrevista");
 		return result;
 	}
 
@@ -59,7 +59,7 @@ public class Persistence {
 
 		List<Integer> idsJugadoresConEntrevista = new ArrayList<>();
 
-		for (Entrevista entrevista : selectEntrevistas()) {
+		for (HorarioEntrevista entrevista : selectEntrevistas()) {
 
 			if (entrevista.getFechaEntrevista().equals(fechaSel))
 				idsJugadoresConEntrevista.add(entrevista.getEid());

@@ -12,6 +12,7 @@ public class EntradasModel {
 	private int asientoInicial=-1;
 	private int fila;
 	
+	@SuppressWarnings("deprecation")
 	public boolean comprarEntradas(String tribuna, String seccion, int numeroEntradas) {
 		//no voy a validar los parametros porque habra solo las opciones correctas en la ventana
 		

@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ips2023pl21.model.activos.Instalaciones;
-import ips2023pl21.model.horarios.FranjaReservas;
 import ips2023pl21.model.horarios.HorariosEquipos;
+import ips2023pl21.model.horarios.franjas.FranjaReservas;
 import ips2023pl21.model.ventas.Reservas;
 import ips2023pl21.util.Database;
 import ips2023pl21.util.Util;

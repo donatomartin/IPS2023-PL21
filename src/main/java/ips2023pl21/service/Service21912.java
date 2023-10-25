@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
-import ips2023pl21.model.horarios.Franja;
-import ips2023pl21.model.horarios.FranjaPuntual;
-import ips2023pl21.model.horarios.FranjaSemanal;
 import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
+import ips2023pl21.model.horarios.franjas.Franja;
+import ips2023pl21.model.horarios.franjas.FranjaPuntual;
+import ips2023pl21.model.horarios.franjas.FranjaSemanal;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.UnexpectedException;
 import ips2023pl21.util.Util;

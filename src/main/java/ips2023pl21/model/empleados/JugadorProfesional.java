@@ -16,4 +16,10 @@ public class JugadorProfesional extends EmpleadoDeportivo {
 		
 		return false;
 	}
+	
+	@Override
+	public String toString() {
+	    return String.format("%4d %-30s %s", getEid(), getApellido() + " " + getNombre(), getDni());
+	}
+
 }

@@ -105,7 +105,7 @@ create table Entrevista (
     horaFin varchar(5),
     datosMedio varchar(30) not null,
     eid int,
-    primary key (fechaEntrevista, horaInicio, horaFin)
+    primary key (fechaEntrevista, eid),
     foreign key (eid) references JugadorProfesional(eid)
 );
 

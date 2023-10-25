@@ -12,14 +12,12 @@ import javax.swing.SwingConstants;
 
 import java.awt.Font;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 import java.awt.event.ActionEvent;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import java.awt.FlowLayout;
 import javax.swing.JTable;
@@ -96,7 +94,7 @@ public class Frame21914 {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 960, 605);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		frame.getContentPane().add(getPnSeleccionTipoEquipo(), "seleccion");

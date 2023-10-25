@@ -1,4 +1,4 @@
-package ips2023pl21.model.horarios;
+package ips2023pl21.model.horarios.franjas;
 
 public class FranjaSemanal extends Franja {
 	
