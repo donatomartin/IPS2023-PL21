@@ -2,7 +2,7 @@ package ips2023pl21.model.horarios;
 
 import java.time.LocalTime;
 
-import ips2023pl21.model.empleados.JugadorProfesional;
+import ips2023pl21.model.Empleado;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 
@@ -49,8 +49,8 @@ public class HorarioEntrevista {
 	
 	@Override
 	public String toString() {
-		JugadorProfesional j = Persistence.getInstance().getJugador(eid);
-		String js = j.getNombre() + " " + j.getApellido();
+		Empleado e = Persistence.getInstance().getEmpleado(eid);
+		String js = e.getNombre() + " " + e.getApellido();
 		return "(%s | %s - %s) %-20s %s".formatted(fechaEntrevista, horaInicio, horaFin, js, datosMedio);
 	}
 	public LocalTime getHoraInicioParsed() {

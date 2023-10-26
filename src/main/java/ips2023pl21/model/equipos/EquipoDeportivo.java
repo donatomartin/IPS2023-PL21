@@ -3,91 +3,87 @@ package ips2023pl21.model.equipos;
 import java.util.ArrayList;
 import java.util.List;
 
-import ips2023pl21.model.empleados.EmpleadoDeportivo;
+import ips2023pl21.model.Empleado;
+import ips2023pl21.persistence.Persistence;
 import ips2023pl21.service.Service21914_16;
 
 public class EquipoDeportivo {
-	
-	public static final int MIN_JUGADORES  = 7;
-	
-	private List<EmpleadoDeportivo> entrenadores = new ArrayList<EmpleadoDeportivo>();
-	private List<EmpleadoDeportivo> jugadores = new ArrayList<EmpleadoDeportivo>();
 
-	private EmpleadoDeportivo primerEntrenador;
-	private EmpleadoDeportivo segundoEntrenador;
-	private List<EmpleadoDeportivo> jugadoresEquipo = new ArrayList<EmpleadoDeportivo>();
-	
-	
-	public EquipoDeportivo() {
-		this.primerEntrenador = null;
-		this.segundoEntrenador = null;
-		
-		entrenadores = Service21914_16.cargarEmpleadosDeportivos("entrenador");
-		jugadores = Service21914_16.cargarEmpleadosDeportivos("jugador");
+	public static final int MIN_JUGADORES = 7;
+
+	private Persistence p = Persistence.getInstance();
+
+	private Empleado primerEntrenador;
+	private Empleado segundoEntrenador;
+	private List<Empleado> jugadoresEquipo = new ArrayList<Empleado>();
+
+	public EquipoDeportivo() {};
+
+	public List<Empleado> getEntrenadores() {
+		return p.selectEntrenadores();
 	}
-	
-	public List<EmpleadoDeportivo> getEntrenadoresTabla() {
-		return entrenadores;
+
+	public Empleado getEntrenador(int index) {
+		return getEntrenadores().get(index);
 	}
-	
-	public EmpleadoDeportivo getEntrenador(int index) {
-		return entrenadores.get(index);
+
+	public List<Empleado> getJugadores() {
+		return p.selectJugadores();
 	}
-	
-	public List<EmpleadoDeportivo> getJugadoresTabla() {
-		return jugadores;
+
+	public Empleado getJugador(int index) {
+		return getJugadores().get(index);
 	}
-	
-	public EmpleadoDeportivo getJugador(int index) {
-		return jugadores.get(index);
-	}
-	
-	public EmpleadoDeportivo getPrimerEntrenador() {
+
+	public Empleado getPrimerEntrenador() {
 		return this.primerEntrenador;
 	}
-	public void setPrimerEntrenador(EmpleadoDeportivo pE) {
+
+	public void setPrimerEntrenador(Empleado pE) {
 		this.primerEntrenador = pE;
 	}
-	
-	public void setSegundoEntrenador(EmpleadoDeportivo sE) {
+
+	public void setSegundoEntrenador(Empleado sE) {
 		this.segundoEntrenador = sE;
 	}
-	public EmpleadoDeportivo getSegundoEntrenador() {
+
+	public Empleado getSegundoEntrenador() {
 		return this.segundoEntrenador;
 	}
-	
-	public boolean añadirJugador(EmpleadoDeportivo j) {
-		if(isJugadorValid(j)) {
+
+	public boolean añadirJugador(Empleado j) {
+		if (isJugadorValid(j)) {
 			return jugadoresEquipo.add(j);
-			
+
 		}
-		
+
 		return false;
 	}
-	private boolean isJugadorValid(EmpleadoDeportivo j) {
-		if(this instanceof EquipoProfesional) {
+
+	private boolean isJugadorValid(Empleado j) {
+		if (this instanceof EquipoProfesional) {
 			return true;
 		} else {
-			int edadMax = ((EquipoEnFormacion)this).getEdadMaximaPorCategoria();
+			int edadMax = ((EquipoEnFormacion) this).getEdadMaximaPorCategoria();
 			int edad = j.getEdad();
-			if(edad > edadMax) {
+			if (edad > edadMax) {
 				return false;
 			} else {
 				return true;
 			}
 		}
-		
+
 	}
 
-	public List<EmpleadoDeportivo> getJugadoresEquipo(){
-		return new ArrayList<EmpleadoDeportivo>(jugadoresEquipo);
+	public List<Empleado> getJugadoresEquipo() {
+		return new ArrayList<Empleado>(jugadoresEquipo);
 	}
-	
+
 	public void eliminarJugador(int index) {
 		jugadoresEquipo.remove(index);
-		
+
 	}
-	
+
 	public void eliminarTodosLosJugadores() {
 		jugadoresEquipo.clear();
 	}
@@ -95,7 +91,5 @@ public class EquipoDeportivo {
 	public void añadirEquipo() {
 		Service21914_16.añadirEquipo(this);
 	}
-	
-	
-	
+
 }

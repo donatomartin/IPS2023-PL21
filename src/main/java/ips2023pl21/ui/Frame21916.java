@@ -64,7 +64,7 @@ public class Frame21916 {
 		frame = new JFrame();
 		frame.setSize(new Dimension(1000, 500));
 		frame.setBounds(200, 200, 950, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		frame.getContentPane().add(getPnHeaderTienda(), BorderLayout.NORTH);

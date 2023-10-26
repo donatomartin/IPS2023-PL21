@@ -1,6 +1,6 @@
 -- Empleado
-drop table EmpleadoNoDeportivo;
-create table EmpleadoNoDeportivo(
+drop table Empleado;
+create table Empleado(
 	eid integer primary key autoincrement, 
 	nombre varchar(30) not null, 
 	apellido varchar(30) not null, 
@@ -8,32 +8,8 @@ create table EmpleadoNoDeportivo(
 	fechaNacimiento varchar(10) not null, 
 	salarioAnual real not null, 
 	telefono varchar(30) not null,
+	tipo varchar(30) not null,
 	posicion varchar(30) not null
-);
-
-drop table EmpleadoDeportivo;
-create table EmpleadoDeportivo(
-	eid integer primary key autoincrement,
-	nombre varchar(30) not null, 
-	apellido varchar(30) not null, 
-	dni varchar(9) not null, 
-	fechaNacimiento varchar(10) not null, 
-	salarioAnual real not null, 
-	telefono varchar(30) not null, 
-	posicion varchar(30) not null
-);
-
--- Jugador
-drop table JugadorProfesional;
-create table JugadorProfesional(
-	eid integer primary key autoincrement, 
-	nombre varchar(30) not null, 
-	apellido varchar(30) not null, 
-	dni varchar(9) not null, 
-	fechaNacimiento varchar(10) not null, 
-	salarioAnual real not null, 
-	telefono varchar(30) not null,
-    posicion varchar(30) not null
 );
 
 -- Horario Semanal
