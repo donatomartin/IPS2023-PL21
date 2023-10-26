@@ -5,29 +5,10 @@ import java.util.List;
 
 import ips2023pl21.model.Empleado;
 import ips2023pl21.persistence.Persistence;
-import ips2023pl21.util.Database;
 
 public class Service21911 {
 	
-	public static final String TODOS_EMPLEADOS_DEPORTIVOS = "select * from empleadodeportivo";
-	public static final String TODOS_EMPLEADOS_NO_DEPORTIVOS = "select * from empleadonodeportivo";
-	public static final String EMPLEADO_NO_DEPORTIVO_GESTIONAR = 
-			"select * from empleadonodeportivo where nombre = ? and apellido = ? and dni = ?";
-	public static final String EMPLEADO_DEPORTIVO_GESTIONAR = 
-			"select * from empleadodeportivo where nombre = ? and apellido = ? and dni = ?";
-	public static final String UPDATE_EMPLEADO_DEPORTIVO = 
-			"update empleadodeportivo set nombre = ?, apellido = ?, dni = ?, fechaNacimiento = ?, "
-			+ "salarioAnual = ?, telefono = ?, posicion = ?"
-			+ "where nombre = ? and apellido = ? and dni = ?";
-	public static final String UPDATE_EMPLEADO_NO_DEPORTIVO = 
-			"update empleadonodeportivo set nombre = ?, apellido = ?, dni = ?, fechaNacimiento = ?, "
-			+ "salarioAnual = ?, telefono = ?, posicion = ?"
-			+ "where nombre = ? and apellido = ? and dni = ?";
-	
-	
 	private Persistence p = Persistence.getInstance();
-	
-	private Database db;
 	private StateAction stateAction;
 	private StateTipoEmpleado stateTipo;
 	private List<Empleado> listaEmpleados;
@@ -49,9 +30,6 @@ public class Service21911 {
 	}
 	
 	public Service21911() {
-		db = new Database();
-		db.createDatabase(false);
-		db.loadDatabase();
 		listaEmpleados = new ArrayList<Empleado>();
 		setStateTipo(StateTipoEmpleado.DEPORTIVO);
 		listaPosicionNoDeportiva = new ArrayList<String>(List.of("Entradas y abonos", "Tienda", "Cocina", "Jardinería", "Seguridad", "Redes sociales"));
@@ -80,10 +58,6 @@ public class Service21911 {
 	
 	public String getDniEmpleadoGestion() {
 		return dniEmpleadoGestion;
-	}
-	
-	public Database getDatabase() {
-		return this.db;
 	}
 	
 	public List<String> getListaPosicionNoDeportiva(){
@@ -136,19 +110,15 @@ public class Service21911 {
 	}
 	
 	public void eliminarEmpleadoClub() {
-		String[] sql = new String[1];
-		
-		String sqlDeportivo = "delete from empleadodeportivo where nombre = '" + getNombreEmpleadoGestion()+
-				"' and apellido = '"+ getApellidoEmpleadoGestion()+ "' and dni = '"+ getDniEmpleadoGestion()+"'";
-		String sqlNoDeportivo = "delete from empleadonodeportivo where nombre = '" + getNombreEmpleadoGestion()+
-				"' and apellido = '"+ getApellidoEmpleadoGestion()+ "' and dni = '"+ getDniEmpleadoGestion()+"'";
+		String nombre = getNombreEmpleadoGestion();
+		String apellido = getApellidoEmpleadoGestion();
+		String dni = getDniEmpleadoGestion();
 		
 		if (this.stateTipo == StateTipoEmpleado.DEPORTIVO) {
-			sql[0] = sqlDeportivo;
-			db.executeBatch(sql);
-		}else {
-			sql[0] = sqlNoDeportivo;
-			db.executeBatch(sql);
+			p.deleteEmpleado(nombre, apellido, dni, "deportivo");
+		}
+		else {
+			p.deleteEmpleado(nombre, apellido, dni, "nodeportivo");
 		}
 	}
 	
@@ -179,7 +149,7 @@ public class Service21911 {
 		String fecha = año+"-"+mes+"-"+dia;
 		double salario = Double.parseDouble(txsalario);
 		
-		db.executeUpdate(UPDATE_EMPLEADO_DEPORTIVO, nombre,apellido,dni,fecha,salario,telefono,posicion,nombreEmpleadoGestion,apellidoEmpleadoGestion,dniEmpleadoGestion);
+		p.updateEmpleado(nombre,apellido,dni,fecha,salario,telefono,posicion,nombreEmpleadoGestion,apellidoEmpleadoGestion,dniEmpleadoGestion);
 	}
 	
 	public void modificarEmpleadoNoDeportivo(String nombre, String apellido, String dni, String telefono, Object cbaño, Object cbmes, Object cbdia, String txsalario, Object posicion) {
@@ -189,7 +159,7 @@ public class Service21911 {
 		String fecha = año+"-"+mes+"-"+dia;
 		double salario = Double.parseDouble(txsalario);
 		
-		db.executeUpdate(UPDATE_EMPLEADO_NO_DEPORTIVO, nombre,apellido,dni,fecha,salario,telefono,posicion, nombreEmpleadoGestion,apellidoEmpleadoGestion,dniEmpleadoGestion);
+		p.updateEmpleado(nombre,apellido,dni,fecha,salario,telefono,posicion,nombreEmpleadoGestion,apellidoEmpleadoGestion,dniEmpleadoGestion);
 	}
 	
 	public void estadoInicial() {

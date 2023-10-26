@@ -113,6 +113,20 @@ public class Persistence {
 				posicion);
 		
 	}
+	
+	public void deleteEmpleado(String nombre, String apellido, String dni, String tipo) {
+		String sqlElimminar = "delete from empleado where nombre = ? and apellido = ? and dni = ? and tipo = ?";
+		db.executeUpdate(sqlElimminar, nombre, apellido, dni, tipo);
+	}
+	
+	public void updateEmpleado(String nombre, String apellido, String dni, String fecha, double salario,
+			String telefono, Object posicion, String nombreEmpleadoGestion, String apellidoEmpleadoGestion,
+			String dniEmpleadoGestion) {
+		String updateEmpleado = "update empleado set nombre = ?, apellido = ?, dni = ?, fechaNacimiento = ?, "
+				+ "salarioAnual = ?, telefono = ?, posicion = ?"
+				+ "where nombre = ? and apellido = ? and dni = ?";
+		db.executeUpdate(updateEmpleado, nombre, apellido, dni, fecha, salario, telefono, posicion, nombreEmpleadoGestion, apellidoEmpleadoGestion, dniEmpleadoGestion);
+	}
 
 	// HORARIO SEMANAL
 
