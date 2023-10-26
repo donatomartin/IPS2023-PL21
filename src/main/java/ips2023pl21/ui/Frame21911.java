@@ -7,9 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import ips2023pl21.model.empleados.Empleado;
-import ips2023pl21.model.empleados.EmpleadoDeportivo;
-import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
+import ips2023pl21.model.Empleado;
 import ips2023pl21.service.Service21911;
 import ips2023pl21.service.Service21911.StateAction;
 import ips2023pl21.service.Service21911.StateTipoEmpleado;
@@ -1481,7 +1479,7 @@ public class Frame21911 extends JFrame {
 	}
 	private void rellenarValoresAModificar() {
 		if (cs.getStateTipo() == StateTipoEmpleado.DEPORTIVO) {
-			EmpleadoDeportivo ed = cs.cargarEmpleadoDeportivoAGestionar();
+			Empleado ed = cs.cargarEmpleadoDeportivoAGestionar();
 			getTxNombre().setText(ed.getNombre());
 			getTxApellido().setText(ed.getApellido());
 			getTxDni().setText(ed.getDni());
@@ -1493,7 +1491,7 @@ public class Frame21911 extends JFrame {
 			getTxSalario().setText(String.valueOf(ed.getSalarioAnual()));
 		}
 		else if(cs.getStateTipo() == StateTipoEmpleado.NO_DEPORTIVO) {
-			EmpleadoNoDeportivo end = cs.cargarEmpleadoNoDeportivoAGestionar();
+			Empleado end = cs.cargarEmpleadoNoDeportivoAGestionar();
 			getTxNombre().setText(end.getNombre());
 			getTxApellido().setText(end.getApellido());
 			getTxDni().setText(end.getDni());

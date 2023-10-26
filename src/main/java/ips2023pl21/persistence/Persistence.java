@@ -4,8 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
-import ips2023pl21.model.empleados.JugadorProfesional;
+import ips2023pl21.model.Empleado;
 import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
@@ -43,19 +42,42 @@ public class Persistence {
 				fechaSel, datosMedio, horaInicio, horaFin, eid);
 	}
 
-	// JUGADORES PROFESIONALES
+	// EMPLEADOS
 
-	public List<JugadorProfesional> selectJugadoresProfesionales() {
-		return db.executeQueryPojo(JugadorProfesional.class, "select * from JugadorProfesional");
+	public Empleado getEmpleado(int eid) {
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where eid=?", eid)
+				.get(0);
+	}
+	
+	public Empleado getEmpleado(String nombre, String apellido, String dni) {
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where nombre=? and apellido=? and dni=?", nombre, apellido, dni).get(0);
 	}
 
-	public JugadorProfesional getJugador(int id) {
-		JugadorProfesional result = db.executeQueryPojo(JugadorProfesional.class,
-				"select * from JugadorProfesional where eid=%d".formatted(id)).get(0);
-		return result;
+	public List<Empleado> selectEmpleadosNoDeportivos() {
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where tipo = 'nodeportivo'");
+	}
+	
+	public List<Empleado> selectEmpleadosDeportivos() {
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where tipo = 'deportivo'");
 	}
 
-	public List<JugadorProfesional> getJugadoresLibres(String fechaSel) {
+	public List<Empleado> selectEntrenadores() {
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'entrenador'");
+	}
+	
+	public List<Empleado> selectJugadores() {
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jugador'");
+	}
+
+	public List<Empleado> selectJugadoresProfesionales() {
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jugador'");
+	}
+	
+	public List<Empleado> selectJardineros() {
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardinero'");
+	}
+
+	public List<Empleado> selectJugadoresLibres(String fechaSel) {
 
 		List<Integer> idsJugadoresConEntrevista = new ArrayList<>();
 
@@ -66,9 +88,9 @@ public class Persistence {
 
 		}
 
-		List<JugadorProfesional> jugadoresLibres = new ArrayList<>();
+		List<Empleado> jugadoresLibres = new ArrayList<>();
 
-		for (JugadorProfesional jugador : selectJugadoresProfesionales()) {
+		for (Empleado jugador : selectJugadoresProfesionales()) {
 			if (!idsJugadoresConEntrevista.contains(jugador.getEid())) {
 				jugadoresLibres.add(jugador);
 			}
@@ -77,19 +99,33 @@ public class Persistence {
 		return jugadoresLibres;
 
 	}
-
-	// EMPLEADOS NO DEPORTIVOS
-
-	public List<EmpleadoNoDeportivo> selectEmpleadosNoDeportivos() {
-		List<EmpleadoNoDeportivo> result = db.executeQueryPojo(EmpleadoNoDeportivo.class,
-				"select * from empleadonodeportivo");
-
-		return result;
+	
+	public void insertarEmpleado(String nombre, String apellido, String dni, String fechaNacimiento, double salario, String telefono, String tipo, String posicion) {
+		
+		db.executeUpdate("insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values (?,?,?,?,?,?,?,?)",
+				nombre,
+				apellido,
+				dni,
+				fechaNacimiento,
+				salario,
+				telefono,
+				tipo,
+				posicion);
+		
 	}
-
-	public EmpleadoNoDeportivo getEmpleadoNoDeportivo(int eid) {
-		return db.executeQueryPojo(EmpleadoNoDeportivo.class, "select * from empleadonodeportivo where eid=?", eid)
-				.get(0);
+	
+	public void deleteEmpleado(String nombre, String apellido, String dni, String tipo) {
+		String sqlElimminar = "delete from empleado where nombre = ? and apellido = ? and dni = ? and tipo = ?";
+		db.executeUpdate(sqlElimminar, nombre, apellido, dni, tipo);
+	}
+	
+	public void updateEmpleado(String nombre, String apellido, String dni, String fecha, double salario,
+			String telefono, Object posicion, String nombreEmpleadoGestion, String apellidoEmpleadoGestion,
+			String dniEmpleadoGestion) {
+		String updateEmpleado = "update empleado set nombre = ?, apellido = ?, dni = ?, fechaNacimiento = ?, "
+				+ "salarioAnual = ?, telefono = ?, posicion = ?"
+				+ "where nombre = ? and apellido = ? and dni = ?";
+		db.executeUpdate(updateEmpleado, nombre, apellido, dni, fecha, salario, telefono, posicion, nombreEmpleadoGestion, apellidoEmpleadoGestion, dniEmpleadoGestion);
 	}
 
 	// HORARIO SEMANAL

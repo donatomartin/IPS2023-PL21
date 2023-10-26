@@ -10,6 +10,7 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
+import ips2023pl21.model.*;
 import ips2023pl21.model.activos.Merchandaising;
 import ips2023pl21.model.activos.TiendaLogica;
 
@@ -21,6 +22,7 @@ import java.awt.GridLayout;
 import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.Dimension;
+import javax.swing.JScrollPane;
 
 public class Frame21916 {
 	
@@ -36,11 +38,13 @@ public class Frame21916 {
 	private JButton btConfirmarTienda;
 	private JButton btSalirTienda;
 	private JLabel lbPrecioTienda;
-	private JPanel pnProductos;
 	
 	private JPanel pnContenido;
 	private JPanel pnSeleccion;
 	private JButton btEliminarTodo;
+	private JScrollPane spProductos;
+	private JPanel pnProductos;
+	private JScrollPane spSeleccion;
 	
 	/**
 	 * Create the application.
@@ -66,9 +70,8 @@ public class Frame21916 {
 		frame.getContentPane().add(getPnHeaderTienda(), BorderLayout.NORTH);
 		frame.getContentPane().add(getPnButtonsTienda(), BorderLayout.SOUTH);
 		frame.getContentPane().add(getPnContenido(), BorderLayout.CENTER);
-		frame.setSize(new Dimension(1200,500));
-		frame.setMinimumSize(new Dimension(1250, 500));
-		//frame.pack();
+		frame.setSize(new Dimension(1100,500));
+		frame.setMinimumSize(new Dimension(1100, 500));
 		
 		frame.setVisible(true);
 		
@@ -148,20 +151,11 @@ public class Frame21916 {
 		}
 		return lbPrecioTienda;
 	}
-	private JPanel getPnProductos() {
-		if (pnProductos == null) {
-			pnProductos = new JPanel();
-			pnProductos.setLayout(new GridLayout(0, 3, 2, 2));
-			crearBotonesProductos(true);
-		}
-		return pnProductos;
-	}
 	
 	private JPanel getPnSeleccion() {
 		if (pnSeleccion == null) {
 			pnSeleccion = new JPanel();
-			pnSeleccion.setLayout(new GridLayout(0, 3, 3, 3));
-			crearBotonesProductos(false);
+			pnSeleccion.setLayout(new GridLayout(0, 6, 3, 3));
 		}
 		return pnSeleccion;
 	}
@@ -181,20 +175,20 @@ public class Frame21916 {
 	
 	private Component nuevoBotonProductos(Integer posicion, boolean enabled) {
 		JButton boton = new JButton("");
-		
+		boton.setMinimumSize(new Dimension(1000000,1000000));
 		String textoBt;
 		Merchandaising m = tl.getMerchandaising().get(posicion);
 		if(enabled) {
 			boton.addActionListener(pBP);
-			textoBt = m.getNombre() + ", " +
-					  m.getTipo() + ", Precio: " +
-					  m.getPrecio();
+			textoBt = "<html>" + m.getNombre() + "<br>" +
+					  m.getTipo() + "<br> Precio: " +
+					  m.getPrecio() + "<html>";
 			
 		} else {
 			boton.addActionListener(pBS);
-			textoBt = m.getNombre() + ", " +
-					  m.getTipo() + ", uds: " +
-					  m.getUnidades();
+			textoBt = "<html>" + m.getNombre() + "<br>" +
+					  m.getTipo() + "<br> uds: " +
+					  m.getUnidades() + "<html>";
 		}
 		boton.setBackground(Color.white);
 		boton.setBorder(new LineBorder(Color.LIGHT_GRAY, 2, true));
@@ -206,7 +200,6 @@ public class Frame21916 {
 		boton.setToolTipText("Articulo: " + m.getNombre() + 
 				", Precio: " + m.getPrecio());
 		boton.setEnabled(enabled);
-
 		return boton;
 	}
 	
@@ -234,9 +227,9 @@ public class Frame21916 {
 				getBtEliminarTodo().setEnabled(true);
 				getBtConfirmarTienda().setEnabled(true);
 				getPnSeleccion().getComponent(actionCommand).setEnabled(true);
-				((JButton)getPnSeleccion().getComponent(actionCommand)).setText(m.getNombre() + ", " +
-																				m.getTipo() + ", uds: " +
-																				m.getUnidades());
+				((JButton)getPnSeleccion().getComponent(actionCommand)).setText("<html>" + m.getNombre() + "<br>" +
+																				m.getTipo() + "<br> uds: " +
+																				m.getUnidades() + "<html>");
 
 			} catch (NumberFormatException ex) {
 				JOptionPane.showMessageDialog(null, "numero no valido");
@@ -304,8 +297,8 @@ public class Frame21916 {
 		if (pnContenido == null) {
 			pnContenido = new JPanel();
 			pnContenido.setLayout(new BorderLayout(0, 0));
-			pnContenido.add(getPnProductos(), BorderLayout.WEST);
-			pnContenido.add(getPnSeleccion(), BorderLayout.EAST);
+			pnContenido.add(getSpProductos(), BorderLayout.WEST);
+			pnContenido.add(getSpSeleccion(), BorderLayout.EAST);
 		}
 		return pnContenido;
 	}
@@ -322,5 +315,28 @@ public class Frame21916 {
 			btEliminarTodo.setEnabled(false);
 		}
 		return btEliminarTodo;
+	}
+	private JScrollPane getSpProductos() {
+		if (spProductos == null) {
+			spProductos = new JScrollPane();
+			spProductos.setViewportView(getPnProductos());
+			crearBotonesProductos(true);
+		}
+		return spProductos;
+	}
+	private JPanel getPnProductos() {
+		if (pnProductos == null) {
+			pnProductos = new JPanel();
+			pnProductos.setLayout(new GridLayout(0, 6, 3, 3));
+		}
+		return pnProductos;
+	}
+	private JScrollPane getSpSeleccion() {
+		if (spSeleccion == null) {
+			spSeleccion = new JScrollPane();
+			spSeleccion.setViewportView(getPnSeleccion());
+			crearBotonesProductos(false);
+		}
+		return spSeleccion;
 	}
 }

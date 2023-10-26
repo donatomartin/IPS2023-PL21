@@ -23,7 +23,7 @@ import java.awt.FlowLayout;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import ips2023pl21.model.empleados.EmpleadoDeportivo;
+import ips2023pl21.model.Empleado;
 import ips2023pl21.model.equipos.CategoriaEquipo;
 import ips2023pl21.model.equipos.EquipoDeportivo;
 import ips2023pl21.model.equipos.EquipoEnFormacion;
@@ -58,7 +58,7 @@ public class Frame21914 {
 	private JButton btAñadirSegundo;
 	private JButton btAñadirJugador;
 	private JScrollPane spJugadores;
-	private DefaultListModel<EmpleadoDeportivo> modeloListJugador;
+	private DefaultListModel<Empleado> modeloListJugador;
 	private JButton btEliminarTodos;
 	private JButton btEliminarEntrenador;
 	private JButton btEliminarSegundo;
@@ -184,7 +184,7 @@ public class Frame21914 {
 	private void añadirDatosATablas() {
 		Object[] añadir = new Object[4];
 		//Entrenadores
-		for(EmpleadoDeportivo e : equipo.getEntrenadoresTabla()) {
+		for(Empleado e : equipo.getEntrenadores()) {
 			añadir[0] =  e.getAtributoTabla(0);
 			añadir[1] =  e.getAtributoTabla(1);
 			añadir[2] =  e.getAtributoTabla(2);
@@ -193,7 +193,7 @@ public class Frame21914 {
 			modeloTablaEntrenadores.addRow(añadir);
 		}
 		//Jugadores
-		for(EmpleadoDeportivo e : equipo.getJugadoresTabla()) {
+		for(Empleado e : equipo.getJugadores()) {
 			añadir[0] =  e.getAtributoTabla(0);
 			añadir[1] =  e.getAtributoTabla(1);
 			añadir[2] =  e.getAtributoTabla(2);
@@ -322,7 +322,7 @@ public class Frame21914 {
 	private void añadirEntrenador() {
 		int selected = getTbEntrenadores().getSelectedRow();
 		if(selected != -1) {
-			EmpleadoDeportivo primerEntrenador = equipo.getEntrenador(selected);
+			Empleado primerEntrenador = equipo.getEntrenador(selected);
 			if(equipo.getSegundoEntrenador()== null || 
 			   primerEntrenador.getDni() != equipo.getSegundoEntrenador().getDni()) {
 				equipo.setPrimerEntrenador(primerEntrenador);
@@ -414,7 +414,7 @@ public class Frame21914 {
 	private void añadirSegundo() {
 		int selected = getTbEntrenadores().getSelectedRow();
 		if(selected != -1) {
-			EmpleadoDeportivo segundoEntrenador = equipo.getEntrenador(selected);
+			Empleado segundoEntrenador = equipo.getEntrenador(selected);
 			if(equipo.getPrimerEntrenador()== null || 
 			   segundoEntrenador.getDni() != equipo.getPrimerEntrenador().getDni()) {
 				equipo.setSegundoEntrenador(segundoEntrenador);
@@ -450,7 +450,7 @@ public class Frame21914 {
 	private void añadirJugador() {
 		int selected = getTbJugadores().getSelectedRow();
 		if(selected != -1) {
-			EmpleadoDeportivo jugador = equipo.getJugador(selected);
+			Empleado jugador = equipo.getJugador(selected);
 			if(!equipo.getJugadoresEquipo().contains(jugador)){
 				if(equipo.añadirJugador(jugador)) {
 					Object[] añadir = {jugador.getAtributoTabla(0),jugador.getAtributoTabla(1),
