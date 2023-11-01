@@ -70,7 +70,6 @@ public class Frame21918 extends JFrame{
 		initialize();
 		frame.setLocationRelativeTo(null);
 		
-		
 	}
 
 	private void initialize() {
@@ -242,8 +241,6 @@ public class Frame21918 extends JFrame{
 				btCancelar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				btCancelar.setMnemonic('c');
 				pnCancelar.add(btCancelar);
-		
-				
 		
 		
 	}

@@ -1,11 +1,14 @@
 package ips2023pl21.persistence;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ips2023pl21.model.abonos.Abono;
 import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
 import ips2023pl21.model.empleados.JugadorProfesional;
+import ips2023pl21.model.entradas.EntradaEntity;
 import ips2023pl21.model.horarios.Entrevista;
 import ips2023pl21.model.horarios.FranjaPuntual;
 import ips2023pl21.model.horarios.FranjaSemanal;
@@ -176,5 +179,19 @@ public class Persistence {
 		;
 		return result;
 	}
+	
+	//ABONOS
+	public void insertAbono(String tribuna, String seccion, int fila, int asiento, double precio, String dateString) {
+		db.executeUpdate("insert into abono (tribuna, seccion, fila, asiento, precio, fechaCaducidad) values (?,?,?,?,?,?)",
+				tribuna, seccion, fila, asiento, precio, dateString);
+	}
 
+	public List<Abono> selectAbono(String tribuna, String seccion, int fila, int asiento) {
+		 return db.executeQueryPojo(Abono.class, "select * from abono where tribuna=? and seccion=? and fila=? and asiento=?" , tribuna, seccion, fila,asiento);
+	}
+
+	public List<EntradaEntity> getAsientosOcupados(String tribuna, String seccion) { //aqui cambiar abono por entrada y aplicar herencia
+		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=?", tribuna, seccion);
+		
+	}
 }

@@ -2,6 +2,8 @@ package ips2023pl21.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Color;
@@ -10,15 +12,32 @@ import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+
+import ips2023pl21.model.entradas.EntradaEntity;
+import ips2023pl21.service.Service22733;
+import ips2023pl21.util.Util;
+
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.List;
 import java.awt.event.ActionEvent;
+
+import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.DateFormatter;
 import javax.swing.JTextField;
 import java.awt.GridLayout;
+import javax.swing.border.LineBorder;
+import javax.swing.border.MatteBorder;
 
 public class Frame22733 extends JFrame{
 	private JFrame frame;
@@ -49,78 +68,47 @@ public class Frame22733 extends JFrame{
 	private JPanel panelTribuna;
 	private JPanel panelFechaNacimiento;
 	private JLabel lbFechaNacimiento;
-	private JTextField txtFieldFechaNacimiento;
+	private JFormattedTextField txtFieldFechaNacimiento;
 	private JPanel panelAsientosOcupados;
 	private JPanel panelAsiento;
 	private JLabel lblAsiento;
 	private JSpinner spinnerAsiento;
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
-	private JButton btnNewButton_3;
-	private JButton btnNewButton_4;
-	private JButton btnNewButton_5;
-	private JButton btnNewButton_6;
-	private JButton btnNewButton_7;
-	private JButton btnNewButton_8;
-	private JButton btnNewButton_9;
-	private JButton btnNewButton_10;
-	private JButton btnNewButton_11;
-	private JButton btnNewButton_12;
-	private JButton btnNewButton_13;
-	private JButton btnNewButton_14;
-	private JButton btnNewButton_14_1;
-	private JButton btnNewButton_14_2;
-	private JButton btnNewButton_14_3;
-	private JButton btnNewButton_14_4;
-	private JButton btnNewButton_14_5;
-	private JButton btnNewButton_14_6;
-	private JButton btnNewButton_14_7;
-	private JButton btnNewButton_14_8;
-	private JButton btnNewButton_14_9;
-	private JButton btnNewButton_14_10;
-	private JButton btnNewButton_14_11;
-	private JButton btnNewButton_14_12;
-	private JButton btnNewButton_14_13;
-	private JButton btnNewButton_14_14;
-	private JButton btnNewButton_14_15;
-	private JButton btnNewButton_14_16;
-	private JButton btnNewButton_14_17;
-	private JButton btnNewButton_14_18;
-	private JButton btnNewButton_14_19;
-	private JButton btnNewButton_14_20;
-	private JButton btnNewButton_14_21;
-	private JButton btnNewButton_14_22;
-	private JButton btnNewButton_14_23;
-	private JButton btnNewButton_14_24;
-	private JButton btnNewButton_14_25;
-	private JButton btnNewButton_14_26;
-	private JButton btnNewButton_14_27;
-	private JButton btnNewButton_14_28;
-	private JButton btnNewButton_14_29;
-	private JButton btnNewButton_14_30;
-	private JButton btnNewButton_14_31;
-	private JButton btnNewButton_14_32;
-	private JButton btnNewButton_14_33;
-	private JButton btnNewButton_14_34;
-	private JButton btnNewButton_14_35;
-	private JButton btnNewButton_14_36;
-	private JButton btnNewButton_14_37;
-	private JButton btnNewButton_14_38;
-	private JButton btnNewButton_14_39;
-	private JButton btnNewButton_14_40;
-	private JButton btnNewButton_14_41;
-	private JButton btnNewButton_14_42;
-	private JButton btnNewButton_14_43;
+	private Service22733 service;
+	private ButtonGroup grupoTribuna=new ButtonGroup();
+	private ButtonGroup grupoSeccion=new ButtonGroup();
+	public static final int NUMFILAS=10;
+	public static final int NUMCOLUMNAS=15;
+	private JPanel panel;
+	private JPanel panel_1;
+	private JLabel lbAsientosOcupados;
 	
-	
-	
-	public Frame22733() {
+	public Frame22733(Service22733 service) {
+		this.service=service;
+		this.frame=new JFrame();
 		getContentPane().setBackground(Color.WHITE);
 		getContentPane().setLayout(new BorderLayout(0, 0));
-		getContentPane().add(getPanelEscoger());
+		getContentPane().add(getPanelEscoger(), BorderLayout.CENTER);
 		getContentPane().add(getPanelTitulo(), BorderLayout.NORTH);
 		getContentPane().add(getPanelBotonesSur(), BorderLayout.SOUTH);
+		this.frame.setBounds(0,0,50,50);
+		setLocationRelativeTo(null);
+		pintaAsientos();
+	}
+	private void pintaAsientos() {
+		for(int i=0;i<NUMFILAS;i++) {
+			for(int j=0;j<NUMCOLUMNAS;j++) {
+				JButton boton=new JButton(""+i+j);
+				boton.setName(""+i+j);
+				boton.setBackground(Color.green);
+				boton.setForeground(Color.green);
+				boton.setEnabled(false);
+				
+				panelAsientosOcupados.add(boton);
+			}
+			
+		}
+//		service.getAsientosOcupados(grupoTribuna.getSelection().getActionCommand(),
+//				grupoSeccion.getSelection().getActionCommand());
 	}
 	private JLabel getLbTitulo() {
 		if (lbTitulo == null) {
@@ -145,12 +133,16 @@ public class Frame22733 extends JFrame{
 		}
 		return lblNewLabel;
 	}
-	private JButton getBtnComprar() {
+	public JButton getBtnComprar() {
 		if (btnComprar == null) {
 			btnComprar = new JButton("Comprar");
 			btnComprar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					comprar();
+					getAsientosOcupados();
 				}
+
+				
 			});
 			btnComprar.setBackground(Color.GREEN);
 			btnComprar.setFont(new Font("Tahoma", Font.PLAIN, 16));
@@ -161,6 +153,11 @@ public class Frame22733 extends JFrame{
 	public JButton getBtCancelar() {
 		if (btCancelar == null) {
 			btCancelar = new JButton("Cancelar");
+			btCancelar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					cancelar();
+				}
+			});
 			btCancelar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			btCancelar.setBackground(Color.RED);
 		}
@@ -175,60 +172,29 @@ public class Frame22733 extends JFrame{
 			gl_panelEscoger.setHorizontalGroup(
 				gl_panelEscoger.createParallelGroup(Alignment.TRAILING)
 					.addGroup(gl_panelEscoger.createSequentialGroup()
-						.addGap(127)
-						.addComponent(getLbDescripcion(), GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
-						.addGap(131))
-					.addGroup(Alignment.LEADING, gl_panelEscoger.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(gl_panelEscoger.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_panelEscoger.createSequentialGroup()
-								.addGap(10)
-								.addComponent(getPanelFechaNacimiento(), GroupLayout.PREFERRED_SIZE, 407, GroupLayout.PREFERRED_SIZE)
-								.addContainerGap())
-							.addGroup(gl_panelEscoger.createSequentialGroup()
-								.addComponent(getLblNewLabel(), GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE)
-								.addGap(42))))
+						.addGap(20)
+						.addComponent(getPanel(), GroupLayout.PREFERRED_SIZE, 820, Short.MAX_VALUE)
+						.addGap(10))
 					.addGroup(gl_panelEscoger.createSequentialGroup()
-						.addContainerGap()
-						.addGroup(gl_panelEscoger.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_panelEscoger.createSequentialGroup()
-								.addComponent(getPanelSeccion(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addGap(18))
-							.addGroup(gl_panelEscoger.createSequentialGroup()
-								.addComponent(getPanelTribuna(), GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
-								.addGap(72))
-							.addGroup(gl_panelEscoger.createSequentialGroup()
-								.addGroup(gl_panelEscoger.createParallelGroup(Alignment.TRAILING)
-									.addComponent(getPanelAsiento(), GroupLayout.PREFERRED_SIZE, 246, GroupLayout.PREFERRED_SIZE)
-									.addComponent(getPanelFila(), GroupLayout.DEFAULT_SIZE, 255, Short.MAX_VALUE))
-								.addGap(82)))
-						.addGap(18)
-						.addComponent(getPanelAsientosOcupados(), GroupLayout.PREFERRED_SIZE, 373, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap())
+						.addGap(42)
+						.addComponent(getPanel_1(), GroupLayout.PREFERRED_SIZE, 500, Short.MAX_VALUE)
+						.addGap(41)
+						.addComponent(getPanelAsientosOcupados(), GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE)
+						.addGap(23))
 			);
 			gl_panelEscoger.setVerticalGroup(
 				gl_panelEscoger.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_panelEscoger.createSequentialGroup()
 						.addGap(21)
-						.addComponent(getLbDescripcion())
-						.addGap(18)
-						.addComponent(getLblNewLabel())
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(getPanelFechaNacimiento(), GroupLayout.PREFERRED_SIZE, 49, GroupLayout.PREFERRED_SIZE)
-						.addGap(18)
-						.addGroup(gl_panelEscoger.createParallelGroup(Alignment.LEADING)
+						.addComponent(getPanel(), GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panelEscoger.createParallelGroup(Alignment.LEADING, false)
 							.addGroup(gl_panelEscoger.createSequentialGroup()
-								.addComponent(getPanelTribuna(), GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-								.addGap(18)
-								.addComponent(getPanelSeccion(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addGap(18)
-								.addComponent(getPanelFila(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addGap(18)
-								.addComponent(getPanelAsiento(), GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-								.addGap(23))
+								.addGap(48)
+								.addComponent(getPanel_1(), GroupLayout.PREFERRED_SIZE, 209, GroupLayout.PREFERRED_SIZE))
 							.addGroup(gl_panelEscoger.createSequentialGroup()
-								.addComponent(getPanelAsientosOcupados(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addContainerGap())))
+								.addGap(17)
+								.addComponent(getPanelAsientosOcupados(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+						.addContainerGap(29, Short.MAX_VALUE))
 			);
 			panelEscoger.setLayout(gl_panelEscoger);
 		}
@@ -248,6 +214,13 @@ public class Frame22733 extends JFrame{
 			rdbtnTribunaA.setMnemonic('A');
 			rdbtnTribunaA.setBackground(Color.WHITE);
 			rdbtnTribunaA.setActionCommand("A");
+			grupoTribuna.add(rdbtnTribunaA);
+			rdbtnTribunaA.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
+
 		}
 		return rdbtnTribunaA;
 	}
@@ -257,6 +230,12 @@ public class Frame22733 extends JFrame{
 			rdbtnTribunaB.setMnemonic('B');
 			rdbtnTribunaB.setBackground(Color.WHITE);
 			rdbtnTribunaB.setActionCommand("B");
+			grupoTribuna.add(rdbtnTribunaB);
+			rdbtnTribunaB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnTribunaB;
 	}
@@ -266,6 +245,12 @@ public class Frame22733 extends JFrame{
 			rdbtnTribunaC.setMnemonic('C');
 			rdbtnTribunaC.setBackground(Color.WHITE);
 			rdbtnTribunaC.setActionCommand("C");
+			grupoTribuna.add(rdbtnTribunaC);
+			rdbtnTribunaC.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnTribunaC;
 	}
@@ -275,6 +260,12 @@ public class Frame22733 extends JFrame{
 			rdbtnTribunaD.setMnemonic('D');
 			rdbtnTribunaD.setBackground(Color.WHITE);
 			rdbtnTribunaD.setActionCommand("D");
+			grupoTribuna.add(rdbtnTribunaD);
+			rdbtnTribunaB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnTribunaD;
 	}
@@ -307,6 +298,12 @@ public class Frame22733 extends JFrame{
 			rdbtnSeccionA.setMnemonic('A');
 			rdbtnSeccionA.setBackground(Color.WHITE);
 			rdbtnSeccionA.setActionCommand("A");
+			grupoSeccion.add(rdbtnSeccionA);
+			rdbtnSeccionA.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnSeccionA;
 	}
@@ -316,6 +313,12 @@ public class Frame22733 extends JFrame{
 			rdbtnSeccionB.setMnemonic('B');
 			rdbtnSeccionB.setBackground(Color.WHITE);
 			rdbtnSeccionB.setActionCommand("B");
+			grupoSeccion.add(rdbtnSeccionB);
+			rdbtnSeccionB.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnSeccionB;
 	}
@@ -325,6 +328,12 @@ public class Frame22733 extends JFrame{
 			rdbtnSeccionC.setMnemonic('C');
 			rdbtnSeccionC.setBackground(Color.WHITE);
 			rdbtnSeccionC.setActionCommand("C");
+			grupoSeccion.add(rdbtnSeccionC);
+			rdbtnSeccionC.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnSeccionC;
 	}
@@ -334,6 +343,12 @@ public class Frame22733 extends JFrame{
 			rdbtnSeccionD.setMnemonic('D');
 			rdbtnSeccionD.setBackground(Color.WHITE);
 			rdbtnSeccionD.setActionCommand("D");
+			grupoSeccion.add(rdbtnSeccionD);
+			rdbtnSeccionD.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnSeccionD;
 	}
@@ -343,6 +358,12 @@ public class Frame22733 extends JFrame{
 			rdbtnSeccionE.setMnemonic('E');
 			rdbtnSeccionE.setBackground(Color.WHITE);
 			rdbtnSeccionE.setActionCommand("E");
+			grupoSeccion.add(rdbtnSeccionE);
+			rdbtnSeccionE.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnSeccionE;
 	}
@@ -352,8 +373,63 @@ public class Frame22733 extends JFrame{
 			rdbtnSeccionF.setMnemonic('F');
 			rdbtnSeccionF.setBackground(Color.WHITE);
 			rdbtnSeccionF.setActionCommand("F");
+			grupoSeccion.add(rdbtnSeccionF);
+			rdbtnSeccionF.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getAsientosOcupados();
+				}
+			});
 		}
 		return rdbtnSeccionF;
+	}
+	
+	
+	private void getAsientosOcupados() {
+//		despintaAsientos();
+//		pintaAsientos();
+		List<EntradaEntity> asientosOcupados=service.getAsientosOcupados(grupoTribuna.getSelection().getActionCommand(),
+				grupoSeccion.getSelection().getActionCommand());
+		System.out.println("asiento de la tribuna y seccion escogidas;");
+//		if(asientosOcupados.isEmpty()) {
+//			pintaAsientos();
+//		}
+//		for(EntradaEntity asiento : asientosOcupados) {
+//			System.out.println(asiento.getFila()+asiento.getAsiento());
+//			int fila=asiento.getFila();
+//			int numAsiento=asiento.getAsiento();
+//			String id=""+fila+numAsiento;
+//			panelAsientosOcupados.getComponent(fila+numAsiento).setBackground(Color.red);
+//		}
+		inicializarAsientos();
+		int iteracion=0;
+		for(int i=0;i<NUMFILAS;i++) {
+			for(int j=0;j<NUMCOLUMNAS;j++) {
+//				panelAsientosOcupados.getComponent(i+j).setBackground(Color.green);
+				for(EntradaEntity asiento : asientosOcupados) {
+					System.out.println(asiento.getFila()+asiento.getAsiento());
+					int fila=asiento.getFila();
+					int numAsiento=asiento.getAsiento();
+					String id=""+fila+numAsiento;
+					if(fila==i && numAsiento==j) {
+						panelAsientosOcupados.getComponent(iteracion).setBackground(Color.red);
+					}
+//					}else {
+//						panelAsientosOcupados.getComponent(iteracion).setBackground(Color.green);
+//					}
+					
+				}
+				iteracion++;
+			}
+		}
+		
+	}
+	
+	
+	private void inicializarAsientos() {
+		for(int i=0;i<panelAsientosOcupados.getComponentCount();i++) {
+			getPanelAsientosOcupados().getComponent(i).setBackground(Color.green);
+		}
+		
 	}
 	private JLabel getLbFila() {
 		if (lbFila == null) {
@@ -365,8 +441,8 @@ public class Frame22733 extends JFrame{
 	private JSpinner getSpinnerFila() {
 		if (spinnerFila == null) {
 			spinnerFila = new JSpinner();
-			spinnerFila.setFont(new Font("Tahoma", Font.PLAIN, 16));
-			spinnerFila.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(9), new Integer(9)));
+			spinnerFila.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			spinnerFila.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(9), new Integer(1)));
 		}
 		return spinnerFila;
 	}
@@ -425,10 +501,13 @@ public class Frame22733 extends JFrame{
 		}
 		return lbFechaNacimiento;
 	}
-	private JTextField getTxtFieldFechaNacimiento() {
+	private JFormattedTextField getTxtFieldFechaNacimiento() {
 		if (txtFieldFechaNacimiento == null) {
-			txtFieldFechaNacimiento = new JTextField();
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd"); 
+			DateFormatter dateFormatter1 = new DateFormatter(dateFormat); 
+			txtFieldFechaNacimiento = new JFormattedTextField(dateFormatter1);
 			txtFieldFechaNacimiento.setColumns(10);
+			txtFieldFechaNacimiento.setText(LocalDate.now().toString());
 		}
 		return txtFieldFechaNacimiento;
 	}
@@ -436,64 +515,6 @@ public class Frame22733 extends JFrame{
 		if (panelAsientosOcupados == null) {
 			panelAsientosOcupados = new JPanel();
 			panelAsientosOcupados.setLayout(new GridLayout(10, 15, 0, 0));
-			panelAsientosOcupados.add(getBtnNewButton_1());
-			panelAsientosOcupados.add(getBtnNewButton());
-			panelAsientosOcupados.add(getBtnNewButton_2());
-			panelAsientosOcupados.add(getBtnNewButton_3());
-			panelAsientosOcupados.add(getBtnNewButton_4());
-			panelAsientosOcupados.add(getBtnNewButton_5());
-			panelAsientosOcupados.add(getBtnNewButton_6());
-			panelAsientosOcupados.add(getBtnNewButton_8());
-			panelAsientosOcupados.add(getBtnNewButton_9());
-			panelAsientosOcupados.add(getBtnNewButton_10());
-			panelAsientosOcupados.add(getBtnNewButton_7());
-			panelAsientosOcupados.add(getBtnNewButton_11());
-			panelAsientosOcupados.add(getBtnNewButton_12());
-			panelAsientosOcupados.add(getBtnNewButton_14());
-			panelAsientosOcupados.add(getBtnNewButton_14_1());
-			panelAsientosOcupados.add(getBtnNewButton_14_2());
-			panelAsientosOcupados.add(getBtnNewButton_13());
-			panelAsientosOcupados.add(getBtnNewButton_14_6());
-			panelAsientosOcupados.add(getBtnNewButton_14_4());
-			panelAsientosOcupados.add(getBtnNewButton_14_7());
-			panelAsientosOcupados.add(getBtnNewButton_14_3());
-			panelAsientosOcupados.add(getBtnNewButton_14_5());
-			panelAsientosOcupados.add(getBtnNewButton_14_10());
-			panelAsientosOcupados.add(getBtnNewButton_14_8());
-			panelAsientosOcupados.add(getBtnNewButton_14_9());
-			panelAsientosOcupados.add(getBtnNewButton_14_13());
-			panelAsientosOcupados.add(getBtnNewButton_14_16());
-			panelAsientosOcupados.add(getBtnNewButton_14_11());
-			panelAsientosOcupados.add(getBtnNewButton_14_12());
-			panelAsientosOcupados.add(getBtnNewButton_14_14());
-			panelAsientosOcupados.add(getBtnNewButton_14_18());
-			panelAsientosOcupados.add(getBtnNewButton_14_15());
-			panelAsientosOcupados.add(getBtnNewButton_14_17());
-			panelAsientosOcupados.add(getBtnNewButton_14_19());
-			panelAsientosOcupados.add(getBtnNewButton_14_23());
-			panelAsientosOcupados.add(getBtnNewButton_14_22());
-			panelAsientosOcupados.add(getBtnNewButton_14_21());
-			panelAsientosOcupados.add(getBtnNewButton_14_28());
-			panelAsientosOcupados.add(getBtnNewButton_14_20());
-			panelAsientosOcupados.add(getBtnNewButton_14_26());
-			panelAsientosOcupados.add(getBtnNewButton_14_25());
-			panelAsientosOcupados.add(getBtnNewButton_14_24());
-			panelAsientosOcupados.add(getBtnNewButton_14_27());
-			panelAsientosOcupados.add(getBtnNewButton_14_31());
-			panelAsientosOcupados.add(getBtnNewButton_14_36());
-			panelAsientosOcupados.add(getBtnNewButton_14_29());
-			panelAsientosOcupados.add(getBtnNewButton_14_30());
-			panelAsientosOcupados.add(getBtnNewButton_14_32());
-			panelAsientosOcupados.add(getBtnNewButton_14_33());
-			panelAsientosOcupados.add(getBtnNewButton_14_34());
-			panelAsientosOcupados.add(getBtnNewButton_14_35());
-			panelAsientosOcupados.add(getBtnNewButton_14_37());
-			panelAsientosOcupados.add(getBtnNewButton_14_40());
-			panelAsientosOcupados.add(getBtnNewButton_14_38());
-			panelAsientosOcupados.add(getBtnNewButton_14_39());
-			panelAsientosOcupados.add(getBtnNewButton_14_41());
-			panelAsientosOcupados.add(getBtnNewButton_14_42());
-			panelAsientosOcupados.add(getBtnNewButton_14_43());
 		}
 		return panelAsientosOcupados;
 	}
@@ -516,356 +537,56 @@ public class Frame22733 extends JFrame{
 	private JSpinner getSpinnerAsiento() {
 		if (spinnerAsiento == null) {
 			spinnerAsiento = new JSpinner();
-			spinnerAsiento.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			spinnerAsiento.setFont(new Font("Tahoma", Font.PLAIN, 14));
+			spinnerAsiento.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(14), new Integer(1)));
 		}
 		return spinnerAsiento;
 	}
-	private JButton getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new JButton("New button");
+	
+	public ButtonGroup getButtonGroupTribuna() {return grupoTribuna;}
+	public ButtonGroup getButtonGroupoSeccion() {return grupoSeccion;}
+	
+	private void comprar() {
+		if(service.comprar(getButtonGroupTribuna().getSelection().getActionCommand(),
+				getButtonGroupoSeccion().getSelection().getActionCommand(),
+				(int)spinnerFila.getValue(), (int)spinnerAsiento.getValue(),txtFieldFechaNacimiento.getText())) {
+			JOptionPane.showMessageDialog(null, "Compra realizada");
+		}else {
+			JOptionPane.showMessageDialog(null, "Asiento ocupado");
 		}
-		return btnNewButton;
+		
 	}
-	private JButton getBtnNewButton_1() {
-		if (btnNewButton_1 == null) {
-			btnNewButton_1 = new JButton("New button");
+	private void cancelar() {
+		dispose();
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.add(getLbDescripcion());
+			panel.add(getLblNewLabel());
 		}
-		return btnNewButton_1;
+		return panel;
 	}
-	private JButton getBtnNewButton_2() {
-		if (btnNewButton_2 == null) {
-			btnNewButton_2 = new JButton("New button");
+	private JPanel getPanel_1() {
+		if (panel_1 == null) {
+			panel_1 = new JPanel();
+			panel_1.setBackground(Color.WHITE);
+			panel_1.add(getPanelFechaNacimiento());
+			panel_1.add(getPanelTribuna());
+			panel_1.add(getPanelSeccion());
+			panel_1.add(getPanelFila());
+			panel_1.add(getPanelAsiento());
+			panel_1.add(getLbAsientosOcupados());
 		}
-		return btnNewButton_2;
+		return panel_1;
 	}
-	private JButton getBtnNewButton_3() {
-		if (btnNewButton_3 == null) {
-			btnNewButton_3 = new JButton("New button");
+	private JLabel getLbAsientosOcupados() {
+		if (lbAsientosOcupados == null) {
+			lbAsientosOcupados = new JLabel("El gráfico indica los asientos libres y ocupados para la tribuna y sección escogidos.");
+			lbAsientosOcupados.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		}
-		return btnNewButton_3;
+		return lbAsientosOcupados;
 	}
-	private JButton getBtnNewButton_4() {
-		if (btnNewButton_4 == null) {
-			btnNewButton_4 = new JButton("New button");
-		}
-		return btnNewButton_4;
 	}
-	private JButton getBtnNewButton_5() {
-		if (btnNewButton_5 == null) {
-			btnNewButton_5 = new JButton("New button");
-		}
-		return btnNewButton_5;
-	}
-	private JButton getBtnNewButton_6() {
-		if (btnNewButton_6 == null) {
-			btnNewButton_6 = new JButton("New button");
-		}
-		return btnNewButton_6;
-	}
-	private JButton getBtnNewButton_7() {
-		if (btnNewButton_7 == null) {
-			btnNewButton_7 = new JButton("New button");
-		}
-		return btnNewButton_7;
-	}
-	private JButton getBtnNewButton_8() {
-		if (btnNewButton_8 == null) {
-			btnNewButton_8 = new JButton("New button");
-		}
-		return btnNewButton_8;
-	}
-	private JButton getBtnNewButton_9() {
-		if (btnNewButton_9 == null) {
-			btnNewButton_9 = new JButton("New button");
-		}
-		return btnNewButton_9;
-	}
-	private JButton getBtnNewButton_10() {
-		if (btnNewButton_10 == null) {
-			btnNewButton_10 = new JButton("New button");
-		}
-		return btnNewButton_10;
-	}
-	private JButton getBtnNewButton_11() {
-		if (btnNewButton_11 == null) {
-			btnNewButton_11 = new JButton("New button");
-		}
-		return btnNewButton_11;
-	}
-	private JButton getBtnNewButton_12() {
-		if (btnNewButton_12 == null) {
-			btnNewButton_12 = new JButton("New button");
-		}
-		return btnNewButton_12;
-	}
-	private JButton getBtnNewButton_13() {
-		if (btnNewButton_13 == null) {
-			btnNewButton_13 = new JButton("New button");
-		}
-		return btnNewButton_13;
-	}
-	private JButton getBtnNewButton_14() {
-		if (btnNewButton_14 == null) {
-			btnNewButton_14 = new JButton("New button");
-		}
-		return btnNewButton_14;
-	}
-	private JButton getBtnNewButton_14_1() {
-		if (btnNewButton_14_1 == null) {
-			btnNewButton_14_1 = new JButton("New button");
-		}
-		return btnNewButton_14_1;
-	}
-	private JButton getBtnNewButton_14_2() {
-		if (btnNewButton_14_2 == null) {
-			btnNewButton_14_2 = new JButton("New button");
-		}
-		return btnNewButton_14_2;
-	}
-	private JButton getBtnNewButton_14_3() {
-		if (btnNewButton_14_3 == null) {
-			btnNewButton_14_3 = new JButton("New button");
-		}
-		return btnNewButton_14_3;
-	}
-	private JButton getBtnNewButton_14_4() {
-		if (btnNewButton_14_4 == null) {
-			btnNewButton_14_4 = new JButton("New button");
-		}
-		return btnNewButton_14_4;
-	}
-	private JButton getBtnNewButton_14_5() {
-		if (btnNewButton_14_5 == null) {
-			btnNewButton_14_5 = new JButton("New button");
-		}
-		return btnNewButton_14_5;
-	}
-	private JButton getBtnNewButton_14_6() {
-		if (btnNewButton_14_6 == null) {
-			btnNewButton_14_6 = new JButton("New button");
-		}
-		return btnNewButton_14_6;
-	}
-	private JButton getBtnNewButton_14_7() {
-		if (btnNewButton_14_7 == null) {
-			btnNewButton_14_7 = new JButton("New button");
-		}
-		return btnNewButton_14_7;
-	}
-	private JButton getBtnNewButton_14_8() {
-		if (btnNewButton_14_8 == null) {
-			btnNewButton_14_8 = new JButton("New button");
-		}
-		return btnNewButton_14_8;
-	}
-	private JButton getBtnNewButton_14_9() {
-		if (btnNewButton_14_9 == null) {
-			btnNewButton_14_9 = new JButton("New button");
-		}
-		return btnNewButton_14_9;
-	}
-	private JButton getBtnNewButton_14_10() {
-		if (btnNewButton_14_10 == null) {
-			btnNewButton_14_10 = new JButton("New button");
-		}
-		return btnNewButton_14_10;
-	}
-	private JButton getBtnNewButton_14_11() {
-		if (btnNewButton_14_11 == null) {
-			btnNewButton_14_11 = new JButton("New button");
-		}
-		return btnNewButton_14_11;
-	}
-	private JButton getBtnNewButton_14_12() {
-		if (btnNewButton_14_12 == null) {
-			btnNewButton_14_12 = new JButton("New button");
-		}
-		return btnNewButton_14_12;
-	}
-	private JButton getBtnNewButton_14_13() {
-		if (btnNewButton_14_13 == null) {
-			btnNewButton_14_13 = new JButton("New button");
-		}
-		return btnNewButton_14_13;
-	}
-	private JButton getBtnNewButton_14_14() {
-		if (btnNewButton_14_14 == null) {
-			btnNewButton_14_14 = new JButton("New button");
-		}
-		return btnNewButton_14_14;
-	}
-	private JButton getBtnNewButton_14_15() {
-		if (btnNewButton_14_15 == null) {
-			btnNewButton_14_15 = new JButton("New button");
-		}
-		return btnNewButton_14_15;
-	}
-	private JButton getBtnNewButton_14_16() {
-		if (btnNewButton_14_16 == null) {
-			btnNewButton_14_16 = new JButton("New button");
-		}
-		return btnNewButton_14_16;
-	}
-	private JButton getBtnNewButton_14_17() {
-		if (btnNewButton_14_17 == null) {
-			btnNewButton_14_17 = new JButton("New button");
-		}
-		return btnNewButton_14_17;
-	}
-	private JButton getBtnNewButton_14_18() {
-		if (btnNewButton_14_18 == null) {
-			btnNewButton_14_18 = new JButton("New button");
-		}
-		return btnNewButton_14_18;
-	}
-	private JButton getBtnNewButton_14_19() {
-		if (btnNewButton_14_19 == null) {
-			btnNewButton_14_19 = new JButton("New button");
-		}
-		return btnNewButton_14_19;
-	}
-	private JButton getBtnNewButton_14_20() {
-		if (btnNewButton_14_20 == null) {
-			btnNewButton_14_20 = new JButton("New button");
-		}
-		return btnNewButton_14_20;
-	}
-	private JButton getBtnNewButton_14_21() {
-		if (btnNewButton_14_21 == null) {
-			btnNewButton_14_21 = new JButton("New button");
-		}
-		return btnNewButton_14_21;
-	}
-	private JButton getBtnNewButton_14_22() {
-		if (btnNewButton_14_22 == null) {
-			btnNewButton_14_22 = new JButton("New button");
-		}
-		return btnNewButton_14_22;
-	}
-	private JButton getBtnNewButton_14_23() {
-		if (btnNewButton_14_23 == null) {
-			btnNewButton_14_23 = new JButton("New button");
-		}
-		return btnNewButton_14_23;
-	}
-	private JButton getBtnNewButton_14_24() {
-		if (btnNewButton_14_24 == null) {
-			btnNewButton_14_24 = new JButton("New button");
-		}
-		return btnNewButton_14_24;
-	}
-	private JButton getBtnNewButton_14_25() {
-		if (btnNewButton_14_25 == null) {
-			btnNewButton_14_25 = new JButton("New button");
-		}
-		return btnNewButton_14_25;
-	}
-	private JButton getBtnNewButton_14_26() {
-		if (btnNewButton_14_26 == null) {
-			btnNewButton_14_26 = new JButton("New button");
-		}
-		return btnNewButton_14_26;
-	}
-	private JButton getBtnNewButton_14_27() {
-		if (btnNewButton_14_27 == null) {
-			btnNewButton_14_27 = new JButton("New button");
-		}
-		return btnNewButton_14_27;
-	}
-	private JButton getBtnNewButton_14_28() {
-		if (btnNewButton_14_28 == null) {
-			btnNewButton_14_28 = new JButton("New button");
-		}
-		return btnNewButton_14_28;
-	}
-	private JButton getBtnNewButton_14_29() {
-		if (btnNewButton_14_29 == null) {
-			btnNewButton_14_29 = new JButton("New button");
-		}
-		return btnNewButton_14_29;
-	}
-	private JButton getBtnNewButton_14_30() {
-		if (btnNewButton_14_30 == null) {
-			btnNewButton_14_30 = new JButton("New button");
-		}
-		return btnNewButton_14_30;
-	}
-	private JButton getBtnNewButton_14_31() {
-		if (btnNewButton_14_31 == null) {
-			btnNewButton_14_31 = new JButton("New button");
-		}
-		return btnNewButton_14_31;
-	}
-	private JButton getBtnNewButton_14_32() {
-		if (btnNewButton_14_32 == null) {
-			btnNewButton_14_32 = new JButton("New button");
-		}
-		return btnNewButton_14_32;
-	}
-	private JButton getBtnNewButton_14_33() {
-		if (btnNewButton_14_33 == null) {
-			btnNewButton_14_33 = new JButton("New button");
-		}
-		return btnNewButton_14_33;
-	}
-	private JButton getBtnNewButton_14_34() {
-		if (btnNewButton_14_34 == null) {
-			btnNewButton_14_34 = new JButton("New button");
-		}
-		return btnNewButton_14_34;
-	}
-	private JButton getBtnNewButton_14_35() {
-		if (btnNewButton_14_35 == null) {
-			btnNewButton_14_35 = new JButton("New button");
-		}
-		return btnNewButton_14_35;
-	}
-	private JButton getBtnNewButton_14_36() {
-		if (btnNewButton_14_36 == null) {
-			btnNewButton_14_36 = new JButton("New button");
-		}
-		return btnNewButton_14_36;
-	}
-	private JButton getBtnNewButton_14_37() {
-		if (btnNewButton_14_37 == null) {
-			btnNewButton_14_37 = new JButton("New button");
-		}
-		return btnNewButton_14_37;
-	}
-	private JButton getBtnNewButton_14_38() {
-		if (btnNewButton_14_38 == null) {
-			btnNewButton_14_38 = new JButton("New button");
-		}
-		return btnNewButton_14_38;
-	}
-	private JButton getBtnNewButton_14_39() {
-		if (btnNewButton_14_39 == null) {
-			btnNewButton_14_39 = new JButton("New button");
-		}
-		return btnNewButton_14_39;
-	}
-	private JButton getBtnNewButton_14_40() {
-		if (btnNewButton_14_40 == null) {
-			btnNewButton_14_40 = new JButton("New button");
-		}
-		return btnNewButton_14_40;
-	}
-	private JButton getBtnNewButton_14_41() {
-		if (btnNewButton_14_41 == null) {
-			btnNewButton_14_41 = new JButton("New button");
-		}
-		return btnNewButton_14_41;
-	}
-	private JButton getBtnNewButton_14_42() {
-		if (btnNewButton_14_42 == null) {
-			btnNewButton_14_42 = new JButton("New button");
-		}
-		return btnNewButton_14_42;
-	}
-	private JButton getBtnNewButton_14_43() {
-		if (btnNewButton_14_43 == null) {
-			btnNewButton_14_43 = new JButton("New button");
-		}
-		return btnNewButton_14_43;
-	}
-}
+
+

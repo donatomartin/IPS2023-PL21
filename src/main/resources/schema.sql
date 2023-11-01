@@ -181,3 +181,16 @@ create table Instalacion(
 	nombreInstalacion varchar(30) not null,
 	primary key (id)
 );
+
+--Abono
+drop table Abono;
+create table Abono(
+	tribuna varchar(30) not null,
+	seccion varchar(30) not null,
+	fila int not null,
+	asiento int not null,
+	precio int,
+	fechaCaducidad varchar(30) not null,
+	primary key(tribuna, seccion, fila, asiento),
+	foreign key (tribuna, seccion, fila, asiento) references Entrada(tribuna, seccion, fila, asiento)
+);
