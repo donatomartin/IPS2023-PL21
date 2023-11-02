@@ -212,5 +212,11 @@ public class Persistence {
 		;
 		return result;
 	}
+	
+	
+	//NOTICIAS
+	public void insertNoticia(String titulo, String subtitulo, String cuerpo, String img) {
+		db.executeUpdate("insert into noticia (titulo, subtitulo, cuerpo, img) values (?,?,?,?)", titulo, subtitulo, cuerpo, img);
+	}
 
 }

@@ -18,7 +18,12 @@ import ips2023pl21.service.Service22759;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.awt.event.ActionEvent;
+import javax.swing.JScrollPane;
 
 public class Frame22759 extends JFrame{
 	private Service22759 service;
@@ -34,9 +39,10 @@ public class Frame22759 extends JFrame{
 	private JLabel lbSubtituloNoticia;
 	private JTextField txSubtitulo;
 	private JLabel lbCuerpo;
-	private JTextArea textArea;
+	private JTextArea textAreaCuerpo;
 	private JButton btAñadirImagen;
 	private JFileChooser selector;
+	private JScrollPane scrollPaneCuerpo;
 	
 	public Frame22759(Service22759 service ) {
 		this.service=service;
@@ -95,8 +101,8 @@ public class Frame22759 extends JFrame{
 			pnAñadirNoticia.add(getLbSubtituloNoticia());
 			pnAñadirNoticia.add(getTxSubtitulo());
 			pnAñadirNoticia.add(getLbCuerpo());
-			pnAñadirNoticia.add(getTextArea());
 			pnAñadirNoticia.add(getBtAñadirImagen());
+			pnAñadirNoticia.add(getScrollPaneCuerpo());
 		}
 		return pnAñadirNoticia;
 	}
@@ -119,7 +125,7 @@ public class Frame22759 extends JFrame{
 	private JTextField getTxTituloNoticia() {
 		if (txTituloNoticia == null) {
 			txTituloNoticia = new JTextField();
-			txTituloNoticia.setBounds(171, 96, 344, 41);
+			txTituloNoticia.setBounds(201, 98, 344, 41);
 			txTituloNoticia.setColumns(10);
 		}
 		return txTituloNoticia;
@@ -148,12 +154,11 @@ public class Frame22759 extends JFrame{
 		}
 		return lbCuerpo;
 	}
-	private JTextArea getTextArea() {
-		if (textArea == null) {
-			textArea = new JTextArea();
-			textArea.setBounds(229, 251, 314, 98);
+	private JTextArea getTextAreaCuerpo() {
+		if (textAreaCuerpo == null) {
+			textAreaCuerpo = new JTextArea();
 		}
-		return textArea;
+		return textAreaCuerpo;
 	}
 	private JButton getBtAñadirImagen() {
 		if (btAñadirImagen == null) {
@@ -172,7 +177,20 @@ public class Frame22759 extends JFrame{
 	private void abrirImagenes() {
 		int resp=getSelector().showOpenDialog(null);
 		if(resp==JFileChooser.APPROVE_OPTION) {
-			service.insertarNoticia();
+			File img=getSelector().getSelectedFile();
+			String dest="/ips2023pl21/imagenes";
+			Path destino=Paths.get(dest);
+			String org=img.getPath();
+			Path origen=Paths.get(org);
+			try {
+				Files.copy(origen, destino);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			String titulo=getTxTituloNoticia().getText();
+			String subtitulo=getTxSubtitulo().getText();
+			String cuerpo=getTextAreaCuerpo().getText();
+			service.insertarNoticia(titulo, subtitulo, cuerpo, dest);
 		}
 	}
 	
@@ -186,5 +204,13 @@ public class Frame22759 extends JFrame{
 			selector.setCurrentDirectory(new File(ruta));
 		}
 		return selector;
+	}
+	private JScrollPane getScrollPaneCuerpo() {
+		if (scrollPaneCuerpo == null) {
+			scrollPaneCuerpo = new JScrollPane();
+			scrollPaneCuerpo.setBounds(185, 225, 360, 152);
+			scrollPaneCuerpo.setViewportView(getTextAreaCuerpo());
+		}
+		return scrollPaneCuerpo;
 	}
 }
