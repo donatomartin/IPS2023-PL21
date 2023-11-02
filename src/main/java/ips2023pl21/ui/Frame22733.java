@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.Dimension;
+
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import java.awt.FlowLayout;
@@ -91,6 +93,8 @@ public class Frame22733 extends JFrame{
 		getContentPane().add(getPanelTitulo(), BorderLayout.NORTH);
 		getContentPane().add(getPanelBotonesSur(), BorderLayout.SOUTH);
 		this.frame.setBounds(0,0,50,50);
+		this.frame.setMinimumSize(new Dimension(840,840));
+		getContentPane().setMinimumSize(new Dimension(840,840));
 		setLocationRelativeTo(null);
 		pintaAsientos();
 	}
