@@ -92,21 +92,18 @@ public class Frame22733 extends JFrame{
 		getContentPane().add(getPanelEscoger(), BorderLayout.CENTER);
 		getContentPane().add(getPanelTitulo(), BorderLayout.NORTH);
 		getContentPane().add(getPanelBotonesSur(), BorderLayout.SOUTH);
-		this.frame.setBounds(0,0,50,50);
-		this.frame.setMinimumSize(new Dimension(840,840));
-		getContentPane().setMinimumSize(new Dimension(840,840));
+		setMinimumSize(new Dimension(1540,540));
 		setLocationRelativeTo(null);
 		pintaAsientos();
 	}
 	private void pintaAsientos() {
 		for(int i=0;i<NUMFILAS;i++) {
 			for(int j=0;j<NUMCOLUMNAS;j++) {
-				JButton boton=new JButton(""+i+j);
+				JButton boton=new JButton();
 				boton.setName(""+i+j);
 				boton.setBackground(Color.green);
 				boton.setForeground(Color.green);
 				boton.setEnabled(false);
-				
 				panelAsientosOcupados.add(boton);
 			}
 			
