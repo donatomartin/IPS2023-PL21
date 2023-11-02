@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
+import ips2023pl21.model.activos.Instalacion;
 import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
@@ -40,6 +41,18 @@ public class Persistence {
 		db.executeUpdate(
 				"insert into Entrevista(fechaEntrevista, datosMedio, horaInicio, horaFin, eid) values (?,?,?,?,?)",
 				fechaSel, datosMedio, horaInicio, horaFin, eid);
+	}
+	
+	// INSTALACIONES
+	
+	public List<Instalacion> selectInstalaciones() {
+		List<Instalacion> result = db.executeQueryPojo(Instalacion.class, "select * from Instalacion");
+		return result;
+	}
+	
+	public Instalacion getInstalacion(int id) {
+		return db.executeQueryPojo(Instalacion.class, "select * from Instalacion where id=?", id)
+				.get(0);
 	}
 
 	// EMPLEADOS
@@ -210,13 +223,6 @@ public class Persistence {
 				.executeQueryPojo(FranjaPuntual.class, "select * from FranjaPuntual where fechaPuntual=?", fechaPuntual)
 				.stream().sorted().collect(Collectors.toList());
 		;
-		return result;
-	}
-	
-	// JARDINEROS
-	
-	public List<EmpleadoNoDeportivo> selectJardineros() {
-		List<EmpleadoNoDeportivo> result = db.executeQueryPojo(EmpleadoNoDeportivo.class, "select * from empleadonodeportivo where posicion=jardinero");
 		return result;
 	}
 

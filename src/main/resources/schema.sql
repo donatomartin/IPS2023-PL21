@@ -153,7 +153,6 @@ create table Entrada(
 --Instalaciones
 drop table Instalacion;
 create table Instalacion(
-	id varchar(30) not null,
-	nombreInstalacion varchar(30) not null,
-	primary key (id)
+	id integer primary key autoincrement,
+	nombreInstalacion varchar(30) not null
 );

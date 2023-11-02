@@ -1,11 +1,11 @@
 package ips2023pl21.model.activos;
 
-public class Instalaciones {
+public class Instalacion {
 
 	private String id;
 	private String nombreInstalacion;
 	
-	public Instalaciones() {}
+	public Instalacion() {}
 	
 	public String getId() {
 		return id;
@@ -18,6 +18,11 @@ public class Instalaciones {
 	}
 	public void setNombreInstalacion(String nombre) {
 		this.nombreInstalacion = nombre;
+	}
+	
+	@Override
+	public String toString() {
+		return id + " " + nombreInstalacion + " ";
 	}
 	
 }

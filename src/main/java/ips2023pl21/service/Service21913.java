@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import ips2023pl21.model.activos.Instalaciones;
+import ips2023pl21.model.activos.Instalacion;
 import ips2023pl21.model.horarios.HorariosEquipos;
 import ips2023pl21.model.horarios.franjas.FranjaReservas;
 import ips2023pl21.model.ventas.Reservas;
@@ -50,7 +50,7 @@ public class Service21913 {
 	private Map<LocalDateTime, LocalDateTime> horasDisponibles = new TreeMap<>();
 	private Map<FranjaReservas, Boolean> franjasHorarias = new TreeMap<FranjaReservas, Boolean>();
 	private FranjaReservas franjaSeleccionada;
-	private List<Instalaciones> instalaciones = new ArrayList<Instalaciones>();
+	private List<Instalacion> instalaciones = new ArrayList<Instalacion>();
 	private String idCampo;
 	
 	public Service21913() {
@@ -89,7 +89,7 @@ public class Service21913 {
 		return franjaSeleccionada;
 	}
 	
-	public List<Instalaciones> getInstalaciones(){
+	public List<Instalacion> getInstalaciones(){
 		return instalaciones;
 	}
 	
@@ -201,13 +201,13 @@ public class Service21913 {
 				horaEntrada, horaSalida, minutoEntrada, minutoSalida,fecha,horaReserva,minutoReserva);
 	}
 	
-	public List<Instalaciones> cargarInstalaciones() {
-		return db.executeQueryPojo(Instalaciones.class, OBTENER_INSTALACIONES);
+	public List<Instalacion> cargarInstalaciones() {
+		return db.executeQueryPojo(Instalacion.class, OBTENER_INSTALACIONES);
 	}
 	
 	public void cargarInstalacionSeleccionada(String campo) {
-		List<Instalaciones> inst = 
-				db.executeQueryPojo(Instalaciones.class, OBTENER_IDCAMPO, campo);
+		List<Instalacion> inst = 
+				db.executeQueryPojo(Instalacion.class, OBTENER_IDCAMPO, campo);
 		this.idCampo = inst.get(0).getId();
 	}
 }

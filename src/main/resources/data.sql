@@ -32,12 +32,12 @@ insert into horarioequipo(idequipo,fecha,horaentrada,horasalida,minutoentrada,mi
 	('eq2', '2024-01-01', 18, 19, 15, 30, 'c1');
 	
 delete from instalacion;
-insert into instalacion(id, nombreinstalacion) values 
-	('c1', 'Campo 1'),
-	('c2', 'Campo 2'),
-	('c3', 'Campo 3'),
-	('c4', 'Campo 4'),
-	('c5', 'Campo 5');
+insert into instalacion(nombreinstalacion) values 
+	('Campo 1'),
+	('Campo 2'),
+	('Campo 3'),
+	('Campo 4'),
+	('Campo 5');
 	
 delete from venta;
 insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchandising', '2023-10-13', '20','05',30),

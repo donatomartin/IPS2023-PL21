@@ -5,7 +5,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import ips2023pl21.model.activos.Instalaciones;
+import ips2023pl21.model.activos.Instalacion;
 import ips2023pl21.model.horarios.franjas.FranjaReservas;
 import ips2023pl21.service.Service21913;
 
@@ -962,7 +962,7 @@ public class Frame21913 extends JFrame {
 		if (cbCampos == null) {
 			cbCampos = new JComboBox<String>();
 			cbCampos.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			for (Instalaciones s : cs.cargarInstalaciones()) {
+			for (Instalacion s : cs.cargarInstalaciones()) {
 				cbCampos.addItem(s.getNombreInstalacion());
 			}
 		}
