@@ -10,6 +10,8 @@ import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
 import java.awt.CardLayout;
+import java.awt.Dimension;
+
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -49,6 +51,8 @@ public class Frame22759 extends JFrame{
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(getPnIntro(), "name_491152897869100");
 		getContentPane().add(getPanel_1(), "name_491262234128700");
+		setLocationRelativeTo(null);
+		setMinimumSize(new Dimension(500,400));
 	}
 	
 
