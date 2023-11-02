@@ -157,3 +157,12 @@ create table Instalacion(
 	nombreInstalacion varchar(30) not null,
 	primary key (id)
 );
+
+--Abono
+drop table Abono;
+create table Abono(
+	titulo varchar(30) not null,
+	subtitulo varchar(30),´
+	cuerpo varchar(500),
+	img varchar(30)
+);
