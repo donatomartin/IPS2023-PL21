@@ -65,12 +65,24 @@ create table HorarioEquipo(
     foreign key(idInstalacion) references Instalacion(id)
 );
 
+-- Equipo
 drop table Equipo;
 create table Equipo(
-    id integer primary key autoincrement,
-    nombre varchar(30),
+    id varchar(30) primary key ,
+    nombre varchar(30) unique,
     categoria varchar(30),
     esFilial boolean
+);
+
+-- Partido
+drop table Partido;
+create table Partido(
+	idEquipo varchar(30),
+	equipoVisitante varchar(30) not null,
+	fecha varchar(10) not null,
+	suplemento real,
+	primary key(idEquipo, equipoVisitante, fecha),
+	foreign key(idEquipo) references Equipo(id)
 );
 
 -- Entrevista

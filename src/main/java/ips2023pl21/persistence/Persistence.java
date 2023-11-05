@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
+import ips2023pl21.model.equipos.CategoriaEquipo;
+import ips2023pl21.model.equipos.EquipoDeportivo;
+import ips2023pl21.model.equipos.EquipoEnFormacion;
+import ips2023pl21.model.equipos.EquipoProfesional;
+import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
@@ -211,6 +216,50 @@ public class Persistence {
 				.stream().sorted().collect(Collectors.toList());
 		;
 		return result;
+	}
+	
+	// EQUIPOS 
+	
+	public void insertEquipo(EquipoDeportivo equipo) {
+		CategoriaEquipo categoria = null;
+		boolean filial = false;
+		
+		if(equipo instanceof EquipoEnFormacion) {
+			categoria = ((EquipoEnFormacion)equipo).categoria;
+		} else {
+			filial = ((EquipoProfesional) equipo).isFilial();
+		}
+		db.executeUpdate("insert into Equipo(nombre, categoria, esFilial) values (?,?,?)", equipo.getNombre(),categoria, filial);
+	}
+	
+	public List<EquipoDeportivo> selectEquipo(){
+		List<Object[]> equipos = db.executeQueryArray("select * from Equipo");
+		List<EquipoDeportivo> ret = new ArrayList<>();
+		
+		for(Object[] o : equipos) {
+			EquipoDeportivo equipo = new EquipoDeportivo();
+			
+			equipo.setNombre(o[1].toString());
+
+			ret.add(equipo);
+		}
+		return ret;
+	}
+	
+	public List<EquipoDeportivo> selectEquipoByNombre(String nombre) {
+		return db.executeQueryPojo(EquipoDeportivo.class, "select * from Equipo where nombre = ",nombre);
+	}
+	
+	
+	// PARTIDOS
+	
+	public void insertPartido(Partido partido) {
+		db.executeUpdate("insert into Partido(idEquipo, equipoVisitante, fecha, suplemento)", 
+				partido.getLocal().getId(), partido.getVisitante(),partido.getFecha(),partido.getSuplemento());
+	}
+
+	public List<Partido> selectPartidosForId(String id) {
+		return db.executeQueryPojo(Partido.class ,"select * from Partido where idEquipo = ?", id);
 	}
 
 }
