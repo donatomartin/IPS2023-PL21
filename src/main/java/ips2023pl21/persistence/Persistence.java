@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
+import ips2023pl21.model.acciones.AmpliacionCapital;
 import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
@@ -212,5 +213,27 @@ public class Persistence {
 		;
 		return result;
 	}
+	
+	//CAPITAL CLUB
+	public float getCapitalClub() {
+		List<AmpliacionCapital> ac = db.
+				executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
+		float result = ac.get(0).getCapitalTotal();
+		return result;
+	}
 
+	public float getPrecioPorAccion() {
+		List<AmpliacionCapital> ac = db.
+				executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
+		float result = ac.get(0).getPrecioAccion();
+		return result;
+	}
+	
+	public void insertAmpliacion(int accionesNuevas) {
+		db.executeUpdate("update ampliacioncapital set faseUno = ?", accionesNuevas);
+	}
+	
+	public void updateLimiteFaseUno() {
+		db.executeUpdate("update accionista set limiteAccionesFaseUno = numeroAcciones");
+	}
 }

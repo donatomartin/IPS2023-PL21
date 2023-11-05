@@ -13,6 +13,7 @@ import ips2023pl21.service.Service21913;
 import ips2023pl21.service.Service21915;
 import ips2023pl21.service.Service21917;
 import ips2023pl21.service.Service21918;
+import ips2023pl21.service.Service22748_9;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,6 +27,7 @@ import java.awt.event.ActionEvent;
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static Service22748_9 s22748_9 = new Service22748_9();
 	private JPanel contentPane;
 	private JPanel pnCentro;
 	private JPanel pnNorte;
@@ -171,6 +173,20 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
+	
+	private static void run22749() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame22749 frame = new Frame22749(s22748_9);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
 			pnCentro = new JPanel();
@@ -318,6 +334,11 @@ public class MainFrame extends JFrame {
 	private JButton getBtn22749() {
 		if (btn22749 == null) {
 			btn22749 = new JButton("22749");
+			btn22749.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run22749();
+				}
+			});
 		}
 		return btn22749;
 	}
