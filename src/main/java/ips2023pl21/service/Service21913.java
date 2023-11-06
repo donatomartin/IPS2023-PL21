@@ -51,7 +51,7 @@ public class Service21913 {
 	private Map<FranjaReservas, Boolean> franjasHorarias = new TreeMap<FranjaReservas, Boolean>();
 	private FranjaReservas franjaSeleccionada;
 	private List<Instalacion> instalaciones = new ArrayList<Instalacion>();
-	private String idCampo;
+	private int idCampo;
 	
 	public Service21913() {
 		//Cargar base de datos
