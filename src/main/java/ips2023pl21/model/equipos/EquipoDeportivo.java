@@ -2,8 +2,6 @@ package ips2023pl21.model.equipos;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
-
 import ips2023pl21.model.Empleado;
 import ips2023pl21.persistence.Persistence;
 
@@ -13,14 +11,14 @@ public class EquipoDeportivo {
 
 	private Persistence p = Persistence.getInstance();
 
-	private String id = UUID.randomUUID().toString();
+	private String id;
 	private String nombre;
 	private Empleado primerEntrenador;
 	private Empleado segundoEntrenador;
 	private List<Empleado> jugadoresEquipo = new ArrayList<Empleado>();
 	
 	public EquipoDeportivo() {	
-	};
+	}
 
 	public String getId() {
 		return this.id;
@@ -109,6 +107,11 @@ public class EquipoDeportivo {
 
 	public void añadirEquipo() {
 		p.insertEquipo(this);
+	}
+
+	public void setId(String id) {
+		this.id = id;
+		
 	}
 
 }

@@ -78,3 +78,8 @@ insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, produ
 
 delete from Equipo;
 insert into Equipo(id, nombre, categoria, esFilial) values ('1','nombre','categoria', false);
+insert into Equipo(id, nombre, categoria, esFilial) values ('2','nombre2','categoria2', true);
+
+delete from Partido;
+insert into Partido(idEquipo, equipoVisitante, fecha, suplemento) values ('1', 'visitante', 'fecha', 10);
+

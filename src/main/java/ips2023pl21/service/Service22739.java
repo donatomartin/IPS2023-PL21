@@ -3,6 +3,7 @@ package ips2023pl21.service;
 import java.util.List;
 
 import ips2023pl21.model.equipos.EquipoDeportivo;
+import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.persistence.Persistence;
 
 public class Service22739 {
@@ -14,7 +15,17 @@ public class Service22739 {
 	}
 
 	public EquipoDeportivo getEquipoPorNombre(String string) {
-		return p.selectEquipoByNombre(string).get(0);
+		return p.selectEquipoByNombre(string);
+		
+	}
+
+	public void insertPartido(Partido partido) {
+		p.insertPartido(partido);
+		
+	}
+
+	public List<Partido> getPartidosPorEquipo(String id) {
+		return p.selectPartidosForId(id);
 	}
 	
 	

@@ -246,15 +246,26 @@ public class Persistence {
 		return ret;
 	}
 	
-	public List<EquipoDeportivo> selectEquipoByNombre(String nombre) {
-		return db.executeQueryPojo(EquipoDeportivo.class, "select * from Equipo where nombre = ",nombre);
+	public EquipoDeportivo selectEquipoByNombre(String nombre) {
+		
+		List<Object[]> equipos = db.executeQueryArray("select * from Equipo where nombre = ?",nombre);
+		EquipoDeportivo ret = new EquipoDeportivo();
+		
+		for(Object[] o : equipos) {
+			ret.setId(o[0].toString());
+			ret.setNombre(o[1].toString());
+			
+//			equipo.setCategoria(o[2]);
+//			equipo.setFilial(o[3]);
+		}
+		return ret;
 	}
 	
 	
 	// PARTIDOS
 	
 	public void insertPartido(Partido partido) {
-		db.executeUpdate("insert into Partido(idEquipo, equipoVisitante, fecha, suplemento)", 
+		db.executeUpdate("insert into Partido(idEquipo, equipoVisitante, fecha, suplemento) values (?,?,?,?)", 
 				partido.getLocal().getId(), partido.getVisitante(),partido.getFecha(),partido.getSuplemento());
 	}
 

@@ -11,6 +11,8 @@ public class Partido {
 	private String fecha;
 	private float suplemento;
 	
+	public Partido(){}
+	
 	public EquipoDeportivo getLocal() {
 		return local;
 	}
