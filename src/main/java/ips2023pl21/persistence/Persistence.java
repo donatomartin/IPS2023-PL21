@@ -10,6 +10,7 @@ import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.model.horarios.franjas.FranjaPuntual;
 import ips2023pl21.model.horarios.franjas.FranjaSemanal;
+import ips2023pl21.model.noticias.Noticia;
 import ips2023pl21.util.Database;
 
 public class Persistence {
@@ -217,6 +218,11 @@ public class Persistence {
 	//NOTICIAS
 	public void insertNoticia(String titulo, String subtitulo, String cuerpo, String img) {
 		db.executeUpdate("insert into noticia (titulo, subtitulo, cuerpo, img) values (?,?,?,?)", titulo, subtitulo, cuerpo, img);
+	}
+
+	public List<Noticia> selectNoticias() {
+		return db.executeQueryPojo(Noticia.class, "select * from noticia");
+		
 	}
 
 }

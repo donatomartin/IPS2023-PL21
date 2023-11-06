@@ -2,10 +2,15 @@ package ips2023pl21.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.BorderLayout;
 import java.awt.Font;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Window;
+
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
@@ -15,15 +20,20 @@ import java.awt.Dimension;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import ips2023pl21.model.noticias.Noticia;
 import ips2023pl21.service.Service22759;
 
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.Stack;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import java.awt.Color;
@@ -34,7 +44,17 @@ import com.jgoodies.forms.layout.RowSpec;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.BoxLayout;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
+import javax.swing.SpringLayout;
 
 public class Frame22759 extends JFrame{
 	private Service22759 service;
@@ -46,9 +66,7 @@ public class Frame22759 extends JFrame{
 	private JPanel pnAñadirNoticia;
 	private JLabel lbTituloAñadir;
 	private JLabel lbTituloNoticia;
-	private JTextField txTituloNoticia;
 	private JLabel lbSubtituloNoticia;
-	private JTextField txSubtitulo;
 	private JLabel lbCuerpo;
 	private JTextArea textAreaCuerpo;
 	private JButton btAñadirImagen;
@@ -61,22 +79,49 @@ public class Frame22759 extends JFrame{
 	private JPanel pnVisualizar;
 	private JPanel pnTituloVisualizar;
 	private JLabel lbTituloAñadir_1;
-	private JLabel lbTituloNoticiaActual;
 	private JPanel pnEscogerNoticia;
 	private JLabel lbTituloEsogerNoticia;
 	private JPanel pnNoticias;
 	private static final int NUMERO_NOTICIAS=5;
-	
+	private JPanel pnBotonesEscoger;
+	private JButton btAtrasEscoger;
+	private JPanel pnTituloEscoger;
+	private JPanel pnNoticiaActual;
+	private JLabel lbImagenNoticiaActual;
+	private JScrollPane scrollPaneCuerpoNoticiaActual;
+	private JTextArea textAreaCuerpoNoticiaActual;
+	private String dest; //ruta de la imagen a añadir
+	private JButton btAtrasAñadir;
+	private JPanel pnBotonesVisualizar;
+	private JButton btAtrasVisualizar;
+	private JPanel pnCentroVisualizar;
+	private JButton btSiguiente;
+	private int pagina=5; //para identificar las paginas
+	private int numPagina=0;
+	private List<Noticia> noticiasStack=new Stack<Noticia>();
+	private int count=0;
+	private int numNoticias=0;
+	private JScrollPane scrollPaneTitulo;
+	private JScrollPane scrollPaneIAñadirTitulo;
+	private JTextArea textAreaAñadirTitulo;
+	private JPanel pnAñadirTitulo;
+	private JScrollPane scrollPaneAñadirSubtitulo;
+	private JTextArea textAreaAñadirSubtitulo;
+	private JPanel pnAñadirSubtitulo;
+	private JPanel pnAñadirCuerpo;
+	private JTextArea textAreaTituloVisualizar;
+	private JScrollPane scrollPaneTSuntituloNoticiaActual;
+	private JTextArea textAreaSubtituloNoticiaActual;
 	
 	public Frame22759(Service22759 service ) {
 		this.service=service;
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(getPnIntro(), "intro");
 		getContentPane().add(getPanel_1(), "añadir");
-		getContentPane().add(getPanel_1_3(), "name_581097196720000");
+		getContentPane().add(getPanel_1_3(), "visualizar");
 		getContentPane().add(getPanel_1_4(), "escogerNoticia");
 		setLocationRelativeTo(null);
-		setMinimumSize(new Dimension(700,500));
+		setMinimumSize(new Dimension(700,700));
 	}
 	
 
@@ -117,10 +162,87 @@ public class Frame22759 extends JFrame{
 	private JButton getBtVisualizarNoticia() {
 		if (btVisualizarNoticia == null) {
 			btVisualizarNoticia = new JButton("Visualizar noticia");
+			btVisualizarNoticia.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+//					crearPanelEscogerNoticias();
+					showPn("escogerNoticia");
+				}
+			});
 			btVisualizarNoticia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
 		return btVisualizarNoticia;
 	}
+	
+	private JPanel crearPanelEscoger() {
+		if(pnEscogerNoticia==null) {
+			pnEscogerNoticia = new JPanel();
+			pnEscogerNoticia.setLayout(new BorderLayout(0, 0));
+			pnEscogerNoticia.add(getPanel_1_5());
+			pnEscogerNoticia.add(getPanel_1_6(), BorderLayout.SOUTH);
+			pnEscogerNoticia.add(getPnTituloEscoger(), BorderLayout.NORTH);
+		}
+	return pnEscogerNoticia;
+}
+	
+	private JPanel getPanel_1_5() {
+//		if(pnNoticias==null) {
+			return crearPanelEscogerNoticias();
+//		}
+//		return pnNoticias;
+	}
+	private JPanel crearPanelEscogerNoticias() {
+			numPagina++;
+			pnNoticias = new JPanel();
+			pnNoticias.setLayout(new GridLayout(5, 0, 0, 0));
+//			numNoticias=noticiasStack.size();
+			for(int i=0; i<NUMERO_NOTICIAS ;i++) {
+//				if( i<numNoticias) {
+//					count=i;
+					JButton boton=new JButton("Noticia "+i);
+					boton.setName("btnNoticia"+i);
+					boton.setMnemonic(i);
+					boton.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							noticiasStack=service.getNoticias();
+							comprobarNoticias(boton.getMnemonic(), noticiasStack.size());
+							showPn("visualizar");
+							
+							}
+//							
+						}
+						);
+						
+						pnNoticias.add(boton);
+						count++;
+					}
+//				}
+				
+				
+				
+						return pnNoticias;
+			}
+	
+	private void comprobarNoticias(int id, int numNoticias) {
+		System.out.println(numNoticias);
+		System.out.print(id);
+		if(NUMERO_NOTICIAS*(numPagina-1)+id*numPagina>=numNoticias) {
+			textAreaTituloVisualizar.setText("No hay noticia");
+		}else {
+			Noticia noticia=noticiasStack.get(NUMERO_NOTICIAS*(numPagina-1)+ id*numPagina);
+			cargarNoticias(noticia);
+		}
+	}
+	
+
+	private JPanel getPanel_1_6() {
+		if (pnBotonesEscoger == null) {
+			pnBotonesEscoger = new JPanel();
+			pnBotonesEscoger.add(getBtAtrasEscoger());
+			pnBotonesEscoger.add(getBtSiguiente());
+		}
+		return pnBotonesEscoger;
+	}
+	
 	private JPanel getPnIntro() {
 		if (pnIntro == null) {
 			pnIntro = new JPanel();
@@ -136,7 +258,6 @@ public class Frame22759 extends JFrame{
 			pnAñadirNoticia.setMinimumSize(new Dimension(400,400));
 			pnAñadirNoticia.setLayout(new BorderLayout(0, 0));
 			pnAñadirNoticia.add(getPanel_1_1());
-			pnAñadirNoticia.add(getPnBotones(), BorderLayout.SOUTH);
 			pnAñadirNoticia.add(getPanel_1_2(), BorderLayout.NORTH);
 		}
 		return pnAñadirNoticia;
@@ -155,26 +276,12 @@ public class Frame22759 extends JFrame{
 		}
 		return lbTituloNoticia;
 	}
-	private JTextField getTxTituloNoticia() {
-		if (txTituloNoticia == null) {
-			txTituloNoticia = new JTextField();
-			txTituloNoticia.setColumns(10);
-		}
-		return txTituloNoticia;
-	}
 	private JLabel getLbSubtituloNoticia() {
 		if (lbSubtituloNoticia == null) {
 			lbSubtituloNoticia = new JLabel("Introduzca subtítulo:");
 			lbSubtituloNoticia.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		}
 		return lbSubtituloNoticia;
-	}
-	private JTextField getTxSubtitulo() {
-		if (txSubtitulo == null) {
-			txSubtitulo = new JTextField();
-			txSubtitulo.setColumns(10);
-		}
-		return txSubtitulo;
 	}
 	private JLabel getLbCuerpo() {
 		if (lbCuerpo == null) {
@@ -186,6 +293,8 @@ public class Frame22759 extends JFrame{
 	private JTextArea getTextAreaCuerpo() {
 		if (textAreaCuerpo == null) {
 			textAreaCuerpo = new JTextArea();
+			textAreaCuerpo.setWrapStyleWord(true);
+			textAreaCuerpo.setLineWrap(true);
 		}
 		return textAreaCuerpo;
 	}
@@ -206,19 +315,16 @@ public class Frame22759 extends JFrame{
 		int resp=getSelector().showOpenDialog(null);
 		if(resp==JFileChooser.APPROVE_OPTION) {
 			File img=getSelector().getSelectedFile();
-			String dest="/ips2023pl21/imagenes";
+			dest=System.getProperty("user.dir")+"/imagenes/"+img.getName();
 			Path destino=Paths.get(dest);
 			String org=img.getPath();
 			Path origen=Paths.get(org);
 			try {
-				Files.copy(origen, destino);
+				Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			String titulo=getTxTituloNoticia().getText();
-			String subtitulo=getTxSubtitulo().getText();
-			String cuerpo=getTextAreaCuerpo().getText();
-			service.insertarNoticia(titulo, subtitulo, cuerpo, dest);
+		
 		}
 	}
 	
@@ -247,46 +353,28 @@ public class Frame22759 extends JFrame{
 			gl_pnCentro.setHorizontalGroup(
 				gl_pnCentro.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_pnCentro.createSequentialGroup()
-						.addGap(33)
-						.addGroup(gl_pnCentro.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_pnCentro.createSequentialGroup()
-								.addGroup(gl_pnCentro.createParallelGroup(Alignment.LEADING)
-									.addComponent(getLbSubtituloNoticia(), GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-									.addComponent(getLbCuerpo(), GroupLayout.PREFERRED_SIZE, 160, GroupLayout.PREFERRED_SIZE))
-								.addGap(53))
-							.addGroup(gl_pnCentro.createSequentialGroup()
-								.addComponent(getLbTituloNoticia(), GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
-								.addPreferredGap(ComponentPlacement.RELATED)))
-						.addGroup(gl_pnCentro.createParallelGroup(Alignment.LEADING)
-							.addComponent(getTxSubtitulo(), GroupLayout.DEFAULT_SIZE, 519, Short.MAX_VALUE)
-							.addComponent(getScrollPaneCuerpo(), GroupLayout.DEFAULT_SIZE, 366, Short.MAX_VALUE)
-							.addComponent(getTxTituloNoticia(), GroupLayout.PREFERRED_SIZE, 508, GroupLayout.PREFERRED_SIZE))
+						.addComponent(getPanel_1_10(), GroupLayout.DEFAULT_SIZE, 697, Short.MAX_VALUE)
+						.addGap(18))
+					.addGroup(gl_pnCentro.createSequentialGroup()
+						.addComponent(getPnBotones(), GroupLayout.DEFAULT_SIZE, 705, Short.MAX_VALUE)
 						.addContainerGap())
+					.addGroup(Alignment.TRAILING, gl_pnCentro.createSequentialGroup()
+						.addGroup(gl_pnCentro.createParallelGroup(Alignment.TRAILING)
+							.addComponent(getPanel_1_11(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE)
+							.addComponent(getPanel_1_12(), GroupLayout.DEFAULT_SIZE, 692, Short.MAX_VALUE))
+						.addGap(23))
 			);
 			gl_pnCentro.setVerticalGroup(
 				gl_pnCentro.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_pnCentro.createSequentialGroup()
-						.addGap(34)
-						.addGroup(gl_pnCentro.createParallelGroup(Alignment.BASELINE)
-							.addComponent(getTxTituloNoticia(), GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE)
-							.addComponent(getLbTituloNoticia(), GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE))
-						.addGap(4)
-						.addGroup(gl_pnCentro.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_pnCentro.createSequentialGroup()
-								.addGap(101)
-								.addComponent(getLbCuerpo())
-								.addGap(106))
-							.addGroup(Alignment.TRAILING, gl_pnCentro.createSequentialGroup()
-								.addGroup(gl_pnCentro.createParallelGroup(Alignment.TRAILING)
-									.addGroup(gl_pnCentro.createSequentialGroup()
-										.addComponent(getLbSubtituloNoticia(), GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-										.addGap(30))
-									.addGroup(gl_pnCentro.createSequentialGroup()
-										.addComponent(getTxSubtitulo(), GroupLayout.PREFERRED_SIZE, 41, GroupLayout.PREFERRED_SIZE)
-										.addGap(18)))
-								.addGap(13)
-								.addComponent(getScrollPaneCuerpo(), GroupLayout.PREFERRED_SIZE, 152, GroupLayout.PREFERRED_SIZE)
-								.addGap(152))))
+						.addComponent(getPanel_1_10(), GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE)
+						.addGap(5)
+						.addComponent(getPanel_1_11(), GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(getPanel_1_12(), GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE)
+						.addGap(18)
+						.addComponent(getPnBotones(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap())
 			);
 			pnCentro.setLayout(gl_pnCentro);
 		}
@@ -296,6 +384,7 @@ public class Frame22759 extends JFrame{
 		if (pnBotones == null) {
 			pnBotones = new JPanel();
 			pnBotones.add(getBtAñadirImagen());
+			pnBotones.add(getBtAtrasAñadir());
 			pnBotones.add(getBtFinalizar());
 		}
 		return pnBotones;
@@ -303,9 +392,34 @@ public class Frame22759 extends JFrame{
 	private JButton getBtFinalizar() {
 		if (btFinalizar == null) {
 			btFinalizar = new JButton("Finalizar");
+			btFinalizar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					insertarNoticia();
+				}
+
+			});
 			btFinalizar.setBackground(Color.GREEN);
 		}
 		return btFinalizar;
+	}
+	
+	private void insertarNoticia() {
+		String titulo=textAreaAñadirTitulo.getText();
+		if(titulo.isBlank()) {
+			JOptionPane.showMessageDialog(null, "El título no puede estar vacío");
+		}else {
+			String subtitulo=getTextAreaAñadirSubtitulo().getText();
+			String cuerpo=getTextAreaCuerpo().getText();
+			if(cuerpo.isBlank()) {
+				JOptionPane.showMessageDialog(null, "El cuerpo no puede estar vacío");
+			}else {
+				service.insertarNoticia(titulo, subtitulo, cuerpo, dest);
+				JOptionPane.showMessageDialog(null, "Noticia insertada correctamente");
+				textAreaAñadirTitulo.setText("");
+				getTextAreaAñadirSubtitulo().setText("");
+				getTextAreaCuerpo().setText("");
+			}
+		}
 	}
 	private JPanel getPanel_1_2() {
 		if (pnTitulo == null) {
@@ -317,16 +431,20 @@ public class Frame22759 extends JFrame{
 	private JPanel getPanel_1_3() {
 		if (pnVisualizar == null) {
 			pnVisualizar = new JPanel();
-			pnVisualizar.setLayout(null);
-			pnVisualizar.add(getPnTituloVisualizar());
-			pnVisualizar.add(getLbTituloNoticiaActual());
+			pnVisualizar.setLayout(new BorderLayout(0, 0));
+			pnVisualizar.add(getPnTituloVisualizar(), BorderLayout.NORTH);
+			pnVisualizar.add(getPanel_1_7());
+			pnVisualizar.add(getPanel_1_8(), BorderLayout.SOUTH);
 		}
 		return pnVisualizar;
+		
 	}
+	
+	
+	
 	private JPanel getPnTituloVisualizar() {
 		if (pnTituloVisualizar == null) {
 			pnTituloVisualizar = new JPanel();
-			pnTituloVisualizar.setBounds(321, 5, 132, 51);
 			pnTituloVisualizar.add(getLbTituloAñadir_1());
 		}
 		return pnTituloVisualizar;
@@ -338,45 +456,258 @@ public class Frame22759 extends JFrame{
 		}
 		return lbTituloAñadir_1;
 	}
-	private JLabel getLbTituloNoticiaActual() {
-		if (lbTituloNoticiaActual == null) {
-			lbTituloNoticiaActual = new JLabel("New label");
-			lbTituloNoticiaActual.setBounds(37, 90, 223, 28);
-		}
-		return lbTituloNoticiaActual;
-	}
 	private JPanel getPanel_1_4() {
-		if (pnEscogerNoticia == null) {
-			pnEscogerNoticia = new JPanel();
-			pnEscogerNoticia.setLayout(null);
-			pnEscogerNoticia.add(getLbTituloEsogerNoticia());
-			pnEscogerNoticia.add(getPanel_1_5());
-		}
-		return pnEscogerNoticia;
+		return crearPanelEscoger();
 	}
 	private JLabel getLbTituloEsogerNoticia() {
 		if (lbTituloEsogerNoticia == null) {
 			lbTituloEsogerNoticia = new JLabel("Noticias");
-			lbTituloEsogerNoticia.setBounds(326, 5, 122, 41);
 			lbTituloEsogerNoticia.setFont(new Font("Verdana Pro Cond Black", Font.PLAIN, 33));
 		}
 		return lbTituloEsogerNoticia;
 	}
-	private JPanel getPanel_1_5() {
-		if (pnNoticias == null) {
-			pnNoticias = new JPanel();
-			pnNoticias.setBounds(41, 96, 673, 284);
-			pnNoticias.setLayout(new GridLayout(5, 0, 0, 0));
-			for(int i=0; i<NUMERO_NOTICIAS;i++) {
-				JButton boton=new JButton("btnNoticia"+i);
-				boton.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						showPn("escogerNoticia");
-					}
-				});
+	
+	
+	private void cargarNoticias(Noticia noticia) {
+		textAreaTituloVisualizar.setText(noticia.getTitulo());
+		textAreaSubtituloNoticiaActual.setText(noticia.getSubtititulo());
+		Image imgOriginal=new ImageIcon(noticia.getImg()).getImage();
+		
+		Image imgEscalada=imgOriginal.getScaledInstance(lbImagenNoticiaActual.getWidth(),
+				lbImagenNoticiaActual.getHeight(), Image.SCALE_SMOOTH);
+		lbImagenNoticiaActual.setIcon(new ImageIcon(imgEscalada));
+		textAreaCuerpoNoticiaActual.setText(noticia.getCuerpo());
 		}
 		
-}
-		return pnNoticias;
+	
+	private JButton getBtAtrasEscoger() {
+		if (btAtrasEscoger == null) {
+			btAtrasEscoger = new JButton("Atrás");
+			btAtrasEscoger.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					showPn("intro");
+				}
+			});
+			btAtrasEscoger.setBackground(Color.RED);
+		}
+		return btAtrasEscoger;
+	}
+	private JPanel getPnTituloEscoger() {
+		if (pnTituloEscoger == null) {
+			pnTituloEscoger = new JPanel();
+			pnTituloEscoger.add(getLbTituloEsogerNoticia());
+		}
+		return pnTituloEscoger;
+	}
+	private JPanel getPanel_1_7() {
+		if (pnNoticiaActual == null) {
+			pnNoticiaActual = new JPanel();
+			pnNoticiaActual.setLayout(new BoxLayout(pnNoticiaActual, BoxLayout.PAGE_AXIS));
+			pnNoticiaActual.add(getPanel_1_9());
+		}
+		return pnNoticiaActual;
+	}
+	private JLabel getLbImagenNoticiaActual() {
+		if (lbImagenNoticiaActual == null) {
+			lbImagenNoticiaActual = new JLabel("");
+		}
+		return lbImagenNoticiaActual;
+	}
+	private JScrollPane getScrollPaneCuerpoNoticiaActual() {
+		if (scrollPaneCuerpoNoticiaActual == null) {
+			scrollPaneCuerpoNoticiaActual = new JScrollPane();
+			scrollPaneCuerpoNoticiaActual.setEnabled(false);
+			scrollPaneCuerpoNoticiaActual.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPaneCuerpoNoticiaActual.setViewportView(getTextAreaCuerpoNoticiaActual());
+		}
+		return scrollPaneCuerpoNoticiaActual;
+	}
+	private JTextArea getTextAreaCuerpoNoticiaActual() {
+		if (textAreaCuerpoNoticiaActual == null) {
+			textAreaCuerpoNoticiaActual = new JTextArea();
+			textAreaCuerpoNoticiaActual.setFont(new Font("Arial", Font.PLAIN, 13));
+			textAreaCuerpoNoticiaActual.setWrapStyleWord(true);
+			textAreaCuerpoNoticiaActual.setLineWrap(true);
+			textAreaCuerpoNoticiaActual.setEditable(false);
+			
+		}
+		return textAreaCuerpoNoticiaActual;
+	}
+	private JButton getBtAtrasAñadir() {
+		if (btAtrasAñadir == null) {
+			btAtrasAñadir = new JButton("Atrás");
+			btAtrasAñadir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					showPn("intro");
+				}
+			});
+			btAtrasAñadir.setBackground(Color.RED);
+		}
+		return btAtrasAñadir;
+	}
+	private JPanel getPanel_1_8() {
+		if (pnBotonesVisualizar == null) {
+			pnBotonesVisualizar = new JPanel();
+			pnBotonesVisualizar.add(getBtAtrasVisualizar());
+		}
+		return pnBotonesVisualizar;
+	}
+	private JButton getBtAtrasVisualizar() {
+		if (btAtrasVisualizar == null) {
+			btAtrasVisualizar = new JButton("Atrás");
+			btAtrasVisualizar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					showPn("escogerNoticia");
+				}
+			});
+			btAtrasVisualizar.setBackground(Color.RED);
+		}
+		return btAtrasVisualizar;
+	}
+	private JPanel getPanel_1_9() {
+		if (pnCentroVisualizar == null) {
+			pnCentroVisualizar = new JPanel();
+			pnCentroVisualizar.setBackground(Color.WHITE);
+			GroupLayout gl_pnCentroVisualizar = new GroupLayout(pnCentroVisualizar);
+			gl_pnCentroVisualizar.setHorizontalGroup(
+				gl_pnCentroVisualizar.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
+						.addGroup(gl_pnCentroVisualizar.createParallelGroup(Alignment.LEADING)
+							.addGroup(Alignment.TRAILING, gl_pnCentroVisualizar.createSequentialGroup()
+								.addGap(7)
+								.addComponent(getScrollPaneTitulo(), GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE))
+							.addGroup(Alignment.TRAILING, gl_pnCentroVisualizar.createSequentialGroup()
+								.addGap(24)
+								.addComponent(getLbImagenNoticiaActual(), GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+								.addGap(42)
+								.addComponent(getScrollPaneTSuntituloNoticiaActual(), GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+								.addGap(58)))
+						.addGap(0))
+					.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
+						.addGap(7)
+						.addComponent(getScrollPaneCuerpoNoticiaActual())
+						.addGap(21))
+			);
+			gl_pnCentroVisualizar.setVerticalGroup(
+				gl_pnCentroVisualizar.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
+						.addGap(7)
+						.addComponent(getScrollPaneTitulo(), GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+						.addGap(27)
+						.addGroup(gl_pnCentroVisualizar.createParallelGroup(Alignment.LEADING)
+							.addComponent(getScrollPaneTSuntituloNoticiaActual(), GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
+							.addComponent(getLbImagenNoticiaActual(), GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
+						.addGap(18)
+						.addComponent(getScrollPaneCuerpoNoticiaActual(), GroupLayout.PREFERRED_SIZE, 310, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap())
+			);
+			pnCentroVisualizar.setLayout(gl_pnCentroVisualizar);
+		}
+		return pnCentroVisualizar;
+	}
+	private JButton getBtSiguiente() {
+		if (btSiguiente == null) {
+			btSiguiente = new JButton("Siguiente página");
+			btSiguiente.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					crearPanelEscogerNoticias();
+					showPn("escogerNoticia");
+					
+				}
+			});
+		}
+		return btSiguiente;
+	}
+	private JScrollPane getScrollPaneTitulo() {
+		if (scrollPaneTitulo == null) {
+			scrollPaneTitulo = new JScrollPane();
+			scrollPaneTitulo.setMaximumSize(new Dimension(3275, 3276));
+			scrollPaneTitulo.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPaneTitulo.setViewportView(getTextAreaTituloVisualizar());
+		}
+		return scrollPaneTitulo;
+	}
+	private JScrollPane getScrollPaneIAñadirTitulo() {
+		if (scrollPaneIAñadirTitulo == null) {
+			scrollPaneIAñadirTitulo = new JScrollPane();
+			scrollPaneIAñadirTitulo.setViewportView(getTextAreaAñadirTitulo());
+		}
+		return scrollPaneIAñadirTitulo;
+	}
+	private JTextArea getTextAreaAñadirTitulo() {
+		if (textAreaAñadirTitulo == null) {
+			textAreaAñadirTitulo = new JTextArea();
+			textAreaAñadirTitulo.setWrapStyleWord(true);
+			textAreaAñadirTitulo.setLineWrap(true);
+			
+		}
+		return textAreaAñadirTitulo;
+	}
+	private JPanel getPanel_1_10() {
+		if (pnAñadirTitulo == null) {
+			pnAñadirTitulo = new JPanel();
+			pnAñadirTitulo.setLayout(new BorderLayout(0, 0));
+			pnAñadirTitulo.add(getLbTituloNoticia(), BorderLayout.NORTH);
+			pnAñadirTitulo.add(getScrollPaneIAñadirTitulo());
+		}
+		return pnAñadirTitulo;
+	}
+	private JScrollPane getScrollPaneAñadirSubtitulo() {
+		if (scrollPaneAñadirSubtitulo == null) {
+			scrollPaneAñadirSubtitulo = new JScrollPane();
+			scrollPaneAñadirSubtitulo.setViewportView(getTextAreaAñadirSubtitulo());
+		}
+		return scrollPaneAñadirSubtitulo;
+	}
+	private JTextArea getTextAreaAñadirSubtitulo() {
+		if (textAreaAñadirSubtitulo == null) {
+			textAreaAñadirSubtitulo = new JTextArea();
+			textAreaAñadirSubtitulo.setWrapStyleWord(true);
+			textAreaAñadirSubtitulo.setLineWrap(true);
+		}
+		return textAreaAñadirSubtitulo;
+	}
+	private JPanel getPanel_1_11() {
+		if (pnAñadirSubtitulo == null) {
+			pnAñadirSubtitulo = new JPanel();
+			pnAñadirSubtitulo.setLayout(new BorderLayout(0, 0));
+			pnAñadirSubtitulo.add(getLbSubtituloNoticia(), BorderLayout.NORTH);
+			pnAñadirSubtitulo.add(getScrollPaneAñadirSubtitulo());
+		}
+		return pnAñadirSubtitulo;
+	}
+	private JPanel getPanel_1_12() {
+		if (pnAñadirCuerpo == null) {
+			pnAñadirCuerpo = new JPanel();
+			pnAñadirCuerpo.setLayout(new BorderLayout(0, 0));
+			pnAñadirCuerpo.add(getLbCuerpo(), BorderLayout.NORTH);
+			pnAñadirCuerpo.add(getScrollPaneCuerpo());
+		}
+		return pnAñadirCuerpo;
+	}
+	private JTextArea getTextAreaTituloVisualizar() {
+		if (textAreaTituloVisualizar == null) {
+			textAreaTituloVisualizar = new JTextArea();
+			textAreaTituloVisualizar.setFont(new Font("Arial Black", Font.PLAIN, 18));
+			textAreaTituloVisualizar.setEnabled(false);
+		}
+		return textAreaTituloVisualizar;
+	}
+	private JScrollPane getScrollPaneTSuntituloNoticiaActual() {
+		if (scrollPaneTSuntituloNoticiaActual == null) {
+			scrollPaneTSuntituloNoticiaActual = new JScrollPane();
+			scrollPaneTSuntituloNoticiaActual.setMaximumSize(new Dimension(3275, 3276));
+			scrollPaneTSuntituloNoticiaActual.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPaneTSuntituloNoticiaActual.setViewportView(getTextAreaSubtituloNoticiaActual());
+		}
+		return scrollPaneTSuntituloNoticiaActual;
+	}
+	private JTextArea getTextAreaSubtituloNoticiaActual() {
+		if (textAreaSubtituloNoticiaActual == null) {
+			textAreaSubtituloNoticiaActual = new JTextArea();
+			textAreaSubtituloNoticiaActual.setFont(new Font("Arial", Font.PLAIN, 17));
+			textAreaSubtituloNoticiaActual.setEditable(false);
+		}
+		return textAreaSubtituloNoticiaActual;
 	}
 	}

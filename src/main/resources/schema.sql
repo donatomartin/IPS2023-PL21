@@ -158,11 +158,11 @@ create table Instalacion(
 	primary key (id)
 );
 
---Abono
-drop table Abono;
-create table Abono(
+--Noticia
+drop table Noticia;
+create table Noticia(
 	titulo varchar(30) not null,
-	subtitulo varchar(30),´
+	subtitulo varchar(300),
 	cuerpo varchar(500),
 	img varchar(30)
 );
