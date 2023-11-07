@@ -23,13 +23,13 @@ insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telef
     
 delete from reserva;
 insert into reserva(nombreusuario,cuentabancaria,idinstalacion,precioreserva,fechareserva,horaentrada,horasalida,minutoentrada,minutosalida,fechaventa,horaventa,minutoventa) values
-	('aaa','1234567-k', 'c1',50,'2024-01-01',14,16,30,0,'2023-10-14',14,24),
-	('bbb','1234567-k', 'c2',50,'2024-01-01',14,16,30,0,'2023-10-14',14,24);
+	('aaa','1234567-k', 1,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24),
+	('bbb','1234567-k', 2,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24);
 	
 delete from horarioequipo;
 insert into horarioequipo(idequipo,fecha,horaentrada,horasalida,minutoentrada,minutosalida,idinstalacion) values
-	('eq1', '2024-01-01', 10, 12, 0, 30, 'c1'),
-	('eq2', '2024-01-01', 18, 19, 15, 30, 'c1');
+	('eq1', '2024-01-01', 10, 12, 0, 30, 1),
+	('eq2', '2024-01-01', 18, 19, 15, 30, 2);
 	
 delete from instalacion;
 insert into instalacion(nombreinstalacion) values 

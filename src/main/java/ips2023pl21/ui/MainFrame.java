@@ -168,6 +168,20 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
+	
+	private static void run22785() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame22785 frame = new Frame22785(new Service22785());
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	private static void run21918() {
 		EventQueue.invokeLater(new Runnable() {
@@ -359,6 +373,14 @@ public class MainFrame extends JFrame {
 	private JButton getBtn22785() {
 		if (btn22785 == null) {
 			btn22785 = new JButton("22785");
+			btn22785.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					run22785();
+				}
+				
+			});
 		}
 		return btn22785;
 	}

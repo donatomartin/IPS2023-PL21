@@ -76,9 +76,24 @@ create table HorarioJardineria(
     horaFin varchar(5) not null,
     iid int not null,
     eid int not null,
-    primary key (fechaJardineria, eid, iid),
-    foreign key (eid) references JugadorProfesional(eid),
-	foreign key (iid) references Instalacion(iid)
+    primary key(fechaJardineria, eid, iid),
+    foreign key(eid) references Empleado(eid),
+	foreign key(iid) references Instalacion(id)
+);
+
+-- HorarioEntrenamiento
+drop table HorarioEntrenamiento;
+create table HorarioEntrenamiento(
+	fechaEntrenamiento varchar(10) not null,
+	horaInicio varchar(5) not null,
+	horaFin varchar(5) not null,
+	enid int not null,
+	iid int not null,
+	eid int not null,
+	primary key(fechaEntrenamiento, enid, iid, eid),
+	foreign key(enid) references Empleado(eid),
+	foreign key(iid) references Instalacion(id),
+	foreign key(eid) references Equipo(id)
 );
 
 -- Entrevista
@@ -90,16 +105,20 @@ create table HorarioEntrevista (
     datosMedio varchar(30) not null,
     eid int,
     primary key (fechaEntrevista, eid),
-    foreign key (eid) references JugadorProfesional(eid)
+    foreign key (eid) references Empleado(eid)
 );
 
 -- Equipo
 drop table Equipo;
 create table Equipo(
     id integer primary key autoincrement,
+	peid int,
+	seid int,
     nombre varchar(30),
     categoria varchar(30),
-    esFilial boolean
+    esFilial boolean,
+	foreign key (peid) references Empleado(eid),
+	foreign key (peid) references Empleado(eid) 
 );
 
 -- Reserva

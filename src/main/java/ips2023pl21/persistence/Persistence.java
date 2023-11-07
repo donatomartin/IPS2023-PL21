@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
 import ips2023pl21.model.activos.Instalacion;
+import ips2023pl21.model.horarios.HorarioEntrenamiento;
 import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioJardineria;
 import ips2023pl21.model.horarios.HorarioPuntual;
@@ -355,5 +356,14 @@ public class Persistence {
 				"insert into HorarioJardineria (fechaJardineria, horaInicio, horaFin, eid, iid) values (?,?,?,?,?)",
 				fecha, horaInicio, horaFin, eid, id);
 	}
+	
+	// HORARIO ENTRENAMIENTO
+	
+	public List<HorarioEntrenamiento> selectHorariosEntrenamiento() {
+		List<HorarioEntrenamiento> result = db.executeQueryPojo(HorarioEntrenamiento.class,
+				"select * from HorarioEntrenamiento");
 
+		return result;
+	}
+	
 }
