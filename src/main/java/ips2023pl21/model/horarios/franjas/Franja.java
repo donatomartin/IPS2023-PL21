@@ -6,9 +6,13 @@ import java.time.temporal.ChronoUnit;
 
 public class Franja implements Comparable<Franja> {
 	
+	protected int eid;
 	protected String horaInicio;
 	protected String horaFin;
 	
+	public int getEid() {
+		return eid;
+	}
 	public String getHoraInicio() {
 		return horaInicio;
 	}
@@ -22,6 +26,9 @@ public class Franja implements Comparable<Franja> {
 		return parse(horaFin);
 	}
 	
+	public void setEid(int eid) {
+		this.eid = eid;
+	}
 	public void setHoraInicio(String horaInicio) {
 		this.horaInicio = horaInicio;
 	}

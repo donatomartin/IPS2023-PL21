@@ -37,6 +37,7 @@ import javax.swing.SpinnerDateModel;
 import java.util.Date;
 import java.util.Calendar;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 public class Frame22784 extends JFrame {
 
@@ -56,7 +57,6 @@ public class Frame22784 extends JFrame {
 	private DefaultListModel<String> jardinerosListModel = new DefaultListModel<>();
 	private JPanel pnListJardineros;
 	private JPanel pnSeleccionHorarios;
-	private JPanel pnBotonesJardineros;
 	private JButton btnJardinerosAtras;
 	private JPanel pnHorariosAsignados;
 	private JPanel pnBotonesHorarios;
@@ -74,6 +74,11 @@ public class Frame22784 extends JFrame {
 	private JList<String> listHorariosAsignados;
 	private DefaultListModel<String> horariosListModel = new DefaultListModel<>();
 	private JTextField txHorariosFiltro;
+	private JPanel pnFiltroInstalacion;
+	private JLabel lbFiltraInstalaciones;
+	private JButton btnActualizaJardineros;
+	private JPanel pnFiltroJardinero;
+	private JLabel lblNewLabel;
 
 	/**
 	 * Create the frame.
@@ -153,6 +158,7 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnSeleccionInstalacion() {
 		if (pnSeleccionInstalacion == null) {
 			pnSeleccionInstalacion = new JPanel();
+			pnSeleccionInstalacion.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnSeleccionInstalacion.setLayout(new BorderLayout(0, 0));
 			pnSeleccionInstalacion.add(getPnListInstalacion());
 		}
@@ -175,7 +181,7 @@ public class Frame22784 extends JFrame {
 			pnListInstalacion.setLayout(new BorderLayout(0, 0));
 			JScrollPane scpn = new JScrollPane(getListInstalaciones());
 			pnListInstalacion.add(scpn);
-			scpn.setColumnHeaderView(getTxInstalacionFilter());
+			pnListInstalacion.add(getPnFiltroInstalacion(), BorderLayout.NORTH);
 		}
 		return pnListInstalacion;
 	}
@@ -183,7 +189,7 @@ public class Frame22784 extends JFrame {
 	private JList<String> getListInstalaciones() {
 		if (listInstalaciones == null) {
 			listInstalaciones = new JList<String>(instalacionesListModel);
-			listInstalaciones.setBorder(new EmptyBorder(5, 5, 5, 5));
+			listInstalaciones.setBorder(new TitledBorder(null, "Instalaciones", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			listInstalaciones.setFont(new Font("Consolas", Font.BOLD, 16));
 			listInstalaciones.addMouseListener(new MouseAdapter() {
 				@Override
@@ -219,7 +225,7 @@ public class Frame22784 extends JFrame {
 			pnListJardineros.setLayout(new BorderLayout(0, 0));
 			JScrollPane scpn = new JScrollPane(getListJardineros());
 			pnListJardineros.add(scpn);
-			scpn.setColumnHeaderView(getTxJardineroFilter());
+			pnListJardineros.add(getPnFiltroJardinero(), BorderLayout.NORTH);
 		}
 		return pnListJardineros;
 	}
@@ -228,7 +234,6 @@ public class Frame22784 extends JFrame {
 		if (pnSeleccionHorarios == null) {
 			pnSeleccionHorarios = new JPanel();
 			pnSeleccionHorarios.setLayout(new BorderLayout(0, 0));
-			pnSeleccionHorarios.add(getPnBotonesJardineros(), BorderLayout.SOUTH);
 			pnSeleccionHorarios.add(getPanel_2(), BorderLayout.CENTER);
 		}
 		return pnSeleccionHorarios;
@@ -237,7 +242,7 @@ public class Frame22784 extends JFrame {
 	private JList<String> getListJardineros() {
 		if (listJardineros == null) {
 			listJardineros = new JList<String>(jardinerosListModel);
-			listJardineros.setBorder(new EmptyBorder(5, 5, 5, 5));
+			listJardineros.setBorder(new TitledBorder(null, "Jardineros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			listJardineros.setFont(new Font("Consolas", Font.BOLD, 16));
 			listJardineros.addMouseListener(new MouseAdapter() {
 				@Override
@@ -263,17 +268,6 @@ public class Frame22784 extends JFrame {
 	private void seleccionaJardinero(int index) {
 		service.seleccionaJardinero(jardinerosListModel.getElementAt(index));
 		getTxJardinero().setText(service.getNombreJardinero());
-	}
-
-	private JPanel getPnBotonesJardineros() {
-		if (pnBotonesJardineros == null) {
-			pnBotonesJardineros = new JPanel();
-			pnBotonesJardineros.setBorder(new EmptyBorder(5, 15, 15, 15));
-			pnBotonesJardineros.setLayout(new BorderLayout(0, 0));
-			pnBotonesJardineros.add(getBtnJardinerosAtras(), BorderLayout.EAST);
-			pnBotonesJardineros.add(getBtnHorarios(), BorderLayout.CENTER);
-		}
-		return pnBotonesJardineros;
 	}
 
 	private JButton getBtnJardinerosAtras() {
@@ -345,46 +339,58 @@ public class Frame22784 extends JFrame {
 
 			JLabel lbJardinero = new JLabel("Jardinero:");
 			GroupLayout gl_pnSpinners = new GroupLayout(pnSpinners);
-			gl_pnSpinners.setHorizontalGroup(gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
-					.addGroup(gl_pnSpinners.createSequentialGroup().addContainerGap()
-							.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING).addGroup(Alignment.TRAILING,
-									gl_pnSpinners.createSequentialGroup().addGap(83).addComponent(getSpHoraInicio())
-											.addPreferredGap(ComponentPlacement.UNRELATED).addComponent(getSpHoraFin()))
-									.addComponent(getSpFecha(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 215,
-											Short.MAX_VALUE)
-									.addComponent(getBtnAddHorario(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 215,
-											Short.MAX_VALUE)
-									.addGroup(gl_pnSpinners.createSequentialGroup()
-											.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING, false)
-													.addComponent(lbJardinero, GroupLayout.DEFAULT_SIZE,
-															GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-													.addComponent(lbInstalacion, GroupLayout.PREFERRED_SIZE, 70,
-															GroupLayout.PREFERRED_SIZE))
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING)
-													.addComponent(getTxJardinero(), GroupLayout.PREFERRED_SIZE,
-															GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-													.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE,
-															GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))))
-							.addContainerGap()));
-			gl_pnSpinners.setVerticalGroup(gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
-					.addGroup(gl_pnSpinners.createSequentialGroup().addContainerGap()
-							.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE).addComponent(lbInstalacion)
-									.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE,
-											GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE).addComponent(lbJardinero)
-									.addComponent(getTxJardinero(), GroupLayout.PREFERRED_SIZE,
-											GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
-							.addComponent(getSpFecha(), GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
-									.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-											GroupLayout.PREFERRED_SIZE)
-									.addComponent(getSpHoraInicio(), GroupLayout.PREFERRED_SIZE,
-											GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-							.addGap(18).addComponent(getBtnAddHorario()).addGap(28)));
+			gl_pnSpinners.setHorizontalGroup(
+				gl_pnSpinners.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnSpinners.createSequentialGroup()
+						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING)
+							.addGroup(Alignment.TRAILING, gl_pnSpinners.createSequentialGroup()
+								.addComponent(getSpHoraInicio(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+							.addComponent(getSpFecha(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+							.addGroup(Alignment.TRAILING, gl_pnSpinners.createSequentialGroup()
+								.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(lbJardinero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(lbInstalacion, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING, false)
+									.addComponent(getTxJardinero())
+									.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(getBtnAddHorario(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+							.addComponent(getBtnActualizaJardineros(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
+							.addGroup(Alignment.TRAILING, gl_pnSpinners.createSequentialGroup()
+								.addComponent(getBtnHorarios(), GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(getBtnJardinerosAtras())))
+						.addGap(20))
+			);
+			gl_pnSpinners.setVerticalGroup(
+				gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_pnSpinners.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lbInstalacion)
+							.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lbJardinero)
+							.addComponent(getTxJardinero(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+						.addComponent(getSpFecha(), GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
+							.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(getSpHoraInicio(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(getBtnActualizaJardineros())
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(getBtnAddHorario())
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
+							.addComponent(getBtnJardinerosAtras())
+							.addComponent(getBtnHorarios()))
+						.addContainerGap())
+			);
 			pnSpinners.setLayout(gl_pnSpinners);
 		}
 		return pnSpinners;
@@ -624,5 +630,48 @@ public class Frame22784 extends JFrame {
 
 		}
 		return txHorariosFiltro;
+	}
+	private JPanel getPnFiltroInstalacion() {
+		if (pnFiltroInstalacion == null) {
+			pnFiltroInstalacion = new JPanel();
+			pnFiltroInstalacion.setLayout(new BorderLayout(0, 0));
+			pnFiltroInstalacion.add(getLbFiltraInstalaciones(), BorderLayout.EAST);
+			pnFiltroInstalacion.add(getTxInstalacionFilter());
+		}
+		return pnFiltroInstalacion;
+	}
+	private JLabel getLbFiltraInstalaciones() {
+		if (lbFiltraInstalaciones == null) {
+			lbFiltraInstalaciones = new JLabel("Filtra Instalación");
+			lbFiltraInstalaciones.setBorder(new EmptyBorder(0, 5, 0, 5));
+		}
+		return lbFiltraInstalaciones;
+	}
+	private JButton getBtnActualizaJardineros() {
+		if (btnActualizaJardineros == null) {
+			btnActualizaJardineros = new JButton("Actualiza Jardineros");
+			btnActualizaJardineros.setBackground(new Color(211, 211, 211));
+			btnActualizaJardineros.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					loadJardineros();
+				}
+			});
+		}
+		return btnActualizaJardineros;
+	}
+	private JPanel getPnFiltroJardinero() {
+		if (pnFiltroJardinero == null) {
+			pnFiltroJardinero = new JPanel();
+			pnFiltroJardinero.setLayout(new BorderLayout(0, 0));
+			pnFiltroJardinero.add(getTxJardineroFilter());
+			pnFiltroJardinero.add(getLblNewLabel(), BorderLayout.EAST);
+		}
+		return pnFiltroJardinero;
+	}
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("Filtra Jardinero");
+		}
+		return lblNewLabel;
 	}
 }

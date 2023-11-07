@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
@@ -96,7 +98,7 @@ public class Persistence {
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardinero'");
 	}
 
-	public List<Empleado> selectJardinerosLibres(String fechaSel, String horaInicio, String horaFin, int iid) {
+	public List<Empleado> selectJardinerosLibres(String fecha, String horaInicio, String horaFin, int iid) {
 
 		LocalTime sHoraInicio = Util.stringHoraToLocalTime(horaInicio);
 		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
@@ -104,29 +106,28 @@ public class Persistence {
 		Set<Integer> idsJardinerosLibres =  new HashSet<>();
 		List<Empleado> jardinerosLibres = new ArrayList<>();
 
-//		for (HorarioSemanal hs : selectHorariosSemanales()) {
-//
-//				idsJardinerosLibres.add(hs.getEid());
-//				
-//				for (FranjaSemanal fs : getFranjasSemanales(hs.getDiaSemana(), hs.getFechaInicio())) {
-//					LocalTime pHoraInicio = Util.stringHoraToLocalTime(fs.getHoraInicio());
-//					LocalTime pHoraFin = Util.stringHoraToLocalTime(fs.getHoraFin());	
-//				}
-//				
-//			
-//		}
-//		
-//		for (HorarioPuntual hp : selectHorariosPuntuales(fechaSel)) {
-//
-//		}
+		for (FranjaSemanal fs : getFranjasSemanales(HorarioSemanal.getDiaDeLaSemana(fecha))) {
+			
+			LocalTime pHoraInicio = fs.getParsedInicio();
+			LocalTime pHoraFin = fs.getParsedFin();
+			
+			if (contenido(sHoraInicio, sHoraFin, pHoraInicio, pHoraFin))
+				idsJardinerosLibres.add(fs.getEid());
+					
+		}
+		
+		for (HorarioPuntual hp : selectHorariosPuntuales(fecha)) {
+
+		}
 		
 		if (idsJardinerosLibres.size() == 0)
 			return jardinerosLibres;
+		
 		for (HorarioJardineria jardineria : selectHorariosJardineria(iid)) {
-			if (jardineria.getFechaJardineria().equals(fechaSel)) {
+			if (jardineria.getFechaJardineria().equals(fecha)) {
 
-				LocalTime pHoraInicio = Util.stringHoraToLocalTime(jardineria.getHoraInicio());
-				LocalTime pHoraFin = Util.stringHoraToLocalTime(jardineria.getHoraFin());
+				LocalTime pHoraInicio = jardineria.getpParsedInicio();
+				LocalTime pHoraFin = jardineria.getParsedFin();
 
 				if (solapa(sHoraInicio, sHoraFin, pHoraInicio, pHoraFin))
 					idsJardinerosLibres.remove(jardineria.getEid());
@@ -142,7 +143,7 @@ public class Persistence {
 	}
 
 	public static boolean contenido(LocalTime horaInicio1, LocalTime horaFin1, LocalTime horaInicio2, LocalTime horaFin2) {
-		return (horaInicio1.isAfter(horaInicio2) || horaFin1.isBefore(horaFin2));
+		return ((horaInicio1.isAfter(horaInicio2) || horaInicio1.equals(horaInicio2) )&& (horaFin1.isBefore(horaFin2) || horaFin1.equals(horaFin2)));
 	}
 
 	public static boolean solapa(LocalTime horaInicio1, LocalTime horaFin1, LocalTime horaInicio2, LocalTime horaFin2) {
@@ -261,6 +262,22 @@ public class Persistence {
 				.executeQueryPojo(FranjaSemanal.class,
 						"select * from FranjaSemanal where diaSemana=? and fechaInicio=?", diaSem, fechaInicio)
 				.stream().sorted().collect(Collectors.toList());
+		return result;
+	}
+	
+	public List<FranjaSemanal> getFranjasSemanales(int diaSem) {
+		List<FranjaSemanal> franjas = db
+				.executeQueryPojo(FranjaSemanal.class,
+						"select * from FranjaSemanal where diaSemana=?", diaSem)
+				.stream().sorted().collect(Collectors.toList());
+		
+		Map<Integer, FranjaSemanal> firstByDayOfWeek = franjas.stream()
+				.collect(Collectors.toMap(FranjaSemanal::getDiaSemana, Function.identity(), (a, b) -> b));
+		
+		List<FranjaSemanal> result = franjas.stream()
+				.filter(f -> f.equals(firstByDayOfWeek.get(f.getDiaSemana())))
+				.collect(Collectors.toList());
+		
 		return result;
 	}
 

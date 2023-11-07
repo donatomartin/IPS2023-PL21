@@ -58,11 +58,11 @@ public class HorarioJardineria {
 		
 		return "(%s | %s - %s) %-20s %s".formatted(fechaJardineria, horaInicio, horaFin, js, is);
 	}
-	public LocalTime getHoraInicioParsed() {
+	public LocalTime getpParsedInicio() {
 		return Util.stringHoraToLocalTime(horaInicio);
 	}
 	
-	public LocalTime getHoraFinParsed() {
+	public LocalTime getParsedFin() {
 		return Util.stringHoraToLocalTime(horaFin);
 	}
 }

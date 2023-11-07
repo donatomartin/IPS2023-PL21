@@ -12,7 +12,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.service.Service21912;
+import ips2023pl21.util.Util;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -247,7 +249,7 @@ public class Frame21912 extends JFrame {
 		if (employeeList == null) {
 			loadEmpleadoListModel("");
 			employeeList = new JList<String>(empleadoListModel);
-			employeeList.setBorder(new EmptyBorder(5, 5, 5, 5));
+			employeeList.setBorder(new TitledBorder(null, "Empleados", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			employeeList.setFont(new Font("Consolas", Font.BOLD, 15));
 
 			// Añadir MouseListener para el doble click
@@ -510,12 +512,13 @@ public class Frame21912 extends JFrame {
 	        cbDiaSemana.setModel(new DefaultComboBoxModel<String>(
 	                new String[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" }));
 
-	        // Añadir ActionListener
 	        cbDiaSemana.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
 	                service.seleccionaHorarioSemanal(0, null);
 	            }
 	        });
+	        
+	        cbDiaSemana.setSelectedItem(HorarioSemanal.getNombreDia(HorarioSemanal.getDiaDeLaSemana(Util.dateToIsoString(Calendar.getInstance().getTime()))));
 	    }
 	    return cbDiaSemana;
 	}

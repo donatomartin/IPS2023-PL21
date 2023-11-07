@@ -1,5 +1,6 @@
 package ips2023pl21.model.horarios;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import ips2023pl21.model.horarios.franjas.FranjaSemanal;
@@ -99,6 +100,20 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 		default:
 			return 7;
 		}
+	}
+	
+	public static int getDiaDeLaSemana(String fecha) {
+		
+	    Calendar calendar = Calendar.getInstance();
+	    calendar.setTime(Util.isoStringToDate(fecha));
+	    
+	    // Los calendarios empiezan en domingo
+	    int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+	    if (dayOfWeek == 0) {
+	        dayOfWeek = 7;
+	    }
+	    
+	    return dayOfWeek;
 	}
 
 	@Override

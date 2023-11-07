@@ -33,11 +33,16 @@ insert into horarioequipo(idequipo,fecha,horaentrada,horasalida,minutoentrada,mi
 	
 delete from instalacion;
 insert into instalacion(nombreinstalacion) values 
-	('Campo 1'),
-	('Campo 2'),
-	('Campo 3'),
-	('Campo 4'),
-	('Campo 5');
+	('Campo Real Madrid'),
+	('Campo Barcelona FC'),
+	('Campo Real Oviedo'),
+	('Campo Sporting Gijon'),
+	('Campo Atletico Madrid'),
+    ('Parque Gijon'),
+    ('Parque Oviedo'),
+    ('Parque Madrid'),
+    ('Cancha Bilbao'),
+    ('Pista Madrid');
 	
 delete from venta;
 insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchandising', '2023-10-13', '20','05',30),

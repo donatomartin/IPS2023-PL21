@@ -384,11 +384,11 @@ public class Service21912 {
 			return 4; // Horas diarias sobrepasadas
 
 		int[] minutosTotalesArr = new int[7];
-		minutosTotalesArr[horarioPuntual.getDiaDeLaSemana() - 1] = minutosTotalesDiarios;
+		minutosTotalesArr[HorarioSemanal.getDiaDeLaSemana(horarioPuntual.getFechaPuntual()) - 1] = minutosTotalesDiarios;
 
 		for (HorarioSemanal h : p.selectHorariosSemanales(getEid())) {
 
-			if (h.getDiaSemana() == horarioPuntual.getDiaDeLaSemana()) // Skipea el propio día a
+			if (h.getDiaSemana() == HorarioSemanal.getDiaDeLaSemana(horarioPuntual.getFechaPuntual())) // Skipea el propio día a
 																					// sobrescribir
 				continue;
 
