@@ -150,9 +150,9 @@ public class Util {
 	/**
 	 * Convierte un localtime a string
 	 */
-	public static String localTimeToString(LocalTime dateToLocalTime) {
+	public static String localTimeToString(LocalTime localTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
-        String formattedTime = dateToLocalTime.format(formatter);
+        String formattedTime = localTime.format(formatter);
         return formattedTime;
 	}
 	

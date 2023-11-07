@@ -11,6 +11,7 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 	private int diaSemana;
 	private String fechaInicio;
 	private String fechaFin;
+	private int eid;
 	
 	public HorarioSemanal() {}
 
@@ -24,6 +25,10 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 		return fechaFin;
 	}
 	
+	public int getEid() {
+		return eid;
+	}
+	
 	public void setDiaSemana(int diaSemana) {
 		this.diaSemana = diaSemana;
 	}
@@ -32,6 +37,10 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 	}
 	public void setFechaFin(String fechaFin) {
 		this.fechaFin = fechaFin;
+	}
+	
+	public void setEid(int eid) {
+		this.eid = eid;
 	}
 	
 	@Override
@@ -45,7 +54,7 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 		
 		result += ") ";
 
-		for (FranjaSemanal f : Persistence.getInstance().getFranjasSemanales(diaSemana, fechaInicio)) {
+		for (FranjaSemanal f : Persistence.getInstance().getFranjasSemanales(diaSemana, fechaInicio, eid)) {
 			result += f.toString() + " || ";
 		}
 

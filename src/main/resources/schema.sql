@@ -15,39 +15,42 @@ create table Empleado(
 -- Horario Semanal
 drop table HorarioSemanal;
 create table HorarioSemanal(
-    diaSemana int,
-    fechaInicio varchar(10),
+    diaSemana int not null,
+    fechaInicio varchar(10) not null,
     fechaFin varchar(10),
     eid int not null,
-    foreign key (eid) references EmpleadoNoDeportivo(eid),
-    primary key (diaSemana, fechaInicio)
+    primary key (diaSemana, fechaInicio, eid),
+    foreign key (eid) references Empleado(eid)
 );
 
 drop table FranjaSemanal;
 create table FranjaSemanal(
-    fsid integer primary key autoincrement,
     horaInicio varchar(5) not null,
     horaFin varchar(5) not null,
     diaSemana int not null,
     fechaInicio varchar(10) not null,
-    foreign key (diaSemana, fechaInicio) references HorarioSemanal(diaSemana, fechaInicio)
+	eid int not null,
+	primary key (diaSemana, fechaInicio, eid),
+    foreign key (diaSemana, fechaInicio, eid) references HorarioSemanal(diaSemana, fechaInicio, eid)
 );
 
 -- Horario Puntual
 drop table HorarioPuntual;
 create table HorarioPuntual(
-    fechaPuntual varchar(10) primary key,
+    fechaPuntual varchar(10) not null,
     eid int not null,
-    foreign key (eid) references EmpleadoNoDeportivo(eid)
+	primary key (fechaPuntual, eid),
+    foreign key (eid) references Empleado(eid)
 );
 
 drop table FranjaPuntual;
 create table FranjaPuntual(
-    fpid integer primary key autoincrement,
     horaInicio varchar(5) not null,
     horaFin varchar(5) not null,
     fechaPuntual varchar(10) not null,
-    foreign key (fechaPuntual) references HorarioPuntual(fechaPuntual)
+	eid int not null,
+	primary key (fechaPuntual, eid),
+    foreign key (fechaPuntual, eid) references HorarioPuntual(fechaPuntual, eid)
 );
 
 -- Horario Equipo

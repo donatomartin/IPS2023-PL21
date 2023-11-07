@@ -1,7 +1,11 @@
 package ips2023pl21.persistence;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
@@ -13,6 +17,7 @@ import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.model.horarios.franjas.FranjaPuntual;
 import ips2023pl21.model.horarios.franjas.FranjaSemanal;
 import ips2023pl21.util.Database;
+import ips2023pl21.util.Util;
 
 public class Persistence {
 
@@ -90,27 +95,59 @@ public class Persistence {
 	public List<Empleado> selectJardineros() {
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardinero'");
 	}
-	
-	public List<Empleado> selectJardinerosLibres(String fechaSel, String horaInicio, String horaFin) {
-		
-		List<Integer> idsJardinerosConTrabajo = new ArrayList<>();
 
-		for (HorarioJardineria jardineria : selectHorariosJardineria()) {
+	public List<Empleado> selectJardinerosLibres(String fechaSel, String horaInicio, String horaFin, int iid) {
 
-			if (jardineria.getFechaJardineria().equals(fechaSel))
-				idsJardinerosConTrabajo.add(jardineria.getEid());
+		LocalTime sHoraInicio = Util.stringHoraToLocalTime(horaInicio);
+		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
 
-		}
-
+		Set<Integer> idsJardinerosLibres =  new HashSet<>();
 		List<Empleado> jardinerosLibres = new ArrayList<>();
 
-		for (Empleado jugador : selectJugadoresProfesionales()) {
-			if (!idsJardinerosConTrabajo.contains(jugador.getEid())) {
-				jardinerosLibres.add(jugador);
+//		for (HorarioSemanal hs : selectHorariosSemanales()) {
+//
+//				idsJardinerosLibres.add(hs.getEid());
+//				
+//				for (FranjaSemanal fs : getFranjasSemanales(hs.getDiaSemana(), hs.getFechaInicio())) {
+//					LocalTime pHoraInicio = Util.stringHoraToLocalTime(fs.getHoraInicio());
+//					LocalTime pHoraFin = Util.stringHoraToLocalTime(fs.getHoraFin());	
+//				}
+//				
+//			
+//		}
+//		
+//		for (HorarioPuntual hp : selectHorariosPuntuales(fechaSel)) {
+//
+//		}
+		
+		if (idsJardinerosLibres.size() == 0)
+			return jardinerosLibres;
+		for (HorarioJardineria jardineria : selectHorariosJardineria(iid)) {
+			if (jardineria.getFechaJardineria().equals(fechaSel)) {
+
+				LocalTime pHoraInicio = Util.stringHoraToLocalTime(jardineria.getHoraInicio());
+				LocalTime pHoraFin = Util.stringHoraToLocalTime(jardineria.getHoraFin());
+
+				if (solapa(sHoraInicio, sHoraFin, pHoraInicio, pHoraFin))
+					idsJardinerosLibres.remove(jardineria.getEid());
 			}
 		}
+		
+		for (Empleado j: selectJardineros())
+			if (idsJardinerosLibres.contains(j.getEid()))
+				jardinerosLibres.add(j);
+			
 
 		return jardinerosLibres;
+	}
+
+	public static boolean contenido(LocalTime horaInicio1, LocalTime horaFin1, LocalTime horaInicio2, LocalTime horaFin2) {
+		return (horaInicio1.isAfter(horaInicio2) || horaFin1.isBefore(horaFin2));
+	}
+
+	public static boolean solapa(LocalTime horaInicio1, LocalTime horaFin1, LocalTime horaInicio2, LocalTime horaFin2) {
+		return (horaInicio1.isBefore(horaFin2) && horaFin1.isAfter(horaInicio2))
+				|| (horaInicio2.isBefore(horaFin1) && horaFin2.isAfter(horaInicio1));
 	}
 
 	public List<Empleado> selectJugadoresLibres(String fechaSel) {
@@ -161,6 +198,18 @@ public class Persistence {
 
 	// HORARIO SEMANAL
 
+	public List<HorarioSemanal> selectHorariosSemanales(String fecha) {
+		int diaSemana = HorarioSemanal.getNumeroDia(fecha);
+		return db.executeQueryPojo(HorarioSemanal.class, "select * from HorarioSemanal where diaSemana=?", diaSemana)
+				.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
+	}
+
+	public List<HorarioSemanal> selectHorariosSemanales() {
+		List<HorarioSemanal> result = db.executeQueryPojo(HorarioSemanal.class, "select * from HorarioSemanal").stream()
+				.sorted().collect(Collectors.toList());
+		return result;
+	}
+
 	public List<HorarioSemanal> selectHorariosSemanales(int eid) {
 		List<HorarioSemanal> result = db
 				.executeQueryPojo(HorarioSemanal.class, "select * from HorarioSemanal where eid=?", eid).stream()
@@ -174,9 +223,8 @@ public class Persistence {
 				fechaInicio).get(0);
 	}
 
-	public void insertHorarioSemanal(int numeroDiaSemana, String fechaString, int eid) {
-		db.executeUpdate("insert into HorarioSemanal(diaSemana, fechaInicio, eid) values (?, ?, ?)", numeroDiaSemana,
-				fechaString, eid);
+	public void insertHorarioSemanal(int diaSemana, String fechaString, int eid) {
+		db.executeUpdate("insert into HorarioSemanal(diaSemana, fechaInicio, eid) values (?, ?, ?)", diaSemana,fechaString, eid);
 	}
 
 	public void updateFechaFin(int eid, HorarioSemanal actual, String fechaFinString) {
@@ -189,25 +237,41 @@ public class Persistence {
 				ultimoHorario.getDiaSemana(), ultimoHorario.getFechaInicio());
 	}
 
-	public void insertFranjaSemanal(int dia, String fechaInicio, String horaInicio, String horaFin) {
-		db.executeUpdate("insert into FranjaSemanal(diaSemana, fechaInicio, horaInicio, horaFin) values (?, ?, ?, ?)",
-				dia, fechaInicio, horaInicio, horaFin);
+	public void insertFranjaSemanal(int dia, String fechaInicio, int eid, String horaInicio, String horaFin) {
+		db.executeUpdate("insert into FranjaSemanal(diaSemana, fechaInicio, eid, horaInicio, horaFin) values (?, ?, ?, ?, ?)",
+				dia, fechaInicio, eid, horaInicio, horaFin);
 	}
 
-	public void deleteHorarioSemanal(int dia, String fechaIni) {
-		db.executeUpdate("delete from HorarioSemanal where diaSemana=? and fechaInicio=?", dia, fechaIni);
-		db.executeUpdate("delete from FranjaSemanal where diaSemana=? and fechaInicio=?", dia, fechaIni);
+	public void deleteHorarioSemanal(int dia, String fechaInicio, int eid) {
+		System.out.println(getFranjasSemanales(dia, fechaInicio, eid));
+		db.executeUpdate("delete from HorarioSemanal where diaSemana=? and fechaInicio=? and eid=?", dia, fechaInicio, eid);
+		db.executeUpdate("delete from FranjaSemanal where diaSemana=? and fechaInicio=? and eid=?", dia, fechaInicio, eid);
 	}
 
-	public List<FranjaSemanal> getFranjasSemanales(int diaSem, String fechaIn) {
+	public List<FranjaSemanal> getFranjasSemanales(int diaSem, String fechaInicio, int eid) {
 		List<FranjaSemanal> result = db
 				.executeQueryPojo(FranjaSemanal.class,
-						"select * from FranjaSemanal where diaSemana=? and fechaInicio=?", diaSem, fechaIn)
+						"select * from FranjaSemanal where diaSemana=? and fechaInicio=? and eid=?", diaSem, fechaInicio, eid)
+				.stream().sorted().collect(Collectors.toList());
+		return result;
+	}
+	
+	public List<FranjaSemanal> getFranjasSemanales(int diaSem, String fechaInicio) {
+		List<FranjaSemanal> result = db
+				.executeQueryPojo(FranjaSemanal.class,
+						"select * from FranjaSemanal where diaSemana=? and fechaInicio=?", diaSem, fechaInicio)
 				.stream().sorted().collect(Collectors.toList());
 		return result;
 	}
 
 	// HORARIO PUNTUAL
+
+	public List<HorarioPuntual> selectHorariosPuntuales(String fecha) {
+		List<HorarioPuntual> result = db.executeQueryPojo(HorarioPuntual.class,
+				"select * from HorarioPuntual where fechaPuntual=?", fecha);
+		return result;
+
+	}
 
 	public List<HorarioPuntual> selectHorariosPuntuales(int eid) {
 		List<HorarioPuntual> result = db
@@ -226,8 +290,8 @@ public class Persistence {
 		db.executeUpdate("insert into HorarioPuntual(fechaPuntual, eid) values (?, ?)", fechaString, eid);
 	}
 
-	public void insertFranjaPuntual(String fechaPun, String horaInicio, String horaFin) {
-		db.executeUpdate("insert into FranjaPuntual(fechaPuntual, horaInicio, horaFin) values (?, ?, ?)", fechaPun,
+	public void insertFranjaPuntual(String fechaPun, int eid, String horaInicio, String horaFin) {
+		db.executeUpdate("insert into FranjaPuntual(fechaPuntual, eid, horaInicio, horaFin) values (?, ?, ?, ?)", fechaPun, eid,
 				horaInicio, horaFin);
 	}
 
@@ -235,6 +299,15 @@ public class Persistence {
 		db.executeUpdate("delete from HorarioPuntual where fechaPuntual=?", fechaPun);
 		db.executeUpdate("delete from FranjaPuntual where fechaPuntual=?", fechaPun);
 	}
+	
+	public List<FranjaPuntual> getFranjasPuntuales(String fechaPuntual, int eid) {
+		List<FranjaPuntual> result = db
+				.executeQueryPojo(FranjaPuntual.class, "select * from FranjaPuntual where fechaPuntual=? and eid=?", fechaPuntual, eid)
+				.stream().sorted().collect(Collectors.toList());
+		;
+		return result;
+	}
+
 
 	public List<FranjaPuntual> getFranjasPuntuales(String fechaPuntual) {
 		List<FranjaPuntual> result = db
@@ -249,6 +322,13 @@ public class Persistence {
 	public List<HorarioJardineria> selectHorariosJardineria() {
 		List<HorarioJardineria> result = db.executeQueryPojo(HorarioJardineria.class,
 				"select * from HorarioJardineria");
+
+		return result;
+	}
+
+	public List<HorarioJardineria> selectHorariosJardineria(int iid) {
+		List<HorarioJardineria> result = db.executeQueryPojo(HorarioJardineria.class,
+				"select * from HorarioJardineria where iid=?", iid);
 
 		return result;
 	}

@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -208,6 +210,7 @@ public class Frame22784 extends JFrame {
 		service.seleccionaInstalacion(instalacionesListModel.getElementAt(index));
 		getTxInstalacion().setText(service.getNombreInstalacion());
 		((CardLayout) getPnWork().getLayout()).show(getPnWork(), "pnSeleccionJardineros");
+		loadJardineros();
 	}
 
 	private JPanel getPnListJardineros() {
@@ -400,8 +403,23 @@ public class Frame22784 extends JFrame {
 
 			JSpinner.DateEditor editor = new JSpinner.DateEditor(spFecha, "dd-MM-yyyy");
 			spFecha.setEditor(editor);
+			
+			spFecha.addChangeListener(new ChangeListener() {
+	            @Override
+	            public void stateChanged(ChangeEvent e) {
+	                updateFecha();
+	            }
+
+	        });
+			
+			updateFecha();
 		}
 		return spFecha;
+	}
+	
+	private void updateFecha() {
+		service.updateFecha((Date)getSpFecha().getValue());
+		loadJardineros();
 	}
 
 	private JSpinner getSpHoraInicio() {
@@ -415,8 +433,23 @@ public class Frame22784 extends JFrame {
 			spHoraInicio.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			JSpinner.DateEditor editor = new JSpinner.DateEditor(spHoraInicio, "HH:mm");
 			spHoraInicio.setEditor(editor);
+			
+			spHoraInicio.addChangeListener(new ChangeListener() {
+	            @Override
+	            public void stateChanged(ChangeEvent e) {
+	                updateHoraInicio();
+	            }
+
+	        });
+			
+			updateHoraInicio();
 		}
 		return spHoraInicio;
+	}
+	
+	private void updateHoraInicio() {
+		service.updateHoraInicio((Date)getSpHoraInicio().getValue());
+		loadJardineros();
 	}
 
 	private JSpinner getSpHoraFin() {
@@ -430,8 +463,23 @@ public class Frame22784 extends JFrame {
 			spHoraFin.setFont(new Font("Tahoma", Font.PLAIN, 14));
 			JSpinner.DateEditor editor = new JSpinner.DateEditor(spHoraFin, "HH:mm");
 			spHoraFin.setEditor(editor);
+			
+			spHoraFin.addChangeListener(new ChangeListener() {
+	            @Override
+	            public void stateChanged(ChangeEvent e) {
+	                updateHoraFin();
+	            }
+
+	        });
+			
+			updateHoraFin();
 		}
 		return spHoraFin;
+	}
+	
+	private void updateHoraFin() {
+		service.updateHoraFin((Date)getSpHoraFin().getValue());
+		loadJardineros();
 	}
 
 	private JButton getBtnAddHorario() {
@@ -449,8 +497,7 @@ public class Frame22784 extends JFrame {
 
 	private void addHorario() {
 
-		Service22784.state res = service.addHorarioJardineria((Date) getSpHoraInicio().getValue(),
-				(Date) getSpHoraInicio().getValue(), (Date) getSpHoraFin().getValue());
+		Service22784.state res = service.addHorarioJardineria();
 
 		switch (res) {
 		case SUCCESS:

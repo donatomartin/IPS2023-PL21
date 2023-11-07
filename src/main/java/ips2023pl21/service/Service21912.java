@@ -19,9 +19,9 @@ import ips2023pl21.util.Util;
 
 public class Service21912 {
 
-	private Empleado empleadoSeleccionado;
-	private static HorarioSemanal horarioSemanalSeleccionado;
-	private static HorarioPuntual horarioPuntualSeleccionado;
+	private Empleado empleado;
+	private static HorarioSemanal horarioSemanal;
+	private static HorarioPuntual horarioPuntual;
 	public Persistence p = Persistence.getInstance();
 
 	// Empleados
@@ -32,13 +32,18 @@ public class Service21912 {
 	}
 
 	public void seleccionaEmpleado(String empleadoString) {
+		
 		if (empleadoString.equals("")) {
-			empleadoSeleccionado = null;
+			empleado = null;
 			return;
 		}
 
 		int id = getIdFromString(empleadoString);
-		empleadoSeleccionado = p.getEmpleado(id);
+		empleado = p.getEmpleado(id);
+		
+		horarioPuntual = null;
+		horarioSemanal = null;
+		
 	}
 
 	private int getIdFromString(String empleadoString) {
@@ -46,7 +51,7 @@ public class Service21912 {
 	}
 
 	public String getNombreEmpleadoSeleccionado() {
-		return empleadoSeleccionado.getNombre() + " " + empleadoSeleccionado.getApellido();
+		return empleado.getNombre() + " " + empleado.getApellido();
 	}
 
 	// HORARIO SEMANAL
@@ -57,7 +62,7 @@ public class Service21912 {
 	 * @return
 	 */
 	public List<String> getHorariosSemanales() {
-		return p.selectHorariosSemanales(empleadoSeleccionado.getEid()).stream().map(x -> x.toString())
+		return p.selectHorariosSemanales(empleado.getEid()).stream().map(x -> x.toString())
 				.collect(Collectors.toList());
 	}
 
@@ -69,13 +74,12 @@ public class Service21912 {
 	 * @return
 	 */
 	public boolean addHorarioSemanal(String diaSemana, Date fechaInicio) {
-
 		if (!semanaDeAntelacion(fechaInicio))
 			return false;
 
 		int numeroDiaSemana = HorarioSemanal.getNumeroDia(diaSemana);
 		String fechaString = Util.dateToIsoString(fechaInicio);
-		int eid = empleadoSeleccionado.getEid();
+		int eid = empleado.getEid();
 
 		try {
 			p.insertHorarioSemanal(numeroDiaSemana, fechaString, eid);
@@ -96,7 +100,7 @@ public class Service21912 {
 	 */
 	public void actualizarHorariosSemanales() {
 
-		List<HorarioSemanal> horarios = p.selectHorariosSemanales(getEidSel());
+		List<HorarioSemanal> horarios = p.selectHorariosSemanales(getEid());
 
 		if (horarios.size() == 0) {
 			return;
@@ -108,14 +112,14 @@ public class Service21912 {
 			if (actual.getDiaSemana() == siguiente.getDiaSemana()) {
 				actual.setFechaFin(siguiente.getFechaInicio());
 				String fechaFinString = actual.getFechaFin();
-				p.updateFechaFin(getEidSel(), actual, fechaFinString);
+				p.updateFechaFin(getEid(), actual, fechaFinString);
 			}
 		}
 
 		// Elimina la fecha de fin del horario con la fecha de inicio más tardía
 		HorarioSemanal ultimoHorario = horarios.get(horarios.size() - 1);
 		ultimoHorario.setFechaFin(null);
-		p.deleteFechaFin(getEidSel(), ultimoHorario);
+		p.deleteFechaFin(getEid(), ultimoHorario);
 
 	}
 
@@ -128,6 +132,7 @@ public class Service21912 {
 	 */
 	public int addToHorarioSemanal(Date hi, Date hf, String diaSemana, Date fechaInicio) {
 
+		
 		String horaInicio = Util.localTimeToString(dateToLocalTime(hi));
 		String horaFin = Util.localTimeToString(dateToLocalTime(hf));
 
@@ -139,9 +144,9 @@ public class Service21912 {
 			return 1;
 		} else
 			return res;
-
+		
 		try {
-			p.insertFranjaSemanal(getDiaSemanaSel(), getFechaIniSel(), horaInicio, horaFin);
+			p.insertFranjaSemanal(getDiaSemana(), getFechaInicio(), getEid(), horaInicio, horaFin);
 		} catch (Exception e) {
 			res = -1;
 			e.printStackTrace();
@@ -158,10 +163,10 @@ public class Service21912 {
 	public boolean borrarHorarioSemanalSeleccionado() {
 
 		try {
-			p.deleteHorarioSemanal(getDiaSemanaSel(), getFechaIniSel());
+			p.deleteHorarioSemanal(getDiaSemana(), getFechaInicio(), getEid());
 			actualizarHorariosSemanales();
 
-			horarioSemanalSeleccionado = null;
+			horarioSemanal = null;
 			return true;
 		} catch (NullPointerException e) {
 			return false;
@@ -176,8 +181,12 @@ public class Service21912 {
 	 * @param fechaInicio
 	 */
 	public void seleccionaHorarioSemanal(int numeroDiaSemana, String fechaInicio) {
-
-		horarioSemanalSeleccionado = p.getHorarioSemanal(getEidSel(), numeroDiaSemana, fechaInicio);
+		try {
+			horarioSemanal = p.getHorarioSemanal(getEid(), numeroDiaSemana, fechaInicio);			
+		} catch (Exception e) {
+			horarioSemanal = null;
+		}
+	
 	}
 
 	/**
@@ -208,14 +217,14 @@ public class Service21912 {
 		franja.setHoraInicio(horaInicio);
 		franja.setHoraFin(horaFin);
 
-		if (horarioSemanalSeleccionado == null)
+		if (horarioSemanal == null)
 			return 1; // Horario no seleccionado
 
 		if (franja.getParsedFin().isBefore(franja.getParsedInicio()))
 			return 2; // Fin antes que principio
 
 		int minutosTotalesDiarios = (int) franja.getMinutosTotales();
-		List<FranjaSemanal> franjas = p.getFranjasSemanales(getDiaSemanaSel(), getFechaIniSel());
+		List<FranjaSemanal> franjas = p.getFranjasSemanales(getDiaSemana(), getFechaInicio(), getEid());
 		for (FranjaSemanal f : franjas) {
 			minutosTotalesDiarios += f.getMinutosTotales();
 			if (franja.solapa(f))
@@ -226,15 +235,15 @@ public class Service21912 {
 			return 4; // Horas diarias sobrepasadas
 
 		int[] minutosTotalesArr = new int[7];
-		minutosTotalesArr[getDiaSemanaSel() - 1] = minutosTotalesDiarios;
+		minutosTotalesArr[getDiaSemana() - 1] = minutosTotalesDiarios;
 
-		for (HorarioSemanal h : p.selectHorariosSemanales(getEidSel())) {
+		for (HorarioSemanal h : p.selectHorariosSemanales(getEid())) {
 
-			if (h.getDiaSemana() == getDiaSemanaSel())
+			if (h.getDiaSemana() == getDiaSemana())
 				continue;
 
 			minutosTotalesArr[h.getDiaSemana() - 1] = 0;
-			for (Franja f : p.getFranjasSemanales(h.getDiaSemana(), h.getFechaInicio()))
+			for (Franja f : p.getFranjasSemanales(h.getDiaSemana(), h.getFechaInicio(), getEid()))
 				minutosTotalesArr[h.getDiaSemana() - 1] += f.getMinutosTotales();
 
 		}
@@ -251,10 +260,6 @@ public class Service21912 {
 
 	}
 
-	public void deseleccionadHorarioSemanal() {
-		horarioSemanalSeleccionado = null;
-	}
-
 	// Horario Puntual
 
 	/**
@@ -263,7 +268,7 @@ public class Service21912 {
 	 * @return
 	 */
 	public List<String> getHorariosPuntualesString() {
-		return p.selectHorariosPuntuales(getEidSel()).stream().map(x -> x.toString()).collect(Collectors.toList());
+		return p.selectHorariosPuntuales(getEid()).stream().map(x -> x.toString()).collect(Collectors.toList());
 	}
 
 	/**
@@ -277,7 +282,7 @@ public class Service21912 {
 			return false;
 
 		String fechaString = Util.dateToIsoString(fechaPuntual);
-		int eid = empleadoSeleccionado.getEid();
+		int eid = empleado.getEid();
 
 		try {
 			p.insertHorarioPuntual(fechaString, eid);
@@ -303,7 +308,7 @@ public class Service21912 {
 			return res;
 
 		try {
-			p.insertFranjaPuntual(getFechaPunSel(), horaInicio, horaFin);
+			p.insertFranjaPuntual(getFechaPuntual(), getEid(), horaInicio, horaFin);
 		} catch (Exception e) {
 			res = -1;
 		}
@@ -318,8 +323,8 @@ public class Service21912 {
 	 */
 	public boolean borrarHorarioPuntualSeleccionado() {
 		try {
-			p.removeHorarioPuntual(getFechaPunSel());
-			horarioPuntualSeleccionado = null;
+			p.removeHorarioPuntual(getFechaPuntual());
+			horarioPuntual = null;
 			return true;
 		} catch (NullPointerException e) {
 			return false;
@@ -333,8 +338,12 @@ public class Service21912 {
 	 * @param fechaInicio
 	 */
 	public void seleccionaHorarioPuntual(String fechaPuntual) {
-
-		horarioPuntualSeleccionado = p.getHorarioPuntual(getEidSel(), fechaPuntual);
+		
+		try {			
+			horarioPuntual = p.getHorarioPuntual(getEid(), fechaPuntual);
+		} catch (Exception e) {
+			horarioPuntual = null;
+		}
 	}
 
 	/**
@@ -357,14 +366,14 @@ public class Service21912 {
 		franja.setHoraInicio(horaInicio);
 		franja.setHoraFin(horaFin);
 
-		if (horarioPuntualSeleccionado == null)
+		if (horarioPuntual == null)
 			return 1; // Horario no seleccionado
 
 		if (franja.getParsedFin().isBefore(franja.getParsedInicio()))
 			return 2; // Fin antes que principio
 
 		int minutosTotalesDiarios = (int) franja.getMinutosTotales();
-		List<FranjaPuntual> franjas = p.getFranjasPuntuales(getFechaPunSel());
+		List<FranjaPuntual> franjas = p.getFranjasPuntuales(getFechaPuntual(), getEid());
 		for (FranjaPuntual f : franjas) {
 			minutosTotalesDiarios += f.getMinutosTotales();
 			if (franja.solapa(f))
@@ -375,22 +384,22 @@ public class Service21912 {
 			return 4; // Horas diarias sobrepasadas
 
 		int[] minutosTotalesArr = new int[7];
-		minutosTotalesArr[horarioPuntualSeleccionado.getDiaDeLaSemana() - 1] = minutosTotalesDiarios;
+		minutosTotalesArr[horarioPuntual.getDiaDeLaSemana() - 1] = minutosTotalesDiarios;
 
-		for (HorarioSemanal h : p.selectHorariosSemanales(getEidSel())) {
+		for (HorarioSemanal h : p.selectHorariosSemanales(getEid())) {
 
-			if (h.getDiaSemana() == horarioPuntualSeleccionado.getDiaDeLaSemana()) // Skipea el propio día a
+			if (h.getDiaSemana() == horarioPuntual.getDiaDeLaSemana()) // Skipea el propio día a
 																					// sobrescribir
 				continue;
 
-			if (Util.isoStringToDate(h.getFechaInicio()).after(Util.isoStringToDate(getFechaPunSel()))) // Skipea si
+			if (Util.isoStringToDate(h.getFechaInicio()).after(Util.isoStringToDate(getFechaPuntual()))) // Skipea si
 																										// todavía no
 																										// está vigente
 																										// el horario
 				continue;
 
 			minutosTotalesArr[h.getDiaSemana() - 1] = 0;
-			for (Franja f : p.getFranjasSemanales(h.getDiaSemana(), h.getFechaInicio()))
+			for (Franja f : p.getFranjasSemanales(h.getDiaSemana(), h.getFechaInicio(), getEid()))
 				minutosTotalesArr[h.getDiaSemana() - 1] += f.getMinutosTotales();
 
 		}
@@ -405,10 +414,6 @@ public class Service21912 {
 
 		return 0;
 
-	}
-
-	public void deseleccionaHorarioPuntual() {
-		horarioPuntualSeleccionado = null;
 	}
 
 	// Util
@@ -431,20 +436,20 @@ public class Service21912 {
 		return d.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
 	}
 
-	private int getDiaSemanaSel() {
-		return horarioSemanalSeleccionado.getDiaSemana();
+	private int getDiaSemana() {
+		return horarioSemanal.getDiaSemana();
 	}
 
-	private String getFechaIniSel() {
-		return horarioSemanalSeleccionado.getFechaInicio();
+	private String getFechaInicio() {
+		return horarioSemanal.getFechaInicio();
 	}
 
-	private String getFechaPunSel() {
-		return horarioPuntualSeleccionado.getFechaPuntual();
+	private String getFechaPuntual() {
+		return horarioPuntual.getFechaPuntual();
 	}
 
-	private int getEidSel() {
-		return empleadoSeleccionado.getEid();
+	private int getEid() {
+		return empleado.getEid();
 	}
 
 }

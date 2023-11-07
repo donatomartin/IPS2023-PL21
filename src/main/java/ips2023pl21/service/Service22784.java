@@ -2,6 +2,7 @@ package ips2023pl21.service;
 
 import java.time.LocalTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,9 +26,22 @@ public class Service22784 {
 	private Persistence p = Persistence.getInstance();
 	private Instalacion instalacion;
 	private Empleado jardinero;
+	private String fecha;
+	private String horaInicio;
+	private String horaFin;
+	
+	private LocalTime getParsedHoraInicio() {
+		return Util.stringHoraToLocalTime(horaInicio);
+	}
+	
+	private LocalTime getParsedHoraFin() {
+		return Util.stringHoraToLocalTime(horaFin);
+	}
 
 	public List<String> getJardineros(String filter) {
-		return p.selectJardineros().stream().map(x -> x.toString())
+		if (instalacion == null)
+			return new ArrayList<>();
+		return p.selectJardinerosLibres(fecha, horaInicio, horaFin, instalacion.getId()).stream().map(x -> x.toString())
 				.filter(x -> x.toLowerCase().contains(filter.toLowerCase())).collect(Collectors.toList());
 	}
 
@@ -40,22 +54,22 @@ public class Service22784 {
 		return p.selectHorariosJardineria().stream().map(x -> x.toString()).collect(Collectors.toList());
 	}
 
-	public state addHorarioJardineria(Date fecha, Date horaInicio, Date horaFin) {
+	public state addHorarioJardineria() {
 		
 		if (instalacion == null)
 			return state.INSTALACIONNULL;
 		else if (jardinero == null)
 			return state.JARDINERONULL;
-		else if (!horaInicio.before(horaFin))
+		else if (getParsedHoraInicio().isAfter(getParsedHoraFin()))
 			return state.INICIOAFTERFIN;
 		
 		try {
 			p.insertHorarioJardineria(
 					jardinero.getEid(),
 					instalacion.getId(),
-					Util.dateToIsoString(fecha),
-					Util.localTimeToString(dateToLocalTime(horaInicio)),
-					Util.localTimeToString(dateToLocalTime(horaFin)));			
+					fecha,
+					horaInicio,
+					horaFin);		
 		} catch (Exception e) {
 			return state.CONCURRENCEERROR;
 		}
@@ -94,7 +108,19 @@ public class Service22784 {
 	public Empleado getJardinero() {
 		return jardinero;
 	}
-
+	
+	public void updateFecha(Date fecha) {
+		this.fecha = Util.dateToIsoString(fecha);
+	}
+	
+	public void updateHoraInicio(Date horaInicio) {
+		this.horaInicio = Util.localTimeToString(dateToLocalTime(horaInicio));
+	}
+	
+	public void updateHoraFin(Date horaFin) {
+		this.horaFin = Util.localTimeToString(dateToLocalTime(horaFin));
+	}
+	
 	private LocalTime dateToLocalTime(Date d) {
 		return d.toInstant().atZone(ZoneId.systemDefault()).toLocalTime();
 	}

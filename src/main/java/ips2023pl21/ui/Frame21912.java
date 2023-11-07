@@ -513,7 +513,7 @@ public class Frame21912 extends JFrame {
 	        // Añadir ActionListener
 	        cbDiaSemana.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-	                service.deseleccionadHorarioSemanal();
+	                service.seleccionaHorarioSemanal(0, null);
 	            }
 	        });
 	    }
@@ -861,7 +861,7 @@ public class Frame21912 extends JFrame {
 			
 			spFechaPuntual.addChangeListener(new ChangeListener() {
 			    public void stateChanged(ChangeEvent e) {
-			    	service.deseleccionaHorarioPuntual();
+			    	service.seleccionaHorarioPuntual(null);
 			    }
 			});
 		}
@@ -908,7 +908,7 @@ public class Frame21912 extends JFrame {
 			
 			spFechaInicio.addChangeListener(new ChangeListener() {
 			    public void stateChanged(ChangeEvent e) {
-			    	service.deseleccionadHorarioSemanal();
+			    	service.seleccionaHorarioSemanal(0, null);
 			    }
 			});
 		}

@@ -9,15 +9,24 @@ import ips2023pl21.util.Util;
 public class HorarioPuntual implements Comparable<HorarioPuntual> {
 
 	private String fechaPuntual;
+	private int eid;
 
 	public HorarioPuntual() {}
 
 	public String getFechaPuntual() {
 		return fechaPuntual;
 	}
+	
+	public int getEid() {
+		return eid;
+	}
 
 	public void setFechaPuntual(String fechaEspecificada) {
 		this.fechaPuntual = fechaEspecificada;
+	}
+	
+	public void setEid(int eid) {
+		this.eid = eid;
 	}
 	
 	public int getDiaDeLaSemana() {
@@ -39,7 +48,7 @@ public class HorarioPuntual implements Comparable<HorarioPuntual> {
 		
 	    String result = "%-10s".formatted(fechaPuntual);;
 	    
-	    for (FranjaPuntual f: Persistence.getInstance().getFranjasPuntuales(fechaPuntual)) {
+	    for (FranjaPuntual f: Persistence.getInstance().getFranjasPuntuales(fechaPuntual, eid)) {
 	        result += " || " + f.toString();
 	    }
 

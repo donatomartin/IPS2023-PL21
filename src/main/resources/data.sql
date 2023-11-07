@@ -75,3 +75,4 @@ delete from ventaMerchandising;
 insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, producto, unidades, precioPorProducto) VALUES
 (1,'merchandising','2023-10-13', '20','05',30, 'camiseta', 3,10),
 (3, 'merchandising','2013-02-02','20','00',50,'pantalon',5,10);
+
