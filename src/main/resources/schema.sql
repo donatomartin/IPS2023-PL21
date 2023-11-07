@@ -161,8 +161,9 @@ create table Instalacion(
 --Noticia
 drop table Noticia;
 create table Noticia(
+	id integer primary key autoincrement,
 	titulo varchar(30) not null,
-	subtitulo varchar(300),
-	cuerpo varchar(500),
+	subtitulo varchar(300) not null,
+	cuerpo varchar(500) not null,
 	img varchar(30)
 );

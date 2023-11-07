@@ -13,6 +13,7 @@ import ips2023pl21.service.Service21913;
 import ips2023pl21.service.Service21915;
 import ips2023pl21.service.Service21917;
 import ips2023pl21.service.Service21918;
+import ips2023pl21.service.Service22759;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -170,6 +171,21 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
+	}
+	
+	private void run22759() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service22759 service=new Service22759();
+					Frame22759 f=new Frame22759(service);
+					f.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
 	}
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
@@ -330,6 +346,12 @@ public class MainFrame extends JFrame {
 	private JButton getBtn22759() {
 		if (btn22759 == null) {
 			btn22759 = new JButton("22759");
+			btn22759.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run22759();
+				}
+
+			});
 		}
 		return btn22759;
 	}

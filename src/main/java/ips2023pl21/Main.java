@@ -15,11 +15,8 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-//					MainFrame frame = new MainFrame();
-//					frame.setVisible(true);
-					
-					Frame22759 f=new Frame22759(new Service22759());
-					f.setVisible(true);
+					MainFrame frame = new MainFrame();
+					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

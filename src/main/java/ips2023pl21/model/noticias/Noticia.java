@@ -2,13 +2,13 @@ package ips2023pl21.model.noticias;
 
 public class Noticia {
 	private String titulo;
-	private String subtititulo;
+	private String subtitulo;
 	private String cuerpo;
 	private String img;
 	
-	public Noticia(String titulo, String subtititulo, String cuerpo, String img) {
+	public Noticia(String titulo, String subtitulo, String cuerpo, String img) {
 		this.titulo = titulo;
-		this.subtititulo = subtititulo;
+		this.subtitulo = subtitulo;
 		this.cuerpo = cuerpo;
 		this.img = img;
 	}
@@ -25,12 +25,12 @@ public class Noticia {
 		this.titulo = titulo;
 	}
 
-	public String getSubtititulo() {
-		return subtititulo;
+	public String getSubtitulo() {
+		return subtitulo;
 	}
 
-	public void setSubtititulo(String subtititulo) {
-		this.subtititulo = subtititulo;
+	public void setSubtitulo(String subtitulo) {
+		this.subtitulo = subtitulo;
 	}
 
 	public String getCuerpo() {

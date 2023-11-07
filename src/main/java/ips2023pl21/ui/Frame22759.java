@@ -9,7 +9,7 @@ import java.awt.Font;
 import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Window;
+
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -17,7 +17,6 @@ import javax.swing.JFileChooser;
 import java.awt.CardLayout;
 import java.awt.Dimension;
 
-import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ips2023pl21.model.noticias.Noticia;
@@ -27,7 +26,7 @@ import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.CopyOption;
+
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -37,26 +36,18 @@ import java.util.Stack;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import java.awt.Color;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import com.jgoodies.forms.layout.RowSpec;
-import net.miginfocom.swing.MigLayout;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.Icon;
+
 import javax.swing.ImageIcon;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.BoxLayout;
-import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.SpringLayout;
+
 
 public class Frame22759 extends JFrame{
+	private static final long serialVersionUID = 1L;
 	private Service22759 service;
 	private JLabel lbTitulo;
 	private JPanel pnDecision;
@@ -96,11 +87,9 @@ public class Frame22759 extends JFrame{
 	private JButton btAtrasVisualizar;
 	private JPanel pnCentroVisualizar;
 	private JButton btSiguiente;
-	private int pagina=5; //para identificar las paginas
 	private int numPagina=0;
 	private List<Noticia> noticiasStack=new Stack<Noticia>();
 	private int count=0;
-	private int numNoticias=0;
 	private JScrollPane scrollPaneTitulo;
 	private JScrollPane scrollPaneIAñadirTitulo;
 	private JTextArea textAreaAñadirTitulo;
@@ -112,16 +101,24 @@ public class Frame22759 extends JFrame{
 	private JTextArea textAreaTituloVisualizar;
 	private JScrollPane scrollPaneTSuntituloNoticiaActual;
 	private JTextArea textAreaSubtituloNoticiaActual;
+	private JFrame frame;
 	
 	public Frame22759(Service22759 service ) {
 		this.service=service;
+		frame=new JFrame();
+		setMinimumSize(new Dimension(700,700));
+		frame.setLocationRelativeTo(null);
+		this.setLocationRelativeTo(null);
+		frame.setResizable(true);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//		setContentPane(getContentPane());
 		getContentPane().setLayout(new CardLayout(0, 0));
 		getContentPane().add(getPnIntro(), "intro");
 		getContentPane().add(getPanel_1(), "añadir");
 		getContentPane().add(getPanel_1_3(), "visualizar");
 		getContentPane().add(getPanel_1_4(), "escogerNoticia");
-		setLocationRelativeTo(null);
-		setMinimumSize(new Dimension(700,700));
+		
+		
 	}
 	
 
@@ -164,7 +161,6 @@ public class Frame22759 extends JFrame{
 			btVisualizarNoticia = new JButton("Visualizar noticia");
 			btVisualizarNoticia.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-//					crearPanelEscogerNoticias();
 					showPn("escogerNoticia");
 				}
 			});
@@ -185,19 +181,13 @@ public class Frame22759 extends JFrame{
 }
 	
 	private JPanel getPanel_1_5() {
-//		if(pnNoticias==null) {
 			return crearPanelEscogerNoticias();
-//		}
-//		return pnNoticias;
 	}
 	private JPanel crearPanelEscogerNoticias() {
 			numPagina++;
 			pnNoticias = new JPanel();
 			pnNoticias.setLayout(new GridLayout(5, 0, 0, 0));
-//			numNoticias=noticiasStack.size();
 			for(int i=0; i<NUMERO_NOTICIAS ;i++) {
-//				if( i<numNoticias) {
-//					count=i;
 					JButton boton=new JButton("Noticia "+i);
 					boton.setName("btnNoticia"+i);
 					boton.setMnemonic(i);
@@ -208,14 +198,13 @@ public class Frame22759 extends JFrame{
 							showPn("visualizar");
 							
 							}
-//							
+							
 						}
 						);
 						
 						pnNoticias.add(boton);
 						count++;
 					}
-//				}
 				
 				
 				
@@ -223,11 +212,13 @@ public class Frame22759 extends JFrame{
 			}
 	
 	private void comprobarNoticias(int id, int numNoticias) {
-		System.out.println(numNoticias);
-		System.out.print(id);
 		if(NUMERO_NOTICIAS*(numPagina-1)+id*numPagina>=numNoticias) {
 			textAreaTituloVisualizar.setText("No hay noticia");
+			textAreaSubtituloNoticiaActual.setText("");
+			lbImagenNoticiaActual.setIcon(null);
+			textAreaCuerpoNoticiaActual.setText("");
 		}else {
+			System.out.println(numPagina);
 			Noticia noticia=noticiasStack.get(NUMERO_NOTICIAS*(numPagina-1)+ id*numPagina);
 			cargarNoticias(noticia);
 		}
@@ -418,6 +409,8 @@ public class Frame22759 extends JFrame{
 				textAreaAñadirTitulo.setText("");
 				getTextAreaAñadirSubtitulo().setText("");
 				getTextAreaCuerpo().setText("");
+				dest=null;
+				getLbImagenNoticiaActual().setIcon(null);
 			}
 		}
 	}
@@ -470,7 +463,7 @@ public class Frame22759 extends JFrame{
 	
 	private void cargarNoticias(Noticia noticia) {
 		textAreaTituloVisualizar.setText(noticia.getTitulo());
-		textAreaSubtituloNoticiaActual.setText(noticia.getSubtititulo());
+		textAreaSubtituloNoticiaActual.setText(noticia.getSubtitulo());
 		Image imgOriginal=new ImageIcon(noticia.getImg()).getImage();
 		
 		Image imgEscalada=imgOriginal.getScaledInstance(lbImagenNoticiaActual.getWidth(),
@@ -485,12 +478,28 @@ public class Frame22759 extends JFrame{
 			btAtrasEscoger = new JButton("Atrás");
 			btAtrasEscoger.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					showPn("intro");
+					comprobarPagina();
+					
+					
 				}
+
 			});
 			btAtrasEscoger.setBackground(Color.RED);
 		}
 		return btAtrasEscoger;
+	}
+	private void comprobarPagina() {
+		numPagina--;
+		System.out.println(numPagina);
+		if(numPagina<=0) {
+			numPagina=1;
+			showPn("intro");
+		}else {
+			numPagina--;
+			crearPanelEscogerNoticias();
+			showPn("escogerNoticia");
+		}
+		
 	}
 	private JPanel getPnTituloEscoger() {
 		if (pnTituloEscoger == null) {
@@ -572,21 +581,22 @@ public class Frame22759 extends JFrame{
 			gl_pnCentroVisualizar.setHorizontalGroup(
 				gl_pnCentroVisualizar.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
-						.addGroup(gl_pnCentroVisualizar.createParallelGroup(Alignment.LEADING)
-							.addGroup(Alignment.TRAILING, gl_pnCentroVisualizar.createSequentialGroup()
+						.addGroup(gl_pnCentroVisualizar.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
 								.addGap(7)
-								.addComponent(getScrollPaneTitulo(), GroupLayout.DEFAULT_SIZE, 918, Short.MAX_VALUE))
-							.addGroup(Alignment.TRAILING, gl_pnCentroVisualizar.createSequentialGroup()
-								.addGap(24)
-								.addComponent(getLbImagenNoticiaActual(), GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-								.addGap(42)
-								.addComponent(getScrollPaneTSuntituloNoticiaActual(), GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
+								.addComponent(getScrollPaneTitulo()))
+							.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
+								.addGroup(gl_pnCentroVisualizar.createParallelGroup(Alignment.TRAILING)
+									.addGroup(Alignment.LEADING, gl_pnCentroVisualizar.createSequentialGroup()
+										.addGap(7)
+										.addComponent(getScrollPaneCuerpoNoticiaActual(), GroupLayout.DEFAULT_SIZE, 621, Short.MAX_VALUE))
+									.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
+										.addGap(24)
+										.addComponent(getLbImagenNoticiaActual(), GroupLayout.DEFAULT_SIZE, 199, Short.MAX_VALUE)
+										.addGap(42)
+										.addComponent(getScrollPaneTSuntituloNoticiaActual())))
 								.addGap(58)))
 						.addGap(0))
-					.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
-						.addGap(7)
-						.addComponent(getScrollPaneCuerpoNoticiaActual())
-						.addGap(21))
 			);
 			gl_pnCentroVisualizar.setVerticalGroup(
 				gl_pnCentroVisualizar.createParallelGroup(Alignment.LEADING)
@@ -595,9 +605,13 @@ public class Frame22759 extends JFrame{
 						.addComponent(getScrollPaneTitulo(), GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
 						.addGap(27)
 						.addGroup(gl_pnCentroVisualizar.createParallelGroup(Alignment.LEADING)
-							.addComponent(getScrollPaneTSuntituloNoticiaActual(), GroupLayout.PREFERRED_SIZE, 45, GroupLayout.PREFERRED_SIZE)
-							.addComponent(getLbImagenNoticiaActual(), GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE))
-						.addGap(18)
+							.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
+								.addComponent(getLbImagenNoticiaActual(), GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+								.addGap(18))
+							.addGroup(gl_pnCentroVisualizar.createSequentialGroup()
+								.addComponent(getScrollPaneTSuntituloNoticiaActual(), GroupLayout.PREFERRED_SIZE, 138, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED)))
+						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(getScrollPaneCuerpoNoticiaActual(), GroupLayout.PREFERRED_SIZE, 310, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap())
 			);
@@ -622,7 +636,6 @@ public class Frame22759 extends JFrame{
 		if (scrollPaneTitulo == null) {
 			scrollPaneTitulo = new JScrollPane();
 			scrollPaneTitulo.setMaximumSize(new Dimension(3275, 3276));
-			scrollPaneTitulo.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			scrollPaneTitulo.setViewportView(getTextAreaTituloVisualizar());
 		}
 		return scrollPaneTitulo;
@@ -688,8 +701,11 @@ public class Frame22759 extends JFrame{
 	private JTextArea getTextAreaTituloVisualizar() {
 		if (textAreaTituloVisualizar == null) {
 			textAreaTituloVisualizar = new JTextArea();
-			textAreaTituloVisualizar.setFont(new Font("Arial Black", Font.PLAIN, 18));
+			textAreaTituloVisualizar.setForeground(Color.BLACK);
+			textAreaTituloVisualizar.setFont(new Font("Arial", Font.PLAIN, 16));
 			textAreaTituloVisualizar.setEnabled(false);
+			textAreaTituloVisualizar.setWrapStyleWord(true);
+			textAreaTituloVisualizar.setLineWrap(true);
 		}
 		return textAreaTituloVisualizar;
 	}
@@ -705,8 +721,10 @@ public class Frame22759 extends JFrame{
 	private JTextArea getTextAreaSubtituloNoticiaActual() {
 		if (textAreaSubtituloNoticiaActual == null) {
 			textAreaSubtituloNoticiaActual = new JTextArea();
-			textAreaSubtituloNoticiaActual.setFont(new Font("Arial", Font.PLAIN, 17));
+			textAreaSubtituloNoticiaActual.setFont(new Font("Arial", Font.PLAIN, 16));
 			textAreaSubtituloNoticiaActual.setEditable(false);
+			textAreaSubtituloNoticiaActual.setWrapStyleWord(true);
+			textAreaSubtituloNoticiaActual.setLineWrap(true);
 		}
 		return textAreaSubtituloNoticiaActual;
 	}

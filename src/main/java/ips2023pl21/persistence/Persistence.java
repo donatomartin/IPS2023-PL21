@@ -223,6 +223,7 @@ public class Persistence {
 	public List<Noticia> selectNoticias() {
 		return db.executeQueryPojo(Noticia.class, "select * from noticia");
 		
+		
 	}
 
 }
