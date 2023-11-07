@@ -38,9 +38,16 @@ public class Partido {
 		this.suplemento = suplemento;
 	}
 	
-	
 	public void crearPartido() {
 		p.insertPartido(this);
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Partido: " + local.getNombre() + " vs. " + visitante + ", Fecha: " + fecha + ", Suplemento: "
+				+ suplemento;
+	}
+
+
+
 }

@@ -78,11 +78,31 @@ create table Equipo(
 drop table Partido;
 create table Partido(
 	idEquipo varchar(30),
-	equipoVisitante varchar(30) not null,
-	fecha varchar(10) not null,
+	equipoVisitante varchar(30),
+	fecha varchar(10),
 	suplemento real,
 	primary key(idEquipo, equipoVisitante, fecha),
 	foreign key(idEquipo) references Equipo(id)
+);
+
+-- PartidoAbonado
+drop table PartidoAbonado;
+create table PartidoAbonado(
+	idAbonado varchar(30),
+	idEquipo varchar(30),
+	equipoVisitante varchar(30),
+	fecha varchar(10),
+	primary key(idAbonado, idEquipo, equipoVisitante, fecha),
+	foreign key(idAbonado) references Abonado(idAbonado),
+	foreign key(idEquipo) references Partido(idEquipo),
+	foreign key(equipoVisitante) references Partido(equipoVisitante),
+	foreign key(fecha) references Partido(fecha)
+);
+
+-- Abonado
+drop table Abonado;
+create table Abonado(
+	id varchar(30) primary key not null
 );
 
 -- Entrevista

@@ -4,13 +4,14 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 
-import ips2023pl21.model.activos.Merchandaising;
+import ips2023pl21.model.entradas.EntradasModel;
 import ips2023pl21.model.equipos.EquipoDeportivo;
 import ips2023pl21.model.equipos.Partido;
+import ips2023pl21.service.Service21917;
 import ips2023pl21.service.Service22739;
+import ips2023pl21.util.Util;
 
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -33,6 +34,8 @@ import javax.swing.JCheckBox;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
+import java.awt.FlowLayout;
+import java.awt.Dimension;
 
 public class Frame22739 extends JFrame {
 
@@ -42,7 +45,7 @@ public class Frame22739 extends JFrame {
 
 	private ProcesaBotonPartido pBP;
 
-	private JPanel contentPane;
+	private JFrame frame;
 	private JPanel pnCrearComprar;
 	private JPanel pnCrearPartido;
 	private JPanel pnSeleccionarPartido;
@@ -66,9 +69,9 @@ public class Frame22739 extends JFrame {
 	private JCheckBox chckSuplemento;
 	private JSpinner spSuplemento;
 	private JPanel pnCabeceraSeleccion;
-	private JPanel pnSocioNoSocio;
-	private JButton btSocio;
-	private JButton btNoSocio;
+	private JPanel pnAbonadoNoAbonado;
+	private JButton btAbonado;
+	private JButton btNoAbonado;
 	private JComboBox<String> cbEquipo;
 	private JLabel lbPartidos;
 	private JScrollPane spPartidos;
@@ -76,6 +79,10 @@ public class Frame22739 extends JFrame {
 	private JButton btVolverCrear;
 	private JPanel pnVolverCompra;
 	private JButton btVolverCompra;
+	private JButton btActualizarPartidos;
+	
+	private boolean abonado;
+	private String idAbonado;
 
 	/**
 	 * Launch the application.
@@ -85,7 +92,6 @@ public class Frame22739 extends JFrame {
 			public void run() {
 				try {
 					Frame22739 frame = new Frame22739();
-					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -97,71 +103,53 @@ public class Frame22739 extends JFrame {
 	 * Create the frame.
 	 */
 	public Frame22739() {
-
 		pBP = new ProcesaBotonPartido();
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 847, 532);
-		contentPane = new JPanel();
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-		setContentPane(contentPane);
-		contentPane.setLayout(new CardLayout(0, 0));
-		contentPane.add(getPnCrearComprar(), "crearComprar");
-		contentPane.add(getPnCrearPartido(), "crear");
-		contentPane.add(getPnSocioNoSocio(), "socio");
-		contentPane.add(getPnSeleccionarPartido(), "seleccionar");
+		initialize();
+	}
+
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 600, 400);
+		frame.setMinimumSize(new Dimension(700, 500));
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setLocationRelativeTo(null);
+		frame.getContentPane().setLayout(new CardLayout(0, 0));
+		frame.getContentPane().add(getPnCrearComprar(), "crearComprar");
+		frame.getContentPane().add(getPnCrearPartido(), "crear");
+		frame.getContentPane().add(getPnAbonadoNoAbonado(), "Abonado");
+		frame.getContentPane().add(getPnSeleccionarPartido(), "seleccionar");
+
+		frame.setVisible(true);
 	}
 
 	public class ProcesaBotonPartido implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JButton source = (JButton) e.getSource();
-			int actionCommand = Integer.parseInt(source.getActionCommand());
-
+			//TODO boton que te lleva a comprar
+			
+			if(abonado) {
+				JOptionPane.showMessageDialog(null, "Entrada comprada");
+				crearBotonesPartidos();
+			} else {
+				EventQueue.invokeLater(new Runnable() {
+					public void run() {
+						try {
+							new Service21917( new EntradasModel(),new Frame21917());
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				});
+			}
 		}
 	}
 
 	private void irAPn(String panel) {
-		((CardLayout) contentPane.getLayout()).show(contentPane, panel);
+		((CardLayout) frame.getContentPane().getLayout()).show(frame.getContentPane(), panel);
 	}
 
-	private void crearBotonesPartidos() {
-		getPnPartidos().removeAll();
-		getPnPartidos().updateUI();
-		System.out.println(getCbEquipo().getSelectedItem().toString());
-
-		EquipoDeportivo equipo = service.getEquipoPorNombre(getCbEquipo().getSelectedItem().toString());
-
-		String id = equipo.getId();
-		List<Partido> partidos = service.getPartidosPorEquipo(id);
-
-		if (partidos.size() <= 0) {
-			JOptionPane.showMessageDialog(null, "no hay partidos para el equipo seleccionado");
-		} else {
-			for (int i = 0; i < partidos.size(); i++) {
-				getPnPartidos().add(nuevoBotonPartido(i, id));
-			}
-		}
-
-	}
-
-	private Component nuevoBotonPartido(Integer posicion, String id) {
-		JButton boton = new JButton("");
-		String textoBt;
-		Partido p = service.getPartidosPorEquipo(id).get(posicion);
-
-		boton.addActionListener(pBP);
-		textoBt = "Partido " + posicion + 1 + " " + p.getLocal() + " vs " + p.getVisitante();
-
-		boton.setBackground(Color.white);
-		boton.setBorder(new LineBorder(Color.LIGHT_GRAY, 2, true));
-		boton.setActionCommand(posicion.toString());
-
-		boton.setVerticalAlignment(SwingConstants.CENTER);
-
-		boton.setText(textoBt);
-		return boton;
-	}
+	
 
 	private JPanel getPnCrearComprar() {
 		if (pnCrearComprar == null) {
@@ -200,12 +188,21 @@ public class Frame22739 extends JFrame {
 			btCrearPartido = new JButton("Crear Partido");
 			btCrearPartido.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					irAPn("crear");
-					cargarComboBoxEquiposCrearPartido();
+					irACrearPartido();
 				}
 			});
 		}
 		return btCrearPartido;
+	}
+	
+	private void irACrearPartido() {
+		irAPn("crear");
+		cargarComboBoxEquiposCrearPartido();
+		getSpSuplemento().setValue(0);
+		getSpSuplemento().setEnabled(false);
+		getChckSuplemento().setSelected(false);
+		
+		getTfVisitante().setText("");
 	}
 
 	private JButton getBtComprarPartido() {
@@ -213,7 +210,9 @@ public class Frame22739 extends JFrame {
 			btComprarPartido = new JButton("Comprar Entrada a Partido");
 			btComprarPartido.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					irAPn("socio");
+					irAPn("Abonado");
+					cargarComboBoxEquiposComprarPartido();
+					crearBotonesPartidos();
 				}
 			});
 		}
@@ -230,9 +229,9 @@ public class Frame22739 extends JFrame {
 	}
 
 	private void cargarComboBoxEquiposComprarPartido() {
-		//getCbEquipo().removeAllItems();
+		getCbEquipo().removeAllItems();
 		List<EquipoDeportivo> es = service.getEquipos();
-		
+
 		for (EquipoDeportivo e : es) {
 			getCbEquipo().addItem(e.getNombre());
 		}
@@ -275,27 +274,26 @@ public class Frame22739 extends JFrame {
 	}
 
 	private void checkCrear() {
-		// TODO
-
 		if (getTfVisitante().getText().isBlank()) {
 			JOptionPane.showMessageDialog(null, "Faltan datos");
 		} else {
-//			try {
+			try {
 
-			Partido partido = new Partido();
+				Partido partido = new Partido();
 
-			EquipoDeportivo local = service.getEquipoPorNombre(getCbLocal().getSelectedItem().toString());
-			System.out.print(local.getNombre());
-			partido.setLocal(local);
-//				partido.setFecha();
-			partido.setVisitante(getTfVisitante().getText());
+				EquipoDeportivo local = service.getEquipoPorNombre(getCbLocal().getSelectedItem().toString());
+				partido.setLocal(local);
+				String fecha = Util.dateToIsoString((Date)getSpFecha().getValue());
+				partido.setFecha(fecha);
+				partido.setVisitante(getTfVisitante().getText());
+				partido.setSuplemento(Float.parseFloat(getSpSuplemento().getValue().toString()));
 
-			service.insertPartido(partido);
-			JOptionPane.showMessageDialog(null, "Partido creado");
-			irAPn("crearComprar");
-//			} catch (Exception e) {
-//				JOptionPane.showMessageDialog(null,"No se pudo crear el partido");
-//			}
+				service.insertPartido(partido);
+				JOptionPane.showMessageDialog(null, "Partido creado");
+				irAPn("crearComprar");
+			} catch (Exception e) {
+				JOptionPane.showMessageDialog(null, "No se pudo crear el partido");
+			}
 
 		}
 
@@ -316,6 +314,9 @@ public class Frame22739 extends JFrame {
 	private JPanel getPnLocal() {
 		if (pnLocal == null) {
 			pnLocal = new JPanel();
+			FlowLayout flowLayout = (FlowLayout) pnLocal.getLayout();
+			flowLayout.setHgap(15);
+			flowLayout.setVgap(100);
 			pnLocal.add(getLbLocal());
 			pnLocal.add(getCbLocal());
 		}
@@ -325,6 +326,8 @@ public class Frame22739 extends JFrame {
 	private JPanel getPnVisitante() {
 		if (pnVisitante == null) {
 			pnVisitante = new JPanel();
+			FlowLayout flowLayout = (FlowLayout) pnVisitante.getLayout();
+			flowLayout.setVgap(100);
 			pnVisitante.add(getLbVisiante());
 			pnVisitante.add(getTfVisitante());
 		}
@@ -334,6 +337,9 @@ public class Frame22739 extends JFrame {
 	private JPanel getPnFecha() {
 		if (pnFecha == null) {
 			pnFecha = new JPanel();
+			FlowLayout flowLayout = (FlowLayout) pnFecha.getLayout();
+			flowLayout.setVgap(20);
+			flowLayout.setHgap(10);
 			pnFecha.add(getLbFecha());
 			pnFecha.add(getSpFecha());
 		}
@@ -343,6 +349,9 @@ public class Frame22739 extends JFrame {
 	private JPanel getPnSuplemento() {
 		if (pnSuplemento == null) {
 			pnSuplemento = new JPanel();
+			FlowLayout flowLayout = (FlowLayout) pnSuplemento.getLayout();
+			flowLayout.setVgap(20);
+			flowLayout.setHgap(10);
 			pnSuplemento.add(getChckSuplemento());
 			pnSuplemento.add(getSpSuplemento());
 		}
@@ -388,7 +397,15 @@ public class Frame22739 extends JFrame {
 	private JSpinner getSpFecha() {
 		if (spFecha == null) {
 			spFecha = new JSpinner();
-			spFecha.setModel(new SpinnerDateModel(new Date(1699052400000L), null, null, Calendar.DAY_OF_YEAR));
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_YEAR, 7);
+			Date date = calendar.getTime();
+			SpinnerDateModel model = new SpinnerDateModel();
+			model.setValue(date);
+			spFecha.setModel(model);
+			JSpinner.DateEditor editor = new JSpinner.DateEditor(spFecha, "dd-MM-yyyy");
+			spFecha.setEditor(editor);
 		}
 		return spFecha;
 	}
@@ -419,7 +436,7 @@ public class Frame22739 extends JFrame {
 			spSuplemento = new JSpinner();
 			spSuplemento.setEnabled(false);
 			spSuplemento
-					.setModel(new SpinnerNumberModel(Integer.valueOf(0), Integer.valueOf(0), null, Integer.valueOf(1)));
+					.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), null, Float.valueOf(1)));
 		}
 		return spSuplemento;
 	}
@@ -429,76 +446,110 @@ public class Frame22739 extends JFrame {
 			pnCabeceraSeleccion = new JPanel();
 			pnCabeceraSeleccion.add(getLbPartidos());
 			pnCabeceraSeleccion.add(getCbEquipo());
+			pnCabeceraSeleccion.add(getBtActualizarPartidos());
 		}
 		return pnCabeceraSeleccion;
 	}
 
-	private JPanel getPnSocioNoSocio() {
-		if (pnSocioNoSocio == null) {
-			pnSocioNoSocio = new JPanel();
-			pnSocioNoSocio.setLayout(new GridLayout(1, 0, 0, 0));
-			pnSocioNoSocio.add(getBtSocio());
-			pnSocioNoSocio.add(getBtNoSocio());
+	private JPanel getPnAbonadoNoAbonado() {
+		if (pnAbonadoNoAbonado == null) {
+			pnAbonadoNoAbonado = new JPanel();
+			pnAbonadoNoAbonado.setLayout(new GridLayout(1, 0, 0, 0));
+			pnAbonadoNoAbonado.add(getBtAbonado());
+			pnAbonadoNoAbonado.add(getBtNoAbonado());
 		}
-		return pnSocioNoSocio;
+		return pnAbonadoNoAbonado;
 	}
 
-	private JButton getBtSocio() {
-		if (btSocio == null) {
-			btSocio = new JButton("Socio");
-			btSocio.addActionListener(new ActionListener() {
+	private JButton getBtAbonado() {
+		if (btAbonado == null) {
+			btAbonado = new JButton("Abonado");
+			btAbonado.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					comprobarSocio();
-					
+					comprobarAbonado();
+
 				}
 			});
 		}
-		return btSocio;
+		return btAbonado;
 	}
 
-	private void comprobarSocio() {
-		// TODO
-		JOptionPane.showInputDialog(null, "Escribe tu id de socio");
-		// comprobar si el socio existe
-		if (false) {
-			JOptionPane.showMessageDialog(null, "El socio no existe");
+	private void comprobarAbonado() {
+		String id = JOptionPane.showInputDialog(null, "Escribe tu id de Abonado");
+		
+		if (!service.existsIdAbonado(id)) {
+			JOptionPane.showMessageDialog(null, "El Abonado no existe");
 		} else {
+			abonado = true;
+			idAbonado = id;
 			irAPn("seleccionar");
-			cargarPaginaCompraDePartido();
-			// cargar partidos que el socio no tiene comprados
 		}
 
 	}
 
-	private JButton getBtNoSocio() {
-		if (btNoSocio == null) {
-			btNoSocio = new JButton("No Socio");
-			btNoSocio.addActionListener(new ActionListener() {
+	private JButton getBtNoAbonado() {
+		if (btNoAbonado == null) {
+			btNoAbonado = new JButton("No Abonado");
+			btNoAbonado.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					irAPn("seleccionar");
-					cargarPaginaCompraDePartido();
+					noAbonado();
 				}
 
 			});
 		}
-		return btNoSocio;
+		return btNoAbonado;
 	}
 	
-	private void cargarPaginaCompraDePartido() {
-		cargarComboBoxEquiposComprarPartido();
-		crearBotonesPartidos();
+	private void noAbonado() {
+		irAPn("seleccionar");
+		abonado = false;
 	}
-
+	
 	private JComboBox<String> getCbEquipo() {
 		if (cbEquipo == null) {
 			cbEquipo = new JComboBox<String>();
-			cbEquipo.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					crearBotonesPartidos();
-				}
-			});
 		}
 		return cbEquipo;
+	}
+	
+	private void crearBotonesPartidos() {
+		getPnPartidos().removeAll();
+		getPnPartidos().updateUI();
+		EquipoDeportivo equipo = service.getEquipoPorNombre(getCbEquipo().getSelectedItem().toString());
+		
+		String id = equipo.getId();
+		List<Partido> partidos;
+		if(!abonado) {
+			partidos = service.getPartidosPorEquipo(id);
+		} else {
+			//TODO cargar los partidos no comprados del abonado
+			partidos = service.getPartidosNoSeleccionadosPorAbonadoYEquipo(idAbonado,id);
+		}
+		
+		if (partidos.size() > 0) {
+			for (int i = 0; i < partidos.size(); i++) {
+				getPnPartidos().add(nuevoBotonPartido(i, partidos.get(i)));
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "no hay partidos para el equipo seleccionado");
+		}
+
+	}
+
+	private Component nuevoBotonPartido(Integer posicion, Partido partido) {
+		String textBt = partido.toString();
+
+		JButton boton = new JButton("");
+		boton.addActionListener(pBP);
+
+		boton.setBackground(Color.white);
+		boton.setBorder(new LineBorder(Color.LIGHT_GRAY, 2, true));
+		boton.setActionCommand(posicion.toString());
+
+		boton.setVerticalAlignment(SwingConstants.CENTER);
+
+		boton.setText(textBt);
+		return boton;
 	}
 
 	private JLabel getLbPartidos() {
@@ -523,6 +574,7 @@ public class Frame22739 extends JFrame {
 		}
 		return pnPartidos;
 	}
+
 	private JButton getBtVolverCrear() {
 		if (btVolverCrear == null) {
 			btVolverCrear = new JButton("Volver");
@@ -534,6 +586,7 @@ public class Frame22739 extends JFrame {
 		}
 		return btVolverCrear;
 	}
+
 	private JPanel getPnVolverCompra() {
 		if (pnVolverCompra == null) {
 			pnVolverCompra = new JPanel();
@@ -541,16 +594,28 @@ public class Frame22739 extends JFrame {
 		}
 		return pnVolverCompra;
 	}
+
 	private JButton getBtVolverCompra() {
 		if (btVolverCompra == null) {
 			btVolverCompra = new JButton("Volver");
 			btVolverCompra.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					getCbEquipo().removeAllItems();
 					irAPn("crearComprar");
+					abonado = false;
 				}
 			});
 		}
 		return btVolverCompra;
+	}
+	private JButton getBtActualizarPartidos() {
+		if (btActualizarPartidos == null) {
+			btActualizarPartidos = new JButton("Actualizar");
+			btActualizarPartidos.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					crearBotonesPartidos();
+				}
+			});
+		}
+		return btActualizarPartidos;
 	}
 }

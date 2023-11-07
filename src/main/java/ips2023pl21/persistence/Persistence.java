@@ -246,18 +246,29 @@ public class Persistence {
 		return ret;
 	}
 	
-	public EquipoDeportivo selectEquipoByNombre(String nombre) {
+	public EquipoDeportivo selectEquipoPorNombre(String nombre) {
 		
-		List<Object[]> equipos = db.executeQueryArray("select * from Equipo where nombre = ?",nombre);
+		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where nombre = ?",nombre);
 		EquipoDeportivo ret = new EquipoDeportivo();
-		
-		for(Object[] o : equipos) {
-			ret.setId(o[0].toString());
-			ret.setNombre(o[1].toString());
+		//TODO
+		ret.setId(equipo.get(0)[0].toString());
+		ret.setNombre(equipo.get(0)[1].toString());
 			
-//			equipo.setCategoria(o[2]);
-//			equipo.setFilial(o[3]);
-		}
+//			ret.setCategoria(o[2]);
+//			ret.setFilial(o[3]);
+		return ret;
+	}
+	
+	public EquipoDeportivo selectEquipoPorId(String id) {
+		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where id = ?",id);
+		EquipoDeportivo ret = new EquipoDeportivo();
+		//TODO
+
+		ret.setId(equipo.get(0)[0].toString());
+		ret.setNombre(equipo.get(0)[1].toString());
+			
+//			ret.setCategoria(o[2]);
+//			ret.setFilial(o[3]);
 		return ret;
 	}
 	
@@ -269,8 +280,37 @@ public class Persistence {
 				partido.getLocal().getId(), partido.getVisitante(),partido.getFecha(),partido.getSuplemento());
 	}
 
-	public List<Partido> selectPartidosForId(String id) {
-		return db.executeQueryPojo(Partido.class ,"select * from Partido where idEquipo = ?", id);
+	public List<Partido> selectPartidosPorIdEquipo(String id) {
+		List<Object[]> partidos = db.executeQueryArray("select * from Partido where idEquipo = ?", id);
+		
+		List<Partido> ret = new ArrayList<>();
+		
+		for(Object[] o : partidos) {
+			Partido p = new Partido();
+			
+			p.setLocal(selectEquipoPorId(o[0].toString()));
+			p.setVisitante(o[1].toString());
+			p.setFecha(o[2].toString());
+			p.setSuplemento(Float.parseFloat(o[3].toString()));
+			
+			ret.add(p);
+		}
+		return ret;
 	}
-
+	
+	public List<Partido> getPartidosNoSeleccionadosPorAbonadoYEquipo(String idAbonado, String idEquipo) {
+		//TODO
+		return new ArrayList<>();
+	}
+	
+	// ABONADOS
+	
+	public boolean existsIdAbonado(String id) {
+		List<Object[]> abonado = db.executeQueryArray("select * from Abonado where id = ?",id);
+		if(abonado.size() == 1) {
+			return true;
+		}
+		return false;
+		
+	}
 }

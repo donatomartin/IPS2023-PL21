@@ -10,7 +10,6 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import ips2023pl21.model.*;
 import ips2023pl21.model.activos.Merchandaising;
 import ips2023pl21.model.activos.TiendaLogica;
 

@@ -77,9 +77,12 @@ insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, produ
 (3, 'merchandising','2013-02-02','20','00',50,'pantalon',5,10);
 
 delete from Equipo;
-insert into Equipo(id, nombre, categoria, esFilial) values ('1','nombre','categoria', false);
-insert into Equipo(id, nombre, categoria, esFilial) values ('2','nombre2','categoria2', true);
+insert into Equipo(id, nombre, categoria, esFilial) values ('1','equipo','categoria', false);
+insert into Equipo(id, nombre, categoria, esFilial) values ('2','equipo2',null, true);
 
 delete from Partido;
-insert into Partido(idEquipo, equipoVisitante, fecha, suplemento) values ('1', 'visitante', 'fecha', 10);
+insert into Partido(idEquipo, equipoVisitante, fecha, suplemento) values ('1', 'EquipoVisitante', '2023-11-09', 10);
+
+delete from Abonado;
+insert into Abonado(id) values('1'); 
 

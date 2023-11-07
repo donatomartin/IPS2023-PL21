@@ -65,7 +65,7 @@ public class EquipoDeportivo {
 	}
 	
 	public List<Partido> getPartidos(){
-		return p.selectPartidosForId(this.id);
+		return p.selectPartidosPorIdEquipo(this.id);
 	}
 
 	public boolean añadirJugador(Empleado j) {

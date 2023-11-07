@@ -15,7 +15,7 @@ public class Service22739 {
 	}
 
 	public EquipoDeportivo getEquipoPorNombre(String string) {
-		return p.selectEquipoByNombre(string);
+		return p.selectEquipoPorNombre(string);
 		
 	}
 
@@ -25,10 +25,15 @@ public class Service22739 {
 	}
 
 	public List<Partido> getPartidosPorEquipo(String id) {
-		return p.selectPartidosForId(id);
+		return p.selectPartidosPorIdEquipo(id);
 	}
 	
-	
-	
+	public boolean existsIdAbonado(String id) {
+		return p.existsIdAbonado(id);
+	}
+
+	public List<Partido> getPartidosNoSeleccionadosPorAbonadoYEquipo(String idAbonado,String idEquipo) {
+		return p.getPartidosNoSeleccionadosPorAbonadoYEquipo(idAbonado,idEquipo);
+	}
 	
 }
