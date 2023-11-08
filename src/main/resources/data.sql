@@ -60,35 +60,18 @@ insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchan
 (4, 'reserva','2013-09-09','21','11',30);
 
 delete from merchandaising;
-insert into merchandaising(nombre,tipo,precio) values ('Gorra','Ropa',10);
-insert into merchandaising(nombre,tipo,precio) values ('Balon','Material',20);
-insert into merchandaising(nombre,tipo,precio) values ('Poster','Decoracion',5);
-insert into merchandaising(nombre,tipo,precio) values ('Bufanda','Ropa',10);
-insert into merchandaising(nombre,tipo,precio) values ('Camiseta','Ropa',20);
-insert into merchandaising(nombre,tipo,precio) values ('Cono','Material',5);
-insert into merchandaising(nombre,tipo,precio) values ('a','Ropa',10);
-insert into merchandaising(nombre,tipo,precio) values ('B','Material',20);
-insert into merchandaising(nombre,tipo,precio) values ('c','Decoracion',5);
-insert into merchandaising(nombre,tipo,precio) values ('d','Ropa',10);
-insert into merchandaising(nombre,tipo,precio) values ('e','Ropa',20);
-insert into merchandaising(nombre,tipo,precio) values ('f','Material',5);
-insert into merchandaising(nombre,tipo,precio) values ('g','Ropa',10);
-insert into merchandaising(nombre,tipo,precio) values ('h','Material',20);
-insert into merchandaising(nombre,tipo,precio) values ('i','Decoracion',5);
-insert into merchandaising(nombre,tipo,precio) values ('j','Ropa',10);
-insert into merchandaising(nombre,tipo,precio) values ('k','Ropa',20);
-insert into merchandaising(nombre,tipo,precio) values ('l','Material',5);
-insert into merchandaising(nombre,tipo,precio) values ('m','Ropa',10);
-insert into merchandaising(nombre,tipo,precio) values ('n','Material',20);
-insert into merchandaising(nombre,tipo,precio) values ('o','Decoracion',5);
-insert into merchandaising(nombre,tipo,precio) values ('p','Ropa',10);
-insert into merchandaising(nombre,tipo,precio) values ('q','Ropa',20);
-insert into merchandaising(nombre,tipo,precio) values ('r','Material',5);
+insert into merchandaising(id,nombre,tipo,precio) values (1,'Gorra','Ropa',30);
+insert into merchandaising(id,nombre,tipo,precio) values (2,'Balon','Material',20);
+insert into merchandaising(id,nombre,tipo,precio) values (3,'Poster','Decoracion',5);
+insert into merchandaising(id,nombre,tipo,precio) values (4,'Bufanda','Ropa',10);
+insert into merchandaising(id,nombre,tipo,precio) values (5,'Camiseta','Ropa',20);
+insert into merchandaising(id,nombre,tipo,precio) values (6,'Cono','Material',5);
 
 delete from ventaMerchandising;
-insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, producto, unidades, precioPorProducto) VALUES
-(1,'merchandising','2023-10-13', '20','05',30, 'camiseta', 3,10),
-(3, 'merchandising','2013-02-02','20','00',50,'pantalon',5,10);
+insert into ventaMerchandising(id, idProducto, cantidad) VALUES
+(1,1,1),
+(3, 2,1),
+(3,4,3);
 
 
 delete from Partido;

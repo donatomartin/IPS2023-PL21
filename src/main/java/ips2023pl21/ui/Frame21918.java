@@ -36,9 +36,6 @@ import java.awt.event.ActionEvent;
 
 public class Frame21918 extends JFrame{
 	
-//	public static void main(String[] args) {
-//		VentasView c=new VentasView();
-//		}
 	
 	/**
 	 * 
@@ -57,7 +54,6 @@ public class Frame21918 extends JFrame{
 	public Frame21918() {
 		initialize();
 		frame.setLocationRelativeTo(null);
-		
 		
 	}
 
@@ -101,7 +97,7 @@ public class Frame21918 extends JFrame{
 				DateFormatter dateFormatter1 = new DateFormatter(dateFormat); 
 				textFieldFechaInicial = new JFormattedTextField(dateFormatter1);
 				textFieldFechaInicial.setColumns(10);
-//				textFieldFechaInicial.
+
 				
 				pnFechaInicial.add(textFieldFechaInicial);
 				
@@ -230,8 +226,6 @@ public class Frame21918 extends JFrame{
 				btCancelar.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				btCancelar.setMnemonic('c');
 				pnCancelar.add(btCancelar);
-		
-				
 		
 		
 	}

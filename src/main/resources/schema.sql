@@ -170,9 +170,10 @@ create table Reserva(
 -- Mercho
 drop table Merchandaising;
 create table Merchandaising(
-	nombre varchar(30) primary key not null,
+	id int primary key,
+	nombre varchar(30),
 	tipo varchar(30) not null,
-	precio double not null
+	precio double not null,
 );
 
 -- Venta
@@ -186,19 +187,13 @@ create table Venta(
 	cuantia real not null
 );
 
--- Venta Mercho
+-- VentaMercho
 drop table VentaMerchandising;
 create table VentaMerchandising(
-	id integer primary key autoincrement,
-	concepto varchar(30) not null,
-	fecha date not null,
-	hora varchar(8) not null,
-	minuto varchar(8) not null,
-	cuantia real not null,
-	producto varchar(30) not null,
-	unidades int not null,
-	precioPorProducto real,
-	foreign key (id) references Venta(id)
+	id int not null,
+	idProducto int not null,
+	cantidad int,
+	primary key(id, idProducto)
 );
 
 --Entrada
@@ -220,6 +215,23 @@ create table Instalacion(
 	nombreInstalacion varchar(30) not null
 );
 
+--Abono
+drop table Abono;
+create table Abono(
+	tribuna varchar(30) not null,
+	seccion varchar(30) not null,
+	fila int not null,
+	asiento int not null,
+	precio int,
+	fechaCaducidad varchar(30) not null,
+	primary key(tribuna, seccion, fila, asiento),
+	foreign key (tribuna, seccion, fila, asiento) references Entrada(tribuna, seccion, fila, asiento)
+);
+
+--Abonado
+drop table Abonado;
+create table Abonado(
+	id integer autoincrement;
 --Noticia
 drop table Noticia;
 create table Noticia(
