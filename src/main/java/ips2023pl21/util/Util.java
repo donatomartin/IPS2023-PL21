@@ -30,6 +30,8 @@ public class Util {
 	 * @return
 	 */
 	public static String removeHtml(String html) {
+		if (html == null)
+			return "";
         String noHtml = Pattern.compile("<.*?>").matcher(html).replaceAll("");
         return noHtml;
     }

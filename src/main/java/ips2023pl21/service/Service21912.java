@@ -198,8 +198,13 @@ public class Service21912 {
 	public void seleccionaHorarioSemanal(String horarioString) {
 
 		String[] parts = Util.removeHtml(horarioString).replace(" ", "").split("\\(");
+		
+		if (parts.length < 2 || parts[1].length() < 10)
+			return;
+		
 		int nDia = HorarioSemanal.getNumeroDia(parts[0]);
 		String fechaInicio = parts[1].substring(0, 10);
+		
 
 		seleccionaHorarioSemanal(nDia, fechaInicio);
 
@@ -358,6 +363,7 @@ public class Service21912 {
 	public void seleccionaHorarioPuntualHtml(String horarioString) {
 
 		String[] parts = Util.removeHtml(horarioString).split(":");
+		
 		String fechaInicio = parts[0];
 
 		seleccionaHorarioPuntual(fechaInicio);

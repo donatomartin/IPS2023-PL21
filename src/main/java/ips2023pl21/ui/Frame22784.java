@@ -40,6 +40,7 @@ import java.util.Date;
 import java.util.Calendar;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
+import javax.swing.BoxLayout;
 
 public class Frame22784 extends JFrame {
 
@@ -180,7 +181,7 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnListInstalacion() {
 		if (pnListInstalacion == null) {
 			pnListInstalacion = new JPanel();
-			pnListInstalacion.setLayout(new BorderLayout(0, 0));
+			pnListInstalacion.setLayout(new BorderLayout(0, 5));
 			JScrollPane scpn = new JScrollPane(getListInstalaciones());
 			pnListInstalacion.add(scpn);
 			pnListInstalacion.add(getPnFiltroInstalacion(), BorderLayout.NORTH);
@@ -616,8 +617,8 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnFiltroInstalacion() {
 		if (pnFiltroInstalacion == null) {
 			pnFiltroInstalacion = new JPanel();
-			pnFiltroInstalacion.setLayout(new BorderLayout(0, 0));
-			pnFiltroInstalacion.add(getLbFiltraInstalaciones(), BorderLayout.EAST);
+			pnFiltroInstalacion.setLayout(new BoxLayout(pnFiltroInstalacion, BoxLayout.Y_AXIS));
+			pnFiltroInstalacion.add(getLbFiltraInstalaciones());
 			pnFiltroInstalacion.add(getTxInstalacionFilter());
 		}
 		return pnFiltroInstalacion;
@@ -625,7 +626,6 @@ public class Frame22784 extends JFrame {
 	private JLabel getLbFiltraInstalaciones() {
 		if (lbFiltraInstalaciones == null) {
 			lbFiltraInstalaciones = new JLabel("Filtra Instalación");
-			lbFiltraInstalaciones.setBorder(new EmptyBorder(0, 5, 0, 5));
 		}
 		return lbFiltraInstalaciones;
 	}
