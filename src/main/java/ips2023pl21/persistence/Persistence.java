@@ -62,14 +62,17 @@ public class Persistence {
 		return result;
 	}
 
-	public void insertHorarioEntrevista(String fecha, String datosMedio, String horaInicio, String horaFin, int eid) throws IllegalStateException {
+	public void insertHorarioEntrevista(String fecha, String datosMedio, String horaInicio, String horaFin, int eid)
+			throws IllegalStateException {
 		db.executeUpdate(
 				"insert into HorarioEntrevista (fechaEntrevista, datosMedio, horaInicio, horaFin, eid) values (?,?,?,?,?)",
 				fecha, datosMedio, horaInicio, horaFin, eid);
 	}
-	
+
 	public void deleteHorarioEntrevista(int eid, String fecha, String horaInicio, String horaFin) {
-		db.executeUpdate("delete from HorarioEntrevista where eid=? and fechaEntrevista=? and horaInicio=? and horaFin=?", eid, fecha, horaInicio, horaFin);
+		db.executeUpdate(
+				"delete from HorarioEntrevista where eid=? and fechaEntrevista=? and horaInicio=? and horaFin=?", eid,
+				fecha, horaInicio, horaFin);
 	}
 
 	// INSTALACIONES
@@ -378,82 +381,83 @@ public class Persistence {
 		;
 		return result;
 	}
-	
-	//ABONOS
+
+	// ABONOS
 	public void insertAbono(String tribuna, String seccion, int fila, int asiento, double precio, String dateString) {
-		db.executeUpdate("insert into abono (tribuna, seccion, fila, asiento, precio, fechaCaducidad) values (?,?,?,?,?,?)",
+		db.executeUpdate(
+				"insert into abono (tribuna, seccion, fila, asiento, precio, fechaCaducidad) values (?,?,?,?,?,?)",
 				tribuna, seccion, fila, asiento, precio, dateString);
 	}
 
 	public List<Abono> selectAbono(String tribuna, String seccion, int fila, int asiento) {
-		 return db.executeQueryPojo(Abono.class, "select * from abono where tribuna=? and seccion=? and fila=? and asiento=?" , tribuna, seccion, fila,asiento);
+		return db.executeQueryPojo(Abono.class,
+				"select * from abono where tribuna=? and seccion=? and fila=? and asiento=?", tribuna, seccion, fila,
+				asiento);
 	}
 
-	public List<EntradaEntity> getAsientosOcupados(String tribuna, String seccion) { //aqui cambiar abono por entrada y aplicar herencia
-		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=?", tribuna, seccion);
-		
+	public List<EntradaEntity> getAsientosOcupados(String tribuna, String seccion) { // aqui cambiar abono por entrada y
+																						// aplicar herencia
+		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=?", tribuna,
+				seccion);
+
 	}
 
 	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
-		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
+		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?",
+				tribuna, seccion, fila);
 	}
-	
-	//ENTRADA
+
+	// ENTRADA
 
 	public void insertarEntrada(String tribuna, String seccion, int fila, int asientoInicial, int i) {
-		String queryEntrada="Insert into Entrada(tribuna, seccion, fila, asiento, precio) VALUES (?,?,?,?,?)";
-		db.executeUpdate(queryEntrada, tribuna,seccion,fila,asientoInicial,i);
-		
+		String queryEntrada = "Insert into Entrada(tribuna, seccion, fila, asiento, precio) VALUES (?,?,?,?,?)";
+		db.executeUpdate(queryEntrada, tribuna, seccion, fila, asientoInicial, i);
+
 	}
 
 	public void insertarVenta(String string, String dateSql, int hours, int minutes, int i) {
-		String queryVenta="Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES"
-				+ "(?,?,?,?,?)";
-		db.executeUpdate(queryVenta,"entrada", dateSql, hours,minutes,30);
-		
+		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
+		db.executeUpdate(queryVenta, "entrada", dateSql, hours, minutes, 30);
+
 	}
 
 	public List<EntradaEntity> getTotalEntradas(String tribuna, String seccion, int fila) {
-		String query="SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
-		return db.executeQueryPojo(EntradaEntity.class,query, tribuna, seccion, fila);
+		String query = "SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
+		return db.executeQueryPojo(EntradaEntity.class, query, tribuna, seccion, fila);
 	}
 
-	
-
-	
-	
-	
-	//NOTICIAS
+	// NOTICIAS
 	public void insertNoticia(String titulo, String subtitulo, String cuerpo, String img) {
-		db.executeUpdate("insert into noticia (titulo, subtitulo, cuerpo, img) values (?,?,?,?)", titulo, subtitulo, cuerpo, img);
+		db.executeUpdate("insert into noticia (titulo, subtitulo, cuerpo, img) values (?,?,?,?)", titulo, subtitulo,
+				cuerpo, img);
 	}
 
 	public List<Noticia> selectNoticias() {
 		return db.executeQueryPojo(Noticia.class, "select * from noticia");
-		
-		
+
 	}
 
-	// EQUIPOS 
-	
+	// EQUIPOS
+
 	public void insertEquipo(EquipoDeportivo equipo) {
 		CategoriaEquipo categoria = null;
 		boolean filial = false;
-		
-		if(equipo instanceof EquipoEnFormacion) {
-			categoria = ((EquipoEnFormacion)equipo).categoria;
+
+		if (equipo instanceof EquipoEnFormacion) {
+			categoria = ((EquipoEnFormacion) equipo).categoria;
 		} else {
 			filial = ((EquipoProfesional) equipo).isFilial();
 		}
-		db.executeUpdate("insert into Equipo(peid,seid,nombre, categoria, esFilial) values (?,?,?,?,?)", 
-				equipo.getPrimerEntrenador().getEid(),equipo.getSegundoEntrenador().getEid(), equipo.getNombre(),categoria, filial);
+		db.executeUpdate("insert into Equipo(peid,seid,nombre, categoria, esFilial) values (?,?,?,?,?)",
+				equipo.getPrimerEntrenador().getEid(), equipo.getSegundoEntrenador().getEid(), equipo.getNombre(),
+				categoria, filial);
 	}
-	
-	public List<EquipoDeportivo> selectEquipo(){
+
+	public List<EquipoDeportivo> selectEquipo() {
 		List<Object[]> equipos = db.executeQueryArray("select * from Equipo");
 		List<EquipoDeportivo> ret = new ArrayList<>();
-		
-		for(Object[] o : equipos) {
+
+		for (Object[] o : equipos) {
 			EquipoDeportivo equipo = new EquipoDeportivo();
 			equipo.setId(o[0].toString());
 			equipo.setNombre(o[3].toString());
@@ -462,126 +466,126 @@ public class Persistence {
 		}
 		return ret;
 	}
-	
+
 	public EquipoDeportivo selectEquipoPorNombre(String nombre) {
-		
-		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where nombre = ?",nombre);
+
+		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where nombre = ?", nombre);
 		EquipoDeportivo ret = new EquipoDeportivo();
 		ret.setId(equipo.get(0)[0].toString());
 		ret.setNombre(equipo.get(0)[3].toString());
-			
+
 //			ret.setCategoria(o[2]);
 //			ret.setFilial(o[3]);
 		return ret;
 	}
-	
+
 	public EquipoDeportivo selectEquipoPorId(String id) {
-		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where id = ?",id);
+		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where id = ?", id);
 		EquipoDeportivo ret = new EquipoDeportivo();
 
 		ret.setId(equipo.get(0)[0].toString());
 		ret.setNombre(equipo.get(0)[3].toString());
-			
+
 //			ret.setCategoria(o[2]);
 //			ret.setFilial(o[3]);
 		return ret;
 	}
-	
-	
+
 	// PARTIDOS
-	
+
 	public void insertPartido(Partido partido) {
-		db.executeUpdate("insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values (?,?,?,?,?)", 
-				partido.getId(), partido.getLocal().getId(), partido.getVisitante(),partido.getFecha(),partido.getSuplemento());
+		db.executeUpdate("insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values (?,?,?,?,?)",
+				partido.getId(), partido.getLocal().getId(), partido.getVisitante(), partido.getFecha(),
+				partido.getSuplemento());
 	}
 
 	public List<Partido> selectPartidosPorIdEquipo(String id) {
 		List<Object[]> partidos = db.executeQueryArray("select * from Partido where idEquipo = ?", id);
-		
+
 		List<Partido> ret = new ArrayList<>();
-		
-		for(Object[] o : partidos) {
+
+		for (Object[] o : partidos) {
 			Partido p = new Partido();
-			
+
 			p.setId(o[0].toString());
 			p.setLocal(selectEquipoPorId(o[1].toString()));
 			p.setVisitante(o[2].toString());
 			p.setFecha(o[3].toString());
 			p.setSuplemento(Float.parseFloat(o[4].toString()));
-			
+
 			ret.add(p);
 		}
 		return ret;
 	}
-	
-	public List<Partido> selectPartidosPorId(String id){
+
+	public List<Partido> selectPartidosPorId(String id) {
 		List<Object[]> partidos = db.executeQueryArray("select * from Partido where id = ?", id);
-		
+
 		List<Partido> ret = new ArrayList<>();
-		
-		for(Object[] o : partidos) {
+
+		for (Object[] o : partidos) {
 			Partido p = new Partido();
-			
+
 			p.setId(o[0].toString());
 			p.setLocal(selectEquipoPorId(o[1].toString()));
 			p.setVisitante(o[2].toString());
 			p.setFecha(o[3].toString());
 			p.setSuplemento(Float.parseFloat(o[4].toString()));
-			
+
 			ret.add(p);
 		}
 		return ret;
 	}
-	
+
 	// ABONADOS
-	
+
 	public boolean existsIdAbonado(String id) {
-		List<Object[]> abonado = db.executeQueryArray("select * from Abonado where id = ?",id);
-		if(abonado.size() == 1) {
+		List<Object[]> abonado = db.executeQueryArray("select * from Abonado where id = ?", id);
+		if (abonado.size() == 1) {
 			return true;
 		}
 		return false;
-		
+
 	}
 
 	public void insertPartidoAbonado(String idAbonado, Partido partido) {
-		db.executeUpdate("insert into PartidoAbonado(idAbonado, idPartido) values (?,?)", 
-				 idAbonado ,partido.getId());
-		
+		db.executeUpdate("insert into PartidoAbonado(idAbonado, idPartido) values (?,?)", idAbonado, partido.getId());
+
 	}
-	
+
 	public List<Partido> getPartidosNoSeleccionadosPorAbonadoYEquipo(String idAbonado, String idEquipo) {
 		List<Partido> partidos = selectPartidosPorIdEquipo(idEquipo);
-		
+
 		List<Partido> partidosAbonados = selectPartidosAbonadosPorIdAbonado(idAbonado);
 		List<Partido> ret = new ArrayList<>();
-		
-		for(Partido p : partidos) {
-			if(!partidosAbonados.contains(p)) {
+
+		for (Partido p : partidos) {
+			if (!partidosAbonados.contains(p)) {
 				ret.add(p);
 			}
 		}
 		return ret;
 	}
-	
-	public List<Partido> selectPartidosAbonadosPorIdAbonado(String idAbonado){
-		List<Object[]> partidosAbonados = db.executeQueryArray("select * from PartidoAbonado where idAbonado = ?", idAbonado);
-		List<Partido> ret =new ArrayList<>();
-		
-		for(Object[] o : partidosAbonados) {
+
+	public List<Partido> selectPartidosAbonadosPorIdAbonado(String idAbonado) {
+		List<Object[]> partidosAbonados = db.executeQueryArray("select * from PartidoAbonado where idAbonado = ?",
+				idAbonado);
+		List<Partido> ret = new ArrayList<>();
+
+		for (Object[] o : partidosAbonados) {
 			String idPartido = o[1].toString();
 			ret.addAll(selectPartidosPorId(idPartido));
 		}
 		return ret;
-		
+
 	}
-	
+
 	public void borrarAbonado(String tribuna, String seccion, int fila, int asiento) {
-		db.executeUpdate("remove from abono where tribuna=?, seccion=?, fila=?, asiento=?", 
-				tribuna,seccion,fila,asiento);
-		
+		db.executeUpdate("remove from abono where tribuna=?, seccion=?, fila=?, asiento=?", tribuna, seccion, fila,
+				asiento);
+
 	}
-	
+
 	// HORARIO JARDINERIA
 
 	public List<HorarioJardineria> selectHorariosJardineria() {
@@ -598,7 +602,8 @@ public class Persistence {
 		return result;
 	}
 
-	public void insertHorarioJardineria(int eid, int iid, String fecha, String horaInicio, String horaFin) throws IllegalStateException {
+	public void insertHorarioJardineria(int eid, int iid, String fecha, String horaInicio, String horaFin)
+			throws IllegalStateException {
 		checkHorarioEntrenamiento(iid, fecha, horaInicio, horaFin);
 		db.executeUpdate(
 				"insert into HorarioJardineria (fechaJardineria, horaInicio, horaFin, eid, iid) values (?,?,?,?,?)",
@@ -619,7 +624,7 @@ public class Persistence {
 
 		return result;
 	}
-	
+
 	public List<HorarioEntrenamiento> selectHorariosEntrenamiento(int iid, String fecha) {
 		List<HorarioEntrenamiento> result = db.executeQueryPojo(HorarioEntrenamiento.class,
 				"select * from HorarioEntrenamiento where iid=? and fechaEntrenamiento=?", iid, fecha);
@@ -641,7 +646,7 @@ public class Persistence {
 		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
 
 		for (HorarioJardineria hj : selectHorariosJardineria()) {
-			
+
 			if (iid != hj.getIid())
 				continue;
 
@@ -661,9 +666,9 @@ public class Persistence {
 				}
 			}
 		}
-		
-		for (HorarioEntrevista he: selectHorariosEntrevistas()) {
-			
+
+		for (HorarioEntrevista he : selectHorariosEntrevistas()) {
+
 			if (!fecha.equals(he.getFechaEntrevista()))
 				continue;
 
@@ -679,7 +684,7 @@ public class Persistence {
 					return;
 				}
 			}
-			
+
 		}
 
 		insertaHorarioEntrenamientoInner(enid, eid, iid, fecha, horaInicio, horaFin);
@@ -692,12 +697,13 @@ public class Persistence {
 				"insert into HorarioEntrenamiento (fechaEntrenamiento, horaInicio, horaFin, enid, eid, iid) values (?,?,?,?,?,?)",
 				fecha, horaInicio, horaFin, enid, eid, iid);
 	}
-	
-	private void checkHorarioEntrenamiento(int id, String fecha, String horaInicio, String horaFin) throws IllegalStateException {
-		
+
+	private void checkHorarioEntrenamiento(int id, String fecha, String horaInicio, String horaFin)
+			throws IllegalStateException {
+
 		LocalTime sHoraInicio = Util.stringHoraToLocalTime(horaInicio);
 		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
-		
+
 		for (HorarioEntrenamiento he : selectHorariosEntrenamiento()) {
 			if (he.getFechaEntrenamiento().equals(fecha) && (he.getIid() == id || he.getEid() == id)) {
 
@@ -726,7 +732,7 @@ public class Persistence {
 
 		Set<Integer> idsEquiposLibres = selectEquipos(eid).stream().map(x -> x.getId()).collect(Collectors.toSet());
 		List<Equipo> equiposLibres = new ArrayList<>();
-	
+
 		for (HorarioEntrenamiento he : selectHorariosEntrenamiento()) {
 			if (he.getFechaEntrenamiento().equals(fecha) && iid == he.getIid()) {
 
@@ -758,33 +764,32 @@ public class Persistence {
 			return result.get(0);
 		return null;
 	}
-	
-	//Articulos
+
+	// Articulos
 	public List<Merchandaising> selectArticulos() {
 		List<Object[]> articulos = db.executeQueryArray("select * from merchandaising");
-		
+
 		List<Merchandaising> ret = new ArrayList<>();
-		
-		for(Object[] o : articulos) {
-			ret.add(new Merchandaising((int) o[0],o[1].toString(), o[2].toString(), (double) o[3]));
+
+		for (Object[] o : articulos) {
+			ret.add(new Merchandaising((int) o[0], o[1].toString(), o[2].toString(), (double) o[3]));
 		}
 		return ret;
-		
+
 	}
 
 	public void insertVenta(TiendaLogica tl) {
 		Calendar c = Calendar.getInstance();
 		String fecha = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH);
-		
-		db.executeUpdate("insert into venta(concepto,fecha,hora,minuto,cuantia) values (?,?,?,?,?)",
-				"merchandaising",fecha,c.get(Calendar.HOUR),c.get(Calendar.MINUTE),tl.getPrecioTotal());
-		
-		for(Merchandaising a : tl.getSeleccionado()) {
-			db.executeUpdate("insert into ventamerchandising(id,idProducto,cantidad)"
-					+ " values(?,?,?)",
-					UUID.randomUUID().toString(), a.getId(),a.getUnidades());
+
+		db.executeUpdate("insert into venta(concepto,fecha,hora,minuto,cuantia) values (?,?,?,?,?)", "merchandaising",
+				fecha, c.get(Calendar.HOUR), c.get(Calendar.MINUTE), tl.getPrecioTotal());
+
+		for (Merchandaising a : tl.getSeleccionado()) {
+			db.executeUpdate("insert into ventamerchandising(id,idProducto,cantidad)" + " values(?,?,?)",
+					UUID.randomUUID().toString(), a.getId(), a.getUnidades());
 		}
-		
+
 	}
 
 }

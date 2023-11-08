@@ -54,7 +54,7 @@ public class HorarioJardineria {
 		Empleado e = Persistence.getInstance().getEmpleado(eid);
 		String js = e.getNombre() + " " + e.getApellido();
 		Instalacion i = Persistence.getInstance().getInstalacion(iid);
-		String is = i.getId() + " " + i.getNombreInstalacion();
+		String is = i.getNombreInstalacion();
 		
 		return "(%s | %s - %s) %-20s %s".formatted(fechaJardineria, horaInicio, horaFin, js, is);
 	}

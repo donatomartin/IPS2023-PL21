@@ -47,6 +47,8 @@ import javax.swing.JSpinner;
 public class Frame21912 extends JFrame {
 
 	private Service21912 service;
+	
+	private boolean avisoFranjaMostrado = false;
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -675,37 +677,37 @@ public class Frame21912 extends JFrame {
 
 		switch (res) {
 		case HORARIONULL:
-			JOptionPane.showMessageDialog(null, "No hay horario seleccionado, un nuevo horario será creado.",
-					"Info", JOptionPane.INFORMATION_MESSAGE);
+			if (!avisoFranjaMostrado)
+			JOptionPane.showMessageDialog(null, "No hay horario seleccionado, un nuevo horario será creado.", "Info",
+					JOptionPane.INFORMATION_MESSAGE);
+			avisoFranjaMostrado=true;
 			break;
 		case EMPLEADONULL:
-			JOptionPane.showMessageDialog(null, "Error: No hay empleado seleccionado.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: No hay empleado seleccionado.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case DBERROR:
-			JOptionPane.showMessageDialog(null, "Error: No se ha podido añadir.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: No se ha podido añadir.", "Error", JOptionPane.ERROR_MESSAGE);
 			loadSemanalListModel();
 			break;
 		case INICIOAFTERFIN:
-			JOptionPane.showMessageDialog(null, "Error: La hora de inicio no puede ir tras la hora de fin.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: La hora de inicio no puede ir tras la hora de fin.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case NOSEMANADEANTELACION:
-			JOptionPane.showMessageDialog(null, "Error: No hay una semana de antelación.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: No hay una semana de antelación.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case OVERDAILYMAX:
-			JOptionPane.showMessageDialog(null, "Error: Limite diario sobrepasado.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: Limite diario sobrepasado.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case OVERWEEKLYMAX:
-			JOptionPane.showMessageDialog(null, "Error: Limite semanal sobrepasado.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: Limite semanal sobrepasado.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case SOLAPAFRANJAS:
-			JOptionPane.showMessageDialog(null, "Error: Solapa entre franjas.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: Solapa entre franjas.", "Error", JOptionPane.ERROR_MESSAGE);
 			break;
 		default:
 			break;
@@ -1055,37 +1057,37 @@ public class Frame21912 extends JFrame {
 
 		switch (res) {
 		case HORARIONULL:
-			JOptionPane.showMessageDialog(null, "No hay horario seleccionado, un nuevo horario será creado.",
-					"Info", JOptionPane.INFORMATION_MESSAGE);
+			if (!avisoFranjaMostrado)
+			JOptionPane.showMessageDialog(null, "No hay horario seleccionado, un nuevo horario será creado.", "Info",
+					JOptionPane.INFORMATION_MESSAGE);
+			avisoFranjaMostrado=true;
 			break;
 		case EMPLEADONULL:
-			JOptionPane.showMessageDialog(null, "Error: No hay empleado seleccionado.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: No hay empleado seleccionado.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case DBERROR:
-			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.", "Error", JOptionPane.ERROR_MESSAGE);
 			loadPuntualListModel();
 			break;
 		case INICIOAFTERFIN:
-			JOptionPane.showMessageDialog(null, "Error: La hora de inicio no puede ir tras la hora de fin.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: La hora de inicio no puede ir tras la hora de fin.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case NOSEMANADEANTELACION:
-			JOptionPane.showMessageDialog(null, "Error: No hay una semana de antelación.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: No hay una semana de antelación.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case OVERDAILYMAX:
-			JOptionPane.showMessageDialog(null, "Error: Limite diario sobrepasado.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: Limite diario sobrepasado.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case OVERWEEKLYMAX:
-			JOptionPane.showMessageDialog(null, "Error: Limite semanal sobrepasado.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: Limite semanal sobrepasado.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			break;
 		case SOLAPAFRANJAS:
-			JOptionPane.showMessageDialog(null, "Error: Solapa entre franjas.",
-					"Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Error: Solapa entre franjas.", "Error", JOptionPane.ERROR_MESSAGE);
 			break;
 		default:
 			break;

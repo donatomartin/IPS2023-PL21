@@ -53,7 +53,7 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 		if (fechaFin != null)
 			result += " -> " + fechaFin;
 		
-		result += ")</p><ul>";
+		result += "):</p><ul>";
 
 		for (FranjaSemanal f : Persistence.getInstance().getFranjasSemanales(diaSemana, fechaInicio, eid)) {
 			

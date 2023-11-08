@@ -30,7 +30,8 @@ create table FranjaSemanal(
     diaSemana int not null,
     fechaInicio varchar(10) not null,
 	eid int not null,
-	primary key (diaSemana, fechaInicio, eid),
+	check (horaInicio != horaFin),
+	primary key (diaSemana, eid, fechaInicio, horaInicio, horaFin),
     foreign key (diaSemana, fechaInicio, eid) references HorarioSemanal(diaSemana, fechaInicio, eid)
 );
 
@@ -49,7 +50,8 @@ create table FranjaPuntual(
     horaFin varchar(5) not null,
     fechaPuntual varchar(10) not null,
 	eid int not null,
-	primary key (fechaPuntual, eid),
+	check (horaInicio != horaFin),
+	primary key (fechaPuntual, eid, horaInicio, horaFin),
     foreign key (fechaPuntual, eid) references HorarioPuntual(fechaPuntual, eid)
 );
 
@@ -76,6 +78,7 @@ create table HorarioJardineria(
     horaFin varchar(5) not null,
     iid int not null,
     eid int not null,
+	check (horaInicio != horaFin),
     primary key(fechaJardineria, eid, iid),
     foreign key(eid) references Empleado(eid),
 	foreign key(iid) references Instalacion(id)
@@ -90,6 +93,7 @@ create table HorarioEntrenamiento(
 	enid int not null,
 	iid int not null,
 	eid int not null,
+	check (horaInicio != horaFin),
 	primary key(fechaEntrenamiento, enid, iid, eid),
 	foreign key(enid) references Empleado(eid),
 	foreign key(iid) references Instalacion(id),
@@ -131,6 +135,7 @@ create table HorarioEntrevista (
     horaFin varchar(5) not null,
     datosMedio varchar(30) not null,
     eid int,
+	check (horaInicio != horaFin),
     primary key (fechaEntrevista, eid),
     foreign key (eid) references Empleado(eid)
 );

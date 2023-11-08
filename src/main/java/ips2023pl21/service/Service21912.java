@@ -149,6 +149,7 @@ public class Service21912 {
 				p.insertFranjaSemanal(getDiaSemana(), getFechaInicio(), getEid(), horaInicio, horaFin);
 			} catch (Exception e) {
 				res = State.SOLAPAFRANJAS;
+				
 			}			
 		}
 
@@ -310,7 +311,7 @@ public class Service21912 {
 		
 		if (res == State.SUCCESS) {
 			try {
-				p.insertFranjaSemanal(getDiaSemana(), getFechaInicio(), getEid(), horaInicio, horaFin);
+				p.insertFranjaPuntual(getFechaPuntual(), getEid(), horaInicio, horaFin);
 			} catch (Exception e) {
 				res = State.SOLAPAFRANJAS;
 			}			
@@ -356,7 +357,7 @@ public class Service21912 {
 	 */
 	public void seleccionaHorarioPuntualHtml(String horarioString) {
 
-		String[] parts = Util.removeHtml(horarioString).split(" ");
+		String[] parts = Util.removeHtml(horarioString).split(":");
 		String fechaInicio = parts[0];
 
 		seleccionaHorarioPuntual(fechaInicio);

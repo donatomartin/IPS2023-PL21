@@ -27,6 +27,10 @@ insert into Empleado(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, 
 
 delete from Equipo;
 insert into Equipo(peid, seid, nombre, categoria, esFilial) values
+    (69, 70, 'Oviedo', 'Primera', 'true'),
+    (69, 70, 'Sporting', 'Primera', 'true'),
+    (69, 70, 'Llanes', 'Primera', 'true'),
+    (69, 70, 'Avilés', 'Primera', 'true'),
     (69, 70, 'Barsa', 'Primera', 'true'),
     (69, 70, 'Madrid', 'Primera', 'true');
 
