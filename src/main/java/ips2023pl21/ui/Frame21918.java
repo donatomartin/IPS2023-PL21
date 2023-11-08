@@ -7,43 +7,27 @@ import java.awt.Dimension;
 import javax.swing.JLabel;
 import javax.swing.text.DateFormatter;
 
-import ips2023pl21.util.Util;
-
 //import com.sun.jmx.mbeanserver.Util;
 
 import java.awt.Font;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.JFormattedTextField;
-import javax.swing.JTextArea;
-import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
-import java.awt.CardLayout;
-import javax.swing.SpringLayout;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
-import javax.swing.BoxLayout;
-import java.awt.GridLayout;
-import net.miginfocom.swing.MigLayout;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.JToggleButton;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
 import java.awt.Component;
-import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ListSelectionModel;
 
-import java.awt.SystemColor;
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -53,6 +37,10 @@ import java.awt.event.ActionEvent;
 public class Frame21918 extends JFrame{
 	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JButton btVerVentas;
 	private JFormattedTextField textFieldFechaFinal;

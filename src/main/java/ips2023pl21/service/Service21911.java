@@ -3,30 +3,12 @@ package ips2023pl21.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import ips2023pl21.model.empleados.Empleado;
-import ips2023pl21.model.empleados.EmpleadoDeportivo;
-import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
-import ips2023pl21.util.Database;
+import ips2023pl21.model.Empleado;
+import ips2023pl21.persistence.Persistence;
 
 public class Service21911 {
 	
-	public static final String TODOS_EMPLEADOS_DEPORTIVOS = "select * from empleadodeportivo";
-	public static final String TODOS_EMPLEADOS_NO_DEPORTIVOS = "select * from empleadonodeportivo";
-	public static final String EMPLEADO_NO_DEPORTIVO_GESTIONAR = 
-			"select * from empleadonodeportivo where nombre = ? and apellido = ? and dni = ?";
-	public static final String EMPLEADO_DEPORTIVO_GESTIONAR = 
-			"select * from empleadodeportivo where nombre = ? and apellido = ? and dni = ?";
-	public static final String UPDATE_EMPLEADO_DEPORTIVO = 
-			"update empleadodeportivo set nombre = ?, apellido = ?, dni = ?, fechaNacimiento = ?, "
-			+ "salarioAnual = ?, telefono = ?, posicion = ?"
-			+ "where nombre = ? and apellido = ? and dni = ?";
-	public static final String UPDATE_EMPLEADO_NO_DEPORTIVO = 
-			"update empleadonodeportivo set nombre = ?, apellido = ?, dni = ?, fechaNacimiento = ?, "
-			+ "salarioAnual = ?, telefono = ?, posicion = ?"
-			+ "where nombre = ? and apellido = ? and dni = ?";
-	
-	
-	private Database db;
+	private Persistence p = Persistence.getInstance();
 	private StateAction stateAction;
 	private StateTipoEmpleado stateTipo;
 	private List<Empleado> listaEmpleados;
@@ -48,9 +30,6 @@ public class Service21911 {
 	}
 	
 	public Service21911() {
-		db = new Database();
-		db.createDatabase(false);
-		db.loadDatabase();
 		listaEmpleados = new ArrayList<Empleado>();
 		setStateTipo(StateTipoEmpleado.DEPORTIVO);
 		listaPosicionNoDeportiva = new ArrayList<String>(List.of("Entradas y abonos", "Tienda", "Cocina", "Jardinería", "Seguridad", "Redes sociales"));
@@ -81,10 +60,6 @@ public class Service21911 {
 		return dniEmpleadoGestion;
 	}
 	
-	public Database getDatabase() {
-		return this.db;
-	}
-	
 	public List<String> getListaPosicionNoDeportiva(){
 		return listaPosicionNoDeportiva;
 	}
@@ -110,22 +85,14 @@ public class Service21911 {
 		if(listaEmpleados.size() > 0) {
 			listaEmpleados.clear();
 		}
-		List<EmpleadoDeportivo> led = 
-				db.executeQueryPojo(EmpleadoDeportivo.class, TODOS_EMPLEADOS_DEPORTIVOS);
-		for(EmpleadoDeportivo ed : led) {
-			listaEmpleados.add(ed);
-		}
+		listaEmpleados.addAll(p.selectEmpleadosDeportivos());
 	}
 	
 	public void cargarEmpleadosNoDeportivos(){
 		if(listaEmpleados.size() > 0) {
 			listaEmpleados.clear();
 		}
-		List<EmpleadoNoDeportivo> lend = 
-				db.executeQueryPojo(EmpleadoNoDeportivo.class, TODOS_EMPLEADOS_NO_DEPORTIVOS);
-		for(EmpleadoNoDeportivo ed : lend) {
-			listaEmpleados.add(ed);
-		}
+		listaEmpleados.addAll(p.selectEmpleadosNoDeportivos());
 	}
 	
 	public void tableToEmpleado(String nombre, String apellido, String dni) {
@@ -134,36 +101,24 @@ public class Service21911 {
 		dniEmpleadoGestion = dni;
 	}
 	
-	public EmpleadoNoDeportivo cargarEmpleadoNoDeportivoAGestionar() {
-		List<EmpleadoNoDeportivo> empleadoGestion =
-		db.executeQueryPojo(
-				EmpleadoNoDeportivo.class, EMPLEADO_NO_DEPORTIVO_GESTIONAR, 
-				nombreEmpleadoGestion, apellidoEmpleadoGestion, dniEmpleadoGestion);
-		return empleadoGestion.get(0);
+	public Empleado cargarEmpleadoNoDeportivoAGestionar() {
+		return p.getEmpleado(nombreEmpleadoGestion, apellidoEmpleadoGestion, dniEmpleadoGestion);
 	}
 	
-	public EmpleadoDeportivo cargarEmpleadoDeportivoAGestionar() {
-		List<EmpleadoDeportivo> empleadoGestion =
-		db.executeQueryPojo(
-				EmpleadoDeportivo.class, EMPLEADO_DEPORTIVO_GESTIONAR, 
-				nombreEmpleadoGestion, apellidoEmpleadoGestion, dniEmpleadoGestion);
-		return empleadoGestion.get(0);
+	public Empleado cargarEmpleadoDeportivoAGestionar() {
+		return p.getEmpleado(nombreEmpleadoGestion, apellidoEmpleadoGestion, dniEmpleadoGestion);
 	}
 	
 	public void eliminarEmpleadoClub() {
-		String[] sql = new String[1];
-		
-		String sqlDeportivo = "delete from empleadodeportivo where nombre = '" + getNombreEmpleadoGestion()+
-				"' and apellido = '"+ getApellidoEmpleadoGestion()+ "' and dni = '"+ getDniEmpleadoGestion()+"'";
-		String sqlNoDeportivo = "delete from empleadonodeportivo where nombre = '" + getNombreEmpleadoGestion()+
-				"' and apellido = '"+ getApellidoEmpleadoGestion()+ "' and dni = '"+ getDniEmpleadoGestion()+"'";
+		String nombre = getNombreEmpleadoGestion();
+		String apellido = getApellidoEmpleadoGestion();
+		String dni = getDniEmpleadoGestion();
 		
 		if (this.stateTipo == StateTipoEmpleado.DEPORTIVO) {
-			sql[0] = sqlDeportivo;
-			db.executeBatch(sql);
-		}else {
-			sql[0] = sqlNoDeportivo;
-			db.executeBatch(sql);
+			p.deleteEmpleado(nombre, apellido, dni, "deportivo");
+		}
+		else {
+			p.deleteEmpleado(nombre, apellido, dni, "nodeportivo");
 		}
 	}
 	
@@ -173,15 +128,10 @@ public class Service21911 {
 		String dia = String.valueOf(cbdia);
 		String fecha = año+"-"+mes+"-"+dia;
 		double salario = Double.parseDouble(txsalario);
-		String sql = "insert into empleadodeportivo (nombre,apellido,dni,fechaNacimiento,salarioAnual,telefono,posicion)"
-				+ "values (" + "'"+nombre+"'"+","+"'"+apellido+"'"+","+
-				"'"+dni+"'"+","+"'"+fecha+"'"+","+salario+","+
-				"'"+telefono+"'"+","+"'"+posicion+"'"+")";
 		
-		String[] sqls = new String[1];
-		sqls[0]=sql;
-		db.executeBatch(sqls);
+		p.insertarEmpleado(nombre, apellido, dni, fecha, salario, telefono, "deportivo", posicion.toString());
 	}
+
 	
 	public void añadirEmpleadoNoDeportivo(String nombre, String apellido, String dni, String telefono, Object cbaño, Object cbmes, Object cbdia, String txsalario, Object posicion) {
 		String año = String.valueOf(cbaño);
@@ -189,14 +139,7 @@ public class Service21911 {
 		String dia = String.valueOf(cbdia);
 		String fecha = año+"-"+mes+"-"+dia;
 		double salario = Double.parseDouble(txsalario);
-		String sql = "insert into empleadonodeportivo (nombre,apellido,dni,fechaNacimiento,salarioAnual,telefono,posicion)"
-				+ "values (" + "'"+nombre+"'"+","+"'"+apellido+"'"+","+
-				"'"+dni+"'"+","+"'"+fecha+"'"+","+salario+","+
-				"'"+telefono+"'"+","+"'"+posicion+"'"+")";
-		
-		String[] sqls = new String[1];
-		sqls[0]=sql;
-		db.executeBatch(sqls);
+		p.insertarEmpleado(nombre, apellido, dni, fecha, salario, telefono, "nodeportivo", posicion.toString());
 	}
 	
 	public void modificarEmpleadoDeportivo(String nombre, String apellido, String dni, String telefono, Object cbaño, Object cbmes, Object cbdia, String txsalario, Object posicion) {
@@ -206,7 +149,7 @@ public class Service21911 {
 		String fecha = año+"-"+mes+"-"+dia;
 		double salario = Double.parseDouble(txsalario);
 		
-		db.executeUpdate(UPDATE_EMPLEADO_DEPORTIVO, nombre,apellido,dni,fecha,salario,telefono,posicion,nombreEmpleadoGestion,apellidoEmpleadoGestion,dniEmpleadoGestion);
+		p.updateEmpleado(nombre,apellido,dni,fecha,salario,telefono,posicion,nombreEmpleadoGestion,apellidoEmpleadoGestion,dniEmpleadoGestion);
 	}
 	
 	public void modificarEmpleadoNoDeportivo(String nombre, String apellido, String dni, String telefono, Object cbaño, Object cbmes, Object cbdia, String txsalario, Object posicion) {
@@ -216,7 +159,7 @@ public class Service21911 {
 		String fecha = año+"-"+mes+"-"+dia;
 		double salario = Double.parseDouble(txsalario);
 		
-		db.executeUpdate(UPDATE_EMPLEADO_NO_DEPORTIVO, nombre,apellido,dni,fecha,salario,telefono,posicion, nombreEmpleadoGestion,apellidoEmpleadoGestion,dniEmpleadoGestion);
+		p.updateEmpleado(nombre,apellido,dni,fecha,salario,telefono,posicion,nombreEmpleadoGestion,apellidoEmpleadoGestion,dniEmpleadoGestion);
 	}
 	
 	public void estadoInicial() {

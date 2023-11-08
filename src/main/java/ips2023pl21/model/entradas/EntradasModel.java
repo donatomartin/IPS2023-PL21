@@ -17,6 +17,7 @@ public class EntradasModel {
 	private int fila;
 //	private Persistence p=Persistence.getInstance();
 	
+	@SuppressWarnings("deprecation")
 	public boolean comprarEntradas(String tribuna, String seccion, int numeroEntradas) {
 		//no voy a validar los parametros porque habra solo las opciones correctas en la ventana
 		

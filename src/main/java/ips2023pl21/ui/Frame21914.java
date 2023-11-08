@@ -18,13 +18,12 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
-import javax.swing.JList;
 import javax.swing.ListSelectionModel;
 import java.awt.FlowLayout;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import ips2023pl21.model.empleados.EmpleadoDeportivo;
+import ips2023pl21.model.Empleado;
 import ips2023pl21.model.equipos.CategoriaEquipo;
 import ips2023pl21.model.equipos.EquipoDeportivo;
 import ips2023pl21.model.equipos.EquipoEnFormacion;
@@ -36,6 +35,7 @@ public class Frame21914 {
 	
 	DefaultTableModel modeloTablaEntrenadores;
 	DefaultTableModel modeloTablaJugadores;
+	DefaultTableModel modeloTablaJugadoresSeleccionados;
 	
 	private JFrame frame;
 	private JPanel pnSeleccionTipoEquipo;
@@ -58,8 +58,7 @@ public class Frame21914 {
 	private JButton btAñadirSegundo;
 	private JButton btAñadirJugador;
 	private JScrollPane spJugadores;
-	private JList<EmpleadoDeportivo> listJugadores;
-	private DefaultListModel<EmpleadoDeportivo> modeloListJugador;
+	private DefaultListModel<Empleado> modeloListJugador;
 	private JButton btEliminarTodos;
 	private JButton btEliminarEntrenador;
 	private JButton btEliminarSegundo;
@@ -80,6 +79,7 @@ public class Frame21914 {
 	private JPanel pnAñadirJugador;
 	private JPanel pnJugadoresSeleccionados;
 	private JPanel pnBotonesEliminar;
+	private JTable tbJugadoresSeleccionados;
 
 	/**
 	 * Create the application
@@ -94,7 +94,7 @@ public class Frame21914 {
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 960, 605);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		frame.getContentPane().add(getPnSeleccionTipoEquipo(), "seleccion");
@@ -184,7 +184,7 @@ public class Frame21914 {
 	private void añadirDatosATablas() {
 		Object[] añadir = new Object[4];
 		//Entrenadores
-		for(EmpleadoDeportivo e : equipo.getEntrenadoresTabla()) {
+		for(Empleado e : equipo.getEntrenadores()) {
 			añadir[0] =  e.getAtributoTabla(0);
 			añadir[1] =  e.getAtributoTabla(1);
 			añadir[2] =  e.getAtributoTabla(2);
@@ -193,7 +193,7 @@ public class Frame21914 {
 			modeloTablaEntrenadores.addRow(añadir);
 		}
 		//Jugadores
-		for(EmpleadoDeportivo e : equipo.getJugadoresTabla()) {
+		for(Empleado e : equipo.getJugadores()) {
 			añadir[0] =  e.getAtributoTabla(0);
 			añadir[1] =  e.getAtributoTabla(1);
 			añadir[2] =  e.getAtributoTabla(2);
@@ -229,6 +229,8 @@ public class Frame21914 {
 		return btAñadirEquipo;
 	}
 	private void añadirEquipo() {
+		String nombre = JOptionPane.showInputDialog(null, "Escribe el nombre del equipo");
+		equipo.setNombre(nombre);
 		equipo.añadirEquipo();
 		JOptionPane.showMessageDialog(null, "Equipo añadido se volver al inicio");
 		reiniciarElementos();
@@ -322,7 +324,7 @@ public class Frame21914 {
 	private void añadirEntrenador() {
 		int selected = getTbEntrenadores().getSelectedRow();
 		if(selected != -1) {
-			EmpleadoDeportivo primerEntrenador = equipo.getEntrenador(selected);
+			Empleado primerEntrenador = equipo.getEntrenador(selected);
 			if(equipo.getSegundoEntrenador()== null || 
 			   primerEntrenador.getDni() != equipo.getSegundoEntrenador().getDni()) {
 				equipo.setPrimerEntrenador(primerEntrenador);
@@ -414,7 +416,7 @@ public class Frame21914 {
 	private void añadirSegundo() {
 		int selected = getTbEntrenadores().getSelectedRow();
 		if(selected != -1) {
-			EmpleadoDeportivo segundoEntrenador = equipo.getEntrenador(selected);
+			Empleado segundoEntrenador = equipo.getEntrenador(selected);
 			if(equipo.getPrimerEntrenador()== null || 
 			   segundoEntrenador.getDni() != equipo.getPrimerEntrenador().getDni()) {
 				equipo.setSegundoEntrenador(segundoEntrenador);
@@ -450,11 +452,12 @@ public class Frame21914 {
 	private void añadirJugador() {
 		int selected = getTbJugadores().getSelectedRow();
 		if(selected != -1) {
-			EmpleadoDeportivo jugador = equipo.getJugador(selected);
+			Empleado jugador = equipo.getJugador(selected);
 			if(!equipo.getJugadoresEquipo().contains(jugador)){
 				if(equipo.añadirJugador(jugador)) {
-					modeloListJugador.removeAllElements();
-					modeloListJugador.addAll(equipo.getJugadoresEquipo());
+					Object[] añadir = {jugador.getAtributoTabla(0),jugador.getAtributoTabla(1),
+							jugador.getAtributoTabla(2),jugador.getAtributoTabla(3)};
+					modeloTablaJugadoresSeleccionados.addRow(añadir);
 					getBtEliminarTodos().setEnabled(true);
 					getBtEliminarJugador().setEnabled(true);
 					
@@ -475,17 +478,9 @@ public class Frame21914 {
 	private JScrollPane getSpJugadores() {
 		if (spJugadores == null) {
 			spJugadores = new JScrollPane();
-			spJugadores.setViewportView(getListJugadores());
+			spJugadores.setViewportView(getTbJugadoresSeleccionados());
 		}
 		return spJugadores;
-	}
-	private JList<EmpleadoDeportivo> getListJugadores() {
-		if (listJugadores == null) {
-			modeloListJugador = new DefaultListModel<EmpleadoDeportivo>();
-			listJugadores = new JList<EmpleadoDeportivo>(modeloListJugador);
-			listJugadores.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		}
-		return listJugadores;
 	}
 	private JButton getBtEliminarTodos() {
 		if (btEliminarTodos == null) {
@@ -503,7 +498,11 @@ public class Frame21914 {
 	
 	private void eliminarTodosLosJugadores() {
 		equipo.eliminarTodosLosJugadores();
-		modeloListJugador.removeAllElements();
+		
+		for(int i = modeloTablaJugadoresSeleccionados.getRowCount() - 1; i >= 0; i--) {
+			modeloTablaJugadoresSeleccionados.removeRow(i);
+		}
+		
 		getBtEliminarTodos().setEnabled(false);
 		getBtEliminarJugador().setEnabled(false);
 		
@@ -564,15 +563,19 @@ public class Frame21914 {
 	}
 	
 	private void eliminarJugador() {
-		if(!getListJugadores().isSelectionEmpty()) {
-			int index  = getListJugadores().getSelectedIndex();
+		int selected = getTbJugadoresSeleccionados().getSelectedRow();
+		if(selected != -1) {
+			modeloTablaJugadoresSeleccionados.removeRow(selected);;
 			
-			equipo.eliminarJugador(index);
-			
-			modeloListJugador.removeAllElements();
-			modeloListJugador.addAll(equipo.getJugadoresEquipo());
+			equipo.eliminarJugador(selected);
+			if(equipo.getJugadoresEquipo().isEmpty()) {
+				getBtEliminarJugador().setEnabled(false);
+				getBtEliminarTodos().setEnabled(false);
+			}
+		} else {
+			JOptionPane.showMessageDialog(null, "selecciona un jugador para eliminar");
 		}
-		
+	
 	}
 	private JPanel getPnCategoria() {
 		if (pnCategoria == null) {
@@ -718,5 +721,17 @@ public class Frame21914 {
 			pnBotonesEliminar.add(getBtEliminarJugador());
 		}
 		return pnBotonesEliminar;
+	}
+	private JTable getTbJugadoresSeleccionados() {
+		if (tbJugadoresSeleccionados == null) {
+			modeloTablaJugadoresSeleccionados = new DefaultTableModel();
+			modeloTablaJugadoresSeleccionados.addColumn("Nombre");
+			modeloTablaJugadoresSeleccionados.addColumn("Apellido");
+			modeloTablaJugadoresSeleccionados.addColumn("DNI");
+			modeloTablaJugadoresSeleccionados.addColumn("Nacimiento");
+			tbJugadoresSeleccionados = new JTable(modeloTablaJugadoresSeleccionados);
+			tbJugadoresSeleccionados.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		}
+		return tbJugadoresSeleccionados;
 	}
 }

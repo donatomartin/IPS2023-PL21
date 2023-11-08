@@ -7,19 +7,19 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
-import ips2023pl21.model.horarios.Franja;
-import ips2023pl21.model.horarios.FranjaPuntual;
-import ips2023pl21.model.horarios.FranjaSemanal;
+import ips2023pl21.model.Empleado;
 import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
+import ips2023pl21.model.horarios.franjas.Franja;
+import ips2023pl21.model.horarios.franjas.FranjaPuntual;
+import ips2023pl21.model.horarios.franjas.FranjaSemanal;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.UnexpectedException;
 import ips2023pl21.util.Util;
 
 public class Service21912 {
 
-	private EmpleadoNoDeportivo empleadoSeleccionado;
+	private Empleado empleadoSeleccionado;
 	private static HorarioSemanal horarioSemanalSeleccionado;
 	private static HorarioPuntual horarioPuntualSeleccionado;
 	public Persistence p = Persistence.getInstance();
@@ -38,7 +38,7 @@ public class Service21912 {
 		}
 
 		int id = getIdFromString(empleadoString);
-		empleadoSeleccionado = p.getEmpleadoNoDeportivo(id);
+		empleadoSeleccionado = p.getEmpleado(id);
 	}
 
 	private int getIdFromString(String empleadoString) {
@@ -222,7 +222,7 @@ public class Service21912 {
 				return 3; // Solapa entre franjas
 		}
 
-		if (minutosTotalesDiarios > EmpleadoNoDeportivo.HORAS_DIARIAS_MAX * 60)
+		if (minutosTotalesDiarios > Empleado.HORAS_DIARIAS_MAX * 60)
 			return 4; // Horas diarias sobrepasadas
 
 		int[] minutosTotalesArr = new int[7];
@@ -244,7 +244,7 @@ public class Service21912 {
 			minutosTotales += minutosTotalesArr[i];
 		}
 
-		if (minutosTotales > EmpleadoNoDeportivo.HORAS_SEMANALES_MAX * 60)
+		if (minutosTotales > Empleado.HORAS_SEMANALES_MAX * 60)
 			return 5; // Horas semanales sobrepasadas
 
 		return 0;
@@ -371,7 +371,7 @@ public class Service21912 {
 				return 3; // Solapa entre franjas
 		}
 
-		if (minutosTotalesDiarios > EmpleadoNoDeportivo.HORAS_DIARIAS_MAX * 60)
+		if (minutosTotalesDiarios > Empleado.HORAS_DIARIAS_MAX * 60)
 			return 4; // Horas diarias sobrepasadas
 
 		int[] minutosTotalesArr = new int[7];
@@ -400,7 +400,7 @@ public class Service21912 {
 			minutosTotales += minutosTotalesArr[i];
 		}
 
-		if (minutosTotales > EmpleadoNoDeportivo.HORAS_SEMANALES_MAX * 60)
+		if (minutosTotales > Empleado.HORAS_SEMANALES_MAX * 60)
 			return 5; // Horas semanales sobrepasadas
 
 		return 0;

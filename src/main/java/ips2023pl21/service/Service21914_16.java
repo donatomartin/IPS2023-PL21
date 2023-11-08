@@ -5,12 +5,13 @@ import java.util.Calendar;
 import java.util.List;
 
 import ips2023pl21.model.activos.*;
-import ips2023pl21.model.empleados.*;
 import ips2023pl21.model.equipos.*;
 import ips2023pl21.util.Database;
 
 public class Service21914_16 {
 
+	//private Persistence p = Persistence.getInstance();
+	
 	public static void añadirEquipo(EquipoDeportivo equipoDeportivo) {
 		Database db = new Database();
 		db.createDatabase(false);
@@ -23,25 +24,6 @@ public class Service21914_16 {
 			db.executeUpdate("insert into equipo(nombre,categoria,esFilial) values ('null','null','" + 
 						((EquipoProfesional)equipoDeportivo).isFilial() + "');");
 		}
-	}
-	
-	public static List<EmpleadoDeportivo> cargarEmpleadosDeportivos(String posicion) {
-		Database db = new Database();
-		db.createDatabase(false);
-		db.loadDatabase();
-		
-		List<Object[]> empleados = db.executeQueryArray("select * from empleadodeportivo where posicion = ?",posicion);
-		List<EmpleadoDeportivo> ret = new ArrayList<EmpleadoDeportivo>();
-		
-		for(Object[] o : empleados) {
-			
-			float salary = Float.valueOf(o[5].toString());
-			ret.add(new EmpleadoDeportivo((int)o[0] ,o[1].toString(),o[2].toString(),o[3].toString(),o[4].toString(),
-					 salary ,o[6].toString(), o[7].toString()));
-		}
-		
-		return ret;
-		
 	}
 	
 	public static List<Merchandaising> cargarArticulos(){

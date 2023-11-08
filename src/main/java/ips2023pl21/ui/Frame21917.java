@@ -18,6 +18,7 @@ import java.awt.FlowLayout;
 
 public class Frame21917 extends JFrame {
 	
+	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JButton btnComprar;
 	private ButtonGroup grupoTribuna;
@@ -34,6 +35,7 @@ public class Frame21917 extends JFrame {
 		
 	}
 
+	@SuppressWarnings("removal")
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBackground(Color.WHITE);
