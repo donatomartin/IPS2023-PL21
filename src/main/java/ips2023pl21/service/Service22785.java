@@ -79,7 +79,7 @@ public class Service22785 {
 					ui);		
 		} catch (Exception e) {
 			e.printStackTrace();
-			return State.CONCURRENCEERROR;
+			return State.DBERROR;
 		}
 		
 		return State.SUCCESS;

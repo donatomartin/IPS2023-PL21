@@ -87,7 +87,7 @@ public class Service21912 {
 			actualizarHorariosSemanales();
 			return State.SUCCESS;
 		} catch (UnexpectedException e) {
-			return State.CONCURRENCEERROR;
+			return State.DBERROR;
 		}
 
 	}
@@ -136,19 +136,20 @@ public class Service21912 {
 		String horaFin = Util.localTimeToString(dateToLocalTime(hf));
 
 		State res = checkFranjaSemanal(horaInicio, horaFin);
-		if (res != State.SUCCESS && res != State.CONCURRENCEERROR) {
-			if (res == State.HORARIONULL) {
-				State resh = addHorarioSemanal(diaSemana, fechaInicio);
-				if (resh != State.SUCCESS)
-					res = resh;
-				return res;
-			}
-		}
 
-		try {
-			p.insertFranjaSemanal(getDiaSemana(), getFechaInicio(), getEid(), horaInicio, horaFin);
-		} catch (Exception e) {
-			res = State.SOLAPAFRANJAS;
+		if (res == State.HORARIONULL) {
+			State resh = addHorarioSemanal(diaSemana, fechaInicio);
+			if (resh != State.SUCCESS)
+				res = resh;
+			return res;
+		}
+		
+		if (res == State.SUCCESS) {
+			try {
+				p.insertFranjaSemanal(getDiaSemana(), getFechaInicio(), getEid(), horaInicio, horaFin);
+			} catch (Exception e) {
+				res = State.SOLAPAFRANJAS;
+			}			
 		}
 
 		return res;
@@ -288,7 +289,7 @@ public class Service21912 {
 			seleccionaHorarioPuntual(fechaString);
 			return State.SUCCESS;
 		} catch (UnexpectedException e) {
-			return State.CONCURRENCEERROR;
+			return State.DBERROR;
 		}
 	}
 
@@ -299,19 +300,20 @@ public class Service21912 {
 		String horaFin = Util.localTimeToString(dateToLocalTime(hf));
 
 		State res = checkFranjaPuntual(horaInicio, horaFin);
-		if (res != State.SUCCESS) {
-			if (res == State.HORARIONULL) {
-				State resh = addHorarioPuntual(fechaPuntual);
-				if (resh != State.SUCCESS)
-					res = resh;
-				return res;
-			}
+		
+		if (res == State.HORARIONULL) {
+			State resh = addHorarioPuntual(fechaPuntual);
+			if (resh != State.SUCCESS)
+				res = resh;
+			return res;
 		}
-
-		try {
-			p.insertFranjaPuntual(getFechaPuntual(), getEid(), horaInicio, horaFin);
-		} catch (Exception e) {
-			res = State.SOLAPAFRANJAS;
+		
+		if (res == State.SUCCESS) {
+			try {
+				p.insertFranjaSemanal(getDiaSemana(), getFechaInicio(), getEid(), horaInicio, horaFin);
+			} catch (Exception e) {
+				res = State.SOLAPAFRANJAS;
+			}			
 		}
 
 		return res;

@@ -536,7 +536,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 			JOptionPane.showMessageDialog(null, "Error: La hora de fin no puede ser anterior a la de inicio.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			break;
-		case CONCURRENCEERROR:
+		case DBERROR:
 			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.", "Error", JOptionPane.ERROR_MESSAGE);
 			break;
 		default:

@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Empleado {
 	
 	public static int HORAS_DIARIAS_MAX = 8;
-	public static int HORAS_SEMANALES_MAX = 24;
+	public static int HORAS_SEMANALES_MAX = 40;
 	
 	private int eid;
 	private String nombre;
@@ -112,7 +112,6 @@ public class Empleado {
 			return null;
 
 		}
-
 	}
 	
 	public int getEdad() {

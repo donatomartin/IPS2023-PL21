@@ -66,7 +66,7 @@ public class Service22784 {
 			return State.INTERFIEREENTRENAMIENTO;
 		}
 		catch (Exception e) {
-			return State.CONCURRENCEERROR;
+			return State.DBERROR;
 		}
 		
 		return State.SUCCESS;

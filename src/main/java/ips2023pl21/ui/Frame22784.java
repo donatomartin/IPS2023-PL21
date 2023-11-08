@@ -528,7 +528,7 @@ public class Frame22784 extends JFrame {
 			JOptionPane.showMessageDialog(null, "Error: Hay un entrenamiento programado para este intervalo.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			break;
-		case CONCURRENCEERROR:
+		case DBERROR:
 			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			break;

@@ -583,7 +583,7 @@ public class Frame21912 extends JFrame {
 	private JList<String> getListHorariosSemanales() {
 		if (listHorariosSemanales == null) {
 			listHorariosSemanales = new JList<String>(semanalListModel);
-			listHorariosSemanales.setFont(new Font("Consolas", Font.BOLD, 14));
+			listHorariosSemanales.setFont(new Font("Consolas", Font.PLAIN, 12));
 
 			listHorariosSemanales.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent evt) {
@@ -682,9 +682,10 @@ public class Frame21912 extends JFrame {
 			JOptionPane.showMessageDialog(null, "Error: No hay empleado seleccionado.",
 					"Error", JOptionPane.ERROR_MESSAGE);
 			break;
-		case CONCURRENCEERROR:
-			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.",
+		case DBERROR:
+			JOptionPane.showMessageDialog(null, "Error: No se ha podido añadir.",
 					"Error", JOptionPane.ERROR_MESSAGE);
+			loadSemanalListModel();
 			break;
 		case INICIOAFTERFIN:
 			JOptionPane.showMessageDialog(null, "Error: La hora de inicio no puede ir tras la hora de fin.",
@@ -835,6 +836,7 @@ public class Frame21912 extends JFrame {
 	private JList<String> getListHorariosPuntuales() {
 		if (listHorariosPuntuales == null) {
 			listHorariosPuntuales = new JList<String>(puntualListModel);
+			listHorariosPuntuales.setFont(new Font("Consolas", Font.PLAIN, 12));
 			listHorariosPuntuales.addMouseListener(new MouseAdapter() {
 				public void mouseClicked(MouseEvent evt) {
 					seleccionaHorarioPuntual(listHorariosPuntuales.getSelectedValue());
@@ -1060,9 +1062,10 @@ public class Frame21912 extends JFrame {
 			JOptionPane.showMessageDialog(null, "Error: No hay empleado seleccionado.",
 					"Error", JOptionPane.ERROR_MESSAGE);
 			break;
-		case CONCURRENCEERROR:
+		case DBERROR:
 			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.",
 					"Error", JOptionPane.ERROR_MESSAGE);
+			loadPuntualListModel();
 			break;
 		case INICIOAFTERFIN:
 			JOptionPane.showMessageDialog(null, "Error: La hora de inicio no puede ir tras la hora de fin.",
