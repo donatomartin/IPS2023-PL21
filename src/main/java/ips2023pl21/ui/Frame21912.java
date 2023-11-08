@@ -130,6 +130,11 @@ public class Frame21912 extends JFrame {
 	private JLabel lbHoraFinPuntual;
 	private JSpinner spHoraFinPuntual;
 	private JPanel pnFechaPuntual3;
+	private JPanel pnBotonesSemanales;
+	private JPanel pnBotonesPuntuales;
+	private JPanel pnFranjasSemanales;
+	private JPanel pnBotonesHorariosSemanalesAddRemove;
+	private JPanel panel_2;
 
 	/**
 	 * Create the frame.
@@ -441,9 +446,10 @@ public class Frame21912 extends JFrame {
 	private JPanel getPnBotonesPuntual() {
 		if (pnBotonesPuntual == null) {
 			pnBotonesPuntual = new JPanel();
+			pnBotonesPuntual.setBackground(new Color(211, 211, 211));
 			pnBotonesPuntual.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnBotonesPuntual.setLayout(new BorderLayout(0, 0));
-			pnBotonesPuntual.add(getBtnAtrasPuntual(), BorderLayout.EAST);
+			pnBotonesPuntual.add(getPnBotonesPuntuales(), BorderLayout.EAST);
 		}
 		return pnBotonesPuntual;
 	}
@@ -468,9 +474,10 @@ public class Frame21912 extends JFrame {
 	private JPanel getPnBotonesSemanal() {
 		if (pnBotonesSemanal == null) {
 			pnBotonesSemanal = new JPanel();
+			pnBotonesSemanal.setBackground(new Color(211, 211, 211));
 			pnBotonesSemanal.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnBotonesSemanal.setLayout(new BorderLayout(0, 0));
-			pnBotonesSemanal.add(getBtnAtrasSemanal(), BorderLayout.EAST);
+			pnBotonesSemanal.add(getPnBotonesSemanales(), BorderLayout.EAST);
 		}
 		return pnBotonesSemanal;
 	}
@@ -574,9 +581,7 @@ public class Frame21912 extends JFrame {
 			pnFranja = new JPanel();
 			pnFranja.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnFranja.setLayout(new GridLayout(0, 1, 0, 0));
-			pnFranja.add(getPnHoraInicioSemanal());
-			pnFranja.add(getPnHoraFinSemanal());
-			pnFranja.add(getBtnAnadirFranjaSemana());
+			pnFranja.add(getPnFranjasSemanales());
 			pnFranja.add(getPnBotonesHorariosSemanales());
 		}
 		return pnFranja;
@@ -721,7 +726,7 @@ public class Frame21912 extends JFrame {
 		if (lbNombreEmpleado == null) {
 			lbNombreEmpleado = new JLabel("None");
 			lbNombreEmpleado.setFont(new Font("Tahoma", Font.BOLD, 15));
-			lbNombreEmpleado.setHorizontalAlignment(SwingConstants.LEFT);
+			lbNombreEmpleado.setHorizontalAlignment(SwingConstants.CENTER);
 		}
 		return lbNombreEmpleado;
 	}
@@ -729,9 +734,8 @@ public class Frame21912 extends JFrame {
 	private JPanel getPnNombreEmpleado() {
 		if (pnNombreEmpleado == null) {
 			pnNombreEmpleado = new JPanel();
-			pnNombreEmpleado.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnNombreEmpleado.setLayout(new BoxLayout(pnNombreEmpleado, BoxLayout.X_AXIS));
-			pnNombreEmpleado.add(getLbNombreEmpleadoSemanal());
+			pnNombreEmpleado.add(getPanel_2());
 		}
 		return pnNombreEmpleado;
 	}
@@ -739,9 +743,10 @@ public class Frame21912 extends JFrame {
 	private JPanel getPnHoraInicioSemanal() {
 		if (pnHoraInicioSemanal == null) {
 			pnHoraInicioSemanal = new JPanel();
-			pnHoraInicioSemanal.setLayout(new BorderLayout(0, 0));
-			pnHoraInicioSemanal.add(getLbHoraInicioSemana(), BorderLayout.CENTER);
-			pnHoraInicioSemanal.add(getSpHoraInicioSemanal(), BorderLayout.EAST);
+			pnHoraInicioSemanal.setBorder(new EmptyBorder(5, 5, 5, 5));
+			pnHoraInicioSemanal.setLayout(new GridLayout(0, 1, 0, 0));
+			pnHoraInicioSemanal.add(getLbHoraInicioSemana());
+			pnHoraInicioSemanal.add(getSpHoraInicioSemanal());
 		}
 		return pnHoraInicioSemanal;
 	}
@@ -749,9 +754,10 @@ public class Frame21912 extends JFrame {
 	private JPanel getPnHoraFinSemanal() {
 		if (pnHoraFinSemanal == null) {
 			pnHoraFinSemanal = new JPanel();
-			pnHoraFinSemanal.setLayout(new BorderLayout(0, 0));
+			pnHoraFinSemanal.setBorder(new EmptyBorder(5, 5, 5, 5));
+			pnHoraFinSemanal.setLayout(new GridLayout(0, 1, 0, 0));
 			pnHoraFinSemanal.add(getLbHoraFinSemana());
-			pnHoraFinSemanal.add(getSpHoraFinSemanal(), BorderLayout.EAST);
+			pnHoraFinSemanal.add(getSpHoraFinSemanal());
 		}
 		return pnHoraFinSemanal;
 	}
@@ -948,9 +954,9 @@ public class Frame21912 extends JFrame {
 	private JPanel getPnBotonesHorariosSemanales() {
 		if (pnBotonesHorariosSemanales == null) {
 			pnBotonesHorariosSemanales = new JPanel();
-			pnBotonesHorariosSemanales.setLayout(new GridLayout(0, 2, 0, 0));
-			pnBotonesHorariosSemanales.add(getBtnAddHorarioSemanal());
-			pnBotonesHorariosSemanales.add(getBtnBorrarHorarioSemanal());
+			pnBotonesHorariosSemanales.setLayout(new BorderLayout(5, 5));
+			pnBotonesHorariosSemanales.add(getBtnAnadirFranjaSemana(), BorderLayout.NORTH);
+			pnBotonesHorariosSemanales.add(getPnBotonesHorariosSemanalesAddRemove());
 		}
 		return pnBotonesHorariosSemanales;
 	}
@@ -985,7 +991,7 @@ public class Frame21912 extends JFrame {
 	private JPanel getPnBtnPuntual() {
 		if (pnBtnPuntual == null) {
 			pnBtnPuntual = new JPanel();
-			pnBtnPuntual.setLayout(new BorderLayout(0, 0));
+			pnBtnPuntual.setLayout(new BorderLayout(5, 5));
 			pnBtnPuntual.add(getPnBotonesHorariosPuntual());
 			pnBtnPuntual.add(getBtnAddFranjaPuntual(), BorderLayout.NORTH);
 		}
@@ -995,7 +1001,7 @@ public class Frame21912 extends JFrame {
 	private JPanel getPnBotonesHorariosPuntual() {
 		if (pnBotonesHorariosPuntual == null) {
 			pnBotonesHorariosPuntual = new JPanel();
-			pnBotonesHorariosPuntual.setLayout(new GridLayout(0, 2, 0, 0));
+			pnBotonesHorariosPuntual.setLayout(new GridLayout(0, 2, 5, 0));
 			pnBotonesHorariosPuntual.add(getBtnAddHorarioPuntual());
 			pnBotonesHorariosPuntual.add(getBtnRemoveHorarioPuntual());
 		}
@@ -1197,5 +1203,47 @@ public class Frame21912 extends JFrame {
 			pnFechaPuntual3.add(getSpFechaPuntual());
 		}
 		return pnFechaPuntual3;
+	}
+	private JPanel getPnBotonesSemanales() {
+		if (pnBotonesSemanales == null) {
+			pnBotonesSemanales = new JPanel();
+			pnBotonesSemanales.setBackground(new Color(211, 211, 211));
+			pnBotonesSemanales.add(getBtnAtrasSemanal());
+		}
+		return pnBotonesSemanales;
+	}
+	private JPanel getPnBotonesPuntuales() {
+		if (pnBotonesPuntuales == null) {
+			pnBotonesPuntuales = new JPanel();
+			pnBotonesPuntuales.setBackground(new Color(211, 211, 211));
+			pnBotonesPuntuales.add(getBtnAtrasPuntual());
+		}
+		return pnBotonesPuntuales;
+	}
+	private JPanel getPnFranjasSemanales() {
+		if (pnFranjasSemanales == null) {
+			pnFranjasSemanales = new JPanel();
+			pnFranjasSemanales.setLayout(new GridLayout(0, 2, 0, 0));
+			pnFranjasSemanales.add(getPnHoraInicioSemanal());
+			pnFranjasSemanales.add(getPnHoraFinSemanal());
+		}
+		return pnFranjasSemanales;
+	}
+	private JPanel getPnBotonesHorariosSemanalesAddRemove() {
+		if (pnBotonesHorariosSemanalesAddRemove == null) {
+			pnBotonesHorariosSemanalesAddRemove = new JPanel();
+			pnBotonesHorariosSemanalesAddRemove.setLayout(new GridLayout(0, 2, 5, 0));
+			pnBotonesHorariosSemanalesAddRemove.add(getBtnAddHorarioSemanal());
+			pnBotonesHorariosSemanalesAddRemove.add(getBtnBorrarHorarioSemanal());
+		}
+		return pnBotonesHorariosSemanalesAddRemove;
+	}
+	private JPanel getPanel_2() {
+		if (panel_2 == null) {
+			panel_2 = new JPanel();
+			panel_2.setLayout(new BorderLayout(0, 0));
+			panel_2.add(getLbNombreEmpleadoSemanal());
+		}
+		return panel_2;
 	}
 }
