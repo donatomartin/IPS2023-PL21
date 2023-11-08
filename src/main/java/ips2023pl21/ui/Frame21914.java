@@ -229,6 +229,8 @@ public class Frame21914 {
 		return btAñadirEquipo;
 	}
 	private void añadirEquipo() {
+		String nombre = JOptionPane.showInputDialog(null, "Escribe el nombre del equipo");
+		equipo.setNombre(nombre);
 		equipo.añadirEquipo();
 		JOptionPane.showMessageDialog(null, "Equipo añadido se volver al inicio");
 		reiniciarElementos();

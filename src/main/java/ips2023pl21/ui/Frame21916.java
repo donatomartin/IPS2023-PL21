@@ -1,5 +1,6 @@
 package ips2023pl21.ui;
 
+import javax.mail.MessagingException;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -10,7 +11,6 @@ import java.awt.Component;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
-import ips2023pl21.model.*;
 import ips2023pl21.model.activos.Merchandaising;
 import ips2023pl21.model.activos.TiendaLogica;
 
@@ -64,7 +64,7 @@ public class Frame21916 {
 		frame = new JFrame();
 		frame.setSize(new Dimension(1000, 500));
 		frame.setBounds(200, 200, 950, 600);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		frame.getContentPane().add(getPnHeaderTienda(), BorderLayout.NORTH);
@@ -124,7 +124,22 @@ public class Frame21916 {
 		
 		if(res == 0) {
 			tl.guardarPrecio();
-			System.exit(0);
+			
+			
+			boolean enviado = false;
+			while(!enviado) {
+				String correo = JOptionPane.showInputDialog(null, "Escibe tu correo electronico para recibir un sumario de la compra");
+				try{
+					tl.enviarCorreo(correo);
+					JOptionPane.showMessageDialog(null, "¡¡Correo Enviado!!");
+					enviado = true;
+					frame.dispose();
+				} catch (MessagingException e) {
+					JOptionPane.showMessageDialog(null, "no se pudo enviar el correo");
+					//e.printStackTrace();
+				}
+			}
+			
 		}
 		
 	}

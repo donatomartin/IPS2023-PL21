@@ -65,12 +65,40 @@ create table HorarioEquipo(
     foreign key(idInstalacion) references Instalacion(id)
 );
 
+-- Equipo
 drop table Equipo;
 create table Equipo(
-    id integer primary key autoincrement,
-    nombre varchar(30),
+    id varchar(30) primary key ,
+    nombre varchar(30) unique,
     categoria varchar(30),
     esFilial boolean
+);
+
+-- Partido
+drop table Partido;
+create table Partido(
+	id varchar(30) primary key,
+	idEquipo varchar(30),
+	equipoVisitante varchar(30),
+	fecha varchar(10),
+	suplemento real,
+	foreign key(idEquipo) references Equipo(id)
+);
+
+-- PartidoAbonado
+drop table PartidoAbonado;
+create table PartidoAbonado(
+	idAbonado varchar(30),
+	idPartido varchar(30),
+	primary key(idAbonado, idPartido),
+	foreign key(idAbonado) references Abonado(id),
+	foreign key(idPartido) references Partido(id)
+);
+
+-- Abonado
+drop table Abonado;
+create table Abonado(
+	id varchar(30) primary key not null
 );
 
 -- Entrevista
@@ -156,4 +184,14 @@ create table Instalacion(
 	id varchar(30) not null,
 	nombreInstalacion varchar(30) not null,
 	primary key (id)
+);
+
+--Noticia
+drop table Noticia;
+create table Noticia(
+	id integer primary key autoincrement,
+	titulo varchar(30) not null,
+	subtitulo varchar(300) not null,
+	cuerpo varchar(500) not null,
+	img varchar(30)
 );

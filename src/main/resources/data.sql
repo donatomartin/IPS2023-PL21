@@ -52,7 +52,7 @@ insert into merchandaising(nombre,tipo,precio) values ('Poster','Decoracion',5);
 insert into merchandaising(nombre,tipo,precio) values ('Bufanda','Ropa',10);
 insert into merchandaising(nombre,tipo,precio) values ('Camiseta','Ropa',20);
 insert into merchandaising(nombre,tipo,precio) values ('Cono','Material',5);
-insert into merchandaising(nombre,tipo,precio) values ('a','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('Peluca','Ropa',10);
 insert into merchandaising(nombre,tipo,precio) values ('B','Material',20);
 insert into merchandaising(nombre,tipo,precio) values ('c','Decoracion',5);
 insert into merchandaising(nombre,tipo,precio) values ('d','Ropa',10);
@@ -75,3 +75,15 @@ delete from ventaMerchandising;
 insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, producto, unidades, precioPorProducto) VALUES
 (1,'merchandising','2023-10-13', '20','05',30, 'camiseta', 3,10),
 (3, 'merchandising','2013-02-02','20','00',50,'pantalon',5,10);
+
+delete from Equipo;
+insert into Equipo(id, nombre, categoria, esFilial) values ('1','equipo','categoria', false);
+insert into Equipo(id, nombre, categoria, esFilial) values ('2','equipo2',null, true);
+
+delete from Partido;
+insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1','1', 'EquipoVisitante', '2023-11-09', 10);
+insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('2','1', 'EquipoVisitante2', '2023-11-16', 0);
+
+delete from Abonado;
+insert into Abonado(id) values('1'); 
+

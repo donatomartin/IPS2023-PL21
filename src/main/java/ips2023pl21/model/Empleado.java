@@ -1,6 +1,7 @@
 package ips2023pl21.model;
 
 import java.time.Year;
+import java.util.Objects;
 
 public class Empleado {
 	
@@ -129,6 +130,23 @@ public class Empleado {
 			fechaEnteros[i] = Integer.parseInt(fecha[i]);
 		}
 		return fechaEnteros;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(dni);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Empleado other = (Empleado) obj;
+		return Objects.equals(dni, other.dni);
 	}
 
 }

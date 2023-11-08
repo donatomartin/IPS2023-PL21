@@ -2,10 +2,8 @@ package ips2023pl21.model.equipos;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import ips2023pl21.model.Empleado;
 import ips2023pl21.persistence.Persistence;
-import ips2023pl21.service.Service21914_16;
 
 public class EquipoDeportivo {
 
@@ -13,12 +11,19 @@ public class EquipoDeportivo {
 
 	private Persistence p = Persistence.getInstance();
 
+	private String id;
+	private String nombre;
 	private Empleado primerEntrenador;
 	private Empleado segundoEntrenador;
 	private List<Empleado> jugadoresEquipo = new ArrayList<Empleado>();
+	
+	public EquipoDeportivo() {	
+	}
 
-	public EquipoDeportivo() {};
-
+	public String getId() {
+		return this.id;
+	}
+	
 	public List<Empleado> getEntrenadores() {
 		return p.selectEntrenadores();
 	}
@@ -50,6 +55,18 @@ public class EquipoDeportivo {
 	public Empleado getSegundoEntrenador() {
 		return this.segundoEntrenador;
 	}
+	
+	public String getNombre() {
+		return this.nombre;
+	}
+	
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	public List<Partido> getPartidos(){
+		return p.selectPartidosPorIdEquipo(this.id);
+	}
 
 	public boolean añadirJugador(Empleado j) {
 		if (isJugadorValid(j)) {
@@ -76,7 +93,7 @@ public class EquipoDeportivo {
 	}
 
 	public List<Empleado> getJugadoresEquipo() {
-		return new ArrayList<Empleado>(jugadoresEquipo);
+		return jugadoresEquipo;
 	}
 
 	public void eliminarJugador(int index) {
@@ -89,7 +106,12 @@ public class EquipoDeportivo {
 	}
 
 	public void añadirEquipo() {
-		Service21914_16.añadirEquipo(this);
+		p.insertEquipo(this);
+	}
+
+	public void setId(String id) {
+		this.id = id;
+		
 	}
 
 }
