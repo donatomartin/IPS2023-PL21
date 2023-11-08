@@ -171,6 +171,19 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
+	
+	public static void run22739() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new Frame22739();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
 			pnCentro = new JPanel();
@@ -306,6 +319,11 @@ public class MainFrame extends JFrame {
 	private JButton getBtn22739() {
 		if (btn22739 == null) {
 			btn22739 = new JButton("22739");
+			btn22739.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run22739();
+				}
+			});
 		}
 		return btn22739;
 	}

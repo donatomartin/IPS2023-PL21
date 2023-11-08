@@ -35,5 +35,10 @@ public class Service22739 {
 	public List<Partido> getPartidosNoSeleccionadosPorAbonadoYEquipo(String idAbonado,String idEquipo) {
 		return p.getPartidosNoSeleccionadosPorAbonadoYEquipo(idAbonado,idEquipo);
 	}
+
+	public void insertPartidoAbonado(String idAbonado, Partido partido) {
+		p.insertPartidoAbonado(idAbonado,partido);
+		
+	}
 	
 }

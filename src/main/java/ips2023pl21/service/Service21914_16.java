@@ -6,12 +6,11 @@ import java.util.List;
 
 import ips2023pl21.model.activos.*;
 import ips2023pl21.model.equipos.*;
-import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Database;
 
 public class Service21914_16 {
 
-	private Persistence p = Persistence.getInstance();
+	//private Persistence p = Persistence.getInstance();
 	
 	public static void añadirEquipo(EquipoDeportivo equipoDeportivo) {
 		Database db = new Database();

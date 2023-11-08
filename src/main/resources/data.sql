@@ -81,7 +81,8 @@ insert into Equipo(id, nombre, categoria, esFilial) values ('1','equipo','catego
 insert into Equipo(id, nombre, categoria, esFilial) values ('2','equipo2',null, true);
 
 delete from Partido;
-insert into Partido(idEquipo, equipoVisitante, fecha, suplemento) values ('1', 'EquipoVisitante', '2023-11-09', 10);
+insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1','1', 'EquipoVisitante', '2023-11-09', 10);
+insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('2','1', 'EquipoVisitante2', '2023-11-16', 0);
 
 delete from Abonado;
 insert into Abonado(id) values('1'); 
