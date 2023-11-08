@@ -4,24 +4,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Database;
 import ips2023pl21.util.Util;
 
 public class EntradasModel {
 	
 	
-	private Database db=new Database();
+//	private Database db=new Database();
 	private int asientoInicial=-1;
 	private int fila;
-//	private Persistence p=Persistence.getInstance();
+	private Persistence p=Persistence.getInstance();
 	
 	@SuppressWarnings("deprecation")
 	public boolean comprarEntradas(String tribuna, String seccion, int numeroEntradas) {
 		//no voy a validar los parametros porque habra solo las opciones correctas en la ventana
 		
-		String queryEntrada="Insert into Entrada(tribuna, seccion, fila, asiento, precio) VALUES (?,?,?,?,?)";
-		String queryVenta="Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES"
-				+ "(?,?,?,?,?)";
+		
 		fila=elegirFila(tribuna, seccion, numeroEntradas);
 		
 		if(fila==-1) {
@@ -31,10 +30,11 @@ public class EntradasModel {
 			//insertar entrada
 			for(int i=0;i<numeroEntradas;i++) {
 				Date date=new Date();
-				db.executeUpdate(queryEntrada, tribuna, seccion, fila, asientoInicial, 30);
+				p.insertarEntrada(tribuna, seccion, fila, asientoInicial, 30);
+//				db.executeUpdate(queryEntrada, tribuna, seccion, fila, asientoInicial, 30);
 				String dateSql=Util.dateToIsoString(date);
-//				System.out.println(dateSql);
-				db.executeUpdate(queryVenta,"entrada", dateSql,date.getHours(),date.getMinutes(),30);
+				p.insertarVenta("entrada",dateSql, date.getHours(), date.getMinutes(),30);
+//				db.executeUpdate(queryVenta,"entrada", dateSql,date.getHours(),date.getMinutes(),30);
 //				System.out.println("horas: "+date.getHours()+ " minutos: "+date.getMinutes());
 //				System.out.println("Entrada insertada: "+tribuna+seccion+fila+asientoInicial);
 				asientoInicial++;
@@ -107,8 +107,9 @@ public class EntradasModel {
 		
 
 	private List<EntradaEntity> getTotalEntradas(String tribuna, String seccion, int fila) {
-		String query="SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
-		return db.executeQueryPojo(EntradaEntity.class,query, tribuna, seccion, fila);
+//		String query="SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
+//		return db.executeQueryPojo(EntradaEntity.class,query, tribuna, seccion, fila);
+		return p.getTotalEntradas(tribuna, seccion, fila);
 	}
 
 	public int getFila() {
@@ -120,7 +121,8 @@ public class EntradasModel {
 	}
 
 	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
-		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
+//		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
+		return p.getAbonosFila(tribuna, seccion, fila);
 	}
 	
 

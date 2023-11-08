@@ -409,7 +409,7 @@ public class Persistence {
 	public void insertarVenta(String string, String dateSql, int hours, int minutes, int i) {
 		String queryVenta="Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES"
 				+ "(?,?,?,?,?)";
-		db.executeUpdate(queryVenta,"entrada", hours,minutes,30);
+		db.executeUpdate(queryVenta,"entrada", dateSql, hours,minutes,30);
 		
 	}
 
@@ -574,6 +574,12 @@ public class Persistence {
 			ret.addAll(selectPartidosPorId(idPartido));
 		}
 		return ret;
+		
+	}
+	
+	public void borrarAbonado(String tribuna, String seccion, int fila, int asiento) {
+		db.executeUpdate("remove from abono where tribuna=?, seccion=?, fila=?, asiento=?", 
+				tribuna,seccion,fila,asiento);
 		
 	}
 	
