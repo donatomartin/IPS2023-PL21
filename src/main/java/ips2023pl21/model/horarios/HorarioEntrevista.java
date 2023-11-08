@@ -53,11 +53,11 @@ public class HorarioEntrevista {
 		String js = e.getNombre() + " " + e.getApellido();
 		return "(%s | %s - %s) %-20s %s".formatted(fechaEntrevista, horaInicio, horaFin, js, datosMedio);
 	}
-	public LocalTime getHoraInicioParsed() {
+	public LocalTime getParsedInicio() {
 		return Util.stringHoraToLocalTime(horaInicio);
 	}
 	
-	public LocalTime getHoraFinParsed() {
+	public LocalTime getParsedFin() {
 		return Util.stringHoraToLocalTime(horaFin);
 	}
 

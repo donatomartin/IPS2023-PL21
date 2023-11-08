@@ -1,10 +1,12 @@
 package ips2023pl21.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
 import ips2023pl21.persistence.Persistence;
+import ips2023pl21.util.Util;
 
 public class Service21915 {
 	
@@ -13,36 +15,36 @@ public class Service21915 {
 	public static final int MEDIO_NULL = 300;
 	public static final int CONCURRENCE_ERROR = 400;
 
-	private Empleado empleadoSel;
-	private String fechaSel;
-	private String horaInicioSel = "09:00";
-	private String horaFinSel = "10:00";
+	private Empleado empleado;
+	private String fecha;
+	private String horaInicio = "09:00";
+	private String horaFin = "10:00";
 	public Persistence persistence = Persistence.getInstance();
 
-	public void setFecha(String fechaSel) {
-		this.fechaSel = fechaSel;
+	public void setFecha(Date fecha) {
+		this.fecha = Util.dateToIsoString(fecha);
 	}
 
 	public void setHoraInicio(String horaInicioSel) {
-		this.horaInicioSel = horaInicioSel;
+		this.horaInicio = horaInicioSel;
 	}
 
 	public void setHoraFin(String horaFinSel) {
-		this.horaFinSel = horaFinSel;
+		this.horaFin = horaFinSel;
 	}
 
 	public List<String> getEntrevistas() {
-		return persistence.selectEntrevistas().stream().map(x -> x.toString()).collect(Collectors.toList());
+		return persistence.selectHorariosEntrevistas().stream().map(x -> x.toString()).collect(Collectors.toList());
 	}
 
 	public List<String> getJugadoresLibresString(String filter) {
-		return persistence.selectJugadoresLibres(fechaSel).stream().map(x -> x.toString())
+		return persistence.selectJugadoresLibres(fecha).stream().map(x -> x.toString())
 				.filter(x -> x.toLowerCase().contains(filter.toLowerCase())).collect(Collectors.toList());
 	}
 
 	public void seleccionaEmpleado(String empleadoString) {
 		int id = getIdFromString(empleadoString);
-		empleadoSel = persistence.getEmpleado(id);
+		empleado = persistence.getEmpleado(id);
 	}
 
 	private int getIdFromString(String empleadoString) {
@@ -50,24 +52,24 @@ public class Service21915 {
 	}
 
 	public String getNombreJugadorSeleccionado() {
-		return empleadoSel.getNombre() + " " + empleadoSel.getApellido();
+		return empleado.getNombre() + " " + empleado.getApellido();
 	}
 
 	public int addEntrevista(String datosMedio) {
 		
-		if (empleadoSel == null)
+		if (empleado == null)
 			return Service21915.JUGADOR_NULL;
 
 		if (datosMedio.isBlank())
 			return Service21915.MEDIO_NULL;
 		
 		try {
-			persistence.insertEntrevista(fechaSel, datosMedio, horaInicioSel, horaFinSel, empleadoSel.getEid());			
+			persistence.insertHorarioEntrevista(fecha, datosMedio, horaInicio, horaFin, empleado.getEid());			
 		} catch (Exception e) {
 			return Service21915.CONCURRENCE_ERROR;
 		}
 		
-		empleadoSel = null;
+		empleado = null;
 		
 		return Service21915.SUCCESS;
 	}

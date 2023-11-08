@@ -65,7 +65,7 @@ public class HorarioEntrenamiento {
 		
 		return "(%s | %s - %s) %-20s %s".formatted(fechaEntrenamiento, horaInicio, horaFin, es, is);
 	}
-	public LocalTime getpParsedInicio() {
+	public LocalTime getParsedInicio() {
 		return Util.stringHoraToLocalTime(horaInicio);
 	}
 	

@@ -20,7 +20,16 @@ insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telef
     ('Ernesto', 'Martinez', '11111111Q', '2003-05-15', 1000000, '666666649', 'deportivo', 'jugador'),
     ('Felipe', 'Sanchez', '11111111R', '2003-05-15', 1000000, '666666648', 'deportivo', 'entrenador'),
     ('Javier', 'Perez', '11111111S', '2003-05-15', 1000000, '666666647', 'deportivo', 'entrenador');
-    
+
+insert into HorarioSemanal(diaSemana, fechaInicio, eid) values
+    (4, '2003-05-15', 1);
+
+insert into FranjaSemanal(horaInicio, horaFin, diaSemana, fechaInicio, eid) values
+    ('09:00', '17:00', 4, '2003-05-15', 1);
+
+insert into HorarioJardineria(fechaJardineria, horaInicio, horaFin, iid, eid) values
+    ('2023-11-09', '09:00', '17:00', 1, 1);
+
 insert into Empleado(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values
     (69, 'Luis', 'Rubiales', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador'),
     (70, 'Luis', 'Enrique', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador');

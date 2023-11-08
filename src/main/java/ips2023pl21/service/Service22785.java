@@ -11,6 +11,7 @@ import ips2023pl21.model.Empleado;
 import ips2023pl21.model.activos.Instalacion;
 import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.persistence.Persistence;
+import ips2023pl21.ui.UserInterface;
 import ips2023pl21.util.Util;
 
 public class Service22785 {
@@ -55,7 +56,7 @@ public class Service22785 {
 	public List<String> getEquipos(String filter) {
 		if (instalacion == null)
 			return new ArrayList<>();
-		return p.selectEquiposLibres(entrenador.getEid(), instalacion.getId()).stream().map(x -> x.toString())
+		return p.selectEquiposLibres(entrenador.getEid(), instalacion.getId(), fecha, horaInicio, horaFin).stream().map(x -> x.toString())
 				.filter(x -> x.toLowerCase().contains(filter.toLowerCase())).collect(Collectors.toList());
 	}
 
@@ -68,14 +69,14 @@ public class Service22785 {
 		return p.selectHorariosEntrenamiento().stream().map(x -> x.toString()).collect(Collectors.toList());
 	}
 
-	public state addHorarioEntrenamiento() {
+	public state addHorarioEntrenamiento(UserInterface ui) {
 		
 		if (instalacion == null)
 			return state.INSTALACIONNULL;
 		else if (equipo == null)
 			return state.EQUIPONULL;
 		else if (getParsedHoraInicio().isAfter(getParsedHoraFin()))
-			return state.INICIOAFTERFIN;
+			return state.INICIOAFTERFIN;		
 		
 		try {
 			p.insertHorarioEntrenamiento(
@@ -84,7 +85,8 @@ public class Service22785 {
 					instalacion.getId(),
 					fecha,
 					horaInicio,
-					horaFin);		
+					horaFin,
+					ui);		
 		} catch (Exception e) {
 			e.printStackTrace();
 			return state.CONCURRENCEERROR;

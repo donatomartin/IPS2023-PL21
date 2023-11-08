@@ -78,6 +78,7 @@ public class Frame22784 extends JFrame {
 	private JButton btnActualizaJardineros;
 	private JPanel pnFiltroJardinero;
 	private JLabel lblNewLabel;
+	private JButton btnActualizar;
 
 	/**
 	 * Create the frame.
@@ -297,6 +298,7 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnBotonesHorarios() {
 		if (pnBotonesHorarios == null) {
 			pnBotonesHorarios = new JPanel();
+			pnBotonesHorarios.add(getBtnActualizar());
 			pnBotonesHorarios.add(getBtnHorariosAtras());
 		}
 		return pnBotonesHorarios;
@@ -520,6 +522,10 @@ public class Frame22784 extends JFrame {
 			JOptionPane.showMessageDialog(null, "Error: La hora de fin no puede ser anterior a la de inicio.", "Error",
 					JOptionPane.ERROR_MESSAGE);
 			break;
+		case INTERFIEREENTRENAMIENTO:
+			JOptionPane.showMessageDialog(null, "Error: Hay un entrenamiento programado para este intervalo.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			break;
 		case CONCURRENCEERROR:
 			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.", "Error",
 					JOptionPane.ERROR_MESSAGE);
@@ -647,5 +653,17 @@ public class Frame22784 extends JFrame {
 			lblNewLabel = new JLabel("Filtra Jardinero");
 		}
 		return lblNewLabel;
+	}
+	private JButton getBtnActualizar() {
+		if (btnActualizar == null) {
+			btnActualizar = new JButton("Actualizar");
+			btnActualizar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					loadHorarios();
+				}
+			});
+			btnActualizar.setBackground(new Color(211, 211, 211));
+		}
+		return btnActualizar;
 	}
 }

@@ -19,7 +19,8 @@ public class Service22784 {
 		CONCURRENCEERROR,
 		INSTALACIONNULL,
 		JARDINERONULL,
-		INICIOAFTERFIN
+		INICIOAFTERFIN,
+		INTERFIEREENTRENAMIENTO
 	}
 	
 	private Persistence p = Persistence.getInstance();
@@ -69,7 +70,11 @@ public class Service22784 {
 					fecha,
 					horaInicio,
 					horaFin);		
-		} catch (Exception e) {
+		}
+		catch (IllegalStateException ise) {
+			return state.INTERFIEREENTRENAMIENTO;
+		}
+		catch (Exception e) {
 			return state.CONCURRENCEERROR;
 		}
 		

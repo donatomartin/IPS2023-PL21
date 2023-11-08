@@ -40,7 +40,7 @@ import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
 
-public class Frame22785 extends JFrame {
+public class Frame22785 extends JFrame implements UserInterface {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
@@ -244,7 +244,7 @@ public class Frame22785 extends JFrame {
 		if (pnSeleccionHorarios == null) {
 			pnSeleccionHorarios = new JPanel();
 			pnSeleccionHorarios.setLayout(new BorderLayout(0, 0));
-			pnSeleccionHorarios.add(getPanel_2(), BorderLayout.CENTER);
+			pnSeleccionHorarios.add(getPnSpinners(), BorderLayout.CENTER);
 		}
 		return pnSeleccionHorarios;
 	}
@@ -340,7 +340,7 @@ public class Frame22785 extends JFrame {
 		return btnHorarios;
 	}
 
-	private JPanel getPanel_2() {
+	private JPanel getPnSpinners() {
 		if (pnSpinners == null) {
 			pnSpinners = new JPanel();
 			pnSpinners.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -515,7 +515,7 @@ public class Frame22785 extends JFrame {
 
 	private void addHorario() {
 
-		Service22785.state res = service.addHorarioEntrenamiento();
+		Service22785.state res = service.addHorarioEntrenamiento(this);
 
 		switch (res) {
 		case SUCCESS:
@@ -766,6 +766,7 @@ public class Frame22785 extends JFrame {
 		}
 		return txPassword;
 	}
+	
 	private JButton getBtnLogout() {
 		if (btnLogout == null) {
 			btnLogout = new JButton("Sign Out");
@@ -777,5 +778,16 @@ public class Frame22785 extends JFrame {
 			btnLogout.setBackground(new Color(211, 211, 211));
 		}
 		return btnLogout;
+	}
+
+	@Override
+	public boolean confirm(String msg) {
+	    int option = JOptionPane.showConfirmDialog(this, msg, "Confirmación", JOptionPane.YES_NO_OPTION);
+
+	    if (option == JOptionPane.YES_OPTION) {
+	        return true;
+	    } else {
+	        return false;
+	    }
 	}
 }
