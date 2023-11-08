@@ -16,16 +16,6 @@ import ips2023pl21.util.Util;
 
 public class Service22785 {
 	
-	public enum state {
-		SUCCESS,
-		CONCURRENCEERROR,
-		INSTALACIONNULL,
-		EQUIPONULL,
-		INICIOAFTERFIN,
-		LOGINFAIL_USERNOTFOUND,
-		LOGINFAIL_USERNOTALLOWED
-	}
-	
 	private Persistence p = Persistence.getInstance();
 	private Equipo equipo;
 	private Instalacion instalacion;
@@ -42,15 +32,15 @@ public class Service22785 {
 		return Util.stringHoraToLocalTime(horaFin);
 	}
 	
-	public state login(int eid) {
+	public State login(int eid) {
 		Empleado e = p.getEmpleado(eid);
 		if (e == null)
-			return state.LOGINFAIL_USERNOTFOUND;
+			return State.LOGINFAIL_USERNOTFOUND;
 		if (!e.getPosicion().equals("entrenador"))
-			return state.LOGINFAIL_USERNOTALLOWED;
+			return State.LOGINFAIL_USERNOTALLOWED;
 		
 		entrenador = e;
-		return state.SUCCESS;
+		return State.SUCCESS;
 	}
 
 	public List<String> getEquipos(String filter) {
@@ -69,14 +59,14 @@ public class Service22785 {
 		return p.selectHorariosEntrenamiento().stream().map(x -> x.toString()).collect(Collectors.toList());
 	}
 
-	public state addHorarioEntrenamiento(UserInterface ui) {
+	public State addHorarioEntrenamiento(UserInterface ui) {
 		
 		if (instalacion == null)
-			return state.INSTALACIONNULL;
+			return State.INSTALACIONNULL;
 		else if (equipo == null)
-			return state.EQUIPONULL;
+			return State.EQUIPONULL;
 		else if (getParsedHoraInicio().isAfter(getParsedHoraFin()))
-			return state.INICIOAFTERFIN;		
+			return State.INICIOAFTERFIN;		
 		
 		try {
 			p.insertHorarioEntrenamiento(
@@ -89,10 +79,10 @@ public class Service22785 {
 					ui);		
 		} catch (Exception e) {
 			e.printStackTrace();
-			return state.CONCURRENCEERROR;
+			return State.CONCURRENCEERROR;
 		}
 		
-		return state.SUCCESS;
+		return State.SUCCESS;
 	}
 
 	public void seleccionaEquipo(String equipo) {

@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import ips2023pl21.persistence.Persistence;
-import ips2023pl21.util.Database;
 import ips2023pl21.util.Util;
 
 public class EntradasModel {

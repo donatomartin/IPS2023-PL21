@@ -14,15 +14,6 @@ import ips2023pl21.util.Util;
 
 public class Service22784 {
 	
-	public enum state {
-		SUCCESS,
-		CONCURRENCEERROR,
-		INSTALACIONNULL,
-		JARDINERONULL,
-		INICIOAFTERFIN,
-		INTERFIEREENTRENAMIENTO
-	}
-	
 	private Persistence p = Persistence.getInstance();
 	private Instalacion instalacion;
 	private Empleado jardinero;
@@ -54,14 +45,14 @@ public class Service22784 {
 		return p.selectHorariosJardineria().stream().map(x -> x.toString()).collect(Collectors.toList());
 	}
 
-	public state addHorarioJardineria() {
+	public State addHorarioJardineria() {
 		
 		if (instalacion == null)
-			return state.INSTALACIONNULL;
+			return State.INSTALACIONNULL;
 		else if (jardinero == null)
-			return state.JARDINERONULL;
+			return State.JARDINERONULL;
 		else if (getParsedHoraInicio().isAfter(getParsedHoraFin()))
-			return state.INICIOAFTERFIN;
+			return State.INICIOAFTERFIN;
 		
 		try {
 			p.insertHorarioJardineria(
@@ -72,13 +63,13 @@ public class Service22784 {
 					horaFin);		
 		}
 		catch (IllegalStateException ise) {
-			return state.INTERFIEREENTRENAMIENTO;
+			return State.INTERFIEREENTRENAMIENTO;
 		}
 		catch (Exception e) {
-			return state.CONCURRENCEERROR;
+			return State.CONCURRENCEERROR;
 		}
 		
-		return state.SUCCESS;
+		return State.SUCCESS;
 	}
 
 	public void seleccionaJardinero(String jardinero) {

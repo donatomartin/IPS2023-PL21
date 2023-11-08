@@ -10,6 +10,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import ips2023pl21.service.Service22785;
+import ips2023pl21.service.State;
+
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -515,7 +517,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 
 	private void addHorario() {
 
-		Service22785.state res = service.addHorarioEntrenamiento(this);
+		State res = service.addHorarioEntrenamiento(this);
 
 		switch (res) {
 		case SUCCESS:
@@ -717,7 +719,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 		if (getTxId().getText().isBlank())
 			return;
 		
-		Service22785.state res = service.login(Integer.parseInt(getTxId().getText()));
+		State res = service.login(Integer.parseInt(getTxId().getText()));
 		
 		switch (res) {
 		case LOGINFAIL_USERNOTALLOWED:

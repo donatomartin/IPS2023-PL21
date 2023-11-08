@@ -30,12 +30,14 @@ public class HorarioPuntual implements Comparable<HorarioPuntual> {
 	@Override
 	public String toString() {
 		
-	    String result = "%-10s".formatted(fechaPuntual);;
+	    String result = "<html><p>%-10s<ul>".formatted(fechaPuntual);;
 	    
 	    for (FranjaPuntual f: Persistence.getInstance().getFranjasPuntuales(fechaPuntual, eid)) {
-	        result += " || " + f.toString();
+	        result += "<li>" + f.toString() + "</li>";
 	    }
 
+	    result += "</ul><html>";
+	    
 	    return result;
 	}
 

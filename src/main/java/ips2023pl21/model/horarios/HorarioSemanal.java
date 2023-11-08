@@ -46,18 +46,21 @@ public class HorarioSemanal implements Comparable<HorarioSemanal> {
 	
 	@Override
 	public String toString() {
-		
-		String result = "%-10s".formatted(getNombreDia(diaSemana));
+		//"<html><p>Gestion de empleados</p><p>(21911)</p><html>"
+		String result = "<html><p>%-10s".formatted(getNombreDia(diaSemana));
 		result += "(" + fechaInicio;
 		
 		if (fechaFin != null)
 			result += " -> " + fechaFin;
 		
-		result += ") ";
+		result += ")</p><ul>";
 
 		for (FranjaSemanal f : Persistence.getInstance().getFranjasSemanales(diaSemana, fechaInicio, eid)) {
-			result += f.toString() + " || ";
+			
+			result += "<li>" + f.toString() + "</li>";
 		}
+		
+		result += "</ul><html>";
 
 		return result.toString();
 	}

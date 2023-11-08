@@ -14,6 +14,7 @@ import javax.swing.event.DocumentListener;
 
 import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.service.Service21912;
+import ips2023pl21.service.State;
 import ips2023pl21.util.Util;
 
 import java.awt.Font;
@@ -668,7 +669,7 @@ public class Frame21912 extends JFrame {
 
 	private void addToHorarioSemanal() {
 
-		Service21912.state res = service.addToHorarioSemanal((Date) getSpHoraInicioSemanal().getValue(),
+		State res = service.addToHorarioSemanal((Date) getSpHoraInicioSemanal().getValue(),
 				(Date) getSpHoraFinSemanal().getValue(), getCbDiaSemana().getSelectedItem().toString(),
 				(Date) getSpFechaInicio().getValue());
 
@@ -844,7 +845,7 @@ public class Frame21912 extends JFrame {
 	}
 
 	private void seleccionaHorarioPuntual(String horarioString) {
-		service.seleccionaHorarioPuntual2(horarioString);
+		service.seleccionaHorarioPuntualHtml(horarioString);
 	}
 
 	private JButton getBtnAddHorarioSemanal() {
@@ -1047,7 +1048,7 @@ public class Frame21912 extends JFrame {
 	}
 
 	private void addToHorarioPuntual() {
-		Service21912.state res = service.addToHorarioPuntual((Date) getSpHoraInicioPuntual().getValue(),
+		State res = service.addToHorarioPuntual((Date) getSpHoraInicioPuntual().getValue(),
 				(Date) getSpHoraFinPuntual().getValue(), (Date) getSpFechaPuntual().getValue());
 
 		switch (res) {

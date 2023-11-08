@@ -10,6 +10,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import ips2023pl21.service.Service22784;
+import ips2023pl21.service.State;
+
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -503,7 +505,7 @@ public class Frame22784 extends JFrame {
 
 	private void addHorario() {
 
-		Service22784.state res = service.addHorarioJardineria();
+		State res = service.addHorarioJardineria();
 
 		switch (res) {
 		case SUCCESS:
