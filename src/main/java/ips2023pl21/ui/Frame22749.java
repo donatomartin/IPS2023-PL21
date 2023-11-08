@@ -95,7 +95,7 @@ public class Frame22749 extends JFrame {
 	
 	private void confirmarSalida() {
 		int respuesta = JOptionPane.showConfirmDialog(this, 
-				"¿Está seguro de que quiere cerrar la aplicación?");
+				"¿Está seguro de que quiere cerrar la panalla de ampliaciones de capital?");
 		if (respuesta == JOptionPane.YES_OPTION) {
 			dispose();
 		}
@@ -457,11 +457,13 @@ public class Frame22749 extends JFrame {
 						JOptionPane.showMessageDialog(null, "El número de acciones introducido no es válido");
 					}
 					else if (confirmarInicio()) {
+						int rest = Integer.valueOf(getTxAcciones().getText());
 						iniciarAmpliacion();
 						insertarAmpliacion();
 						actualizacionBotones();
 						mostrarPnAvanzarFase();
 						guardarLimiteFaseUno();
+						cs.setAccionesRestantes(rest);
 					}
 				}
 			});

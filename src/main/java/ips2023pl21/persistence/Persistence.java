@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
+import ips2023pl21.model.acciones.Accion;
+import ips2023pl21.model.acciones.Accionista;
 import ips2023pl21.model.acciones.AmpliacionCapital;
 import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioPuntual;
@@ -221,6 +223,13 @@ public class Persistence {
 		float result = ac.get(0).getCapitalTotal();
 		return result;
 	}
+	
+	public int getAccionesClub() {
+		List<AmpliacionCapital> ac = db.
+				executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
+		int result = ac.get(0).getAccionesTotales();
+		return result;
+	}
 
 	public float getPrecioPorAccion() {
 		List<AmpliacionCapital> ac = db.
@@ -235,5 +244,82 @@ public class Persistence {
 	
 	public void updateLimiteFaseUno() {
 		db.executeUpdate("update accionista set limiteAccionesFaseUno = numeroAcciones");
+	}
+
+	
+	//ACCIONISTAS
+	public List<Accionista> selectAccionista(int numeroAccionista) {
+		return db.executeQueryPojo(Accionista.class, "select * from accionista "
+				+ "where idAccionista=?", numeroAccionista);
+	}
+
+	public List<Accionista> selectAccionista(String nombre, String apellido, String dni) {
+		return db.executeQueryPojo(Accionista.class, "select * from accionista "
+				+ "where nombreAccionista=? and apellidoAccionista=? and dniAccionista=?", nombre, apellido, dni);
+	}
+
+	public void insertAccionista(String nombre, String apellido, String dni, String cuenta) {
+		db.executeUpdate("insert into accionista(nombreAccionista, apellidoAccionista, "
+				+ "dniAccionista, cuentaBancaria, numeroAcciones,porcentajeCapital) values "
+				+ "(?,?,?,?, 0, 0.0)", nombre, apellido, dni, cuenta);
+	}
+
+	public List<Accionista> selectAccionistaById(int id) {
+		return db.executeQueryPojo(Accionista.class, "select * from accionista "
+				+ "where idAccionista=?", id);
+	}
+
+	public List<Accion> selectAccionesByIdAccionista(int accionistaActivo) {
+		return db.executeQueryPojo(Accion.class, "select * from accion "
+				+ "where idAccionista=?", accionistaActivo);
+	}
+
+	public List<Accion> selectAccionesEnVenta(int idAccionista) {
+		return db.executeQueryPojo(Accion.class, "select * from accion "
+				+ "where idAccionista <> ? and enVenta = 1", idAccionista);
+	}
+
+	public void updateAccionCompra(Integer idAccion, int idComprador, int idVendedor, float porcentaje) {
+		db.executeUpdate("update accion set idAccionista=? where idAccion=?", idComprador, idAccion);
+		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones+1, "
+				+ "porcentajeCapital=porcentajeCapital+? where idAccionista=?", porcentaje, idComprador);
+		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones-1, "
+				+ "porcentajeCapital=porcentajeCapital-? where idAccionista=?", porcentaje, idVendedor);
+	}
+
+	public void deleteAccionistaACero() {
+		db.executeUpdate("delete from accionista where numeroAcciones = 0");
+	}
+
+	public int selectLimiteFase1(int idAccionista) {
+		List<Accionista> acc = db.executeQueryPojo(Accionista.class, "select * from accionista "
+				+ "where idAccionista=?", idAccionista);
+		return acc.get(0).getLimiteAccionesFaseUno();
+	}
+
+	public void insertAccion(int idAccionista, double precioPorAccion) {
+		db.executeUpdate("insert into accion(idAccionista,precioCompra,enVenta,precioVenta) "
+				+ "values (?,?,0,?)", idAccionista, precioPorAccion, precioPorAccion);
+	}
+
+	public void updateLimiteAccionista(int idAccionista, Integer numAcciones) {
+		db.executeUpdate("update accionista set limiteAccionesFaseUno=limiteAccionesFaseUno-? "
+				+ "where idAccionista=?", numAcciones, idAccionista);
+	}
+
+	public void updateCompraAccionista(int idAccionista, float porcentaje) {
+		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones+1 where idAccionista=?", idAccionista);
+		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital+? "
+				+ "where idAccionista=?", porcentaje, idAccionista);
+		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital-? "
+				+ "where idAccionista<>?", porcentaje, idAccionista);
+	}
+
+	public void updateAccionesEnVenta(int idAccionista) {
+		db.executeUpdate("update accion set enVenta=1 where idAccionista=?", idAccionista);
+	}
+
+	public void updatePonerEnVenta(Integer id) {
+		db.executeUpdate("update accion set enVenta=1 where idAccion=?", id);
 	}
 }
