@@ -5,6 +5,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
+import ips2023pl21.model.equipos.CategoriaEquipo;
+import ips2023pl21.model.equipos.EquipoDeportivo;
+import ips2023pl21.model.equipos.EquipoEnFormacion;
+import ips2023pl21.model.equipos.EquipoProfesional;
+import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
@@ -226,4 +231,147 @@ public class Persistence {
 		
 	}
 
+	// EQUIPOS 
+	
+	public void insertEquipo(EquipoDeportivo equipo) {
+		CategoriaEquipo categoria = null;
+		boolean filial = false;
+		
+		if(equipo instanceof EquipoEnFormacion) {
+			categoria = ((EquipoEnFormacion)equipo).categoria;
+		} else {
+			filial = ((EquipoProfesional) equipo).isFilial();
+		}
+		db.executeUpdate("insert into Equipo(nombre, categoria, esFilial) values (?,?,?)", equipo.getNombre(),categoria, filial);
+	}
+	
+	public List<EquipoDeportivo> selectEquipo(){
+		List<Object[]> equipos = db.executeQueryArray("select * from Equipo");
+		List<EquipoDeportivo> ret = new ArrayList<>();
+		
+		for(Object[] o : equipos) {
+			EquipoDeportivo equipo = new EquipoDeportivo();
+			
+			equipo.setNombre(o[1].toString());
+
+			ret.add(equipo);
+		}
+		return ret;
+	}
+	
+	public EquipoDeportivo selectEquipoPorNombre(String nombre) {
+		
+		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where nombre = ?",nombre);
+		EquipoDeportivo ret = new EquipoDeportivo();
+		//TODO
+		ret.setId(equipo.get(0)[0].toString());
+		ret.setNombre(equipo.get(0)[1].toString());
+			
+//			ret.setCategoria(o[2]);
+//			ret.setFilial(o[3]);
+		return ret;
+	}
+	
+	public EquipoDeportivo selectEquipoPorId(String id) {
+		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where id = ?",id);
+		EquipoDeportivo ret = new EquipoDeportivo();
+		//TODO
+
+		ret.setId(equipo.get(0)[0].toString());
+		ret.setNombre(equipo.get(0)[1].toString());
+			
+//			ret.setCategoria(o[2]);
+//			ret.setFilial(o[3]);
+		return ret;
+	}
+	
+	
+	// PARTIDOS
+	
+	public void insertPartido(Partido partido) {
+		db.executeUpdate("insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values (?,?,?,?,?)", 
+				partido.getId(), partido.getLocal().getId(), partido.getVisitante(),partido.getFecha(),partido.getSuplemento());
+	}
+
+	public List<Partido> selectPartidosPorIdEquipo(String id) {
+		List<Object[]> partidos = db.executeQueryArray("select * from Partido where idEquipo = ?", id);
+		
+		List<Partido> ret = new ArrayList<>();
+		
+		for(Object[] o : partidos) {
+			Partido p = new Partido();
+			
+			p.setId(o[0].toString());
+			p.setLocal(selectEquipoPorId(o[1].toString()));
+			p.setVisitante(o[2].toString());
+			p.setFecha(o[3].toString());
+			p.setSuplemento(Float.parseFloat(o[4].toString()));
+			
+			ret.add(p);
+		}
+		return ret;
+	}
+	
+	public List<Partido> selectPartidosPorId(String id){
+		List<Object[]> partidos = db.executeQueryArray("select * from Partido where id = ?", id);
+		
+		List<Partido> ret = new ArrayList<>();
+		
+		for(Object[] o : partidos) {
+			Partido p = new Partido();
+			
+			p.setId(o[0].toString());
+			p.setLocal(selectEquipoPorId(o[1].toString()));
+			p.setVisitante(o[2].toString());
+			p.setFecha(o[3].toString());
+			p.setSuplemento(Float.parseFloat(o[4].toString()));
+			
+			ret.add(p);
+		}
+		return ret;
+	}
+	
+	// ABONADOS
+	
+	public boolean existsIdAbonado(String id) {
+		List<Object[]> abonado = db.executeQueryArray("select * from Abonado where id = ?",id);
+		if(abonado.size() == 1) {
+			return true;
+		}
+		return false;
+		
+	}
+
+	public void insertPartidoAbonado(String idAbonado, Partido partido) {
+		db.executeUpdate("insert into PartidoAbonado(idAbonado, idPartido) values (?,?)", 
+				 idAbonado ,partido.getId());
+		
+	}
+	
+	public List<Partido> getPartidosNoSeleccionadosPorAbonadoYEquipo(String idAbonado, String idEquipo) {
+		List<Partido> partidos = selectPartidosPorIdEquipo(idEquipo);
+		
+		List<Partido> partidosAbonados = selectPartidosAbonadosPorIdAbonado(idAbonado);
+		List<Partido> ret = new ArrayList<>();
+		
+		for(Partido p : partidos) {
+			if(!partidosAbonados.contains(p)) {
+				ret.add(p);
+			}
+		}
+		return ret;
+	}
+	
+	public List<Partido> selectPartidosAbonadosPorIdAbonado(String idAbonado){
+		List<Object[]> partidosAbonados = db.executeQueryArray("select * from PartidoAbonado where idAbonado = ?", idAbonado);
+		List<Partido> ret =new ArrayList<>();
+		
+		for(Object[] o : partidosAbonados) {
+			String idPartido = o[1].toString();
+			ret.addAll(selectPartidosPorId(idPartido));
+		}
+		return ret;
+		
+	}
+	
 }

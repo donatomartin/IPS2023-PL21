@@ -75,3 +75,15 @@ delete from ventaMerchandising;
 insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, producto, unidades, precioPorProducto) VALUES
 (1,'merchandising','2023-10-13', '20','05',30, 'camiseta', 3,10),
 (3, 'merchandising','2013-02-02','20','00',50,'pantalon',5,10);
+
+delete from Equipo;
+insert into Equipo(id, nombre, categoria, esFilial) values ('1','equipo','categoria', false);
+insert into Equipo(id, nombre, categoria, esFilial) values ('2','equipo2',null, true);
+
+delete from Partido;
+insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1','1', 'EquipoVisitante', '2023-11-09', 10);
+insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('2','1', 'EquipoVisitante2', '2023-11-16', 0);
+
+delete from Abonado;
+insert into Abonado(id) values('1'); 
+
