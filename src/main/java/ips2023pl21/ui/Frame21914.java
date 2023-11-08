@@ -320,28 +320,6 @@ public class Frame21914 {
 		}
 		return btAñadirEntrenador;
 	}
-	
-	private void añadirEntrenador() {
-		int selected = getTbEntrenadores().getSelectedRow();
-		if(selected != -1) {
-			Empleado primerEntrenador = equipo.getEntrenador(selected);
-			if(equipo.getSegundoEntrenador()== null || 
-			   primerEntrenador.getDni() != equipo.getSegundoEntrenador().getDni()) {
-				equipo.setPrimerEntrenador(primerEntrenador);
-				getBtAñadirEntrenador().setEnabled(false);
-				getLbDatosEntrenador().setText("Datos Entrenador: " + equipo.getPrimerEntrenador().toString());
-				getBtEliminarEntrenador().setEnabled(true);
-				
-				comprobarAñadirEquipo();
-			} else {
-				JOptionPane.showMessageDialog(null, "Este entrenador ya se ha añadido");
-			}
-			
-		} else {
-			JOptionPane.showMessageDialog(null, "Selecciona un entrenador");
-		}
-		
-	}
 
 	private JLabel getLbTipoEquipo() {
 		if (lbTipoEquipo == null) {
@@ -413,12 +391,34 @@ public class Frame21914 {
 		return btAñadirSegundo;
 	}
 
+	private void añadirEntrenador() {
+		int selected = getTbEntrenadores().getSelectedRow();
+		if(selected != -1) {
+			Empleado primerEntrenador = equipo.getEntrenador(selected);
+			if(equipo.getSegundoEntrenador() == null || 
+			   !primerEntrenador.getDni().equals(equipo.getSegundoEntrenador().getDni())) {
+				equipo.setPrimerEntrenador(primerEntrenador);
+				getBtAñadirEntrenador().setEnabled(false);
+				getLbDatosEntrenador().setText("Datos Entrenador: " + equipo.getPrimerEntrenador().toString());
+				getBtEliminarEntrenador().setEnabled(true);
+				
+				comprobarAñadirEquipo();
+			} else {
+				JOptionPane.showMessageDialog(null, "Este entrenador ya se ha añadido");
+			}
+			
+		} else {
+			JOptionPane.showMessageDialog(null, "Selecciona un entrenador");
+		}
+		
+	}
+	
 	private void añadirSegundo() {
 		int selected = getTbEntrenadores().getSelectedRow();
 		if(selected != -1) {
 			Empleado segundoEntrenador = equipo.getEntrenador(selected);
-			if(equipo.getPrimerEntrenador()== null || 
-			   segundoEntrenador.getDni() != equipo.getPrimerEntrenador().getDni()) {
+			if(equipo.getPrimerEntrenador() == null || 
+			   !segundoEntrenador.getDni().equals(equipo.getPrimerEntrenador().getDni())) {
 				equipo.setSegundoEntrenador(segundoEntrenador);
 				getBtAñadirSegundo().setEnabled(false);
 				getLbDatosSegundo().setText("Datos Entrenador: " + equipo.getSegundoEntrenador().toString());

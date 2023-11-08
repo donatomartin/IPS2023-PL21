@@ -445,7 +445,8 @@ public class Persistence {
 		} else {
 			filial = ((EquipoProfesional) equipo).isFilial();
 		}
-		db.executeUpdate("insert into Equipo(nombre, categoria, esFilial) values (?,?,?)", equipo.getNombre(),categoria, filial);
+		db.executeUpdate("insert into Equipo(peid,seid,nombre, categoria, esFilial) values (?,?,?)", 
+				equipo.getPrimerEntrenador().getEid(),equipo.getSegundoEntrenador().getEid(), equipo.getNombre(),categoria, filial);
 	}
 	
 	public List<EquipoDeportivo> selectEquipo(){
@@ -454,8 +455,8 @@ public class Persistence {
 		
 		for(Object[] o : equipos) {
 			EquipoDeportivo equipo = new EquipoDeportivo();
-			
-			equipo.setNombre(o[1].toString());
+			equipo.setId(o[0].toString());
+			equipo.setNombre(o[3].toString());
 
 			ret.add(equipo);
 		}
@@ -466,9 +467,8 @@ public class Persistence {
 		
 		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where nombre = ?",nombre);
 		EquipoDeportivo ret = new EquipoDeportivo();
-		//TODO
 		ret.setId(equipo.get(0)[0].toString());
-		ret.setNombre(equipo.get(0)[1].toString());
+		ret.setNombre(equipo.get(0)[3].toString());
 			
 //			ret.setCategoria(o[2]);
 //			ret.setFilial(o[3]);
@@ -478,10 +478,9 @@ public class Persistence {
 	public EquipoDeportivo selectEquipoPorId(String id) {
 		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where id = ?",id);
 		EquipoDeportivo ret = new EquipoDeportivo();
-		//TODO
 
 		ret.setId(equipo.get(0)[0].toString());
-		ret.setNombre(equipo.get(0)[1].toString());
+		ret.setNombre(equipo.get(0)[3].toString());
 			
 //			ret.setCategoria(o[2]);
 //			ret.setFilial(o[3]);
