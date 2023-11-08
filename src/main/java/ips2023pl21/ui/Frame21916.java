@@ -125,14 +125,21 @@ public class Frame21916 {
 		if(res == 0) {
 			tl.guardarPrecio();
 			
-			String correo = JOptionPane.showInputDialog(null, "Escibe tu correo electronico para recibir un sumario de la compra");
-			try{
-				tl.enviarCorreo(correo);
-				JOptionPane.showMessageDialog(null, "¡¡Correo Enviado!!");
-			} catch (MessagingException e) {
-				JOptionPane.showMessageDialog(null, "no se pudo enviar el correo");
-				e.printStackTrace();
+			
+			boolean enviado = false;
+			while(!enviado) {
+				String correo = JOptionPane.showInputDialog(null, "Escibe tu correo electronico para recibir un sumario de la compra");
+				try{
+					tl.enviarCorreo(correo);
+					JOptionPane.showMessageDialog(null, "¡¡Correo Enviado!!");
+					enviado = true;
+					frame.dispose();
+				} catch (MessagingException e) {
+					JOptionPane.showMessageDialog(null, "no se pudo enviar el correo");
+					//e.printStackTrace();
+				}
 			}
+			
 		}
 		
 	}
