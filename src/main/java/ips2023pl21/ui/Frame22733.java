@@ -407,7 +407,7 @@ public class Frame22733 extends JFrame{
 				for(EntradaEntity asiento : asientosOcupados) {
 					int fila=asiento.getFila();
 					int numAsiento=asiento.getAsiento();
-					String id=""+fila+numAsiento;
+//					String id=""+fila+numAsiento;
 					if(fila==i && numAsiento==j) {
 						panelAsientosOcupados.getComponent(iteracion).setBackground(Color.red);
 					}
@@ -433,6 +433,7 @@ public class Frame22733 extends JFrame{
 		}
 		return lbFila;
 	}
+	@SuppressWarnings("removal")
 	private JSpinner getSpinnerFila() {
 		if (spinnerFila == null) {
 			spinnerFila = new JSpinner();
@@ -529,6 +530,7 @@ public class Frame22733 extends JFrame{
 		}
 		return lblAsiento;
 	}
+	@SuppressWarnings("removal")
 	private JSpinner getSpinnerAsiento() {
 		if (spinnerAsiento == null) {
 			spinnerAsiento = new JSpinner();

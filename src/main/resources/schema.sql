@@ -173,7 +173,7 @@ create table Merchandaising(
 	id int primary key,
 	nombre varchar(30),
 	tipo varchar(30) not null,
-	precio double not null,
+	precio double not null
 );
 
 -- Venta
@@ -228,10 +228,6 @@ create table Abono(
 	foreign key (tribuna, seccion, fila, asiento) references Entrada(tribuna, seccion, fila, asiento)
 );
 
---Abonado
-drop table Abonado;
-create table Abonado(
-	id integer autoincrement;
 --Noticia
 drop table Noticia;
 create table Noticia(

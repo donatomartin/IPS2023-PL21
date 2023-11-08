@@ -1,12 +1,10 @@
 package ips2023pl21.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
 import ips2023pl21.model.abonos.Abono;
-import ips2023pl21.persistence.Persistence;
 import ips2023pl21.model.entradas.EntradaEntity;
 import ips2023pl21.util.Database;
 import ips2023pl21.util.UnexpectedException;
@@ -14,14 +12,14 @@ import ips2023pl21.util.Util;
 
 public class Service22733 {
 	
-	private Abono abonoModel;
+//	private Abono abonoModel;
 	private Database db=new Database();
 //	public Persistence p = Persistence.getInstance();
 	
 
 	public boolean comprar(String tribuna, String seccion, int fila, int asiento, String fechaNacimiento) {
 		if(comprobarDisponibilidad(tribuna, seccion, fila, asiento)) {
-			Date date=Util.isoStringToDate(fechaNacimiento);
+//			Date date=Util.isoStringToDate(fechaNacimiento);
 			LocalDate localDate=LocalDate.now();
 			int year=Integer.valueOf(fechaNacimiento.split("-")[0]);
 			int currentYear=localDate.getYear();

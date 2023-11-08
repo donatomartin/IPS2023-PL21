@@ -14,7 +14,6 @@ import ips2023pl21.model.ventas.VentaDisplayDTO;
 import ips2023pl21.model.ventas.VentaMerchandisingDisplayDto;
 import ips2023pl21.model.ventas.VentasDetalleDisplayDTO;
 import ips2023pl21.model.ventas.VentasModel;
-import ips2023pl21.persistence.Persistence;
 import ips2023pl21.ui.Frame21918;
 import ips2023pl21.util.SwingUtil;
 import ips2023pl21.util.Util;

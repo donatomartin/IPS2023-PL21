@@ -78,6 +78,7 @@ delete from Partido;
 insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1','1', 'EquipoVisitante', '2023-11-09', 10);
 insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('2','1', 'EquipoVisitante2', '2023-11-16', 0);
 
+
+
 delete from Abonado;
 insert into Abonado(id) values('1'); 
-
