@@ -93,7 +93,7 @@ public class EquipoDeportivo {
 	}
 
 	public List<Empleado> getJugadoresEquipo() {
-		return new ArrayList<Empleado>(jugadoresEquipo);
+		return jugadoresEquipo;
 	}
 
 	public void eliminarJugador(int index) {
