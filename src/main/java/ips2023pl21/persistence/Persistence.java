@@ -12,12 +12,14 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
+import ips2023pl21.model.abonos.Abono;
 import ips2023pl21.model.equipos.CategoriaEquipo;
 import ips2023pl21.model.equipos.EquipoDeportivo;
 import ips2023pl21.model.equipos.EquipoEnFormacion;
 import ips2023pl21.model.equipos.EquipoProfesional;
 import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.model.activos.Instalacion;
+import ips2023pl21.model.entradas.EntradaEntity;
 import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.model.horarios.HorarioEntrenamiento;
 import ips2023pl21.model.horarios.HorarioEntrevista;
