@@ -52,9 +52,6 @@ import java.awt.event.ActionEvent;
 
 public class Frame21918 extends JFrame{
 	
-//	public static void main(String[] args) {
-//		VentasView c=new VentasView();
-//		}
 	
 	private JFrame frame;
 	private JButton btVerVentas;
@@ -112,7 +109,7 @@ public class Frame21918 extends JFrame{
 				DateFormatter dateFormatter1 = new DateFormatter(dateFormat); 
 				textFieldFechaInicial = new JFormattedTextField(dateFormatter1);
 				textFieldFechaInicial.setColumns(10);
-//				textFieldFechaInicial.
+
 				
 				pnFechaInicial.add(textFieldFechaInicial);
 				

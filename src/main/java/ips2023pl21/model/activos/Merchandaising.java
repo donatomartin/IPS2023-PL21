@@ -1,17 +1,29 @@
 package ips2023pl21.model.activos;
 
 public class Merchandaising {
-
+	private int id;
 	private String nombre;
 	private String tipo;
 	private double precio;
 	private int unidades;
 	
-	public Merchandaising(String nombre, String tipo, double precio) {
+	public Merchandaising() {
+		super();
+	}
+	
+	public Merchandaising(int id,String nombre, String tipo, double precio) {
 		this.nombre = nombre;
 		this.tipo = tipo;
 		this.precio = precio;
 		this.unidades = 0;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getNombre() {
@@ -44,4 +56,18 @@ public class Merchandaising {
 	public String toString() {
 		return "Nombre: " + nombre + ", Tipo: " + tipo + ", Precio: " + precio + ", Unidades: " + unidades;
 	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
+	}
+
+	public void setPrecio(double precio) {
+		this.precio = precio;
+	}
+	
+	
 }

@@ -17,8 +17,6 @@ public class Main {
 				try {
 					MainFrame frame = new MainFrame();
 					frame.setVisible(true);
-					Frame22733 f=new Frame22733(new Service22733());
-					f.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

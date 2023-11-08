@@ -2,15 +2,19 @@ package ips2023pl21.service;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 
+import ips2023pl21.model.activos.Merchandaising;
 import ips2023pl21.model.ventas.VentaDisplayDTO;
 import ips2023pl21.model.ventas.VentaMerchandisingDisplayDto;
+import ips2023pl21.model.ventas.VentasDetalleDisplayDTO;
 import ips2023pl21.model.ventas.VentasModel;
+import ips2023pl21.persistence.Persistence;
 import ips2023pl21.ui.Frame21918;
 import ips2023pl21.util.SwingUtil;
 import ips2023pl21.util.Util;
@@ -21,6 +25,7 @@ public class Service21918 {
 	private Frame21918 view;
 	private VentasModel model;
 	private String lastSelectedKey="";
+//	private Persistence p=Persistence.getInstance();
 	
 	public Service21918(Frame21918 view, VentasModel model) {
 		this.view = view;
@@ -48,8 +53,6 @@ public class Service21918 {
 		});
 		
 	}
-
-	
 
 	private void getTotalVentas() {
 		List<VentaDisplayDTO> ventas=model.getTotalVentas();
@@ -100,19 +103,56 @@ public class Service21918 {
 	public void updateDetail() {
 		this.lastSelectedKey=SwingUtil.getSelectedKey(view.getTableVentas());
 		int idVenta=Integer.parseInt(this.lastSelectedKey);
+		System.out.println(idVenta);
 		
 		//Detalles de la venta seleccionada
 		
-		VentaMerchandisingDisplayDto venta=model.getVenta(idVenta);
-		if(venta==null) {
+		List<VentaMerchandisingDisplayDto> ventas=model.getVentasMerchandising(idVenta); 
+		for(VentaMerchandisingDisplayDto v: ventas) {
+			System.out.println(v.getId());
+		}
+		if(ventas==null ||ventas.size()==0) {
 			view.getTableDetalles().setModel(new DefaultTableModel());
 		}else {
-			TableModel tmodel=SwingUtil.getRecordModelFromPojo(venta, new String[] {"id", "producto",
-					"unidades", "precioPorProducto","cuantia"});
+			List<VentasDetalleDisplayDTO>merch=convertitADisplay(ventas);
+			if(merch==null ||merch.size()==0) {
+				view.getTableDetalles().setModel(new DefaultTableModel());
+			}else{
+					TableModel tmodel=SwingUtil.getTableModelFromPojos(merch, new String[] {"id", "nombre",
+				
+					"unidades","precioPorProducto", "total"}); 
 			view.getTableDetalles().setModel(tmodel);
 			SwingUtil.autoAdjustColumns(view.getTableDetalles());
+		}
+			}
+		}
+	
+	
+
+	private List<VentasDetalleDisplayDTO> convertitADisplay(List<VentaMerchandisingDisplayDto> ventas) {
+		//para devolver los prodcutos de cada venta
+		List<VentasDetalleDisplayDTO>result=new ArrayList<VentasDetalleDisplayDTO>();
+		for(VentaMerchandisingDisplayDto v:ventas) {
+			List<Merchandaising>producto=model.getProducto(v.getIdProducto());
+			if(producto.isEmpty()) {
+				break;
+			}else {
+				VentasDetalleDisplayDTO detalle=new VentasDetalleDisplayDTO();
+				detalle.setId(v.getId());
+				detalle.setNombre(producto.get(0).getNombre());
+				detalle.setPrecioPorProducto(producto.get(0).getPrecio());
+				System.out.println(v.getCantidad());
+				detalle.setTotal(producto.get(0).getPrecio()*v.getCantidad()); //cantidad=unidades
+				detalle.setUnidades(v.getCantidad());
+				result.add(detalle);
+			}
+//				v.setNombreProducto(producto.get(0).getNombre());
+//				v.set
+//				v.setPrecioPorProducto(producto.get(0).getPrecio());
+			}
+			return result;
 		}
 		
 	}
 
-}
+

@@ -48,13 +48,14 @@ public class Service21914_16 {
 		Database db = new Database();
 		db.createDatabase(false);
 		db.loadDatabase();
+		int id=0;
 		
 		List<Object[]> articulos = db.executeQueryArray("select * from merchandaising");
 		
 		List<Merchandaising> ret = new ArrayList<>();
 		
 		for(Object[] o : articulos) {
-			ret.add(new Merchandaising(o[0].toString(), o[1].toString(), (double) o[2]));
+			ret.add(new Merchandaising(id++,o[0].toString(), o[1].toString(), (double) o[2]));
 		}
 		return ret;
 	}

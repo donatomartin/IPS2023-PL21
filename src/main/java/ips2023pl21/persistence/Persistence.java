@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.abonos.Abono;
+import ips2023pl21.model.activos.Merchandaising;
 import ips2023pl21.model.empleados.EmpleadoNoDeportivo;
 import ips2023pl21.model.empleados.JugadorProfesional;
 import ips2023pl21.model.entradas.EntradaEntity;
@@ -194,4 +195,34 @@ public class Persistence {
 		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=?", tribuna, seccion);
 		
 	}
+
+	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
+		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
+	}
+	
+	//ENTRADA
+
+	public void insertarEntrada(String tribuna, String seccion, int fila, int asientoInicial, int i) {
+		String queryEntrada="Insert into Entrada(tribuna, seccion, fila, asiento, precio) VALUES (?,?,?,?,?)";
+		db.executeUpdate(queryEntrada, tribuna,seccion,fila,asientoInicial,i);
+		
+	}
+
+	public void insertarVenta(String string, String dateSql, int hours, int minutes, int i) {
+		String queryVenta="Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES"
+				+ "(?,?,?,?,?)";
+		db.executeUpdate(queryVenta,"entrada", hours,minutes,30);
+		
+	}
+
+	public List<EntradaEntity> getTotalEntradas(String tribuna, String seccion, int fila) {
+		String query="SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
+		return db.executeQueryPojo(EntradaEntity.class,query, tribuna, seccion, fila);
+	}
+
+	
+
+	
+	
+	
 }

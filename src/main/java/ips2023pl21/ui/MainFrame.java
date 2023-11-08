@@ -13,6 +13,8 @@ import ips2023pl21.service.Service21913;
 import ips2023pl21.service.Service21915;
 import ips2023pl21.service.Service21917;
 import ips2023pl21.service.Service21918;
+import ips2023pl21.service.Service22733;
+import ips2023pl21.util.Database;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -38,14 +40,14 @@ public class MainFrame extends JFrame {
 	private JButton btn21916;
 	private JButton btn21917;
 	private JButton btn21918;
-	private JButton btnNewButton;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
-	private JButton btnNewButton_3;
-	private JButton btnNewButton_4;
-	private JButton btnNewButton_5;
-	private JButton btnNewButton_6;
-	private JButton btnNewButton_7;
+	private JButton btn22733;
+	private JButton btn22739;
+	private JButton btn22748;
+	private JButton btn22749;
+	private JButton btn22758;
+	private JButton btn22759;
+	private JButton btn22784;
+	private JButton btn22785;
 
 	/**
 	 * Create the frame.
@@ -111,7 +113,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Frame21914 frame = new Frame21914();
+					new Frame21914();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -139,7 +141,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Frame21916 frame = new Frame21916();
+					new Frame21916();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -152,7 +154,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Service21917 service = new Service21917( new EntradasModel(),new Frame21917());
+					new Service21917( new EntradasModel(),new Frame21917());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -164,13 +166,31 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Service21918 service = new Service21918( new Frame21918(),new VentasModel());
+					new Service21918( new Frame21918(),new VentasModel());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
+	
+	private void run22733() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service22733 service = new Service22733();
+					Frame22733 frame = new Frame22733(service);
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+	}
+	
+	
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
 			pnCentro = new JPanel();
@@ -184,14 +204,14 @@ public class MainFrame extends JFrame {
 			pnCentro.add(getBtn21916());
 			pnCentro.add(getBtn21917());
 			pnCentro.add(getBtn21918());
-			pnCentro.add(getBtnNewButton());
-			pnCentro.add(getBtnNewButton_1());
-			pnCentro.add(getBtnNewButton_2());
-			pnCentro.add(getBtnNewButton_3());
-			pnCentro.add(getBtnNewButton_4());
-			pnCentro.add(getBtnNewButton_5());
-			pnCentro.add(getBtnNewButton_6());
-			pnCentro.add(getBtnNewButton_7());
+			pnCentro.add(getBtn22733());
+			pnCentro.add(getBtn22739());
+			pnCentro.add(getBtn22748());
+			pnCentro.add(getBtn22749());
+			pnCentro.add(getBtn22758());
+			pnCentro.add(getBtn22759());
+			pnCentro.add(getBtn22784());
+			pnCentro.add(getBtn22785());
 		}
 		return pnCentro;
 	}
@@ -289,60 +309,67 @@ public class MainFrame extends JFrame {
 	private JButton getBtn21918() {
 		if (btn21918 == null) {
 			btn21918 = new JButton("21918");
-		}
-		return btn21918;
-	}
-	private JButton getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new JButton("New button");
 			btn21918.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					run21918();
 				}
 			});
 		}
-		return btnNewButton;
+		return btn21918;
 	}
-	private JButton getBtnNewButton_1() {
-		if (btnNewButton_1 == null) {
-			btnNewButton_1 = new JButton("New button");
+	private JButton getBtn22733() {
+		if (btn22733 == null) {
+			btn22733 = new JButton("22733");
+			btn22733.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run22733();
+				}
+
+				
+			});
 		}
-		return btnNewButton_1;
+		return btn22733;
 	}
-	private JButton getBtnNewButton_2() {
-		if (btnNewButton_2 == null) {
-			btnNewButton_2 = new JButton("New button");
+	private JButton getBtn22739() {
+		if (btn22739 == null) {
+			btn22739 = new JButton("22739");
 		}
-		return btnNewButton_2;
+		return btn22739;
 	}
-	private JButton getBtnNewButton_3() {
-		if (btnNewButton_3 == null) {
-			btnNewButton_3 = new JButton("New button");
+	private JButton getBtn22748() {
+		if (btn22748 == null) {
+			btn22748 = new JButton("22748");
 		}
-		return btnNewButton_3;
+		return btn22748;
 	}
-	private JButton getBtnNewButton_4() {
-		if (btnNewButton_4 == null) {
-			btnNewButton_4 = new JButton("New button");
+	private JButton getBtn22749() {
+		if (btn22749 == null) {
+			btn22749 = new JButton("22749");
 		}
-		return btnNewButton_4;
+		return btn22749;
 	}
-	private JButton getBtnNewButton_5() {
-		if (btnNewButton_5 == null) {
-			btnNewButton_5 = new JButton("New button");
+	private JButton getBtn22758() {
+		if (btn22758 == null) {
+			btn22758 = new JButton("22758");
 		}
-		return btnNewButton_5;
+		return btn22758;
 	}
-	private JButton getBtnNewButton_6() {
-		if (btnNewButton_6 == null) {
-			btnNewButton_6 = new JButton("New button");
+	private JButton getBtn22759() {
+		if (btn22759 == null) {
+			btn22759 = new JButton("22759");
 		}
-		return btnNewButton_6;
+		return btn22759;
 	}
-	private JButton getBtnNewButton_7() {
-		if (btnNewButton_7 == null) {
-			btnNewButton_7 = new JButton("New button");
+	private JButton getBtn22784() {
+		if (btn22784 == null) {
+			btn22784 = new JButton("22784");
 		}
-		return btnNewButton_7;
+		return btn22784;
+	}
+	private JButton getBtn22785() {
+		if (btn22785 == null) {
+			btn22785 = new JButton("22785");
+		}
+		return btn22785;
 	}
 }
