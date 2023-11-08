@@ -1,16 +1,21 @@
 package ips2023pl21.model.entradas;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ips2023pl21.model.abonos.Abono;
+import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Database;
 import ips2023pl21.util.Util;
 
 public class EntradasModel {
 	
+	
 	private Database db=new Database();
 	private int asientoInicial=-1;
 	private int fila;
+//	private Persistence p=Persistence.getInstance();
 	
 	@SuppressWarnings("deprecation")
 	public boolean comprarEntradas(String tribuna, String seccion, int numeroEntradas) {
@@ -47,7 +52,8 @@ public class EntradasModel {
 		for(int i=0;i<10;i++) { //recorre las filas para una tribuna y seccion dada
 			asientoInicial=-1;
 			List<EntradaEntity> asientosOcupados=getTotalEntradas(tribuna, seccion, i);
-			int asientosOcupadosFila=asientosOcupados.size();
+			List<EntradaEntity> abonos=getAbonosFila(tribuna, seccion, fila);
+			int asientosOcupadosFila=asientosOcupados.size()+abonos.size();
 			if(asientosOcupadosFila==0) { 
 				//System.out.println(asientosOcupadosFila);
 				asientoInicial=0;
@@ -56,7 +62,8 @@ public class EntradasModel {
 //			System.out.println(asientosOcupadosFila);
 			if(15-asientosOcupadosFila>=numeroEntradas) {//si 15-número de asientos ocupados
 				//es mayor que los asientos que quiero-> hay asientos disponibles, pero puede que no sean contiguos
-				int asiento=disponibilidadAsiento(asientosOcupadosFila, asientosOcupados, numeroEntradas);
+				List<EntradaEntity> asientosOcupadosEntradasYAbonos=getTodosAsientos(asientosOcupados, abonos);
+				int asiento=disponibilidadAsiento(asientosOcupadosFila, asientosOcupadosEntradasYAbonos, numeroEntradas);
 				if(asiento !=-1) {
 					asientoInicial=asiento;
 					return i;
@@ -65,6 +72,17 @@ public class EntradasModel {
 				 
 		}
 		return -1;
+	}
+
+	private List<EntradaEntity> getTodosAsientos(List<EntradaEntity> asientosOcupados, List<EntradaEntity> abonos) {
+		List<EntradaEntity>result=new ArrayList<EntradaEntity>();
+		for(EntradaEntity e:asientosOcupados) {
+			result.add(e);
+		}
+		for(EntradaEntity e:abonos) {
+			result.add(e);
+		}
+		return result;
 	}
 
 	private int disponibilidadAsiento(int asientosOcupadosFila, List<EntradaEntity> asientosOcupados, int numeroEntradas ) {
@@ -103,6 +121,9 @@ public class EntradasModel {
 		return asientoInicial;
 	}
 
+	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
+		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
+	}
 	
 
 }

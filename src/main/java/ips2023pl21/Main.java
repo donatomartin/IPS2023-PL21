@@ -2,6 +2,8 @@ package ips2023pl21;
 
 import java.awt.EventQueue;
 
+import ips2023pl21.service.Service22733;
+import ips2023pl21.ui.Frame22733;
 import ips2023pl21.ui.MainFrame;
 
 public class Main {

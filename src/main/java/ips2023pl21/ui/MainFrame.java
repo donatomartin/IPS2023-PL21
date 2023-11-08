@@ -13,6 +13,8 @@ import ips2023pl21.service.Service21913;
 import ips2023pl21.service.Service21915;
 import ips2023pl21.service.Service21917;
 import ips2023pl21.service.Service21918;
+import ips2023pl21.service.Service22733;
+import ips2023pl21.util.Database;
 import ips2023pl21.service.Service22759;
 
 import java.awt.BorderLayout;
@@ -173,6 +175,14 @@ public class MainFrame extends JFrame {
 		});
 	}
 	
+	private void run22733() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service22733 service = new Service22733();
+					Frame22733 frame = new Frame22733(service);
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
 
 	private void run22759() {
 		EventQueue.invokeLater(new Runnable() {
@@ -188,6 +198,7 @@ public class MainFrame extends JFrame {
 		});
 		
 	}
+	
 
 	public static void run22739() {
 		EventQueue.invokeLater(new Runnable() {
@@ -318,18 +329,67 @@ public class MainFrame extends JFrame {
 	}
 	private JButton getBtn21918() {
 		if (btn21918 == null) {
-			btn21918 = new JButton("<html><p>Historial de Ventas</p><p>(21918)</p><html>");
+			btn21918 = new JButton("21918");
+			btn21918.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run21918();
+				}
+			});
 		}
 		return btn21918;
 	}
 	private JButton getBtn22733() {
 		if (btn22733 == null) {
 			btn22733 = new JButton("22733");
-			btn21918.addActionListener(new ActionListener() {
+			btn22733.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					run21918();
+					run22733();
 				}
+
+				
 			});
+		}
+		return btn22733;
+	}
+	private JButton getBtn22739() {
+		if (btn22739 == null) {
+			btn22739 = new JButton("22739");
+		}
+		return btn22739;
+	}
+	private JButton getBtn22748() {
+		if (btn22748 == null) {
+			btn22748 = new JButton("22748");
+		}
+		return btn22748;
+	}
+	private JButton getBtn22749() {
+		if (btn22749 == null) {
+			btn22749 = new JButton("22749");
+		}
+		return btn22749;
+	}
+	private JButton getBtn22758() {
+		if (btn22758 == null) {
+			btn22758 = new JButton("22758");
+		}
+		return btn22758;
+	}
+	private JButton getBtn22759() {
+		if (btn22759 == null) {
+			btn22759 = new JButton("22759");
+		}
+		return btn22759;
+	}
+	private JButton getBtn22784() {
+		if (btn22784 == null) {
+			btn22784 = new JButton("22784");
+		}
+		return btn22784;
+	}
+	private JButton getBtn22785() {
+		if (btn22785 == null) {
+			btn22785 = new JButton("22785");
 		}
 		return btn22733;
 	}

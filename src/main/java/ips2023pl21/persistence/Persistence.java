@@ -1,6 +1,7 @@
 package ips2023pl21.persistence;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -218,6 +219,49 @@ public class Persistence {
 		;
 		return result;
 	}
+	
+	//ABONOS
+	public void insertAbono(String tribuna, String seccion, int fila, int asiento, double precio, String dateString) {
+		db.executeUpdate("insert into abono (tribuna, seccion, fila, asiento, precio, fechaCaducidad) values (?,?,?,?,?,?)",
+				tribuna, seccion, fila, asiento, precio, dateString);
+	}
+
+	public List<Abono> selectAbono(String tribuna, String seccion, int fila, int asiento) {
+		 return db.executeQueryPojo(Abono.class, "select * from abono where tribuna=? and seccion=? and fila=? and asiento=?" , tribuna, seccion, fila,asiento);
+	}
+
+	public List<EntradaEntity> getAsientosOcupados(String tribuna, String seccion) { //aqui cambiar abono por entrada y aplicar herencia
+		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=?", tribuna, seccion);
+		
+	}
+
+	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
+		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
+	}
+	
+	//ENTRADA
+
+	public void insertarEntrada(String tribuna, String seccion, int fila, int asientoInicial, int i) {
+		String queryEntrada="Insert into Entrada(tribuna, seccion, fila, asiento, precio) VALUES (?,?,?,?,?)";
+		db.executeUpdate(queryEntrada, tribuna,seccion,fila,asientoInicial,i);
+		
+	}
+
+	public void insertarVenta(String string, String dateSql, int hours, int minutes, int i) {
+		String queryVenta="Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES"
+				+ "(?,?,?,?,?)";
+		db.executeUpdate(queryVenta,"entrada", hours,minutes,30);
+		
+	}
+
+	public List<EntradaEntity> getTotalEntradas(String tribuna, String seccion, int fila) {
+		String query="SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
+		return db.executeQueryPojo(EntradaEntity.class,query, tribuna, seccion, fila);
+	}
+
+	
+
+	
 	
 	
 	//NOTICIAS
