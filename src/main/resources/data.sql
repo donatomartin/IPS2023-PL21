@@ -52,7 +52,7 @@ insert into merchandaising(nombre,tipo,precio) values ('Poster','Decoracion',5);
 insert into merchandaising(nombre,tipo,precio) values ('Bufanda','Ropa',10);
 insert into merchandaising(nombre,tipo,precio) values ('Camiseta','Ropa',20);
 insert into merchandaising(nombre,tipo,precio) values ('Cono','Material',5);
-insert into merchandaising(nombre,tipo,precio) values ('a','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('Peluca','Ropa',10);
 insert into merchandaising(nombre,tipo,precio) values ('B','Material',20);
 insert into merchandaising(nombre,tipo,precio) values ('c','Decoracion',5);
 insert into merchandaising(nombre,tipo,precio) values ('d','Ropa',10);
