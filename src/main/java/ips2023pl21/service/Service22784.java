@@ -19,8 +19,7 @@ public class Service22784 {
 		CONCURRENCEERROR,
 		INSTALACIONNULL,
 		JARDINERONULL,
-		INICIOAFTERFIN,
-		OLDDATE
+		INICIOAFTERFIN
 	}
 	
 	private Persistence p = Persistence.getInstance();

@@ -24,6 +24,11 @@ public class Service21912 {
 	private static HorarioPuntual horarioPuntual;
 	public Persistence p = Persistence.getInstance();
 
+	public enum state {
+		SUCCESS, EMPLEADONULL, HORARIONULL, INICIOAFTERFIN, NOSEMANADEANTELACION, SOLAPAFRANJAS, OVERDAILYMAX,
+		OVERWEEKLYMAX, CONCURRENCEERROR
+	}
+
 	// Empleados
 
 	public List<String> getEmpleadosNoDeportivos(String filter) {
@@ -32,7 +37,7 @@ public class Service21912 {
 	}
 
 	public void seleccionaEmpleado(String empleadoString) {
-		
+
 		if (empleadoString.equals("")) {
 			empleado = null;
 			return;
@@ -40,10 +45,10 @@ public class Service21912 {
 
 		int id = getIdFromString(empleadoString);
 		empleado = p.getEmpleado(id);
-		
+
 		horarioPuntual = null;
 		horarioSemanal = null;
-		
+
 	}
 
 	private int getIdFromString(String empleadoString) {
@@ -73,9 +78,9 @@ public class Service21912 {
 	 * @param fechaInicio
 	 * @return
 	 */
-	public boolean addHorarioSemanal(String diaSemana, Date fechaInicio) {
+	public state addHorarioSemanal(String diaSemana, Date fechaInicio) {
 		if (!semanaDeAntelacion(fechaInicio))
-			return false;
+			return state.NOSEMANADEANTELACION;
 
 		int numeroDiaSemana = HorarioSemanal.getNumeroDia(diaSemana);
 		String fechaString = Util.dateToIsoString(fechaInicio);
@@ -85,9 +90,9 @@ public class Service21912 {
 			p.insertHorarioSemanal(numeroDiaSemana, fechaString, eid);
 			seleccionaHorarioSemanal(numeroDiaSemana, fechaString);
 			actualizarHorariosSemanales();
-			return true;
+			return state.SUCCESS;
 		} catch (UnexpectedException e) {
-			return false;
+			return state.CONCURRENCEERROR;
 		}
 
 	}
@@ -130,26 +135,25 @@ public class Service21912 {
 	 * @param hf
 	 * @return
 	 */
-	public int addToHorarioSemanal(Date hi, Date hf, String diaSemana, Date fechaInicio) {
+	public state addToHorarioSemanal(Date hi, Date hf, String diaSemana, Date fechaInicio) {
 
-		
 		String horaInicio = Util.localTimeToString(dateToLocalTime(hi));
 		String horaFin = Util.localTimeToString(dateToLocalTime(hf));
 
-		int res = checkFranjaSemanal(horaInicio, horaFin);
-		if (res == 0) {
+		state res = checkFranjaSemanal(horaInicio, horaFin);
+		if (res != state.SUCCESS && res != state.CONCURRENCEERROR) {
+			if (res == state.HORARIONULL) {
+				state resh = addHorarioSemanal(diaSemana, fechaInicio);
+				if (resh != state.SUCCESS)
+					res = resh;
+				return res;
+			}
+		}
 
-		} else if (res == 1) {
-			addHorarioSemanal(diaSemana, fechaInicio);
-			return 1;
-		} else
-			return res;
-		
 		try {
 			p.insertFranjaSemanal(getDiaSemana(), getFechaInicio(), getEid(), horaInicio, horaFin);
 		} catch (Exception e) {
-			res = -1;
-			e.printStackTrace();
+			res = state.SOLAPAFRANJAS;
 		}
 
 		return res;
@@ -182,11 +186,11 @@ public class Service21912 {
 	 */
 	public void seleccionaHorarioSemanal(int numeroDiaSemana, String fechaInicio) {
 		try {
-			horarioSemanal = p.getHorarioSemanal(getEid(), numeroDiaSemana, fechaInicio);			
+			horarioSemanal = p.getHorarioSemanal(getEid(), numeroDiaSemana, fechaInicio);
 		} catch (Exception e) {
 			horarioSemanal = null;
 		}
-	
+
 	}
 
 	/**
@@ -211,28 +215,28 @@ public class Service21912 {
 	 * @param horaFin
 	 * @return
 	 */
-	private int checkFranjaSemanal(String horaInicio, String horaFin) {
+	private state checkFranjaSemanal(String horaInicio, String horaFin) {
 
 		Franja franja = new Franja();
 		franja.setHoraInicio(horaInicio);
 		franja.setHoraFin(horaFin);
 
 		if (horarioSemanal == null)
-			return 1; // Horario no seleccionado
+			return state.HORARIONULL;
 
 		if (franja.getParsedFin().isBefore(franja.getParsedInicio()))
-			return 2; // Fin antes que principio
+			return state.INICIOAFTERFIN;
 
 		int minutosTotalesDiarios = (int) franja.getMinutosTotales();
 		List<FranjaSemanal> franjas = p.getFranjasSemanales(getDiaSemana(), getFechaInicio(), getEid());
 		for (FranjaSemanal f : franjas) {
 			minutosTotalesDiarios += f.getMinutosTotales();
 			if (franja.solapa(f))
-				return 3; // Solapa entre franjas
+				return state.SOLAPAFRANJAS;
 		}
 
 		if (minutosTotalesDiarios > Empleado.HORAS_DIARIAS_MAX * 60)
-			return 4; // Horas diarias sobrepasadas
+			return state.OVERDAILYMAX;
 
 		int[] minutosTotalesArr = new int[7];
 		minutosTotalesArr[getDiaSemana() - 1] = minutosTotalesDiarios;
@@ -254,9 +258,9 @@ public class Service21912 {
 		}
 
 		if (minutosTotales > Empleado.HORAS_SEMANALES_MAX * 60)
-			return 5; // Horas semanales sobrepasadas
+			return state.OVERWEEKLYMAX;
 
-		return 0;
+		return state.SUCCESS;
 
 	}
 
@@ -277,9 +281,9 @@ public class Service21912 {
 	 * @param fechaPuntual
 	 * @return
 	 */
-	public boolean addHorarioPuntual(Date fechaPuntual) {
+	public state addHorarioPuntual(Date fechaPuntual) {
 		if (!semanaDeAntelacion(fechaPuntual))
-			return false;
+			return state.NOSEMANADEANTELACION;
 
 		String fechaString = Util.dateToIsoString(fechaPuntual);
 		int eid = empleado.getEid();
@@ -287,30 +291,32 @@ public class Service21912 {
 		try {
 			p.insertHorarioPuntual(fechaString, eid);
 			seleccionaHorarioPuntual(fechaString);
-			return true;
+			return state.SUCCESS;
 		} catch (UnexpectedException e) {
-			return false;
+			return state.CONCURRENCEERROR;
 		}
 	}
 
-	public int addToHorarioPuntual(Date hi, Date hf, Date fechaPuntual) {
+	public state addToHorarioPuntual(Date hi, Date hf, Date fechaPuntual) {
 
 		// PARAMS
 		String horaInicio = Util.localTimeToString(dateToLocalTime(hi));
 		String horaFin = Util.localTimeToString(dateToLocalTime(hf));
 
-		int res = checkFranjaPuntual(horaInicio, horaFin);
-		if (res == 0) {
-		} else if (res == 1) {
-			addHorarioPuntual(fechaPuntual);
-			return res;
-		} else
-			return res;
+		state res = checkFranjaPuntual(horaInicio, horaFin);
+		if (res != state.SUCCESS) {
+			if (res == state.HORARIONULL) {
+				state resh = addHorarioPuntual(fechaPuntual);
+				if (resh != state.SUCCESS)
+					res = resh;
+				return res;
+			}
+		}
 
 		try {
 			p.insertFranjaPuntual(getFechaPuntual(), getEid(), horaInicio, horaFin);
 		} catch (Exception e) {
-			res = -1;
+			res = state.SOLAPAFRANJAS;
 		}
 
 		return res;
@@ -338,8 +344,8 @@ public class Service21912 {
 	 * @param fechaInicio
 	 */
 	public void seleccionaHorarioPuntual(String fechaPuntual) {
-		
-		try {			
+
+		try {
 			horarioPuntual = p.getHorarioPuntual(getEid(), fechaPuntual);
 		} catch (Exception e) {
 			horarioPuntual = null;
@@ -360,42 +366,39 @@ public class Service21912 {
 
 	}
 
-	public int checkFranjaPuntual(String horaInicio, String horaFin) {
+	public state checkFranjaPuntual(String horaInicio, String horaFin) {
 
 		Franja franja = new Franja();
 		franja.setHoraInicio(horaInicio);
 		franja.setHoraFin(horaFin);
 
 		if (horarioPuntual == null)
-			return 1; // Horario no seleccionado
+			return state.HORARIONULL;
 
 		if (franja.getParsedFin().isBefore(franja.getParsedInicio()))
-			return 2; // Fin antes que principio
+			return state.INICIOAFTERFIN;
 
 		int minutosTotalesDiarios = (int) franja.getMinutosTotales();
 		List<FranjaPuntual> franjas = p.getFranjasPuntuales(getFechaPuntual(), getEid());
 		for (FranjaPuntual f : franjas) {
 			minutosTotalesDiarios += f.getMinutosTotales();
 			if (franja.solapa(f))
-				return 3; // Solapa entre franjas
+				return state.SOLAPAFRANJAS;
 		}
 
 		if (minutosTotalesDiarios > Empleado.HORAS_DIARIAS_MAX * 60)
-			return 4; // Horas diarias sobrepasadas
+			return state.OVERDAILYMAX;
 
 		int[] minutosTotalesArr = new int[7];
-		minutosTotalesArr[HorarioSemanal.getDiaDeLaSemana(horarioPuntual.getFechaPuntual()) - 1] = minutosTotalesDiarios;
+		minutosTotalesArr[HorarioSemanal.getDiaDeLaSemana(horarioPuntual.getFechaPuntual())
+				- 1] = minutosTotalesDiarios;
 
 		for (HorarioSemanal h : p.selectHorariosSemanales(getEid())) {
 
-			if (h.getDiaSemana() == HorarioSemanal.getDiaDeLaSemana(horarioPuntual.getFechaPuntual())) // Skipea el propio día a
-																					// sobrescribir
+			if (h.getDiaSemana() == HorarioSemanal.getDiaDeLaSemana(horarioPuntual.getFechaPuntual()))
 				continue;
 
-			if (Util.isoStringToDate(h.getFechaInicio()).after(Util.isoStringToDate(getFechaPuntual()))) // Skipea si
-																										// todavía no
-																										// está vigente
-																										// el horario
+			if (Util.isoStringToDate(h.getFechaInicio()).after(Util.isoStringToDate(getFechaPuntual())))
 				continue;
 
 			minutosTotalesArr[h.getDiaSemana() - 1] = 0;
@@ -410,9 +413,9 @@ public class Service21912 {
 		}
 
 		if (minutosTotales > Empleado.HORAS_SEMANALES_MAX * 60)
-			return 5; // Horas semanales sobrepasadas
+			return state.OVERWEEKLYMAX; // Horas semanales sobrepasadas
 
-		return 0;
+		return state.SUCCESS;
 
 	}
 

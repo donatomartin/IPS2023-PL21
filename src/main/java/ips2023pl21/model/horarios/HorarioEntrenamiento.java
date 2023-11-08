@@ -2,8 +2,8 @@ package ips2023pl21.model.horarios;
 
 import java.time.LocalTime;
 
-import ips2023pl21.model.Empleado;
 import ips2023pl21.model.activos.Instalacion;
+import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 
@@ -18,7 +18,7 @@ public class HorarioEntrenamiento {
 	private int iid;
 	private int eid;
 	
-	public String getFechaJardineria() {
+	public String getFechaEntrenamiento() {
 		return fechaEntrenamiento;
 	}
 	public String getHoraInicio() {
@@ -36,7 +36,7 @@ public class HorarioEntrenamiento {
 	public int getIid() {
 		return iid;
 	}
-	public void setFechaJardineria(String fechaEntrenamiento) {
+	public void setFechaEntrenamiento(String fechaEntrenamiento) {
 		this.fechaEntrenamiento = fechaEntrenamiento;
 	}
 	public void setHoraInicio(String horaInicio) {
@@ -58,12 +58,12 @@ public class HorarioEntrenamiento {
 	@Override
 	public String toString() {
 		
-		Empleado e = Persistence.getInstance().getEmpleado(eid);
-		String js = e.getNombre() + " " + e.getApellido();
+		Equipo e = Persistence.getInstance().getEquipo(eid);
+		String es = e.getNombre();
 		Instalacion i = Persistence.getInstance().getInstalacion(iid);
 		String is = i.getId() + " " + i.getNombreInstalacion();
 		
-		return "(%s | %s - %s) %-20s %s".formatted(fechaEntrenamiento, horaInicio, horaFin, js, is);
+		return "(%s | %s - %s) %-20s %s".formatted(fechaEntrenamiento, horaInicio, horaFin, es, is);
 	}
 	public LocalTime getpParsedInicio() {
 		return Util.stringHoraToLocalTime(horaInicio);

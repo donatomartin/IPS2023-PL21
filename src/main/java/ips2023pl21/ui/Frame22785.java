@@ -74,18 +74,18 @@ public class Frame22785 extends JFrame {
 	private JTextField txEquipo;
 	private JList<String> listHorariosAsignados;
 	private DefaultListModel<String> horariosListModel = new DefaultListModel<>();
-	private JTextField txHorariosFiltro;
 	private JPanel pnFiltroInstalacion;
 	private JLabel lbFiltraInstalaciones;
 	private JButton btnActualizaEquipos;
 	private JPanel pnFiltroEquipo;
 	private JLabel lbEquipoFilter;
 	private JPanel pnLogin;
-	private JButton btnNewButton;
-	private JTextField textField;
+	private JButton btnLogin;
+	private JTextField txId;
 	private JLabel lbIDEntrenador;
 	private JLabel lbPasswordEntrenador;
-	private JTextField textField_1;
+	private JTextField txPassword;
+	private JButton btnLogout;
 
 	/**
 	 * Create the frame.
@@ -169,6 +169,7 @@ public class Frame22785 extends JFrame {
 			pnSeleccionInstalacion.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnSeleccionInstalacion.setLayout(new BorderLayout(0, 0));
 			pnSeleccionInstalacion.add(getPnListInstalacion());
+			pnSeleccionInstalacion.add(getBtnLogout(), BorderLayout.SOUTH);
 		}
 		return pnSeleccionInstalacion;
 	}
@@ -301,7 +302,6 @@ public class Frame22785 extends JFrame {
 			pnHorariosAsignados.add(getPnBotonesHorarios(), BorderLayout.SOUTH);
 			JScrollPane scpn = new JScrollPane(getListHorariosAsignados());
 			pnHorariosAsignados.add(scpn, BorderLayout.CENTER);
-			scpn.setColumnHeaderView(getTxHorariosFiltro());
 		}
 		return pnHorariosAsignados;
 	}
@@ -619,30 +619,6 @@ public class Frame22785 extends JFrame {
 		return listHorariosAsignados;
 	}
 
-	private JTextField getTxHorariosFiltro() {
-		if (txHorariosFiltro == null) {
-			txHorariosFiltro = new JTextField();
-			txHorariosFiltro.setColumns(10);
-			txHorariosFiltro.getDocument().addDocumentListener(new DocumentListener() {
-
-				public void changedUpdate(DocumentEvent e) {
-					loadHorarios();
-				}
-
-				public void removeUpdate(DocumentEvent e) {
-					loadHorarios();
-				}
-
-				public void insertUpdate(DocumentEvent e) {
-					loadHorarios();
-				}
-
-			});
-
-		}
-		return txHorariosFiltro;
-	}
-
 	private JPanel getPnFiltroInstalacion() {
 		if (pnFiltroInstalacion == null) {
 			pnFiltroInstalacion = new JPanel();
@@ -700,10 +676,10 @@ public class Frame22785 extends JFrame {
 							.addGroup(gl_pnLogin.createParallelGroup(Alignment.TRAILING)
 									.addComponent(getLbIDEntrenador(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 220,
 											Short.MAX_VALUE)
-									.addComponent(getTextField_1(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 220,
+									.addComponent(getTxPassword(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 220,
 											Short.MAX_VALUE)
-									.addComponent(getTextField(), Alignment.LEADING, 220, 220, Short.MAX_VALUE)
-									.addComponent(getBtnNewButton(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 220,
+									.addComponent(getTxId(), Alignment.LEADING, 220, 220, Short.MAX_VALUE)
+									.addComponent(getBtnLogin(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 220,
 											Short.MAX_VALUE)
 									.addComponent(getLbPasswordEntrenador(), Alignment.LEADING,
 											GroupLayout.DEFAULT_SIZE, 220, Short.MAX_VALUE))
@@ -711,41 +687,62 @@ public class Frame22785 extends JFrame {
 			gl_pnLogin.setVerticalGroup(gl_pnLogin.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_pnLogin.createSequentialGroup().addGap(59).addComponent(getLbIDEntrenador())
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(getTextField(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+							.addComponent(getTxId(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 									GroupLayout.PREFERRED_SIZE)
 							.addGap(18).addComponent(getLbPasswordEntrenador())
 							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(getTextField_1(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
+							.addComponent(getTxPassword(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
 									GroupLayout.PREFERRED_SIZE)
-							.addGap(31).addComponent(getBtnNewButton()).addContainerGap(61, Short.MAX_VALUE)));
+							.addGap(31).addComponent(getBtnLogin()).addContainerGap(61, Short.MAX_VALUE)));
 			pnLogin.setLayout(gl_pnLogin);
 		}
 		return pnLogin;
 	}
 
-	private JButton getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new JButton("Log In");
-			btnNewButton.addActionListener(new ActionListener() {
+	private JButton getBtnLogin() {
+		if (btnLogin == null) {
+			btnLogin = new JButton("Log In");
+			btnLogin.setMnemonic('l');
+			btnLogin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					login();
 				}
 			});
-			btnNewButton.setBackground(new Color(211, 211, 211));
+			btnLogin.setBackground(new Color(211, 211, 211));
 		}
-		return btnNewButton;
+		return btnLogin;
 	}
 
 	private void login() {
+		if (getTxId().getText().isBlank())
+			return;
+		
+		Service22785.state res = service.login(Integer.parseInt(getTxId().getText()));
+		
+		switch (res) {
+		case LOGINFAIL_USERNOTALLOWED:
+			JOptionPane.showMessageDialog(null, "Error: El empleado no es un entrenador.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		case LOGINFAIL_USERNOTFOUND:
+			JOptionPane.showMessageDialog(null, "Error: El entrenador no está registrado en la base de datos.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			return;
+		default:
+		break;
+		}
+		
 		((CardLayout)getPnWork().getLayout()).show(getPnWork(), "pnSeleccionInstalacion");
+		getTxId().setText("");
+		getTxPassword().setText("");
 	}
 
-	private JTextField getTextField() {
-		if (textField == null) {
-			textField = new JTextField();
-			textField.setColumns(10);
+	private JTextField getTxId() {
+		if (txId == null) {
+			txId = new JTextField();
+			txId.setColumns(10);
 		}
-		return textField;
+		return txId;
 	}
 
 	private JLabel getLbIDEntrenador() {
@@ -762,11 +759,23 @@ public class Frame22785 extends JFrame {
 		return lbPasswordEntrenador;
 	}
 
-	private JTextField getTextField_1() {
-		if (textField_1 == null) {
-			textField_1 = new JTextField();
-			textField_1.setColumns(10);
+	private JTextField getTxPassword() {
+		if (txPassword == null) {
+			txPassword = new JTextField();
+			txPassword.setColumns(10);
 		}
-		return textField_1;
+		return txPassword;
+	}
+	private JButton getBtnLogout() {
+		if (btnLogout == null) {
+			btnLogout = new JButton("Sign Out");
+			btnLogout.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((CardLayout)getPnWork().getLayout()).show(getPnWork(), "pnLogin");
+				}
+			});
+			btnLogout.setBackground(new Color(211, 211, 211));
+		}
+		return btnLogout;
 	}
 }

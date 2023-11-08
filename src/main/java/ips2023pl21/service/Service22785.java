@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
 import ips2023pl21.model.activos.Instalacion;
+import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 
@@ -20,12 +21,14 @@ public class Service22785 {
 		INSTALACIONNULL,
 		EQUIPONULL,
 		INICIOAFTERFIN,
-		OLDDATE
+		LOGINFAIL_USERNOTFOUND,
+		LOGINFAIL_USERNOTALLOWED
 	}
 	
 	private Persistence p = Persistence.getInstance();
+	private Equipo equipo;
 	private Instalacion instalacion;
-	private Empleado jardinero;
+	private Empleado entrenador;
 	private String fecha;
 	private String horaInicio;
 	private String horaFin;
@@ -37,11 +40,22 @@ public class Service22785 {
 	private LocalTime getParsedHoraFin() {
 		return Util.stringHoraToLocalTime(horaFin);
 	}
+	
+	public state login(int eid) {
+		Empleado e = p.getEmpleado(eid);
+		if (e == null)
+			return state.LOGINFAIL_USERNOTFOUND;
+		if (!e.getPosicion().equals("entrenador"))
+			return state.LOGINFAIL_USERNOTALLOWED;
+		
+		entrenador = e;
+		return state.SUCCESS;
+	}
 
 	public List<String> getEquipos(String filter) {
 		if (instalacion == null)
 			return new ArrayList<>();
-		return p.selectJardinerosLibres(fecha, horaInicio, horaFin, instalacion.getId()).stream().map(x -> x.toString())
+		return p.selectEquiposLibres(entrenador.getEid(), instalacion.getId()).stream().map(x -> x.toString())
 				.filter(x -> x.toLowerCase().contains(filter.toLowerCase())).collect(Collectors.toList());
 	}
 
@@ -58,37 +72,39 @@ public class Service22785 {
 		
 		if (instalacion == null)
 			return state.INSTALACIONNULL;
-		else if (jardinero == null)
+		else if (equipo == null)
 			return state.EQUIPONULL;
 		else if (getParsedHoraInicio().isAfter(getParsedHoraFin()))
 			return state.INICIOAFTERFIN;
 		
 		try {
-			p.insertHorarioJardineria(
-					jardinero.getEid(),
+			p.insertHorarioEntrenamiento(
+					entrenador.getEid(),
+					equipo.getId(),
 					instalacion.getId(),
 					fecha,
 					horaInicio,
 					horaFin);		
 		} catch (Exception e) {
+			e.printStackTrace();
 			return state.CONCURRENCEERROR;
 		}
 		
 		return state.SUCCESS;
 	}
 
-	public void seleccionaEquipo(String jardinero) {
+	public void seleccionaEquipo(String equipo) {
 		try {
-			this.jardinero = p.getEmpleado(Integer.parseInt(jardinero.strip().split(" ")[0]));
+			this.equipo = p.getEquipo(equipo.split(" ")[0]);
 		} catch (Exception e) {
-			this.jardinero = null;
+			this.equipo = null;
 		}
 	}
 	
 	public String getNombreEquipo() {
-		if (jardinero == null)
+		if (equipo == null)
 			return "NONE";
-		return jardinero.getNombre() + " " + jardinero.getApellido();
+		return equipo.getNombre();
 	}
 
 	public void seleccionaInstalacion(String instalacion) {
@@ -99,14 +115,6 @@ public class Service22785 {
 		if (instalacion == null)
 			return "NONE";
 		return instalacion.getNombreInstalacion();
-	}
-
-	public Instalacion getInstalacion() {
-		return instalacion;
-	}
-
-	public Empleado getJardinero() {
-		return jardinero;
 	}
 	
 	public void updateFecha(Date fecha) {

@@ -112,11 +112,11 @@ create table HorarioEntrevista (
 drop table Equipo;
 create table Equipo(
     id integer primary key autoincrement,
-	peid int,
-	seid int,
-    nombre varchar(30),
-    categoria varchar(30),
-    esFilial boolean,
+	peid int not null,
+	seid int not null,
+    nombre varchar(30) unique not null,
+    categoria varchar(30) not null,
+    esFilial boolean not null,
 	foreign key (peid) references Empleado(eid),
 	foreign key (peid) references Empleado(eid) 
 );

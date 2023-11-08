@@ -3,6 +3,7 @@ package ips2023pl21.persistence;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
 import ips2023pl21.model.activos.Instalacion;
+import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.model.horarios.HorarioEntrenamiento;
 import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.model.horarios.HorarioJardineria;
@@ -67,7 +69,10 @@ public class Persistence {
 	// EMPLEADOS
 
 	public Empleado getEmpleado(int eid) {
-		return db.executeQueryPojo(Empleado.class, "select * from Empleado where eid=?", eid).get(0);
+		List<Empleado> result = db.executeQueryPojo(Empleado.class, "select * from Empleado where eid=?", eid);
+		if (result.size() > 0)
+			return result.get(0);
+		return null;
 	}
 
 	public Empleado getEmpleado(String nombre, String apellido, String dni) {
@@ -103,6 +108,7 @@ public class Persistence {
 
 		LocalTime sHoraInicio = Util.stringHoraToLocalTime(horaInicio);
 		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
+		Date sFecha = Util.isoStringToDate(fecha);
 
 		Set<Integer> idsJardinerosLibres =  new HashSet<>();
 		List<Empleado> jardinerosLibres = new ArrayList<>();
@@ -112,13 +118,22 @@ public class Persistence {
 			LocalTime pHoraInicio = fs.getParsedInicio();
 			LocalTime pHoraFin = fs.getParsedFin();
 			
+			Date pFecha = Util.isoStringToDate(fs.getFechaInicio());
+			
+			if (sFecha.before(pFecha))
+				continue;
+			
 			if (contenido(sHoraInicio, sHoraFin, pHoraInicio, pHoraFin))
 				idsJardinerosLibres.add(fs.getEid());
 					
 		}
 		
-		for (HorarioPuntual hp : selectHorariosPuntuales(fecha)) {
-
+		for (FranjaPuntual fp : getFranjasPuntuales(fecha)) {
+			LocalTime pHoraInicio = fp.getParsedInicio();
+			LocalTime pHoraFin = fp.getParsedFin();
+			
+			if (contenido(sHoraInicio, sHoraFin, pHoraInicio, pHoraFin))
+				idsJardinerosLibres.add(fp.getEid());
 		}
 		
 		if (idsJardinerosLibres.size() == 0)
@@ -245,7 +260,6 @@ public class Persistence {
 	}
 
 	public void deleteHorarioSemanal(int dia, String fechaInicio, int eid) {
-		System.out.println(getFranjasSemanales(dia, fechaInicio, eid));
 		db.executeUpdate("delete from HorarioSemanal where diaSemana=? and fechaInicio=? and eid=?", dia, fechaInicio, eid);
 		db.executeUpdate("delete from FranjaSemanal where diaSemana=? and fechaInicio=? and eid=?", dia, fechaInicio, eid);
 	}
@@ -326,7 +340,6 @@ public class Persistence {
 		return result;
 	}
 
-
 	public List<FranjaPuntual> getFranjasPuntuales(String fechaPuntual) {
 		List<FranjaPuntual> result = db
 				.executeQueryPojo(FranjaPuntual.class, "select * from FranjaPuntual where fechaPuntual=?", fechaPuntual)
@@ -359,11 +372,65 @@ public class Persistence {
 	
 	// HORARIO ENTRENAMIENTO
 	
+	public List<HorarioEntrenamiento> selectHorarioEntrenamiento(int iid) {
+		List<HorarioEntrenamiento> result = db.executeQueryPojo(HorarioEntrenamiento.class,
+				"select * from HorarioEntrenamiento where iid=?", iid);
+
+		return result;
+	}
+	
 	public List<HorarioEntrenamiento> selectHorariosEntrenamiento() {
 		List<HorarioEntrenamiento> result = db.executeQueryPojo(HorarioEntrenamiento.class,
 				"select * from HorarioEntrenamiento");
 
 		return result;
+	}
+	
+	public void insertHorarioEntrenamiento(int enid, int eid, int id, String fecha, String horaInicio, String horaFin) {
+		db.executeUpdate(
+				"insert into HorarioEntrenamiento (fechaEntrenamiento, horaInicio, horaFin, enid, eid, iid) values (?,?,?,?,?,?)",
+				fecha, horaInicio, horaFin, enid, eid, id);
+	}
+	
+	// EQUIPO
+	
+	public List<Equipo> selectEquipos(int eid) {
+		List<Equipo> result = db.executeQueryPojo(Equipo.class,
+				"select * from Equipo where peid=? or seid=?", eid, eid);
+
+		return result;
+	}
+	
+	public List<Equipo> selectEquiposLibres(int eid, int iid) {
+		List<Equipo> equipos = db.executeQueryPojo(Equipo.class,
+				"select * from Equipo where peid=? or seid=?", eid, eid);
+		
+		List<Integer> idHorarios = selectHorarioEntrenamiento(iid).stream().map(x -> x.getEid()).collect(Collectors.toList());
+		
+		
+		List<Equipo> equiposLibres = new ArrayList<>();
+		
+		for (Equipo e: equipos)
+			if (!idHorarios.contains(e.getId()))
+				equiposLibres.add(e);
+
+		return equiposLibres;
+	}
+	
+	public Equipo getEquipo(String nombre) {
+		List<Equipo> result = db.executeQueryPojo(Equipo.class,
+				"select * from Equipo where nombre=?", nombre);
+		if (result.size() > 0)
+			return result.get(0);
+		return null;
+	}
+	
+	public Equipo getEquipo(int id) {
+		List<Equipo> result = db.executeQueryPojo(Equipo.class,
+				"select * from Equipo where id=?", id);
+		if (result.size() > 0)
+			return result.get(0);
+		return null;
 	}
 	
 }

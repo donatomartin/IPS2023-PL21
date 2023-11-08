@@ -91,5 +91,5 @@ public class EquipoDeportivo {
 	public void añadirEquipo() {
 		Service21914_16.añadirEquipo(this);
 	}
-
+	
 }

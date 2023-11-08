@@ -21,6 +21,14 @@ insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telef
     ('Felipe', 'Sanchez', '11111111R', '2003-05-15', 1000000, '666666648', 'deportivo', 'entrenador'),
     ('Javier', 'Perez', '11111111S', '2003-05-15', 1000000, '666666647', 'deportivo', 'entrenador');
     
+insert into Empleado(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values
+    (69, 'Luis', 'Rubiales', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador'),
+    (70, 'Luis', 'Enrique', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador');
+
+insert into Equipo(peid, seid, nombre, categoria, esFilial) values
+    (69, 70, 'Barsa', 'Primera', 'true'),
+    (69, 70, 'Madrid', 'Primera', 'true');
+
 delete from reserva;
 insert into reserva(nombreusuario,cuentabancaria,idinstalacion,precioreserva,fechareserva,horaentrada,horasalida,minutoentrada,minutosalida,fechaventa,horaventa,minutoventa) values
 	('aaa','1234567-k', 1,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24),

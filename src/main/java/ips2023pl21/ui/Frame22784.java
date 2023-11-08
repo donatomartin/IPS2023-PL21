@@ -73,7 +73,6 @@ public class Frame22784 extends JFrame {
 	private JTextField txJardinero;
 	private JList<String> listHorariosAsignados;
 	private DefaultListModel<String> horariosListModel = new DefaultListModel<>();
-	private JTextField txHorariosFiltro;
 	private JPanel pnFiltroInstalacion;
 	private JLabel lbFiltraInstalaciones;
 	private JButton btnActualizaJardineros;
@@ -291,7 +290,6 @@ public class Frame22784 extends JFrame {
 			pnHorariosAsignados.add(getPnBotonesHorarios(), BorderLayout.SOUTH);
 			JScrollPane scpn = new JScrollPane(getListHorariosAsignados());
 			pnHorariosAsignados.add(scpn, BorderLayout.CENTER);
-			scpn.setColumnHeaderView(getTxHorariosFiltro());
 		}
 		return pnHorariosAsignados;
 	}
@@ -606,30 +604,6 @@ public class Frame22784 extends JFrame {
 			loadHorarios();
 		}
 		return listHorariosAsignados;
-	}
-
-	private JTextField getTxHorariosFiltro() {
-		if (txHorariosFiltro == null) {
-			txHorariosFiltro = new JTextField();
-			txHorariosFiltro.setColumns(10);
-			txHorariosFiltro.getDocument().addDocumentListener(new DocumentListener() {
-
-				public void changedUpdate(DocumentEvent e) {
-					loadHorarios();
-				}
-
-				public void removeUpdate(DocumentEvent e) {
-					loadHorarios();
-				}
-
-				public void insertUpdate(DocumentEvent e) {
-					loadHorarios();
-				}
-
-			});
-
-		}
-		return txHorariosFiltro;
 	}
 	private JPanel getPnFiltroInstalacion() {
 		if (pnFiltroInstalacion == null) {
