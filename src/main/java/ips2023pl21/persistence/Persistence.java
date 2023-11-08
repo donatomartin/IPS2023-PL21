@@ -445,7 +445,7 @@ public class Persistence {
 		} else {
 			filial = ((EquipoProfesional) equipo).isFilial();
 		}
-		db.executeUpdate("insert into Equipo(peid,seid,nombre, categoria, esFilial) values (?,?,?)", 
+		db.executeUpdate("insert into Equipo(peid,seid,nombre, categoria, esFilial) values (?,?,?,?,?)", 
 				equipo.getPrimerEntrenador().getEid(),equipo.getSegundoEntrenador().getEid(), equipo.getNombre(),categoria, filial);
 	}
 	
