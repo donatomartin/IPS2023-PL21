@@ -12,6 +12,8 @@ import ips2023pl21.service.Service21914_16;
 
 public class TiendaLogica {
 
+	
+	Service21914_16 service = new Service21914_16();
 	List<Merchandaising> merchandaising = new ArrayList<Merchandaising>();
 	List<Merchandaising> seleccionado = new ArrayList<Merchandaising>();
 	double precioTotal;
@@ -50,7 +52,7 @@ public class TiendaLogica {
 	 * Carga los articulos de la BD
 	 */
 	public void cargarArticulos() {
-		List<Merchandaising> articulos = Service21914_16.cargarArticulos();
+		List<Merchandaising> articulos = service.cargarArticulos();
 
 		merchandaising.addAll(articulos);
 
@@ -114,7 +116,7 @@ public class TiendaLogica {
 	 * Guarda el precio en la BD
 	 */
 	public void guardarPrecio() {
-		Service21914_16.añadirVenta(this);
+		service.añadirVenta(this);
 
 	}
 

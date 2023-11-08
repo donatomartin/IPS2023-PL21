@@ -190,7 +190,7 @@ create table Venta(
 -- VentaMercho
 drop table VentaMerchandising;
 create table VentaMerchandising(
-	id int not null,
+	id varchar(30) not null,
 	idProducto int not null,
 	cantidad int,
 	primary key(id, idProducto)

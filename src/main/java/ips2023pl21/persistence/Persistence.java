@@ -2,12 +2,14 @@ package ips2023pl21.persistence;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -19,6 +21,8 @@ import ips2023pl21.model.equipos.EquipoEnFormacion;
 import ips2023pl21.model.equipos.EquipoProfesional;
 import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.model.activos.Instalacion;
+import ips2023pl21.model.activos.Merchandaising;
+import ips2023pl21.model.activos.TiendaLogica;
 import ips2023pl21.model.entradas.EntradaEntity;
 import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.model.horarios.HorarioEntrenamiento;
@@ -748,6 +752,34 @@ public class Persistence {
 		if (result.size() > 0)
 			return result.get(0);
 		return null;
+	}
+	
+	//Articulos
+	public List<Merchandaising> selectArticulos() {
+		List<Object[]> articulos = db.executeQueryArray("select * from merchandaising");
+		
+		List<Merchandaising> ret = new ArrayList<>();
+		
+		for(Object[] o : articulos) {
+			ret.add(new Merchandaising((int) o[0],o[1].toString(), o[2].toString(), (double) o[3]));
+		}
+		return ret;
+		
+	}
+
+	public void insertVenta(TiendaLogica tl) {
+		Calendar c = Calendar.getInstance();
+		String fecha = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH);
+		
+		db.executeUpdate("insert into venta(concepto,fecha,hora,minuto,cuantia) values (?,?,?,?,?)",
+				"merchandaising",fecha,c.get(Calendar.HOUR),c.get(Calendar.MINUTE),tl.getPrecioTotal());
+		
+		for(Merchandaising a : tl.getSeleccionado()) {
+			db.executeUpdate("insert into ventamerchandising(id,idProducto,cantidad)"
+					+ " values(?,?,?)",
+					UUID.randomUUID().toString(), a.getId(),a.getUnidades());
+		}
+		
 	}
 
 }
