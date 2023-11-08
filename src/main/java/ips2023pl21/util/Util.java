@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import org.apache.commons.beanutils.BeanUtils;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -22,6 +23,16 @@ public class Util {
 	private Util() {
 	    throw new IllegalStateException("Utility class");
 	}
+	
+	/**
+	 * Remove HTML from a String
+	 * @param html
+	 * @return
+	 */
+	public static String removeHtml(String html) {
+        String noHtml = Pattern.compile("<.*?>").matcher(html).replaceAll("");
+        return noHtml;
+    }
 
 	/**
 	 * Serializa una lista de objetos a formato json insertando saltos de linea entre cada elemento 
