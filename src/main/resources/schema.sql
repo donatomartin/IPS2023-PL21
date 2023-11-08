@@ -15,39 +15,42 @@ create table Empleado(
 -- Horario Semanal
 drop table HorarioSemanal;
 create table HorarioSemanal(
-    diaSemana int,
-    fechaInicio varchar(10),
+    diaSemana int not null,
+    fechaInicio varchar(10) not null,
     fechaFin varchar(10),
     eid int not null,
-    foreign key (eid) references EmpleadoNoDeportivo(eid),
-    primary key (diaSemana, fechaInicio)
+    primary key (diaSemana, fechaInicio, eid),
+    foreign key (eid) references Empleado(eid)
 );
 
 drop table FranjaSemanal;
 create table FranjaSemanal(
-    fsid integer primary key autoincrement,
     horaInicio varchar(5) not null,
     horaFin varchar(5) not null,
     diaSemana int not null,
     fechaInicio varchar(10) not null,
-    foreign key (diaSemana, fechaInicio) references HorarioSemanal(diaSemana, fechaInicio)
+	eid int not null,
+	primary key (diaSemana, fechaInicio, eid),
+    foreign key (diaSemana, fechaInicio, eid) references HorarioSemanal(diaSemana, fechaInicio, eid)
 );
 
 -- Horario Puntual
 drop table HorarioPuntual;
 create table HorarioPuntual(
-    fechaPuntual varchar(10) primary key,
+    fechaPuntual varchar(10) not null,
     eid int not null,
-    foreign key (eid) references EmpleadoNoDeportivo(eid)
+	primary key (fechaPuntual, eid),
+    foreign key (eid) references Empleado(eid)
 );
 
 drop table FranjaPuntual;
 create table FranjaPuntual(
-    fpid integer primary key autoincrement,
     horaInicio varchar(5) not null,
     horaFin varchar(5) not null,
     fechaPuntual varchar(10) not null,
-    foreign key (fechaPuntual) references HorarioPuntual(fechaPuntual)
+	eid int not null,
+	primary key (fechaPuntual, eid),
+    foreign key (fechaPuntual, eid) references HorarioPuntual(fechaPuntual, eid)
 );
 
 -- Horario Equipo
@@ -65,13 +68,32 @@ create table HorarioEquipo(
     foreign key(idInstalacion) references Instalacion(id)
 );
 
--- Equipo
-drop table Equipo;
-create table Equipo(
-    id varchar(30) primary key ,
-    nombre varchar(30) unique,
-    categoria varchar(30),
-    esFilial boolean
+-- Horario Jardineria
+drop table HorarioJardineria;
+create table HorarioJardineria(
+	fechaJardineria varchar(10) not null,
+    horaInicio varchar(5) not null,
+    horaFin varchar(5) not null,
+    iid int not null,
+    eid int not null,
+    primary key(fechaJardineria, eid, iid),
+    foreign key(eid) references Empleado(eid),
+	foreign key(iid) references Instalacion(id)
+);
+
+-- HorarioEntrenamiento
+drop table HorarioEntrenamiento;
+create table HorarioEntrenamiento(
+	fechaEntrenamiento varchar(10) not null,
+	horaInicio varchar(5) not null,
+	horaFin varchar(5) not null,
+	enid int not null,
+	iid int not null,
+	eid int not null,
+	primary key(fechaEntrenamiento, enid, iid, eid),
+	foreign key(enid) references Empleado(eid),
+	foreign key(iid) references Instalacion(id),
+	foreign key(eid) references Equipo(id)
 );
 
 -- Partido
@@ -102,15 +124,28 @@ create table Abonado(
 );
 
 -- Entrevista
-drop table Entrevista;
-create table Entrevista (
-    fechaEntrevista varchar(10),
-    horaInicio varchar(5),
-    horaFin varchar(5),
+drop table HorarioEntrevista;
+create table HorarioEntrevista (
+    fechaEntrevista varchar(10) not null,
+    horaInicio varchar(5) not null,
+    horaFin varchar(5) not null,
     datosMedio varchar(30) not null,
     eid int,
     primary key (fechaEntrevista, eid),
-    foreign key (eid) references JugadorProfesional(eid)
+    foreign key (eid) references Empleado(eid)
+);
+
+-- Equipo
+drop table Equipo;
+create table Equipo(
+    id integer primary key autoincrement,
+	peid int,
+	seid int,
+    nombre varchar(30) unique not null,
+    categoria varchar(30),
+    esFilial boolean,
+	foreign key (peid) references Empleado(eid),
+	foreign key (peid) references Empleado(eid) 
 );
 
 -- Reserva
@@ -181,9 +216,8 @@ create table Entrada(
 --Instalaciones
 drop table Instalacion;
 create table Instalacion(
-	id varchar(30) not null,
-	nombreInstalacion varchar(30) not null,
-	primary key (id)
+	id integer primary key autoincrement,
+	nombreInstalacion varchar(30) not null
 );
 
 --Noticia

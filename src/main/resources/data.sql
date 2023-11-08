@@ -20,24 +20,38 @@ insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telef
     ('Ernesto', 'Martinez', '11111111Q', '2003-05-15', 1000000, '666666649', 'deportivo', 'jugador'),
     ('Felipe', 'Sanchez', '11111111R', '2003-05-15', 1000000, '666666648', 'deportivo', 'entrenador'),
     ('Javier', 'Perez', '11111111S', '2003-05-15', 1000000, '666666647', 'deportivo', 'entrenador');
-    
+
+insert into Empleado(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values
+    (69, 'Luis', 'Rubiales', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador'),
+    (70, 'Luis', 'Enrique', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador');
+
+delete from Equipo;
+insert into Equipo(peid, seid, nombre, categoria, esFilial) values
+    (69, 70, 'Barsa', 'Primera', 'true'),
+    (69, 70, 'Madrid', 'Primera', 'true');
+
 delete from reserva;
 insert into reserva(nombreusuario,cuentabancaria,idinstalacion,precioreserva,fechareserva,horaentrada,horasalida,minutoentrada,minutosalida,fechaventa,horaventa,minutoventa) values
-	('aaa','1234567-k', 'c1',50,'2024-01-01',14,16,30,0,'2023-10-14',14,24),
-	('bbb','1234567-k', 'c2',50,'2024-01-01',14,16,30,0,'2023-10-14',14,24);
+	('aaa','1234567-k', 1,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24),
+	('bbb','1234567-k', 2,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24);
 	
 delete from horarioequipo;
 insert into horarioequipo(idequipo,fecha,horaentrada,horasalida,minutoentrada,minutosalida,idinstalacion) values
-	('eq1', '2024-01-01', 10, 12, 0, 30, 'c1'),
-	('eq2', '2024-01-01', 18, 19, 15, 30, 'c1');
+	('eq1', '2024-01-01', 10, 12, 0, 30, 1),
+	('eq2', '2024-01-01', 18, 19, 15, 30, 2);
 	
 delete from instalacion;
-insert into instalacion(id, nombreinstalacion) values 
-	('c1', 'Campo 1'),
-	('c2', 'Campo 2'),
-	('c3', 'Campo 3'),
-	('c4', 'Campo 4'),
-	('c5', 'Campo 5');
+insert into instalacion(nombreinstalacion) values 
+	('Campo Real Madrid'),
+	('Campo Barcelona FC'),
+	('Campo Real Oviedo'),
+	('Campo Sporting Gijon'),
+	('Campo Atletico Madrid'),
+    ('Parque Gijon'),
+    ('Parque Oviedo'),
+    ('Parque Madrid'),
+    ('Cancha Bilbao'),
+    ('Pista Madrid');
 	
 delete from venta;
 insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchandising', '2023-10-13', '20','05',30),
@@ -52,7 +66,7 @@ insert into merchandaising(nombre,tipo,precio) values ('Poster','Decoracion',5);
 insert into merchandaising(nombre,tipo,precio) values ('Bufanda','Ropa',10);
 insert into merchandaising(nombre,tipo,precio) values ('Camiseta','Ropa',20);
 insert into merchandaising(nombre,tipo,precio) values ('Cono','Material',5);
-insert into merchandaising(nombre,tipo,precio) values ('Peluca','Ropa',10);
+insert into merchandaising(nombre,tipo,precio) values ('a','Ropa',10);
 insert into merchandaising(nombre,tipo,precio) values ('B','Material',20);
 insert into merchandaising(nombre,tipo,precio) values ('c','Decoracion',5);
 insert into merchandaising(nombre,tipo,precio) values ('d','Ropa',10);
@@ -76,9 +90,6 @@ insert into ventaMerchandising(id, concepto, fecha, hora, minuto, cuantia, produ
 (1,'merchandising','2023-10-13', '20','05',30, 'camiseta', 3,10),
 (3, 'merchandising','2013-02-02','20','00',50,'pantalon',5,10);
 
-delete from Equipo;
-insert into Equipo(id, nombre, categoria, esFilial) values ('1','equipo','categoria', false);
-insert into Equipo(id, nombre, categoria, esFilial) values ('2','equipo2',null, true);
 
 delete from Partido;
 insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1','1', 'EquipoVisitante', '2023-11-09', 10);

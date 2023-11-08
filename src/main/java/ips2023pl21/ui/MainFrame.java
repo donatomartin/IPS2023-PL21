@@ -7,12 +7,7 @@ import javax.swing.JPanel;
 
 import ips2023pl21.model.entradas.EntradasModel;
 import ips2023pl21.model.ventas.VentasModel;
-import ips2023pl21.service.Service21911;
-import ips2023pl21.service.Service21912;
-import ips2023pl21.service.Service21913;
-import ips2023pl21.service.Service21915;
-import ips2023pl21.service.Service21917;
-import ips2023pl21.service.Service21918;
+import ips2023pl21.service.*;
 import ips2023pl21.service.Service22759;
 
 import java.awt.BorderLayout;
@@ -160,6 +155,34 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
+	
+	private static void run22784() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame22784 frame = new Frame22784(new Service22784());
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	private static void run22785() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame22785 frame = new Frame22785(new Service22785());
+					frame.setVisible(true);
+					frame.setLocationRelativeTo(null);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	private static void run21918() {
 		EventQueue.invokeLater(new Runnable() {
@@ -252,7 +275,7 @@ public class MainFrame extends JFrame {
 	}
 	private JButton getBtn21912() {
 		if (btn21912 == null) {
-			btn21912 = new JButton("<html><p>Gestion de Horarios</p><p>(21912)</p><html>");
+			btn21912 = new JButton("<html><p>Horarios Empleados No Deportivos</p><p>(21912)</p><html>");
 			btn21912.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					run21912();
@@ -285,7 +308,7 @@ public class MainFrame extends JFrame {
 	}
 	private JButton getBtn21915() {
 		if (btn21915 == null) {
-			btn21915 = new JButton("<html><p>Gestion de Entrevistas</p><p>(21915)</p><html>");
+			btn21915 = new JButton("<html><p>Entrevistas</p><p>(21915)</p><html>");
 			btn21915.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					run21915();
@@ -319,17 +342,17 @@ public class MainFrame extends JFrame {
 	private JButton getBtn21918() {
 		if (btn21918 == null) {
 			btn21918 = new JButton("<html><p>Historial de Ventas</p><p>(21918)</p><html>");
+			btn21918.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run21918();
+				}
+			});
 		}
 		return btn21918;
 	}
 	private JButton getBtn22733() {
 		if (btn22733 == null) {
 			btn22733 = new JButton("22733");
-			btn21918.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					run21918();
-				}
-			});
 		}
 		return btn22733;
 	}
@@ -376,13 +399,29 @@ public class MainFrame extends JFrame {
 	}
 	private JButton getBtn22784() {
 		if (btn22784 == null) {
-			btn22784 = new JButton("22784");
+			btn22784 = new JButton("<html><p>Jardinería</h1><p>(22784)</p><html>");
+			btn22784.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					run22784();
+				}
+				
+			});
 		}
 		return btn22784;
 	}
 	private JButton getBtn22785() {
 		if (btn22785 == null) {
-			btn22785 = new JButton("22785");
+			btn22785 = new JButton("<html><p>Entrenamientos</h1><p>(22784)</p><html>");
+			btn22785.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					run22785();
+				}
+				
+			});
 		}
 		return btn22785;
 	}

@@ -89,7 +89,6 @@ public class Frame22759 extends JFrame{
 	private JButton btSiguiente;
 	private int numPagina=0;
 	private List<Noticia> noticiasStack=new Stack<Noticia>();
-	private int count=0;
 	private JScrollPane scrollPaneTitulo;
 	private JScrollPane scrollPaneIAñadirTitulo;
 	private JTextArea textAreaAñadirTitulo;
@@ -203,12 +202,9 @@ public class Frame22759 extends JFrame{
 						);
 						
 						pnNoticias.add(boton);
-						count++;
 					}
 				
-				
-				
-						return pnNoticias;
+					return pnNoticias;
 			}
 	
 	private void comprobarNoticias(int id, int numNoticias) {

@@ -113,5 +113,5 @@ public class EquipoDeportivo {
 		this.id = id;
 		
 	}
-
+	
 }

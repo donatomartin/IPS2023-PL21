@@ -12,7 +12,9 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.service.Service21912;
+import ips2023pl21.util.Util;
 
 import java.awt.Font;
 import java.awt.event.KeyAdapter;
@@ -247,7 +249,8 @@ public class Frame21912 extends JFrame {
 		if (employeeList == null) {
 			loadEmpleadoListModel("");
 			employeeList = new JList<String>(empleadoListModel);
-			employeeList.setBorder(new EmptyBorder(5, 5, 5, 5));
+			employeeList
+					.setBorder(new TitledBorder(null, "Empleados", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			employeeList.setFont(new Font("Consolas", Font.BOLD, 15));
 
 			// Añadir MouseListener para el doble click
@@ -503,21 +506,23 @@ public class Frame21912 extends JFrame {
 	}
 
 	private JComboBox<String> getCbDiaSemana() {
-	    if (cbDiaSemana == null) {
-	        cbDiaSemana = new JComboBox<String>();
-	        cbDiaSemana.setFont(new Font("Tahoma", Font.PLAIN, 16));
-	        cbDiaSemana.setBackground(new Color(255, 255, 255));
-	        cbDiaSemana.setModel(new DefaultComboBoxModel<String>(
-	                new String[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" }));
+		if (cbDiaSemana == null) {
+			cbDiaSemana = new JComboBox<String>();
+			cbDiaSemana.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			cbDiaSemana.setBackground(new Color(255, 255, 255));
+			cbDiaSemana.setModel(new DefaultComboBoxModel<String>(
+					new String[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" }));
 
-	        // Añadir ActionListener
-	        cbDiaSemana.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent e) {
-	                service.deseleccionadHorarioSemanal();
-	            }
-	        });
-	    }
-	    return cbDiaSemana;
+			cbDiaSemana.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					service.seleccionaHorarioSemanal(0, null);
+				}
+			});
+
+			cbDiaSemana.setSelectedItem(HorarioSemanal.getNombreDia(
+					HorarioSemanal.getDiaDeLaSemana(Util.dateToIsoString(Calendar.getInstance().getTime()))));
+		}
+		return cbDiaSemana;
 	}
 
 	private JPanel getPnDiaSemana() {
@@ -662,31 +667,51 @@ public class Frame21912 extends JFrame {
 	}
 
 	private void addToHorarioSemanal() {
-		
-		int res = service.addToHorarioSemanal((Date) getSpHoraInicioSemanal().getValue(),
-				(Date) getSpHoraFinSemanal().getValue(), getCbDiaSemana().getSelectedItem().toString(), (Date) getSpFechaInicio().getValue());
-			
-		if (res == 2) {
-			// FIN ANTES QUE PRINCIPIO
-			JOptionPane.showMessageDialog(null, "Error: La hora de finalización es anterior a la hora de inicio.", "Error", JOptionPane.ERROR_MESSAGE);
+
+		Service21912.state res = service.addToHorarioSemanal((Date) getSpHoraInicioSemanal().getValue(),
+				(Date) getSpHoraFinSemanal().getValue(), getCbDiaSemana().getSelectedItem().toString(),
+				(Date) getSpFechaInicio().getValue());
+
+		switch (res) {
+		case HORARIONULL:
+			JOptionPane.showMessageDialog(null, "No hay horario seleccionado, un nuevo horario será creado.",
+					"Info", JOptionPane.INFORMATION_MESSAGE);
+			break;
+		case EMPLEADONULL:
+			JOptionPane.showMessageDialog(null, "Error: No hay empleado seleccionado.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case CONCURRENCEERROR:
+			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case INICIOAFTERFIN:
+			JOptionPane.showMessageDialog(null, "Error: La hora de inicio no puede ir tras la hora de fin.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case NOSEMANADEANTELACION:
+			JOptionPane.showMessageDialog(null, "Error: No hay una semana de antelación.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case OVERDAILYMAX:
+			JOptionPane.showMessageDialog(null, "Error: Limite diario sobrepasado.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case OVERWEEKLYMAX:
+			JOptionPane.showMessageDialog(null, "Error: Limite semanal sobrepasado.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case SOLAPAFRANJAS:
+			JOptionPane.showMessageDialog(null, "Error: Solapa entre franjas.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		default:
+			break;
 		}
-		else if (res == 3) {
-			// SOLAPA ENTRE FRANJAS
-			JOptionPane.showMessageDialog(null, "Error: Solapamiento entre franjas horarias.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		else if (res == 4) {
-			// SOBREPASADO LIMITE DIARIO
-			JOptionPane.showMessageDialog(null, "Error: Se ha sobrepasado el límite diario.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		else if (res == 5) {
-			// SOBREPASADO LIMITE SEMANAL
-			JOptionPane.showMessageDialog(null, "Error: Se ha sobrepasado el límite semanal.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-			
+
 		loadSemanalListModel();
 
 	}
-
 
 	private JLabel getLbNombreEmpleadoSemanal() {
 		if (lbNombreEmpleado == null) {
@@ -845,26 +870,24 @@ public class Frame21912 extends JFrame {
 			spFechaPuntual = new JSpinner();
 			spFechaPuntual.setFont(new Font("Tahoma", Font.PLAIN, 15));
 			spFechaPuntual.setModel(new SpinnerDateModel(new Date(1697061600000L), null, null, Calendar.DAY_OF_YEAR));
-			
+
 			// Obtén la fecha actual y añade 7 días
 			Calendar calendar = Calendar.getInstance();
 			calendar.add(Calendar.DAY_OF_YEAR, 7);
 			Date date = calendar.getTime();
 
-			// Crea un modelo con la fecha y establece el formato para que no muestre las horas
+			// Crea un modelo con la fecha y establece el formato para que no muestre las
+			// horas
 			SpinnerDateModel model = new SpinnerDateModel();
 			model.setValue(date);
 			spFechaPuntual.setModel(model);
 
 			// Establece el formato de la fecha para que no muestre las horas
-			JSpinner.DateEditor editor = new JSpinner.DateEditor(spFechaPuntual, "dd-MM-yyyy");
-			
-			spFechaPuntual.setEditor(editor);
-			
+
 			spFechaPuntual.addChangeListener(new ChangeListener() {
-			    public void stateChanged(ChangeEvent e) {
-			    	service.deseleccionaHorarioPuntual();
-			    }
+				public void stateChanged(ChangeEvent e) {
+					service.seleccionaHorarioPuntual(null);
+				}
 			});
 		}
 		return spFechaPuntual;
@@ -907,11 +930,11 @@ public class Frame21912 extends JFrame {
 			// Establece el formato de la fecha para que no muestre las horas
 			JSpinner.DateEditor editor = new JSpinner.DateEditor(spFechaInicio, "dd-MM-yyyy");
 			spFechaInicio.setEditor(editor);
-			
+
 			spFechaInicio.addChangeListener(new ChangeListener() {
-			    public void stateChanged(ChangeEvent e) {
-			    	service.deseleccionadHorarioSemanal();
-			    }
+				public void stateChanged(ChangeEvent e) {
+					service.seleccionaHorarioSemanal(0, null);
+				}
 			});
 		}
 		return spFechaInicio;
@@ -1024,26 +1047,46 @@ public class Frame21912 extends JFrame {
 	}
 
 	private void addToHorarioPuntual() {
-		int res = service.addToHorarioPuntual((Date) getSpHoraInicioPuntual().getValue(),
+		Service21912.state res = service.addToHorarioPuntual((Date) getSpHoraInicioPuntual().getValue(),
 				(Date) getSpHoraFinPuntual().getValue(), (Date) getSpFechaPuntual().getValue());
-		
-		if (res == 2) {
-			// FIN ANTES QUE PRINCIPIO
-			JOptionPane.showMessageDialog(null, "Error: La hora de finalización es anterior a la hora de inicio.", "Error", JOptionPane.ERROR_MESSAGE);
+
+		switch (res) {
+		case HORARIONULL:
+			JOptionPane.showMessageDialog(null, "No hay horario seleccionado, un nuevo horario será creado.",
+					"Info", JOptionPane.INFORMATION_MESSAGE);
+			break;
+		case EMPLEADONULL:
+			JOptionPane.showMessageDialog(null, "Error: No hay empleado seleccionado.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case CONCURRENCEERROR:
+			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case INICIOAFTERFIN:
+			JOptionPane.showMessageDialog(null, "Error: La hora de inicio no puede ir tras la hora de fin.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case NOSEMANADEANTELACION:
+			JOptionPane.showMessageDialog(null, "Error: No hay una semana de antelación.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case OVERDAILYMAX:
+			JOptionPane.showMessageDialog(null, "Error: Limite diario sobrepasado.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case OVERWEEKLYMAX:
+			JOptionPane.showMessageDialog(null, "Error: Limite semanal sobrepasado.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case SOLAPAFRANJAS:
+			JOptionPane.showMessageDialog(null, "Error: Solapa entre franjas.",
+					"Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		default:
+			break;
 		}
-		else if (res == 3) {
-			// SOLAPA ENTRE FRANJAS
-			JOptionPane.showMessageDialog(null, "Error: Solapamiento entre franjas horarias.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		else if (res == 4) {
-			// SOBREPASADO LIMITE DIARIO
-			JOptionPane.showMessageDialog(null, "Error: Se ha sobrepasado el límite diario.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		else if (res == 5) {
-			// SOBREPASADO LIMITE SEMANAL
-			JOptionPane.showMessageDialog(null, "Error: Se ha sobrepasado el límite semanal.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
-		
+
 		loadPuntualListModel();
 	}
 

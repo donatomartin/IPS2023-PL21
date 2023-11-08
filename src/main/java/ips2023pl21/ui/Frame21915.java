@@ -41,8 +41,8 @@ import java.awt.event.ItemListener;
 import java.awt.CardLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.Component;
-import javax.swing.Box;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 
 
 public class Frame21915 extends JFrame {
@@ -97,7 +97,7 @@ public class Frame21915 extends JFrame {
 	private JPanel pnFechaFecha;
 	private JPanel pnFechaFranja;
 	private JPanel panel_2;
-	private Component verticalStrut;
+	private JButton btnActualizar;
 
     public Frame21915(Service21915 service) {
 		setTitle("Gestion Entrevistas");
@@ -118,9 +118,8 @@ public class Frame21915 extends JFrame {
 		String horaInicio = format.format(getSpHoraInicio().getValue());
         String horaFin = format.format(getSpHoraFin().getValue());
         format = new SimpleDateFormat("dd-MM-yyyy");
-        String fecha = format.format(getSpFecha().getValue());
         
-        service.setFecha(fecha);
+        service.setFecha((Date)getSpFecha().getValue());
 		service.setHoraInicio(horaInicio);
 		service.setHoraFin(horaFin);
 		
@@ -346,22 +345,35 @@ public class Frame21915 extends JFrame {
 	}
 	private void updateFecha(ChangeEvent e) {
 		JSpinner spinner = (JSpinner) e.getSource();
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
-        String fecha = format.format(spinner.getValue());
-        service.setFecha(fecha);
+        service.setFecha((Date)spinner.getValue());
         filter();
 	}
 	private JPanel getPnFecha() {
 		if (pnFecha == null) {
 			pnFecha = new JPanel();
-			pnFecha.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-			pnFecha.add(getPnFechaFranja());
+			GroupLayout gl_pnFecha = new GroupLayout(pnFecha);
+			gl_pnFecha.setHorizontalGroup(
+				gl_pnFecha.createParallelGroup(Alignment.TRAILING)
+					.addGroup(Alignment.LEADING, gl_pnFecha.createSequentialGroup()
+						.addGap(154)
+						.addComponent(getPnFechaFranja(), GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGap(171))
+			);
+			gl_pnFecha.setVerticalGroup(
+				gl_pnFecha.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnFecha.createSequentialGroup()
+						.addGap(0, 0, Short.MAX_VALUE)
+						.addComponent(getPnFechaFranja(), GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
+						.addGap(66))
+			);
+			pnFecha.setLayout(gl_pnFecha);
 		}
 		return pnFecha;
 	}
 	private JLabel getLbHoraFin() {
 		if (lbHoraFin == null) {
 			lbHoraFin = new JLabel("Hora Fin");
+			lbHoraFin.setHorizontalAlignment(SwingConstants.TRAILING);
 		}
 		return lbHoraFin;
 	}
@@ -429,6 +441,7 @@ public class Frame21915 extends JFrame {
 	private JLabel getLbHoraInicio() {
 		if (lbHoraInicio == null) {
 			lbHoraInicio = new JLabel("Hora Inicio");
+			lbHoraInicio.setHorizontalAlignment(SwingConstants.TRAILING);
 		}
 		return lbHoraInicio;
 	}
@@ -436,7 +449,7 @@ public class Frame21915 extends JFrame {
 		if (pnInicio == null) {
 			pnInicio = new JPanel();
 			pnInicio.setBorder(new EmptyBorder(5, 5, 5, 5));
-			pnInicio.setLayout(new GridLayout(0, 2, 0, 0));
+			pnInicio.setLayout(new GridLayout(0, 2, 5, 0));
 			pnInicio.add(getLbHoraInicio());
 			pnInicio.add(getSpHoraInicio());
 		}
@@ -446,7 +459,7 @@ public class Frame21915 extends JFrame {
 		if (pnFin == null) {
 			pnFin = new JPanel();
 			pnFin.setBorder(new EmptyBorder(5, 5, 5, 5));
-			pnFin.setLayout(new GridLayout(0, 2, 0, 0));
+			pnFin.setLayout(new GridLayout(0, 2, 5, 0));
 			pnFin.add(getLbHoraFin());
 			pnFin.add(getSpHoraFin());
 		}
@@ -671,6 +684,7 @@ public class Frame21915 extends JFrame {
 		if (pnBotonAtrasEntrevista == null) {
 			pnBotonAtrasEntrevista = new JPanel();
 			pnBotonAtrasEntrevista.setBackground(new Color(211, 211, 211));
+			pnBotonAtrasEntrevista.add(getBtnActualizar());
 			pnBotonAtrasEntrevista.add(getBtnAtrasEntrevistas());
 		}
 		return pnBotonAtrasEntrevista;
@@ -688,7 +702,6 @@ public class Frame21915 extends JFrame {
 		if (pnFechaFranja == null) {
 			pnFechaFranja = new JPanel();
 			pnFechaFranja.setLayout(new BoxLayout(pnFechaFranja, BoxLayout.Y_AXIS));
-			pnFechaFranja.add(getVerticalStrut());
 			pnFechaFranja.add(getPanel_1_4());
 			pnFechaFranja.add(getChckbxNewCheckBox());
 			pnFechaFranja.add(getPnInicio());
@@ -704,10 +717,16 @@ public class Frame21915 extends JFrame {
 		}
 		return panel_2;
 	}
-	private Component getVerticalStrut() {
-		if (verticalStrut == null) {
-			verticalStrut = Box.createVerticalStrut(35);
+	private JButton getBtnActualizar() {
+		if (btnActualizar == null) {
+			btnActualizar = new JButton("Actualizar");
+			btnActualizar.setBackground(new Color(211, 211, 211));
+			btnActualizar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					loadEntrevistas();
+				}
+			});
 		}
-		return verticalStrut;
+		return btnActualizar;
 	}
 }
