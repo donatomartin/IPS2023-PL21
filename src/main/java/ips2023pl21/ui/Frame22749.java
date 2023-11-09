@@ -510,7 +510,7 @@ public class Frame22749 extends JFrame {
 					if (confirmarAvance()) {
 						avanzarFase();
 						actualizacionBotones();
-						actualizarAccionesVendidas();
+						actualizaVentas();
 					}
 				}
 			});
@@ -596,6 +596,10 @@ public class Frame22749 extends JFrame {
 	private void actualizarAccionesVendidas() {
 		cs.setAccionesVendidas(0);
 		cs.setAccionesRestantes(0);
+		getLbAccionesVendidasInfo().setText(textoAccionesVendidas());
+		getLbAccionesRestantesInfo().setText(textoAccionesRestantes());
+	}
+	private void actualizaVentas() {
 		getLbAccionesVendidasInfo().setText(textoAccionesVendidas());
 		getLbAccionesRestantesInfo().setText(textoAccionesRestantes());
 	}
