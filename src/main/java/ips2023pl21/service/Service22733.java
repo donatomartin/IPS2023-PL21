@@ -13,7 +13,6 @@ import ips2023pl21.util.Util;
 
 public class Service22733 {
 	
-
 	public Persistence p = Persistence.getInstance();
 	
 
@@ -48,6 +47,7 @@ public class Service22733 {
 				//insertar en abonado
 				p.insertAbonado(nombre);
 				return true;
+				
 			}catch(UnexpectedException e) {
 				e.printStackTrace();
 			}
@@ -74,6 +74,10 @@ public class Service22733 {
 
 	public List<EntradaEntity> getAsientosOcupados(String tribuna, String seccion) {
 		return p.getAsientosOcupados(tribuna, seccion);
+	}
+
+	public int getIdAbonado() {
+		return (Integer)(p.getIdAbonado().get(0)[0]);
 	}
 	
 

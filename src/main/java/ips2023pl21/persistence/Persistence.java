@@ -647,6 +647,10 @@ public class Persistence {
 		db.executeUpdate("insert into abonado (nombre) values (?)", nombre);
 		
 	}
+	
+	public List<Object[]> getIdAbonado() {
+		return db.executeQueryArray( "select max(id)from abonado" );
+	}
 
 	// HORARIO JARDINERIA
 
@@ -952,6 +956,8 @@ public class Persistence {
 				db.executeQueryPojo(Accionista.class, "select * from accionista");
 		return acc.size();
 	}
+
+	
 
 	
 }

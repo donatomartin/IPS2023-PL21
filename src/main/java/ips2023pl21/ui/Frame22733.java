@@ -552,7 +552,7 @@ public class Frame22733 extends JFrame{
 				getButtonGroupoSeccion().getSelection().getActionCommand(),
 				(int)spinnerFila.getValue(), (int)spinnerAsiento.getValue(),txtFieldFechaNacimiento.getText(),
 				txtFieldNombre.getText())) {
-			JOptionPane.showMessageDialog(null, "Compra realizada");
+			JOptionPane.showMessageDialog(null, "Compra realizada, su id es "+ service.getIdAbonado());
 		}else {
 			JOptionPane.showMessageDialog(null, "Asiento ocupado");
 		}
