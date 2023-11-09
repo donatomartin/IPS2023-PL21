@@ -102,14 +102,11 @@ public class Service21918 {
 	public void updateDetail() {
 		this.lastSelectedKey=SwingUtil.getSelectedKey(view.getTableVentas());
 		int idVenta=Integer.parseInt(this.lastSelectedKey);
-		System.out.println(idVenta);
 		
 		//Detalles de la venta seleccionada
 		
 		List<VentaMerchandisingDisplayDto> ventas=model.getVentasMerchandising(idVenta); 
-		for(VentaMerchandisingDisplayDto v: ventas) {
-			System.out.println(v.getId());
-		}
+
 		if(ventas==null ||ventas.size()==0) {
 			view.getTableDetalles().setModel(new DefaultTableModel());
 		}else {
@@ -140,7 +137,6 @@ public class Service21918 {
 				detalle.setId(v.getId());
 				detalle.setNombre(producto.get(0).getNombre());
 				detalle.setPrecioPorProducto(producto.get(0).getPrecio());
-				System.out.println(v.getCantidad());
 				detalle.setTotal(producto.get(0).getPrecio()*v.getCantidad()); //cantidad=unidades
 				detalle.setUnidades(v.getCantidad());
 				result.add(detalle);

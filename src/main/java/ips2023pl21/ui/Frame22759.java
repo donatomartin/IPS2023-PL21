@@ -214,7 +214,6 @@ public class Frame22759 extends JFrame{
 			lbImagenNoticiaActual.setIcon(null);
 			textAreaCuerpoNoticiaActual.setText("");
 		}else {
-			System.out.println(numPagina);
 			Noticia noticia=noticiasStack.get(NUMERO_NOTICIAS*(numPagina-1)+ id*numPagina);
 			cargarNoticias(noticia);
 		}
@@ -486,7 +485,6 @@ public class Frame22759 extends JFrame{
 	}
 	private void comprobarPagina() {
 		numPagina--;
-		System.out.println(numPagina);
 		if(numPagina<=0) {
 			numPagina=1;
 			showPn("intro");
