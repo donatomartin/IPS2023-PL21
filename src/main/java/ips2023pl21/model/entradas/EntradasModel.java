@@ -31,16 +31,11 @@ public class EntradasModel {
 				p.insertarEntrada(tribuna, seccion, fila, asientoInicial, 30);
 				String dateSql=Util.dateToIsoString(date);
 				p.insertarVenta("entrada",dateSql, date.getHours(), date.getMinutes(),30);
-//				db.executeUpdate(queryVenta,"entrada", dateSql,date.getHours(),date.getMinutes(),30);
-//				System.out.println("horas: "+date.getHours()+ " minutos: "+date.getMinutes());
-//				System.out.println("Entrada insertada: "+tribuna+seccion+fila+asientoInicial);
 				asientoInicial++;
 				
 			}
-			//asientoInicial=-1;
-			return true;
+		return true;
 		}
-		//return false;
 	}
 
 	private int elegirFila(String tribuna, String seccion, int numeroEntradas) {
@@ -105,8 +100,6 @@ public class EntradasModel {
 		
 
 	private List<EntradaEntity> getTotalEntradas(String tribuna, String seccion, int fila) {
-//		String query="SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
-//		return db.executeQueryPojo(EntradaEntity.class,query, tribuna, seccion, fila);
 		return p.getTotalEntradas(tribuna, seccion, fila);
 	}
 

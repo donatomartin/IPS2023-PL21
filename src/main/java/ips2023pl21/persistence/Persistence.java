@@ -420,8 +420,12 @@ public class Persistence {
 	}
 
 	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
-		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?",
+		List<EntradaEntity>entradas= db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?",
 				tribuna, seccion, fila);
+		for(EntradaEntity e:entradas) {
+			System.out.println(e.getAsiento()+e.getTribuna()+e.getFila());
+		}
+		return entradas;
 	}
 
 	// ENTRADA

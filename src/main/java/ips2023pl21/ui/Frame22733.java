@@ -143,9 +143,13 @@ public class Frame22733 extends JFrame{
 			btnComprar = new JButton("Comprar");
 			btnComprar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					comprobarFecha();
+					if(comprobarNombre()) {
+						comprobarFecha();
 						comprar();
 						getAsientosOcupados();
+						txtFieldNombre.setText("");
+					}
+					
 					
 				}
 
@@ -156,6 +160,15 @@ public class Frame22733 extends JFrame{
 			btnComprar.setMnemonic('m');
 		}
 		return btnComprar;
+	}
+	
+	private boolean comprobarNombre() {
+		if(txtFieldNombre.getText().isEmpty()) {
+			JOptionPane.showMessageDialog(null, "Complete su nombre");
+		}else {
+				return true;
+			}
+		return false;
 	}
 	
 	private void comprobarFecha() {
