@@ -82,6 +82,7 @@ public class Frame22784 extends JFrame {
 	private JPanel pnFiltroJardinero;
 	private JLabel lblNewLabel;
 	private JButton btnActualizar;
+	private JPanel panel;
 
 	/**
 	 * Create the frame.
@@ -293,7 +294,6 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnHorariosAsignados() {
 		if (pnHorariosAsignados == null) {
 			pnHorariosAsignados = new JPanel();
-			pnHorariosAsignados.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnHorariosAsignados.setLayout(new BorderLayout(0, 0));
 			pnHorariosAsignados.add(getPnBotonesHorarios(), BorderLayout.SOUTH);
 			JScrollPane scpn = new JScrollPane(getListHorariosAsignados());
@@ -305,8 +305,10 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnBotonesHorarios() {
 		if (pnBotonesHorarios == null) {
 			pnBotonesHorarios = new JPanel();
-			pnBotonesHorarios.add(getBtnActualizar());
-			pnBotonesHorarios.add(getBtnHorariosAtras());
+			pnBotonesHorarios.setBorder(new EmptyBorder(5, 5, 5, 5));
+			pnBotonesHorarios.setBackground(new Color(211, 211, 211));
+			pnBotonesHorarios.setLayout(new BorderLayout(0, 0));
+			pnBotonesHorarios.add(getPanel(), BorderLayout.EAST);
 		}
 		return pnBotonesHorarios;
 	}
@@ -671,5 +673,14 @@ public class Frame22784 extends JFrame {
 			btnActualizar.setBackground(new Color(211, 211, 211));
 		}
 		return btnActualizar;
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.setBackground(new Color(211, 211, 211));
+			panel.add(getBtnActualizar());
+			panel.add(getBtnHorariosAtras());
+		}
+		return panel;
 	}
 }

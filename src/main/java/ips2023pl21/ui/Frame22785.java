@@ -89,6 +89,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JLabel lbPasswordEntrenador;
 	private JTextField txPassword;
 	private JButton btnLogout;
+	private JPanel panel;
 
 	/**
 	 * Create the frame.
@@ -316,7 +317,10 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JPanel getPnBotonesHorarios() {
 		if (pnBotonesHorarios == null) {
 			pnBotonesHorarios = new JPanel();
-			pnBotonesHorarios.add(getBtnHorariosAtras());
+			pnBotonesHorarios.setBorder(new EmptyBorder(0, 5, 5, 5));
+			pnBotonesHorarios.setBackground(new Color(211, 211, 211));
+			pnBotonesHorarios.setLayout(new BorderLayout(0, 0));
+			pnBotonesHorarios.add(getPanel(), BorderLayout.EAST);
 		}
 		return pnBotonesHorarios;
 	}
@@ -796,5 +800,13 @@ public class Frame22785 extends JFrame implements UserInterface {
 	    } else {
 	        return false;
 	    }
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.setBackground(new Color(211, 211, 211));
+			panel.add(getBtnHorariosAtras());
+		}
+		return panel;
 	}
 }
