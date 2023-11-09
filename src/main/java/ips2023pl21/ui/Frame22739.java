@@ -37,6 +37,11 @@ import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
+import javax.swing.BoxLayout;
+import javax.swing.border.EmptyBorder;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Frame22739 extends JFrame {
 
@@ -85,6 +90,7 @@ public class Frame22739 extends JFrame {
 	private boolean abonado;
 	private String idAbonado;
 	private List<Partido> partidos = new ArrayList<>();
+	private JPanel panel_1;
 
 
 	/**
@@ -387,11 +393,21 @@ public class Frame22739 extends JFrame {
 	private JPanel getPnSuplemento() {
 		if (pnSuplemento == null) {
 			pnSuplemento = new JPanel();
-			FlowLayout flowLayout = (FlowLayout) pnSuplemento.getLayout();
-			flowLayout.setVgap(20);
-			flowLayout.setHgap(10);
-			pnSuplemento.add(getChckSuplemento());
-			pnSuplemento.add(getSpSuplemento());
+			pnSuplemento.setBorder(new EmptyBorder(20, 40, 40, 40));
+			GroupLayout gl_pnSuplemento = new GroupLayout(pnSuplemento);
+			gl_pnSuplemento.setHorizontalGroup(
+				gl_pnSuplemento.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnSuplemento.createSequentialGroup()
+						.addComponent(getPanel_1(), GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(20, Short.MAX_VALUE))
+			);
+			gl_pnSuplemento.setVerticalGroup(
+				gl_pnSuplemento.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnSuplemento.createSequentialGroup()
+						.addComponent(getPanel_1(), GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap(86, Short.MAX_VALUE))
+			);
+			pnSuplemento.setLayout(gl_pnSuplemento);
 		}
 		return pnSuplemento;
 	}
@@ -475,6 +491,7 @@ public class Frame22739 extends JFrame {
 			spSuplemento.setEnabled(false);
 			spSuplemento
 					.setModel(new SpinnerNumberModel(Float.valueOf(0), Float.valueOf(0), null, Float.valueOf(1)));
+			spSuplemento.setPreferredSize(new Dimension(0,100));
 		}
 		return spSuplemento;
 	}
@@ -619,5 +636,31 @@ public class Frame22739 extends JFrame {
 			});
 		}
 		return btActualizarPartidos;
+	}
+	private JPanel getPanel_1() {
+		if (panel_1 == null) {
+			panel_1 = new JPanel();
+			panel_1.setPreferredSize(new Dimension(0,15));
+			GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+			gl_panel_1.setHorizontalGroup(
+				gl_panel_1.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel_1.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(getChckSuplemento(), GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(getSpSuplemento(), GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
+						.addGap(24))
+			);
+			gl_panel_1.setVerticalGroup(
+				gl_panel_1.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel_1.createSequentialGroup()
+						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+							.addComponent(getChckSuplemento(), GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
+							.addComponent(getSpSuplemento(), GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+						.addContainerGap())
+			);
+			panel_1.setLayout(gl_panel_1);
+		}
+		return panel_1;
 	}
 }

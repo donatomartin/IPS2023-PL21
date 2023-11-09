@@ -126,8 +126,7 @@ insert into accion(idAccionista,precioCompra,enVenta,precioVenta) values
 delete from accionista;
 insert into accionista(nombreAccionista,apellidoAccionista,dniAccionista,cuentaBancaria,numeroAcciones,porcentajeCapital) values
 	('aaa', 'bbb', '1234K', 'abcd', 15, 50.0),
-	('ccc', 'ddd', '5678X', 'efgh', 15, 50.0),
-	('eee', 'fff', '9012Z', 'ijkl', 0, 0.0);
+	('ccc', 'ddd', '5678X', 'efgh', 15, 50.0);
 	
 delete from ampliacioncapital;
 insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales) values

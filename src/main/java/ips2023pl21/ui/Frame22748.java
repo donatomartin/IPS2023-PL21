@@ -1259,6 +1259,8 @@ public class Frame22748 extends JFrame {
 	}
 	private void añadirAccionista() {
 		cs.añadirAccionista(getTxIntroducirNombre().getText(), getTxIntroducirApellido().getText(), getTxIntroducirDni().getText(), getTxIntroducirCuenta().getText());
+		int id = cs.countAccionistas();
+		JOptionPane.showMessageDialog(null, "Su identificador como accionista es: "+ id);
 	}
 	private JScrollPane getScrAcciones() {
 		if (scrAcciones == null) {

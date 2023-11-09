@@ -17,7 +17,7 @@ public class EntradasModel {
 	
 	@SuppressWarnings("deprecation")
 	public boolean comprarEntradas(String tribuna, String seccion, int numeroEntradas) {
-		//no voy a validar los parametros porque habra solo las opciones correctas en la ventana
+		//no voy a validar los parametros porque habrá solo las opciones correctas en la ventana
 		
 		
 		fila=elegirFila(tribuna, seccion, numeroEntradas);
@@ -30,7 +30,6 @@ public class EntradasModel {
 			for(int i=0;i<numeroEntradas;i++) {
 				Date date=new Date();
 				p.insertarEntrada(tribuna, seccion, fila, asientoInicial, 30);
-//				db.executeUpdate(queryEntrada, tribuna, seccion, fila, asientoInicial, 30);
 				String dateSql=Util.dateToIsoString(date);
 				p.insertarVenta("entrada",dateSql, date.getHours(), date.getMinutes(),30);
 //				db.executeUpdate(queryVenta,"entrada", dateSql,date.getHours(),date.getMinutes(),30);
@@ -50,13 +49,14 @@ public class EntradasModel {
 			asientoInicial=-1;
 			List<EntradaEntity> asientosOcupados=getTotalEntradas(tribuna, seccion, i);
 			List<EntradaEntity> abonos=getAbonosFila(tribuna, seccion, fila);
+			for(EntradaEntity e : abonos) {
+				System.out.println(e.getTribuna());
+			}
 			int asientosOcupadosFila=asientosOcupados.size()+abonos.size();
 			if(asientosOcupadosFila==0) { 
-				//System.out.println(asientosOcupadosFila);
 				asientoInicial=0;
 				return i;
 			}
-//			System.out.println(asientosOcupadosFila);
 			if(15-asientosOcupadosFila>=numeroEntradas) {//si 15-número de asientos ocupados
 				//es mayor que los asientos que quiero-> hay asientos disponibles, pero puede que no sean contiguos
 				List<EntradaEntity> asientosOcupadosEntradasYAbonos=getTodosAsientos(asientosOcupados, abonos);
@@ -120,7 +120,6 @@ public class EntradasModel {
 	}
 
 	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
-//		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
 		return p.getAbonosFila(tribuna, seccion, fila);
 	}
 	

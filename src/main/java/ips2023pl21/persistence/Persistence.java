@@ -839,7 +839,7 @@ public class Persistence {
 		Calendar c = Calendar.getInstance();
 		String fecha = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH);
 
-		db.executeUpdate("insert into venta(concepto,fecha,hora,minuto,cuantia) values (?,?,?,?,?)", "merchandaising",
+		db.executeUpdate("insert into venta(concepto,fecha,hora,minuto,cuantia) values (?,?,?,?,?)", "merchandising",
 				fecha, c.get(Calendar.HOUR), c.get(Calendar.MINUTE), tl.getPrecioTotal());
 
 		for (Merchandaising a : tl.getSeleccionado()) {
@@ -899,7 +899,7 @@ public class Persistence {
 	}
 
 	public void updateAccionCompra(Integer idAccion, int idComprador, int idVendedor, float porcentaje) {
-		db.executeUpdate("update accion set idAccionista=? where idAccion=?", idComprador, idAccion);
+		db.executeUpdate("update accion set idAccionista=?, enVenta=0 where idAccion=?", idComprador, idAccion);
 		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones+1, "
 				+ "porcentajeCapital=porcentajeCapital+? where idAccionista=?", porcentaje, idComprador);
 		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones-1, "
@@ -940,5 +940,11 @@ public class Persistence {
 
 	public void updatePonerEnVenta(Integer id) {
 		db.executeUpdate("update accion set enVenta=1 where idAccion=?", id);
+	}
+
+	public int countAccionistas() {
+		List<Accionista> acc = 
+				db.executeQueryPojo(Accionista.class, "select * from accionista");
+		return acc.size();
 	}
 }
