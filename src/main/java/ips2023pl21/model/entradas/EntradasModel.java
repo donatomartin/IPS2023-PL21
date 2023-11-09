@@ -10,7 +10,6 @@ import ips2023pl21.util.Util;
 public class EntradasModel {
 	
 	
-//	private Database db=new Database();
 	private int asientoInicial=-1;
 	private int fila;
 	private Persistence p=Persistence.getInstance();

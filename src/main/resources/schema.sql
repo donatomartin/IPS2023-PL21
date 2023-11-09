@@ -124,7 +124,8 @@ create table PartidoAbonado(
 -- Abonado
 drop table Abonado;
 create table Abonado(
-	id varchar(30) primary key not null
+	id integer primary key autoincrement,
+	nombre varchar(70)
 );
 
 -- Entrevista

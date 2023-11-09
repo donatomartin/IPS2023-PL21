@@ -642,6 +642,11 @@ public class Persistence {
 				asiento);
 
 	}
+	
+	public void insertAbonado(String nombre) {
+		db.executeUpdate("insert into abonado (nombre) values (?)", nombre);
+		
+	}
 
 	// HORARIO JARDINERIA
 
@@ -947,4 +952,6 @@ public class Persistence {
 				db.executeQueryPojo(Accionista.class, "select * from accionista");
 		return acc.size();
 	}
+
+	
 }

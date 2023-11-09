@@ -550,7 +550,8 @@ public class Frame22733 extends JFrame{
 	private void comprar() {
 		if(service.comprar(getButtonGroupTribuna().getSelection().getActionCommand(),
 				getButtonGroupoSeccion().getSelection().getActionCommand(),
-				(int)spinnerFila.getValue(), (int)spinnerAsiento.getValue(),txtFieldFechaNacimiento.getText())) {
+				(int)spinnerFila.getValue(), (int)spinnerAsiento.getValue(),txtFieldFechaNacimiento.getText(),
+				txtFieldNombre.getText())) {
 			JOptionPane.showMessageDialog(null, "Compra realizada");
 		}else {
 			JOptionPane.showMessageDialog(null, "Asiento ocupado");
