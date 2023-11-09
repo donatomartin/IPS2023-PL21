@@ -894,6 +894,8 @@ public class Frame21912 extends JFrame {
 			spFechaPuntual.setModel(model);
 
 			// Establece el formato de la fecha para que no muestre las horas
+			JSpinner.DateEditor editor = new JSpinner.DateEditor(spFechaPuntual, "dd-MM-yyyy");
+			spFechaPuntual.setEditor(editor);
 
 			spFechaPuntual.addChangeListener(new ChangeListener() {
 				public void stateChanged(ChangeEvent e) {

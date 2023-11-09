@@ -10,7 +10,6 @@ import ips2023pl21.util.Util;
 
 public class Service21915 {
 	
-	public static final int SUCCESS = 100;
 	public static final int JUGADOR_NULL = 200;
 	public static final int MEDIO_NULL = 300;
 	public static final int CONCURRENCE_ERROR = 400;
@@ -55,23 +54,27 @@ public class Service21915 {
 		return empleado.getNombre() + " " + empleado.getApellido();
 	}
 
-	public int addEntrevista(String datosMedio) {
+	public State addEntrevista(String datosMedio) {
 		
 		if (empleado == null)
-			return Service21915.JUGADOR_NULL;
+			return State.EMPLEADONULL;
 
 		if (datosMedio.isBlank())
-			return Service21915.MEDIO_NULL;
+			return State.MEDIONULL;
 		
 		try {
 			persistence.insertHorarioEntrevista(fecha, datosMedio, horaInicio, horaFin, empleado.getEid());			
-		} catch (Exception e) {
-			return Service21915.CONCURRENCE_ERROR;
+		} 
+		catch (IllegalStateException ise) {
+			return State.INTERFIEREENTRENAMIENTO;
+		}
+		catch (Exception e) {
+			return State.DBERROR;
 		}
 		
 		empleado = null;
 		
-		return Service21915.SUCCESS;
+		return State.SUCCESS;
 	}
 
 }

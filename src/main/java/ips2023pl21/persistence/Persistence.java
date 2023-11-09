@@ -64,13 +64,15 @@ public class Persistence {
 
 	public void insertHorarioEntrevista(String fecha, String datosMedio, String horaInicio, String horaFin, int eid)
 			throws IllegalStateException {
+		checkHorarioEntrenamiento(eid, fecha, horaInicio, horaFin);
+		
 		db.executeUpdate(
 				"insert into HorarioEntrevista (fechaEntrevista, datosMedio, horaInicio, horaFin, eid) values (?,?,?,?,?)",
 				fecha, datosMedio, horaInicio, horaFin, eid);
 	}
 
 	public void deleteHorarioEntrevista(int eqid, String fecha, String horaInicio, String horaFin) {
-				
+
 		db.executeUpdate(
 				"delete from HorarioEntrevista where eid=? and fechaEntrevista=? and horaInicio=? and horaFin=?", eqid,
 				fecha, horaInicio, horaFin);
@@ -491,40 +493,40 @@ public class Persistence {
 //			ret.setFilial(o[3]);
 		return ret;
 	}
-	
+
 	public int getEquipoIdByEmpleadoId(int eid) {
-		
+
 		try {
 			var res = db.executeQueryArray("select eqid from juega where eid=?", eid);
-			String str = (String)res.get(0)[0].toString();
+			String str = (String) res.get(0)[0].toString();
 			return Integer.parseInt(str);
 		} catch (Exception e) {
-			return -1;			
+			return -1;
 		}
-		
+
 	}
-	
+
 	private int getEmpleadoIdByEquipoId(int eqid) {
 		try {
 			var res = db.executeQueryArray("select eid from juega where eqid=?", eqid);
-			String str = (String)res.get(0)[0].toString();
+			String str = (String) res.get(0)[0].toString();
 			return Integer.parseInt(str);
 		} catch (Exception e) {
-			return -1;			
+			return -1;
 		}
 	}
-	
+
 	public String getNombreEquipoByEmpleadoId(int eid) {
-		
+
 		try {
 			int id = getEquipoIdByEmpleadoId(eid);
 			var res = db.executeQueryArray("select nombre from equipo where id=?", id);
 			var res1 = (String) res.get(0)[0];
-			return res1;			
+			return res1;
 		} catch (Exception e) {
 			return null;
 		}
-		
+
 	}
 
 	// PARTIDOS
@@ -741,7 +743,7 @@ public class Persistence {
 		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
 
 		for (HorarioEntrenamiento he : selectHorariosEntrenamiento()) {
-			if (he.getFechaEntrenamiento().equals(fecha) && (he.getIid() == id || he.getEid() == id)) {
+			if (he.getFechaEntrenamiento().equals(fecha) && (he.getIid() == id || he.getEid() == getEquipoIdByEmpleadoId(id))) {
 
 				LocalTime pHoraInicio = he.getParsedInicio();
 				LocalTime pHoraFin = he.getParsedFin();
