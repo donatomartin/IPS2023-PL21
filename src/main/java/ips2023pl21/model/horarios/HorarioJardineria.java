@@ -56,7 +56,7 @@ public class HorarioJardineria {
 		Instalacion i = Persistence.getInstance().getInstalacion(iid);
 		String is = i.getNombreInstalacion();
 		
-		return "(%s | %s - %s) %-20s %s".formatted(fechaJardineria, horaInicio, horaFin, js, is);
+		return "(%s | %s - %s)   %-20s %s".formatted(fechaJardineria, horaInicio, horaFin, js, is);
 	}
 	public LocalTime getParsedInicio() {
 		return Util.stringHoraToLocalTime(horaInicio);

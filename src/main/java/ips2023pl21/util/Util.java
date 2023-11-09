@@ -2,6 +2,7 @@ package ips2023pl21.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.Format;
+import java.text.Normalizer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
@@ -22,6 +23,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class Util {
 	private Util() {
 	    throw new IllegalStateException("Utility class");
+	}
+	
+	/**
+	 * Lowercase and remove special characters like dots, commas, accents or apostrophes
+	 * @param str
+	 * @return
+	 */
+	public static String normalizeString(String str) {
+	    String temp = Normalizer.normalize(str, Normalizer.Form.NFD);
+	    Pattern pattern = Pattern.compile("\\p{InCombiningDiacriticalMarks}+");
+	    temp = pattern.matcher(temp).replaceAll("");
+	    temp = temp.replaceAll("[^\\p{Alnum}]", "").toLowerCase();
+	    return temp;
 	}
 	
 	/**

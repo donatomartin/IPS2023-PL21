@@ -83,6 +83,7 @@ public class Frame22784 extends JFrame {
 	private JLabel lblNewLabel;
 	private JButton btnActualizar;
 	private JPanel panel;
+	private JLabel lbSeleccionados;
 
 	/**
 	 * Create the frame.
@@ -240,7 +241,7 @@ public class Frame22784 extends JFrame {
 		if (pnSeleccionHorarios == null) {
 			pnSeleccionHorarios = new JPanel();
 			pnSeleccionHorarios.setLayout(new BorderLayout(0, 0));
-			pnSeleccionHorarios.add(getPanel_2(), BorderLayout.CENTER);
+			pnSeleccionHorarios.add(getPnSpinners(), BorderLayout.CENTER);
 		}
 		return pnSeleccionHorarios;
 	}
@@ -253,9 +254,7 @@ public class Frame22784 extends JFrame {
 			listJardineros.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					if (e.getClickCount() == 2) {
-						seleccionaJardinero(listJardineros.locationToIndex(e.getPoint()));
-					}
+					seleccionaJardinero(listJardineros.locationToIndex(e.getPoint()));
 				}
 
 			});
@@ -339,7 +338,7 @@ public class Frame22784 extends JFrame {
 		return btnHorarios;
 	}
 
-	private JPanel getPanel_2() {
+	private JPanel getPnSpinners() {
 		if (pnSpinners == null) {
 			pnSpinners = new JPanel();
 			pnSpinners.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -352,52 +351,64 @@ public class Frame22784 extends JFrame {
 				gl_pnSpinners.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_pnSpinners.createSequentialGroup()
 						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING)
-							.addGroup(Alignment.TRAILING, gl_pnSpinners.createSequentialGroup()
-								.addComponent(getSpHoraInicio(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
-							.addComponent(getSpFecha(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-							.addGroup(Alignment.TRAILING, gl_pnSpinners.createSequentialGroup()
-								.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(lbJardinero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addComponent(lbInstalacion, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
-								.addPreferredGap(ComponentPlacement.UNRELATED)
-								.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING, false)
-									.addComponent(getTxJardinero())
-									.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)))
-							.addComponent(getBtnAddHorario(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-							.addComponent(getBtnActualizaJardineros(), Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 213, Short.MAX_VALUE)
-							.addGroup(Alignment.TRAILING, gl_pnSpinners.createSequentialGroup()
-								.addComponent(getBtnHorarios(), GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
-								.addPreferredGap(ComponentPlacement.RELATED)
-								.addComponent(getBtnJardinerosAtras())))
-						.addGap(20))
+							.addGroup(gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
+								.addGroup(gl_pnSpinners.createSequentialGroup()
+									.addContainerGap()
+									.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING, false)
+										.addComponent(lbJardinero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+										.addComponent(lbInstalacion, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING)
+										.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+										.addComponent(getTxJardinero(), GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
+									.addGap(35))
+								.addGroup(gl_pnSpinners.createSequentialGroup()
+									.addGroup(gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
+										.addComponent(getSpFecha(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+										.addComponent(getBtnActualizaJardineros(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+										.addComponent(getBtnAddHorario(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+										.addGroup(gl_pnSpinners.createSequentialGroup()
+											.addComponent(getBtnHorarios(), GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(getBtnJardinerosAtras()))
+										.addGroup(gl_pnSpinners.createSequentialGroup()
+											.addContainerGap()
+											.addComponent(getSpHoraInicio(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+											.addPreferredGap(ComponentPlacement.UNRELATED)
+											.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)))
+									.addGap(35)))
+							.addGroup(gl_pnSpinners.createSequentialGroup()
+								.addContainerGap()
+								.addComponent(getLbSeleccionados())))
+						.addGap(0))
 			);
 			gl_pnSpinners.setVerticalGroup(
 				gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
 					.addGroup(gl_pnSpinners.createSequentialGroup()
 						.addContainerGap()
+						.addComponent(getLbSeleccionados())
+						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lbInstalacion)
-							.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lbInstalacion))
+						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lbJardinero)
-							.addComponent(getTxJardinero(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
+							.addComponent(getTxJardinero(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lbJardinero))
+						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(getSpFecha(), GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
 						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
 							.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(getSpHoraInicio(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(getBtnActualizaJardineros())
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(getBtnAddHorario())
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
-							.addComponent(getBtnJardinerosAtras())
-							.addComponent(getBtnHorarios()))
+							.addComponent(getBtnHorarios())
+							.addComponent(getBtnJardinerosAtras()))
 						.addContainerGap())
 			);
 			pnSpinners.setLayout(gl_pnSpinners);
@@ -682,5 +693,12 @@ public class Frame22784 extends JFrame {
 			panel.add(getBtnHorariosAtras());
 		}
 		return panel;
+	}
+	private JLabel getLbSeleccionados() {
+		if (lbSeleccionados == null) {
+			lbSeleccionados = new JLabel("SELECCIONADOS");
+			lbSeleccionados.setFont(new Font("Tahoma", Font.BOLD, 13));
+		}
+		return lbSeleccionados;
 	}
 }

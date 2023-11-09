@@ -7,10 +7,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
@@ -127,7 +125,7 @@ public class Persistence {
 	}
 
 	public List<Empleado> selectJardineros() {
-		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardinero'");
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardineria'");
 	}
 
 	public List<Empleado> selectJardinerosLibres(String fecha, String horaInicio, String horaFin, int iid) {
@@ -151,7 +149,6 @@ public class Persistence {
 
 			if (contenido(sHoraInicio, sHoraFin, pHoraInicio, pHoraFin))
 				idsJardinerosLibres.add(fs.getEid());
-
 		}
 
 		for (FranjaPuntual fp : getFranjasPuntuales(fecha)) {
@@ -165,7 +162,8 @@ public class Persistence {
 		if (idsJardinerosLibres.size() == 0)
 			return jardinerosLibres;
 
-		for (HorarioJardineria jardineria : selectHorariosJardineria(iid)) {
+		for (HorarioJardineria jardineria : selectHorariosJardineria()) {
+
 			if (jardineria.getFechaJardineria().equals(fecha)) {
 
 				LocalTime pHoraInicio = jardineria.getParsedInicio();
@@ -232,6 +230,8 @@ public class Persistence {
 	public void insertarEmpleado(String nombre, String apellido, String dni, String fechaNacimiento, double salario,
 			String telefono, String tipo, String posicion) {
 
+		posicion = Util.normalizeString(posicion);
+		
 		db.executeUpdate(
 				"insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values (?,?,?,?,?,?,?,?)",
 				nombre, apellido, dni, fechaNacimiento, salario, telefono, tipo, posicion);
@@ -323,17 +323,12 @@ public class Persistence {
 	}
 
 	public List<FranjaSemanal> getFranjasSemanales(int diaSem) {
+		
 		List<FranjaSemanal> franjas = db
 				.executeQueryPojo(FranjaSemanal.class, "select * from FranjaSemanal where diaSemana=?", diaSem).stream()
 				.sorted().collect(Collectors.toList());
 
-		Map<Integer, FranjaSemanal> firstByDayOfWeek = franjas.stream()
-				.collect(Collectors.toMap(FranjaSemanal::getDiaSemana, Function.identity(), (a, b) -> b));
-
-		List<FranjaSemanal> result = franjas.stream().filter(f -> f.equals(firstByDayOfWeek.get(f.getDiaSemana())))
-				.collect(Collectors.toList());
-
-		return result;
+		return franjas;
 	}
 
 	// HORARIO PUNTUAL
