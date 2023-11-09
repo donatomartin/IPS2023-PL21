@@ -146,5 +146,9 @@ public class Service22748_9 {
 	public void ponerEnVenta(Integer id) {
 		p.updatePonerEnVenta(id);
 	}
+
+	public int countAccionistas() {
+		return p.countAccionistas();
+	}
 	
 }
