@@ -37,7 +37,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
-import javax.swing.BoxLayout;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
