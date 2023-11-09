@@ -839,7 +839,7 @@ public class Persistence {
 		Calendar c = Calendar.getInstance();
 		String fecha = c.get(Calendar.YEAR) + "-" + c.get(Calendar.MONTH) + "-" + c.get(Calendar.DAY_OF_MONTH);
 
-		db.executeUpdate("insert into venta(concepto,fecha,hora,minuto,cuantia) values (?,?,?,?,?)", "merchandaising",
+		db.executeUpdate("insert into venta(concepto,fecha,hora,minuto,cuantia) values (?,?,?,?,?)", "merchandising",
 				fecha, c.get(Calendar.HOUR), c.get(Calendar.MINUTE), tl.getPrecioTotal());
 
 		for (Merchandaising a : tl.getSeleccionado()) {

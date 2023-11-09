@@ -79,9 +79,10 @@ public class Frame22749 extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 695, 468);
+		setBounds(100, 100, 996, 520);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setMinimumSize(getSize());
 		setLocationRelativeTo(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -509,6 +510,7 @@ public class Frame22749 extends JFrame {
 					if (confirmarAvance()) {
 						avanzarFase();
 						actualizacionBotones();
+						actualizarAccionesVendidas();
 					}
 				}
 			});
