@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
+	private static Service22748_9 s22748_9 = new Service22748_9();
 	private JPanel contentPane;
 	private JPanel pnCentro;
 	private JPanel pnNorte;
@@ -39,6 +40,8 @@ public class MainFrame extends JFrame {
 	private JButton btn22759;
 	private JButton btn22784;
 	private JButton btn22785;
+	private JButton btn22748;
+	private JButton btn22749;
 	private JButton btnNewButton;
 	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
@@ -238,6 +241,33 @@ public class MainFrame extends JFrame {
 		});
 	}
 	
+
+	private static void run22748() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame22748 frame = new Frame22748(s22748_9);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+private static void run22749() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame22749 frame = new Frame22749(s22748_9);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
 			pnCentro = new JPanel();
@@ -256,6 +286,8 @@ public class MainFrame extends JFrame {
 			pnCentro.add(getBtn22759());
 			pnCentro.add(getBtn22784());
 			pnCentro.add(getBtn22785());
+			pnCentro.add(getBtn22748());
+			pnCentro.add(getBtn22749());
 			pnCentro.add(getBtnNewButton());
 			pnCentro.add(getBtnNewButton_1());
 			pnCentro.add(getBtnNewButton_2());
@@ -439,6 +471,33 @@ public class MainFrame extends JFrame {
 		}
 		return btn22785;
 	}
+	
+	private JButton getBtn22748() {
+		if (btn22748 == null) {
+			btn22748 = new JButton("<html><p>Portal de accionistas</h1><p>(22748)</p><html>");
+			btn22748.setBackground(new Color(255, 228, 225));
+			btn22748.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run22748();
+				}
+			});
+		}
+		return btn22748;
+	}
+	
+	private JButton getBtn22749() {
+		if (btn22749 == null) {
+			btn22749 = new JButton("<html><p>Ampliaciones de capital</h1><p>(22749)</p><html>");
+			btn22749.setBackground(new Color(255, 228, 181));
+			btn22749.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run22749();
+				}
+			});
+		}
+		return btn22749;
+	}
+	
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new JButton("");
