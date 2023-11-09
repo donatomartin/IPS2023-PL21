@@ -39,8 +39,6 @@ insert into Juega(eqid, eid) values
     (2,12),
     (3,13);
 
-
-
 delete from reserva;
 insert into reserva(nombreusuario,cuentabancaria,idinstalacion,precioreserva,fechareserva,horaentrada,horasalida,minutoentrada,minutosalida,fechaventa,horaventa,minutoventa) values
 	('aaa','1234567-k', 1,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24),
@@ -89,7 +87,48 @@ delete from Partido;
 insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1','1', 'EquipoVisitante', '2023-11-09', 10);
 insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('2','1', 'EquipoVisitante2', '2023-11-16', 0);
 
-
-
 delete from Abonado;
 insert into Abonado(id) values('1'); 
+
+delete from accion;
+insert into accion(idAccionista,precioCompra,enVenta,precioVenta) values
+	(1, 34.67, 1, 34.67),
+	(1, 34.67, 0, 34.67),
+	(2, 34.67, 1, 34.67),
+	(2, 34.67, 0, 34.67),
+	(1, 34.67, 1, 34.67),
+	(1, 34.67, 0, 34.67),
+	(2, 34.67, 1, 34.67),
+	(2, 34.67, 0, 34.67),
+	(1, 34.67, 1, 34.67),
+	(1, 34.67, 0, 34.67),
+	(2, 34.67, 1, 34.67),
+	(2, 34.67, 0, 34.67),
+	(1, 34.67, 1, 34.67),
+	(1, 34.67, 0, 34.67),
+	(2, 34.67, 1, 34.67),
+	(2, 34.67, 0, 34.67),
+	(1, 34.67, 1, 34.67),
+	(1, 34.67, 0, 34.67),
+	(2, 34.67, 1, 34.67),
+	(2, 34.67, 0, 34.67),
+	(1, 34.67, 1, 34.67),
+	(1, 34.67, 0, 34.67),
+	(2, 34.67, 1, 34.67),
+	(2, 34.67, 0, 34.67),
+	(1, 34.67, 1, 34.67),
+	(1, 34.67, 0, 34.67),
+	(2, 34.67, 1, 34.67),
+	(2, 34.67, 0, 34.67),
+	(1, 34.67, 1, 34.67),
+	(2, 34.67, 0, 34.67);
+	
+delete from accionista;
+insert into accionista(nombreAccionista,apellidoAccionista,dniAccionista,cuentaBancaria,numeroAcciones,porcentajeCapital) values
+	('aaa', 'bbb', '1234K', 'abcd', 15, 50.0),
+	('ccc', 'ddd', '5678X', 'efgh', 15, 50.0),
+	('eee', 'fff', '9012Z', 'ijkl', 0, 0.0);
+	
+delete from ampliacioncapital;
+insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales) values
+	(0,0,0,1040.1,34.67,30);
