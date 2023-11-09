@@ -127,7 +127,7 @@ public class Persistence {
 	}
 
 	public List<Empleado> selectJardineros() {
-		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardinero'");
+		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardineria'");
 	}
 
 	public List<Empleado> selectJardinerosLibres(String fecha, String horaInicio, String horaFin, int iid) {

@@ -97,7 +97,7 @@ public class Empleado {
 
 	@Override
 	public String toString() {
-		return String.format("%4d %-30s %s", eid, apellido + " " + nombre, dni);
+		return String.format("%4d %-20s %-15s %s", eid, apellido + " " + nombre, dni, "(" + posicion + ")");
 	}
 	
 	public String getNombreEquipo() {
