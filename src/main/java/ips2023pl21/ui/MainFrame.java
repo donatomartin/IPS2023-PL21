@@ -43,8 +43,6 @@ public class MainFrame extends JFrame {
 	private JButton btn22748;
 	private JButton btn22749;
 	private JButton btnNewButton;
-	private JButton btnNewButton_1;
-	private JButton btnNewButton_2;
 
 	/**
 	 * Create the frame.
@@ -289,8 +287,6 @@ private static void run22749() {
 			pnCentro.add(getBtn22748());
 			pnCentro.add(getBtn22749());
 			pnCentro.add(getBtnNewButton());
-			pnCentro.add(getBtnNewButton_1());
-			pnCentro.add(getBtnNewButton_2());
 		}
 		return pnCentro;
 	}
@@ -504,19 +500,5 @@ private static void run22749() {
 			btnNewButton.setBackground(new Color(255, 228, 225));
 		}
 		return btnNewButton;
-	}
-	private JButton getBtnNewButton_1() {
-		if (btnNewButton_1 == null) {
-			btnNewButton_1 = new JButton("");
-			btnNewButton_1.setBackground(new Color(255, 228, 181));
-		}
-		return btnNewButton_1;
-	}
-	private JButton getBtnNewButton_2() {
-		if (btnNewButton_2 == null) {
-			btnNewButton_2 = new JButton("");
-			btnNewButton_2.setBackground(new Color(255, 228, 225));
-		}
-		return btnNewButton_2;
 	}
 }
