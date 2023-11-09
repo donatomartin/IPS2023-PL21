@@ -593,7 +593,7 @@ public class Frame22733 extends JFrame{
 			pnNombreCliente = new JPanel();
 			pnNombreCliente.setBackground(Color.WHITE);
 			
-			JLabel lbIntroduzcaNombre = new JLabel("Introduzca su nombre:");
+			JLabel lbIntroduzcaNombre = new JLabel("Introduzca su nombre y apellidos:");
 			lbIntroduzcaNombre.setBackground(Color.WHITE);
 			lbIntroduzcaNombre.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			pnNombreCliente.add(lbIntroduzcaNombre);
