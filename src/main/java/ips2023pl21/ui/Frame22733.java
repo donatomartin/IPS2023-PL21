@@ -550,7 +550,8 @@ public class Frame22733 extends JFrame{
 	private void comprar() {
 		if(service.comprar(getButtonGroupTribuna().getSelection().getActionCommand(),
 				getButtonGroupoSeccion().getSelection().getActionCommand(),
-				(int)spinnerFila.getValue(), (int)spinnerAsiento.getValue(),txtFieldFechaNacimiento.getText())) {
+				(int)spinnerFila.getValue(), (int)spinnerAsiento.getValue(),txtFieldFechaNacimiento.getText(),
+				txtFieldNombre.getText())) {
 			JOptionPane.showMessageDialog(null, "Compra realizada");
 		}else {
 			JOptionPane.showMessageDialog(null, "Asiento ocupado");
@@ -593,7 +594,7 @@ public class Frame22733 extends JFrame{
 			pnNombreCliente = new JPanel();
 			pnNombreCliente.setBackground(Color.WHITE);
 			
-			JLabel lbIntroduzcaNombre = new JLabel("Introduzca su nombre:");
+			JLabel lbIntroduzcaNombre = new JLabel("Introduzca su nombre y apellidos:");
 			lbIntroduzcaNombre.setBackground(Color.WHITE);
 			lbIntroduzcaNombre.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			pnNombreCliente.add(lbIntroduzcaNombre);
