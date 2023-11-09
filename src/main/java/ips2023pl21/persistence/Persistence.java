@@ -713,7 +713,7 @@ public class Persistence {
 			LocalTime pHoraInicio = he.getParsedInicio();
 			LocalTime pHoraFin = he.getParsedFin();
 
-			if (solapa(pHoraInicio, pHoraFin, sHoraInicio, sHoraFin) && (eqid == getEmpleadoIdByEquipoId(eqid))) {
+			if (solapa(pHoraInicio, pHoraFin, sHoraInicio, sHoraFin) && (he.getEid() == getEmpleadoIdByEquipoId(eqid))) {
 				if (ui.confirm("Estás seguro? Hay entrevistas que serán eliminadas si continúas.")) {
 					deleteHorarioEntrevista(he.getEid(), fecha, Util.localTimeToString(pHoraInicio),
 							Util.localTimeToString(pHoraFin));
