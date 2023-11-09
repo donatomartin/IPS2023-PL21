@@ -40,6 +40,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.text.DateFormatter;
 
 import java.awt.GridLayout;
+import javax.swing.JTextField;
 
 
 public class Frame22733 extends JFrame{
@@ -85,6 +86,8 @@ public class Frame22733 extends JFrame{
 	private JPanel pnIntroduccion;
 	private JPanel pnDatos;
 	private JLabel lbAsientosOcupados;
+	private JPanel pnNombreCliente;
+	private JTextField txtFieldNombre;
 	
 	public Frame22733(Service22733 service) {
 		this.service=service;
@@ -485,6 +488,7 @@ public class Frame22733 extends JFrame{
 		if (panelFechaNacimiento == null) {
 			panelFechaNacimiento = new JPanel();
 			panelFechaNacimiento.setBackground(Color.WHITE);
+			panelFechaNacimiento.add(getPnNombreCliente());
 			panelFechaNacimiento.add(getLbFechaNacimiento());
 			panelFechaNacimiento.add(getTxtFieldFechaNacimiento());
 		}
@@ -583,6 +587,23 @@ public class Frame22733 extends JFrame{
 			lbAsientosOcupados.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		}
 		return lbAsientosOcupados;
+	}
+	private JPanel getPnNombreCliente() {
+		if (pnNombreCliente == null) {
+			pnNombreCliente = new JPanel();
+			pnNombreCliente.setBackground(Color.WHITE);
+			
+			JLabel lbIntroduzcaNombre = new JLabel("Introduzca su nombre:");
+			lbIntroduzcaNombre.setBackground(Color.WHITE);
+			lbIntroduzcaNombre.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			pnNombreCliente.add(lbIntroduzcaNombre);
+			
+			txtFieldNombre = new JTextField();
+			txtFieldNombre.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			pnNombreCliente.add(txtFieldNombre);
+			txtFieldNombre.setColumns(10);
+		}
+		return pnNombreCliente;
 	}
 	}
 
