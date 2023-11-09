@@ -73,6 +73,8 @@ public class Service22784 {
 	}
 
 	public void seleccionaJardinero(String jardinero) {
+		if (jardinero.isBlank())
+			return;
 		try {
 			this.jardinero = p.getEmpleado(Integer.parseInt(jardinero.strip().split(" ")[0]));
 		} catch (Exception e) {

@@ -41,6 +41,7 @@ import java.util.Calendar;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.BoxLayout;
 
 public class Frame22785 extends JFrame implements UserInterface {
 
@@ -169,7 +170,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 		if (pnSeleccionInstalacion == null) {
 			pnSeleccionInstalacion = new JPanel();
 			pnSeleccionInstalacion.setBorder(new EmptyBorder(5, 5, 5, 5));
-			pnSeleccionInstalacion.setLayout(new BorderLayout(0, 0));
+			pnSeleccionInstalacion.setLayout(new BorderLayout(5, 5));
 			pnSeleccionInstalacion.add(getPnListInstalacion());
 			pnSeleccionInstalacion.add(getBtnLogout(), BorderLayout.SOUTH);
 		}
@@ -179,6 +180,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JPanel getPnSeleccionEquipo() {
 		if (pnSeleccionEquipo == null) {
 			pnSeleccionEquipo = new JPanel();
+			pnSeleccionEquipo.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnSeleccionEquipo.setLayout(new GridLayout(0, 2, 0, 0));
 			pnSeleccionEquipo.add(getPnListEquipos());
 			pnSeleccionEquipo.add(getPnSeleccionHorarios());
@@ -189,7 +191,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JPanel getPnListInstalacion() {
 		if (pnListInstalacion == null) {
 			pnListInstalacion = new JPanel();
-			pnListInstalacion.setLayout(new BorderLayout(0, 0));
+			pnListInstalacion.setLayout(new BorderLayout(0, 5));
 			JScrollPane scpn = new JScrollPane(getListInstalaciones());
 			pnListInstalacion.add(scpn);
 			pnListInstalacion.add(getPnFiltroInstalacion(), BorderLayout.NORTH);
@@ -225,6 +227,8 @@ public class Frame22785 extends JFrame implements UserInterface {
 	}
 
 	private void seleccionaInstalacion(int index) {
+		if (index == -1)
+			return;
 		service.seleccionaInstalacion(instalacionesListModel.getElementAt(index));
 		getTxInstalacion().setText(service.getNombreInstalacion());
 		((CardLayout) getPnWork().getLayout()).show(getPnWork(), "pnSeleccionEquipos");
@@ -234,7 +238,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JPanel getPnListEquipos() {
 		if (pnListEquipos == null) {
 			pnListEquipos = new JPanel();
-			pnListEquipos.setLayout(new BorderLayout(0, 0));
+			pnListEquipos.setLayout(new BorderLayout(0, 5));
 			JScrollPane scpn = new JScrollPane(getListEquipos());
 			pnListEquipos.add(scpn);
 			pnListEquipos.add(getPnFiltroEquipo(), BorderLayout.NORTH);
@@ -279,6 +283,8 @@ public class Frame22785 extends JFrame implements UserInterface {
 	}
 
 	private void seleccionaEquipo(int index) {
+		if (index == -1)
+			return;
 		service.seleccionaEquipo(equiposListModel.getElementAt(index));
 		getTxEquipo().setText(service.getNombreEquipo());
 	}
@@ -299,7 +305,6 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JPanel getPnHorariosAsignados() {
 		if (pnHorariosAsignados == null) {
 			pnHorariosAsignados = new JPanel();
-			pnHorariosAsignados.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnHorariosAsignados.setLayout(new BorderLayout(0, 0));
 			pnHorariosAsignados.add(getPnBotonesHorarios(), BorderLayout.SOUTH);
 			JScrollPane scpn = new JScrollPane(getListHorariosAsignados());
@@ -624,8 +629,8 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JPanel getPnFiltroInstalacion() {
 		if (pnFiltroInstalacion == null) {
 			pnFiltroInstalacion = new JPanel();
-			pnFiltroInstalacion.setLayout(new BorderLayout(0, 0));
-			pnFiltroInstalacion.add(getLbFiltraInstalaciones(), BorderLayout.EAST);
+			pnFiltroInstalacion.setLayout(new BoxLayout(pnFiltroInstalacion, BoxLayout.Y_AXIS));
+			pnFiltroInstalacion.add(getLbFiltraInstalaciones());
 			pnFiltroInstalacion.add(getTxInstalacionFilter());
 		}
 		return pnFiltroInstalacion;
@@ -655,9 +660,9 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JPanel getPnFiltroEquipo() {
 		if (pnFiltroEquipo == null) {
 			pnFiltroEquipo = new JPanel();
-			pnFiltroEquipo.setLayout(new BorderLayout(0, 0));
+			pnFiltroEquipo.setLayout(new BoxLayout(pnFiltroEquipo, BoxLayout.Y_AXIS));
+			pnFiltroEquipo.add(getLbEquipoFilter());
 			pnFiltroEquipo.add(getTxEquipoFilter());
-			pnFiltroEquipo.add(getLbEquipoFilter(), BorderLayout.EAST);
 		}
 		return pnFiltroEquipo;
 	}

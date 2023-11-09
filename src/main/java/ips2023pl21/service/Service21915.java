@@ -38,7 +38,7 @@ public class Service21915 {
 	}
 
 	public List<String> getJugadoresLibresString(String filter) {
-		return persistence.selectJugadoresLibres(fecha).stream().map(x -> x.toString())
+		return persistence.selectJugadoresLibres(fecha).stream().map(x -> x.jugadorToString())
 				.filter(x -> x.toLowerCase().contains(filter.toLowerCase())).collect(Collectors.toList());
 	}
 

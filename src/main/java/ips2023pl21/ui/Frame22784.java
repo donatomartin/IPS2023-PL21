@@ -171,6 +171,7 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnSeleccionJardineros() {
 		if (pnSeleccionJardineros == null) {
 			pnSeleccionJardineros = new JPanel();
+			pnSeleccionJardineros.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnSeleccionJardineros.setLayout(new GridLayout(0, 2, 0, 0));
 			pnSeleccionJardineros.add(getPnListJardineros());
 			pnSeleccionJardineros.add(getPnSeleccionHorarios());
@@ -201,7 +202,6 @@ public class Frame22784 extends JFrame {
 						seleccionaInstalacion(listInstalaciones.locationToIndex(e.getPoint()));
 					}
 				}
-
 			});
 			listInstalaciones.addKeyListener(new KeyAdapter() {
 				public void keyPressed(KeyEvent evt) {
@@ -216,6 +216,8 @@ public class Frame22784 extends JFrame {
 	}
 
 	private void seleccionaInstalacion(int index) {
+		if (index == -1)
+			return;
 		service.seleccionaInstalacion(instalacionesListModel.getElementAt(index));
 		getTxInstalacion().setText(service.getNombreInstalacion());
 		((CardLayout) getPnWork().getLayout()).show(getPnWork(), "pnSeleccionJardineros");
@@ -225,7 +227,7 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnListJardineros() {
 		if (pnListJardineros == null) {
 			pnListJardineros = new JPanel();
-			pnListJardineros.setLayout(new BorderLayout(0, 0));
+			pnListJardineros.setLayout(new BorderLayout(5, 5));
 			JScrollPane scpn = new JScrollPane(getListJardineros());
 			pnListJardineros.add(scpn);
 			pnListJardineros.add(getPnFiltroJardinero(), BorderLayout.NORTH);
@@ -269,6 +271,8 @@ public class Frame22784 extends JFrame {
 	}
 
 	private void seleccionaJardinero(int index) {
+		if (index == -1)
+			return;
 		service.seleccionaJardinero(jardinerosListModel.getElementAt(index));
 		getTxJardinero().setText(service.getNombreJardinero());
 	}
@@ -644,9 +648,9 @@ public class Frame22784 extends JFrame {
 	private JPanel getPnFiltroJardinero() {
 		if (pnFiltroJardinero == null) {
 			pnFiltroJardinero = new JPanel();
-			pnFiltroJardinero.setLayout(new BorderLayout(0, 0));
+			pnFiltroJardinero.setLayout(new BoxLayout(pnFiltroJardinero, BoxLayout.Y_AXIS));
+			pnFiltroJardinero.add(getLblNewLabel());
 			pnFiltroJardinero.add(getTxJardineroFilter());
-			pnFiltroJardinero.add(getLblNewLabel(), BorderLayout.EAST);
 		}
 		return pnFiltroJardinero;
 	}

@@ -98,6 +98,7 @@ public class Frame21915 extends JFrame {
 	private JPanel pnFechaFranja;
 	private JPanel panel_2;
 	private JButton btnActualizar;
+	private JLabel lbFilterEmpleado;
 
     public Frame21915(Service21915 service) {
 		setTitle("Gestion Entrevistas");
@@ -129,6 +130,7 @@ public class Frame21915 extends JFrame {
     }
     
     private void loadEntrevistas() {
+    	entrevistasListModel.removeAllElements();
     	entrevistasListModel.addAll(service.getEntrevistas());
     }
     
@@ -167,7 +169,8 @@ public class Frame21915 extends JFrame {
     private JPanel getPnFiltro() {
         if (pnFiltro == null) {
             pnFiltro = new JPanel();
-            pnFiltro.setLayout(new BoxLayout(pnFiltro, BoxLayout.X_AXIS));
+            pnFiltro.setLayout(new BoxLayout(pnFiltro, BoxLayout.Y_AXIS));
+            pnFiltro.add(getLbFilterEmpleado());
             pnFiltro.add(getTxFilterEmpleado());
         }
         return pnFiltro;
@@ -256,16 +259,16 @@ public class Frame21915 extends JFrame {
 		if (pnCabecera == null) {
 			pnCabecera = new JPanel();
 			pnCabecera.setBackground(new Color(192, 192, 192));
-			pnCabecera.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnCabecera.setLayout(new BorderLayout(0, 0));
 			pnCabecera.add(getLbTitulo(), BorderLayout.NORTH);
-			pnCabecera.add(getLbSubtitulo(), BorderLayout.WEST);
+			pnCabecera.add(getLbSubtitulo());
 		}
 		return pnCabecera;
 	}
 	private JLabel getLbTitulo() {
 		if (lbTitulo == null) {
 			lbTitulo = new JLabel("Gestión de Entrevistas");
+			lbTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 			lbTitulo.setFont(new Font("Tahoma", Font.BOLD, 22));
 		}
 		return lbTitulo;
@@ -594,6 +597,7 @@ public class Frame21915 extends JFrame {
 	private JLabel getLbSubtitulo() {
 		if (lbSubtitulo == null) {
 			lbSubtitulo = new JLabel("Jugadores Profesionales");
+			lbSubtitulo.setHorizontalAlignment(SwingConstants.CENTER);
 			lbSubtitulo.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		}
 		return lbSubtitulo;
@@ -728,5 +732,11 @@ public class Frame21915 extends JFrame {
 			});
 		}
 		return btnActualizar;
+	}
+	private JLabel getLbFilterEmpleado() {
+		if (lbFilterEmpleado == null) {
+			lbFilterEmpleado = new JLabel("Filtra Jugador");
+		}
+		return lbFilterEmpleado;
 	}
 }

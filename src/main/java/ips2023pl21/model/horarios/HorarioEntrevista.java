@@ -50,8 +50,8 @@ public class HorarioEntrevista {
 	@Override
 	public String toString() {
 		Empleado e = Persistence.getInstance().getEmpleado(eid);
-		String js = e.getNombre() + " " + e.getApellido();
-		return "(%s | %s - %s) %-20s %s".formatted(fechaEntrevista, horaInicio, horaFin, js, datosMedio);
+		String js = e.getNombre() + " " + e.getApellido() + " " + e.getNombreEquipo();
+		return "(%s | %s - %s) %-20s (%s)".formatted(fechaEntrevista, horaInicio, horaFin, js, datosMedio);
 	}
 	public LocalTime getParsedInicio() {
 		return Util.stringHoraToLocalTime(horaInicio);

@@ -3,6 +3,8 @@ package ips2023pl21.model;
 import java.time.Year;
 import java.util.Objects;
 
+import ips2023pl21.persistence.Persistence;
+
 public class Empleado {
 	
 	public static int HORAS_DIARIAS_MAX = 8;
@@ -96,6 +98,17 @@ public class Empleado {
 	@Override
 	public String toString() {
 		return String.format("%4d %-30s %s", eid, apellido + " " + nombre, dni);
+	}
+	
+	public String getNombreEquipo() {
+		return Persistence.getInstance().getNombreEquipoByEmpleadoId(getEid());
+	}
+	
+	public String jugadorToString() {
+		String res = toString();
+		if (getNombreEquipo() != null)
+			return res + " " + getNombreEquipo();
+		return res;
 	}
 
 	public Object getAtributoTabla(int index) {

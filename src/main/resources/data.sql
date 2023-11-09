@@ -34,6 +34,13 @@ insert into Equipo(peid, seid, nombre, categoria, esFilial) values
     (69, 70, 'Barsa', 'Primera', 'true'),
     (69, 70, 'Madrid', 'Primera', 'true');
 
+insert into Juega(eqid, eid) values
+    (1,11),
+    (2,12),
+    (3,13);
+
+
+
 delete from reserva;
 insert into reserva(nombreusuario,cuentabancaria,idinstalacion,precioreserva,fechareserva,horaentrada,horasalida,minutoentrada,minutosalida,fechaventa,horaventa,minutoventa) values
 	('aaa','1234567-k', 1,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24),

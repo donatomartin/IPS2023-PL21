@@ -69,9 +69,10 @@ public class Persistence {
 				fecha, datosMedio, horaInicio, horaFin, eid);
 	}
 
-	public void deleteHorarioEntrevista(int eid, String fecha, String horaInicio, String horaFin) {
+	public void deleteHorarioEntrevista(int eqid, String fecha, String horaInicio, String horaFin) {
+				
 		db.executeUpdate(
-				"delete from HorarioEntrevista where eid=? and fechaEntrevista=? and horaInicio=? and horaFin=?", eid,
+				"delete from HorarioEntrevista where eid=? and fechaEntrevista=? and horaInicio=? and horaFin=?", eqid,
 				fecha, horaInicio, horaFin);
 	}
 
@@ -490,6 +491,41 @@ public class Persistence {
 //			ret.setFilial(o[3]);
 		return ret;
 	}
+	
+	public int getEquipoIdByEmpleadoId(int eid) {
+		
+		try {
+			var res = db.executeQueryArray("select eqid from juega where eid=?", eid);
+			String str = (String)res.get(0)[0].toString();
+			return Integer.parseInt(str);
+		} catch (Exception e) {
+			return -1;			
+		}
+		
+	}
+	
+	private int getEmpleadoIdByEquipoId(int eqid) {
+		try {
+			var res = db.executeQueryArray("select eid from juega where eqid=?", eqid);
+			String str = (String)res.get(0)[0].toString();
+			return Integer.parseInt(str);
+		} catch (Exception e) {
+			return -1;			
+		}
+	}
+	
+	public String getNombreEquipoByEmpleadoId(int eid) {
+		
+		try {
+			int id = getEquipoIdByEmpleadoId(eid);
+			var res = db.executeQueryArray("select nombre from equipo where id=?", id);
+			var res1 = (String) res.get(0)[0];
+			return res1;			
+		} catch (Exception e) {
+			return null;
+		}
+		
+	}
 
 	// PARTIDOS
 
@@ -639,7 +675,7 @@ public class Persistence {
 		return result;
 	}
 
-	public void insertHorarioEntrenamiento(int enid, int eid, int iid, String fecha, String horaInicio, String horaFin,
+	public void insertHorarioEntrenamiento(int enid, int eqid, int iid, String fecha, String horaInicio, String horaFin,
 			UserInterface ui) {
 
 		LocalTime sHoraInicio = Util.stringHoraToLocalTime(horaInicio);
@@ -675,7 +711,7 @@ public class Persistence {
 			LocalTime pHoraInicio = he.getParsedInicio();
 			LocalTime pHoraFin = he.getParsedFin();
 
-			if (solapa(pHoraInicio, pHoraFin, sHoraInicio, sHoraFin)) {
+			if (solapa(pHoraInicio, pHoraFin, sHoraInicio, sHoraFin) && (eqid == getEmpleadoIdByEquipoId(eqid))) {
 				if (ui.confirm("Estás seguro? Hay entrevistas que serán eliminadas si continúas.")) {
 					deleteHorarioEntrevista(he.getEid(), fecha, Util.localTimeToString(pHoraInicio),
 							Util.localTimeToString(pHoraFin));
@@ -687,7 +723,7 @@ public class Persistence {
 
 		}
 
-		insertaHorarioEntrenamientoInner(enid, eid, iid, fecha, horaInicio, horaFin);
+		insertaHorarioEntrenamientoInner(enid, eqid, iid, fecha, horaInicio, horaFin);
 
 	}
 

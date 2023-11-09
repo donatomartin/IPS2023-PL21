@@ -153,6 +153,16 @@ create table Equipo(
 	foreign key (peid) references Empleado(eid) 
 );
 
+-- Juega
+drop table Juega;
+create table Juega(
+	eqid int not null,
+	eid int not null,
+	primary key (eqid, eid),
+	foreign key (eqid) references Equipo(id),
+	foreign key (eid) references Empleado(eid)
+);
+
 -- Reserva
 drop table Reserva;
 create table Reserva(
