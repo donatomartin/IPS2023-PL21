@@ -170,7 +170,7 @@ public class Frame21916 {
 	private JPanel getPnSeleccion() {
 		if (pnSeleccion == null) {
 			pnSeleccion = new JPanel();
-			pnSeleccion.setLayout(new GridLayout(0, 6, 3, 3));
+			pnSeleccion.setLayout(new GridLayout(0, 6, 5, 5));
 		}
 		return pnSeleccion;
 	}
@@ -278,7 +278,9 @@ public class Frame21916 {
 				actualizarPrecio();
 				getBtEliminarTodo().setEnabled(true);
 				getBtConfirmarTienda().setEnabled(true);
-				
+				((JButton)getPnSeleccion().getComponent(actionCommand)).setText("<html>" + m.getNombre() + "<br>" +
+						  m.getTipo() + "<br> uds: " +
+						  m.getUnidades() + "<html>");
 				
 				if(m.getUnidades() <= 0) {
 					source.setEnabled(false);
@@ -306,6 +308,16 @@ public class Frame21916 {
 		actualizarPrecio();
 		getBtConfirmarTienda().setEnabled(false);
 		getBtEliminarTodo().setEnabled(false);
+		
+		for(int i = 0; i < tl.getMerchandaising().size(); i++) {
+			Merchandaising m = tl.getArticulo(i);
+			getPnSeleccion().getComponent(i).setEnabled(false);
+			((JButton)getPnSeleccion().getComponent(i)).setText("<html>" + m.getNombre() + "<br>" +
+					  m.getTipo() + "<br> uds: " +
+					  m.getUnidades() + "<html>");
+			
+		}
+		
 	}
 
 	private JPanel getPnContenido() {
@@ -342,7 +354,7 @@ public class Frame21916 {
 	private JPanel getPnProductos() {
 		if (pnProductos == null) {
 			pnProductos = new JPanel();
-			pnProductos.setLayout(new GridLayout(0, 6, 3, 3));
+			pnProductos.setLayout(new GridLayout(0, 6, 5, 5));
 		}
 		return pnProductos;
 	}

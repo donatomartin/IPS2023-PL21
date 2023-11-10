@@ -69,12 +69,28 @@ insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchan
 (4, 'reserva','2013-09-09','21','11',30);
 
 delete from merchandaising;
-insert into merchandaising(id,nombre,tipo,precio) values (1,'Gorra','Ropa',30);
-insert into merchandaising(id,nombre,tipo,precio) values (2,'Balon','Material',20);
-insert into merchandaising(id,nombre,tipo,precio) values (3,'Poster','Decoracion',5);
-insert into merchandaising(id,nombre,tipo,precio) values (4,'Bufanda','Ropa',10);
-insert into merchandaising(id,nombre,tipo,precio) values (5,'Camiseta','Ropa',20);
-insert into merchandaising(id,nombre,tipo,precio) values (6,'Cono','Material',5);
+insert into merchandaising(id,nombre,tipo,precio) values 
+(1,'Gorra','Ropa',30),(2,'Balon','Material',20),
+(3,'Poster','Decoracion',5),(4,'Bufanda','Ropa',10),(5,'Camiseta','Ropa',20),
+(6,'Cono','Material',5),(7,'Gorra','Ropa',30),
+(8,'Balon','Material',20),(9,'Poster','Decoracion',5),(10,'Bufanda','Ropa',10),
+(11,'Camiseta','Ropa',20),(12,'Cono','Material',5),(13,'Gorra','Ropa',30),
+(14,'Balon','Material',20),(15,'Poster','Decoracion',5),(16,'Bufanda','Ropa',10),
+(17,'Camiseta','Ropa',20),(18,'Cono','Material',5),(19,'Gorra','Ropa',30),
+(20,'Balon','Material',20),(21,'Poster','Decoracion',5),(22,'Bufanda','Ropa',10),
+(23,'Camiseta','Ropa',20),(24,'Cono','Material',5), (25,'Gorra','Ropa',30),
+(26,'Balon','Material',20),(27,'Poster','Decoracion',5),(28,'Bufanda','Ropa',10),
+(29,'Camiseta','Ropa',20),(30,'Cono','Material',5),(31,'Gorra','Ropa',30),
+(32,'Balon','Material',20),(33,'Poster','Decoracion',5),(34,'Bufanda','Ropa',10),
+(35,'Camiseta','Ropa',20),(36,'Cono','Material',5),(37,'Gorra','Ropa',30),
+(38,'Balon','Material',20),(39,'Poster','Decoracion',5),(40,'Bufanda','Ropa',10),
+(41,'Camiseta','Ropa',20),(42,'Cono','Material',5),(43,'Gorra','Ropa',30),
+(44,'Balon','Material',20),(45,'Poster','Decoracion',5),(46,'Bufanda','Ropa',10),
+(47,'Camiseta','Ropa',20),(48,'Cono','Material',5),(49,'Gorra','Ropa',30),
+(50,'Camiseta','Ropa',20),(51,'Cono','Material',5),(52,'Gorra','Ropa',30),
+(53,'Balon','Material',20),(54,'Poster','Decoracion',5),(55,'Bufanda','Ropa',10),
+(56,'Camiseta','Ropa',20),(57,'Cono','Material',5),(58,'Bufanda','Ropa',10),
+(59,'Camiseta','Ropa',20),(60,'Cono','Material',5);
 
 delete from ventaMerchandising;
 insert into ventaMerchandising(id, idProducto, cantidad) VALUES
