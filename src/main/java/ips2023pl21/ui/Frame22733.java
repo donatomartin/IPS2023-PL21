@@ -28,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.awt.event.ActionEvent;
@@ -36,11 +37,13 @@ import javax.swing.ButtonGroup;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.DateFormatter;
 
 import java.awt.GridLayout;
 import javax.swing.JTextField;
+import javax.swing.SpinnerDateModel;
 
 
 public class Frame22733 extends JFrame{
@@ -73,7 +76,6 @@ public class Frame22733 extends JFrame{
 	private JPanel panelTribuna;
 	private JPanel panelFechaNacimiento;
 	private JLabel lbFechaNacimiento;
-	private JFormattedTextField txtFieldFechaNacimiento;
 	private JPanel panelAsientosOcupados;
 	private JPanel panelAsiento;
 	private JLabel lblAsiento;
@@ -88,6 +90,7 @@ public class Frame22733 extends JFrame{
 	private JLabel lbAsientosOcupados;
 	private JPanel pnNombreCliente;
 	private JTextField txtFieldNombre;
+	private JSpinner spFecha;
 	
 	public Frame22733(Service22733 service) {
 		this.service=service;
@@ -144,7 +147,7 @@ public class Frame22733 extends JFrame{
 			btnComprar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(comprobarNombre()) {
-						comprobarFecha();
+//						comprobarFecha();
 						comprar();
 						getAsientosOcupados();
 						txtFieldNombre.setText("");
@@ -171,13 +174,13 @@ public class Frame22733 extends JFrame{
 		return false;
 	}
 	
-	private void comprobarFecha() {
-		String fecha=txtFieldFechaNacimiento.getText();
-		Date date=Util.isoStringToDate(fecha);
-		txtFieldFechaNacimiento.setText(Util.dateToIsoString(date));
-		
-		
-	}
+//	private void comprobarFecha() {
+//		String fecha=txtFieldFechaNacimiento.getText();
+//		Date date=Util.isoStringToDate(fecha);
+//		txtFieldFechaNacimiento.setText(Util.dateToIsoString(date));
+//		
+//		
+//	}
 	
 	public JButton getBtCancelar() {
 		if (btCancelar == null) {
@@ -503,7 +506,7 @@ public class Frame22733 extends JFrame{
 			panelFechaNacimiento.setBackground(Color.WHITE);
 			panelFechaNacimiento.add(getPnNombreCliente());
 			panelFechaNacimiento.add(getLbFechaNacimiento());
-			panelFechaNacimiento.add(getTxtFieldFechaNacimiento());
+			panelFechaNacimiento.add(getSpFecha());
 		}
 		return panelFechaNacimiento;
 	}
@@ -513,16 +516,6 @@ public class Frame22733 extends JFrame{
 			lbFechaNacimiento.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		}
 		return lbFechaNacimiento;
-	}
-	private JFormattedTextField getTxtFieldFechaNacimiento() {
-		if (txtFieldFechaNacimiento == null) {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd"); 
-			DateFormatter dateFormatter1 = new DateFormatter(dateFormat); 
-			txtFieldFechaNacimiento = new JFormattedTextField(dateFormatter1);
-			txtFieldFechaNacimiento.setColumns(10);
-			txtFieldFechaNacimiento.setText(LocalDate.now().toString());
-		}
-		return txtFieldFechaNacimiento;
 	}
 	private JPanel getPanelAsientosOcupados() {
 		if (panelAsientosOcupados == null) {
@@ -563,12 +556,17 @@ public class Frame22733 extends JFrame{
 	private void comprar() {
 		if(service.comprar(getButtonGroupTribuna().getSelection().getActionCommand(),
 				getButtonGroupoSeccion().getSelection().getActionCommand(),
-				(int)spinnerFila.getValue(), (int)spinnerAsiento.getValue(),txtFieldFechaNacimiento.getText(),
+				(int)spinnerFila.getValue(), (int)spinnerAsiento.getValue(),parseFecha(),
 				txtFieldNombre.getText())) {
 			JOptionPane.showMessageDialog(null, "Compra realizada, su id es "+ service.getIdAbonado());
 		}else {
 			JOptionPane.showMessageDialog(null, "Asiento ocupado");
 		}
+		
+	}
+	private String parseFecha() {
+		Date fecha=(Date)getSpFecha().getValue();
+		return Util.dateToIsoString(fecha);
 		
 	}
 	private void cancelar() {
@@ -618,6 +616,30 @@ public class Frame22733 extends JFrame{
 			txtFieldNombre.setColumns(10);
 		}
 		return pnNombreCliente;
+	}
+	private JSpinner getSpFecha() {
+		if (spFecha == null) {
+			spFecha = new JSpinner();
+			spFecha.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			spFecha.setModel(new SpinnerDateModel(new Date(1697061600000L), null, null, Calendar.DAY_OF_YEAR));
+
+			// Obtén la fecha actual y añade 7 días
+			Calendar calendar = Calendar.getInstance();
+			calendar.add(Calendar.DAY_OF_YEAR, 7);
+			Date date = calendar.getTime();
+
+			// Crea un modelo con la fecha y establece el formato para que no muestre las
+			// horas
+			SpinnerDateModel model = new SpinnerDateModel();
+			model.setValue(date);
+			spFecha.setModel(model);
+
+			// Establece el formato de la fecha para que no muestre las horas
+			JSpinner.DateEditor editor = new JSpinner.DateEditor(spFecha, "dd-MM-yyyy");
+			spFecha.setEditor(editor);
+
+		}
+		return spFecha;
 	}
 	}
 
