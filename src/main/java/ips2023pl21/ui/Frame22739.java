@@ -90,6 +90,8 @@ public class Frame22739 extends JFrame {
 	private String idAbonado;
 	private List<Partido> partidos = new ArrayList<>();
 	private JPanel panel_1;
+	private JPanel pnCargarPartidos;
+	private JPanel pnCrearCargar;
 
 
 	/**
@@ -109,7 +111,9 @@ public class Frame22739 extends JFrame {
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		frame.getContentPane().add(getPnCrearComprar(), "crearComprar");
+		frame.getContentPane().add(getPnCrearCargar(), "crearCargar");
 		frame.getContentPane().add(getPnCrearPartido(), "crear");
+		frame.getContentPane().add(getPnCargarPartidos(), "cargar");
 		frame.getContentPane().add(getPnAbonadoNoAbonado(), "Abonado");
 		frame.getContentPane().add(getPnSeleccionarPartido(), "seleccionar");
 
@@ -227,7 +231,7 @@ public class Frame22739 extends JFrame {
 			btCrearPartido = new JButton("Crear Partido");
 			btCrearPartido.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					irACrearPartido();
+					irAPn("crearCargar");
 				}
 			});
 		}
@@ -661,5 +665,17 @@ public class Frame22739 extends JFrame {
 			panel_1.setLayout(gl_panel_1);
 		}
 		return panel_1;
+	}
+	private JPanel getPnCargarPartidos() {
+		if (pnCargarPartidos == null) {
+			pnCargarPartidos = new JPanel();
+		}
+		return pnCargarPartidos;
+	}
+	private JPanel getPnCrearCargar() {
+		if (pnCrearCargar == null) {
+			pnCrearCargar = new JPanel();
+		}
+		return pnCrearCargar;
 	}
 }
