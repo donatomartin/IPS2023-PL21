@@ -21,13 +21,8 @@ import ips2023pl21.service.Service22733;
 import ips2023pl21.util.Util;
 
 
-import javax.swing.JFormattedTextField;
-
 import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -37,9 +32,6 @@ import javax.swing.ButtonGroup;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.DateFormatter;
 
 import java.awt.GridLayout;
 import javax.swing.JTextField;
