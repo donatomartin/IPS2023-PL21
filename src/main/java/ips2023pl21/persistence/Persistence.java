@@ -592,6 +592,19 @@ public class Persistence {
 		}
 		return ret;
 	}
+	
+
+	public boolean existsPartido(Partido partido) {
+		//TODO
+		String idEquipo = partido.getLocal().getId();
+		String visitante = partido.getVisitante();
+		String fecha = partido.getFecha();
+		
+		List<Object[]> partidos = db.executeQueryArray("select * from Partido where idEquipo = ? and "
+				+ "equipoVisitante = ? and fecha = ?", idEquipo, visitante, fecha);
+		
+		return partidos.size() == 0 ? false : true;
+	}
 
 	// ABONADOS
 
@@ -955,8 +968,6 @@ public class Persistence {
 				db.executeQueryPojo(Accionista.class, "select * from accionista");
 		return acc.size();
 	}
-
-	
 
 	
 }

@@ -12,7 +12,7 @@ import ips2023pl21.model.equipos.EquipoDeportivo;
 import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.service.Service21917;
 import ips2023pl21.service.Service22739;
-import ips2023pl21.util.CSVParser;
+import ips2023pl21.util.ParserCSV;
 import ips2023pl21.util.Util;
 
 import java.awt.CardLayout;
@@ -50,7 +50,6 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.BoxLayout;
 
 public class Frame22739 extends JFrame {
 
@@ -783,12 +782,17 @@ public class Frame22739 extends JFrame {
 
 	private void cargarPartidosDeFichero(String archivo) {
 		try {
-			List<Partido> partidos = CSVParser.parsePartidosCSV(archivo);
+			int count = 0;
+			ParserCSV parser = new ParserCSV();
+			List<Partido> partidos = parser.parsePartidosCSV(archivo);
 			for(Partido p : partidos) {
-				service.insertPartido(p);
+				if(!service.existsPartido(p)) {
+					service.insertPartido(p);
+					count++;
+				}
 			}
 			
-			JOptionPane.showMessageDialog(this, "Partidos añadidos");
+			JOptionPane.showMessageDialog(this, "Partidos añadidos" + "\n" +"Se han añadido " + count + " partido(s)");
 
 		} catch(Exception e) {
 			e.printStackTrace();
