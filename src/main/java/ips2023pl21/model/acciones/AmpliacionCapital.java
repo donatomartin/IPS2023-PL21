@@ -9,6 +9,8 @@ public class AmpliacionCapital {
 	private float capitalTotal;
 	private float precioAccion;
 	private int accionesTotales;
+	private String fase;
+	private int vendidas;
 	
 	public AmpliacionCapital() {}
 
@@ -66,6 +68,26 @@ public class AmpliacionCapital {
 
 	public void setAccionesTotales(int accionesTotales) {
 		this.accionesTotales = accionesTotales;
+	}
+
+	public String getFase() {
+		return fase;
+	}
+
+	public void setFase(String fase) {
+		this.fase = fase;
+	}
+
+	public void setIdAmpliacion(int idAmpliacion) {
+		this.idAmpliacion = idAmpliacion;
+	}
+
+	public int getVendidas() {
+		return vendidas;
+	}
+
+	public void setVendidas(int vendidas) {
+		this.vendidas = vendidas;
 	}
 
 }
