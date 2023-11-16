@@ -150,6 +150,6 @@ insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion
 
 
 delete from Usuario;
-insert into Usuario(usuario, contrasena) values
-	('asdf', '912ec803b2ce49e4a541068d495ab570', 'entrenador'),
-	('donato', '35bc8cec895861697a0243c1304c7789', 'admin');
+insert into Usuario(usuario, contrasena, rol) values
+	('donato', '912ec803b2ce49e4a541068d495ab570', 'entrenador'),
+	('admin', '35bc8cec895861697a0243c1304c7789', 'admin');

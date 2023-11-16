@@ -84,6 +84,7 @@ public class Frame22784 extends JFrame {
 	private JButton btnActualizar;
 	private JPanel panel;
 	private JLabel lbSeleccionados;
+	private JButton btnGuardar;
 
 	/**
 	 * Create the frame.
@@ -351,32 +352,34 @@ public class Frame22784 extends JFrame {
 				gl_pnSpinners.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_pnSpinners.createSequentialGroup()
 						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING)
-							.addGroup(gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
-								.addGroup(gl_pnSpinners.createSequentialGroup()
-									.addContainerGap()
-									.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(lbJardinero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-										.addComponent(lbInstalacion, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING)
-										.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
-										.addComponent(getTxJardinero(), GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE))
-									.addGap(35))
-								.addGroup(gl_pnSpinners.createSequentialGroup()
+							.addGroup(gl_pnSpinners.createSequentialGroup()
+								.addGroup(gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_pnSpinners.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING, false)
+											.addComponent(lbJardinero, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+											.addComponent(lbInstalacion, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_pnSpinners.createParallelGroup(Alignment.LEADING)
+											.addComponent(getTxInstalacion(), GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)
+											.addComponent(getTxJardinero(), GroupLayout.PREFERRED_SIZE, 127, GroupLayout.PREFERRED_SIZE)))
 									.addGroup(gl_pnSpinners.createParallelGroup(Alignment.TRAILING)
 										.addComponent(getSpFecha(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
 										.addComponent(getBtnActualizaJardineros(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-										.addComponent(getBtnAddHorario(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
 										.addGroup(gl_pnSpinners.createSequentialGroup()
-											.addComponent(getBtnHorarios(), GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE)
+											.addComponent(getBtnHorarios(), GroupLayout.DEFAULT_SIZE, 148, Short.MAX_VALUE)
 											.addPreferredGap(ComponentPlacement.RELATED)
 											.addComponent(getBtnJardinerosAtras()))
 										.addGroup(gl_pnSpinners.createSequentialGroup()
 											.addContainerGap()
 											.addComponent(getSpHoraInicio(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)))
-									.addGap(35)))
+											.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+										.addGroup(gl_pnSpinners.createSequentialGroup()
+											.addComponent(getBtnAddHorario(), GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(getBtnGuardar(), GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE))))
+								.addGap(35))
 							.addGroup(gl_pnSpinners.createSequentialGroup()
 								.addContainerGap()
 								.addComponent(getLbSeleccionados())))
@@ -397,14 +400,16 @@ public class Frame22784 extends JFrame {
 							.addComponent(lbJardinero))
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(getSpFecha(), GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
+						.addPreferredGap(ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
 						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
 							.addComponent(getSpHoraFin(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 							.addComponent(getSpHoraInicio(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(getBtnActualizaJardineros())
 						.addPreferredGap(ComponentPlacement.RELATED)
-						.addComponent(getBtnAddHorario())
+						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
+							.addComponent(getBtnAddHorario())
+							.addComponent(getBtnGuardar()))
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addGroup(gl_pnSpinners.createParallelGroup(Alignment.BASELINE)
 							.addComponent(getBtnHorarios())
@@ -700,5 +705,17 @@ public class Frame22784 extends JFrame {
 			lbSeleccionados.setFont(new Font("Tahoma", Font.BOLD, 13));
 		}
 		return lbSeleccionados;
+	}
+	private JButton getBtnGuardar() {
+		if (btnGuardar == null) {
+			btnGuardar = new JButton("Guardar");
+			btnGuardar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					service.guardarCambios();
+				}
+			});
+			btnGuardar.setBackground(new Color(211, 211, 211));
+		}
+		return btnGuardar;
 	}
 }

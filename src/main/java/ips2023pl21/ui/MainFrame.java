@@ -586,6 +586,7 @@ private static void run22749() {
 	private JButton getBtnLogin() {
 		if (btnLogin == null) {
 			btnLogin = new JButton("Log In");
+			btnLogin.setMnemonic('l');
 			btnLogin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					

@@ -130,7 +130,7 @@ public class Persistence {
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardineria'");
 	}
 
-	public List<Empleado> selectJardinerosLibres(String fecha, String horaInicio, String horaFin, int iid) {
+	public List<Empleado> selectJardinerosLibres(List<HorarioJardineria> hna, String fecha, String horaInicio, String horaFin, int iid) {
 
 		LocalTime sHoraInicio = Util.stringHoraToLocalTime(horaInicio);
 		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
@@ -164,7 +164,10 @@ public class Persistence {
 		if (idsJardinerosLibres.size() == 0)
 			return jardinerosLibres;
 
-		for (HorarioJardineria jardineria : selectHorariosJardineria()) {
+		List<HorarioJardineria> horarios = selectHorariosJardineria();
+		horarios.addAll(hna);
+		
+		for (HorarioJardineria jardineria : horarios) {
 
 			if (jardineria.getFechaJardineria().equals(fecha)) {
 
