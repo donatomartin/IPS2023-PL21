@@ -279,17 +279,18 @@ public class Frame22749 extends JFrame {
 	}
 	private void iniciarAmpliacion() {
 		cs.setFase(CapitalFase.FASE1);
+		cs.updateFase("Fase 1");
 		getLbFaseInfo().setText(textoFase());
-		getLbAccionesVendidasInfo().setText(textoAccionesVendidas());
-		getLbAccionesRestantesInfo().setText(textoAccionesRestantes());
 	}
 	private void avanzarFase() {
 		if (cs.getFase() == CapitalFase.FASE1) {
 			cs.setFase(CapitalFase.FASE2);
+			cs.updateFase("Fase 2");
 			getLbFaseInfo().setText(textoFase());
 		}
 		else {
 			cs.setFase(CapitalFase.FASE3);
+			cs.updateFase("Fase 3");
 			getLbFaseInfo().setText(textoFase());
 		}
 	}
@@ -312,6 +313,7 @@ public class Frame22749 extends JFrame {
 	}
 	private void finalizarAmpliacion() {
 		cs.setFase(CapitalFase.FUERA_FASE);
+		cs.updateFase("Fuera fase");
 		getLbFaseInfo().setText(textoFase());
 	}
 	private boolean confirmarInicio() {
@@ -460,11 +462,13 @@ public class Frame22749 extends JFrame {
 					else if (confirmarInicio()) {
 						int rest = Integer.valueOf(getTxAcciones().getText());
 						iniciarAmpliacion();
+						cs.setAccionesRestantes(rest);
+						getLbAccionesVendidasInfo().setText(textoAccionesVendidas());
+						getLbAccionesRestantesInfo().setText(textoAccionesRestantes());
 						insertarAmpliacion();
 						actualizacionBotones();
 						mostrarPnAvanzarFase();
 						guardarLimiteFaseUno();
-						cs.setAccionesRestantes(rest);
 					}
 				}
 			});
@@ -508,9 +512,10 @@ public class Frame22749 extends JFrame {
 			btAvanzar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (confirmarAvance()) {
+						int restantes = cs.getAccionesRestantes();
 						avanzarFase();
 						actualizacionBotones();
-						actualizaVentas();
+						actualizaVentas(restantes);
 					}
 				}
 			});
@@ -525,6 +530,7 @@ public class Frame22749 extends JFrame {
 			btFinalizar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if (confirmarFinalizacion()) {
+						actualizarCapitalTotal();
 						finalizarAmpliacion();
 						mostrarPnIniciar();
 						actualizacionBotones();
@@ -599,8 +605,13 @@ public class Frame22749 extends JFrame {
 		getLbAccionesVendidasInfo().setText(textoAccionesVendidas());
 		getLbAccionesRestantesInfo().setText(textoAccionesRestantes());
 	}
-	private void actualizaVentas() {
+	private void actualizaVentas(int restantes) {
+		cs.setAccionesRestantes(restantes);
 		getLbAccionesVendidasInfo().setText(textoAccionesVendidas());
 		getLbAccionesRestantesInfo().setText(textoAccionesRestantes());
+	}
+	private void actualizarCapitalTotal() {
+		cs.actualizarCapitalTotal();
+		lbCapitalInfo.setText(cs.getCapitalClub() +" €");
 	}
 }
