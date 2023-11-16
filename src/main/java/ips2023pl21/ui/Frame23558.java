@@ -2,14 +2,18 @@ package ips2023pl21.ui;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import ips2023pl21.model.Empleado;
 import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.service.Service23558;
 import java.awt.BorderLayout;
@@ -53,6 +57,7 @@ public class Frame23558 extends JFrame {
 		        return false;
 	    }
 	};
+	private ListSelectionModel  selectionModelEquipo;
 	private JLabel lbSanos;
 	private JScrollPane scrSanos;
 	private JTable tableSanos;
@@ -73,6 +78,20 @@ public class Frame23558 extends JFrame {
 	private JLabel lbLesionados;
 	private JScrollPane scrLesionados;
 	private JTable tableLesionados;
+	private DefaultTableModel tableModelLesionados = new DefaultTableModel(
+			new String[][] {
+			},
+			new String[] {
+				"ID", "Nombre"
+			}
+		) {
+			private static final long serialVersionUID = 1L;
+	
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+	    }
+	};
 
 	/**
 	 * Create the frame.
@@ -110,6 +129,7 @@ public class Frame23558 extends JFrame {
 	private JLabel getLbTitulo() {
 		if (lbTitulo == null) {
 			lbTitulo = new JLabel("Seguimiento de lesiones");
+			lbTitulo.setForeground(new Color(0, 0, 0));
 			lbTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 			lbTitulo.setFont(new Font("Tahoma", Font.BOLD, 45));
 		}
@@ -198,6 +218,16 @@ public class Frame23558 extends JFrame {
 			tableEquipos.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			tableEquipos.setModel(tableModelEquipos);
 			tableEquipos.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+			selectionModelEquipo = tableEquipos.getSelectionModel();
+			selectionModelEquipo.addListSelectionListener(new ListSelectionListener() {
+	            @Override
+	            public void valueChanged(ListSelectionEvent e) {
+	                if (!e.getValueIsAdjusting()) { 
+	                    rellenarTablaSanos();
+	                    rellenarTablaLesionados();
+	                }
+	            }
+	        });
 		}
 		return tableEquipos;
 	}
@@ -246,6 +276,8 @@ public class Frame23558 extends JFrame {
 			tableLesionados = new JTable();
 			tableLesionados.setForeground(new Color(0, 0, 0));
 			tableLesionados.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			tableLesionados.setModel(tableModelLesionados);
+			tableLesionados.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		}
 		return tableLesionados;
 	}
@@ -258,6 +290,39 @@ public class Frame23558 extends JFrame {
 		}
 	}
 	private void rellenarTablaSanos() {
+		tableModelSanos.setRowCount(0);
+		int fila = getTableEquipos().getSelectedRow();
+		String eqid = getTableEquipos().getValueAt(fila, 0).toString();
+		List<Empleado> jugadoresEquipo = cs.getJugadoresEquipo(eqid);
+		List<Empleado> sanos = new ArrayList<Empleado>();
+		for (Empleado e : jugadoresEquipo) {
+			if (!cs.isLesionado(e.getEid())) {
+				sanos.add(e);
+			}
+		}
 		
+		for (Empleado e : sanos) {
+			tableModelSanos.addRow(new Object[]
+					{e.getEid(), e.getNombre()});
+		}
+	}
+	
+	private void rellenarTablaLesionados() {
+		tableModelLesionados.setRowCount(0);
+		int fila = getTableEquipos().getSelectedRow();
+		String eqid = getTableEquipos().getValueAt(fila, 0).toString();
+		List<Empleado> jugadoresEquipo = cs.getJugadoresEquipo(eqid);
+		
+		List<Empleado> lesionados = new ArrayList<Empleado>();
+		for (Empleado e : jugadoresEquipo) {
+			if (cs.isLesionado(e.getEid())) {
+				lesionados.add(e);
+			}
+		}
+		
+		for (Empleado e : lesionados) {
+			tableModelLesionados.addRow(new Object[]
+					{e.getEid(), e.getNombre()});
+		}
 	}
 }

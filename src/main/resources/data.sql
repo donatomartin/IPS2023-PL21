@@ -19,7 +19,27 @@ insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telef
     ('Enrique', 'Lopez', '11111111P', '2003-05-15', 1000000, '666666650', 'deportivo', 'jugador'),
     ('Ernesto', 'Martinez', '11111111Q', '2003-05-15', 1000000, '666666649', 'deportivo', 'jugador'),
     ('Felipe', 'Sanchez', '11111111R', '2003-05-15', 1000000, '666666648', 'deportivo', 'entrenador'),
-    ('Javier', 'Perez', '11111111S', '2003-05-15', 1000000, '666666647', 'deportivo', 'entrenador');
+    ('Javier', 'Perez', '11111111S', '2003-05-15', 1000000, '666666647', 'deportivo', 'entrenador'),
+    ('Sofía', 'García', '22222222Q', '1995-08-20', 900000, '611223344', 'deportivo', 'jugador'),
+	('Carlos', 'Martínez', '33333333R', '1990-04-10', 1200000, '677889900', 'deportivo', 'jugador'),
+	('Laura', 'Hernández', '44444444S', '1987-11-25', 800000, '655443322', 'deportivo', 'jugador'),
+	('Javier', 'Pérez', '55555555T', '1998-02-18', 1100000, '622998877', 'deportivo', 'jugador'),
+	('María', 'López', '66666666U', '1993-06-30', 950000, '688776655', 'deportivo', 'jugador'),
+	('Daniel', 'Rodríguez', '77777777V', '1996-09-05', 850000, '633221100', 'deportivo', 'jugador'),
+	('Ana', 'Gómez', '88888888W', '1991-03-12', 1050000, '600112233', 'deportivo', 'jugador'),
+	('Pablo', 'Fernández', '99999999X', '1988-07-28', 1150000, '644556677', 'deportivo', 'jugador'),
+	('Lucía', 'Díaz', '10101010Y', '2000-12-03', 850000, '677889900', 'deportivo', 'jugador'),
+	('Manuel', 'Sánchez', '11111111A', '1985-05-20', 1000000, '688776655', 'deportivo', 'jugador'),
+	('Elena', 'Martín', '12121212B', '1994-10-15', 950000, '633221100', 'deportivo', 'jugador'),
+	('David', 'Gutiérrez', '13131313C', '1997-01-08', 1100000, '655443322', 'deportivo', 'jugador'),
+	('Carmen', 'Ruiz', '14141414D', '1989-08-22', 900000, '677889900', 'deportivo', 'jugador'),
+	('Alejandro', 'Jiménez', '15151515E', '1992-04-05', 1050000, '611223344', 'deportivo', 'jugador'),
+	('Paula', 'Torres', '16161616F', '1999-11-10', 950000, '600112233', 'deportivo', 'jugador'),
+	('Pedro', 'Flores', '17171717G', '1986-06-18', 1000000, '644556677', 'deportivo', 'jugador'),
+	('Isabel', 'Vázquez', '18181818H', '1995-03-24', 850000, '622998877', 'deportivo', 'jugador'),
+	('Francisco', 'Moreno', '19191919I', '1984-09-07', 1150000, '655443322', 'deportivo', 'jugador'),
+	('Raquel', 'Navarro', '20202020J', '1993-12-12', 900000, '677889900', 'deportivo', 'jugador'),
+	('Hugo', 'González', '21212121K', '1998-07-05', 1100000, '688776655', 'deportivo', 'jugador');
 
 insert into Empleado(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values
     (69, 'Luis', 'Rubiales', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador'),
@@ -35,9 +55,34 @@ insert into Equipo(peid, seid, nombre, categoria, esFilial) values
     (69, 70, 'Madrid', 'Primera', 'true');
 
 insert into Juega(eqid, eid) values
-    (1,11),
-    (2,12),
-    (3,13);
+    (1, 14),
+	(3, 12),
+	(2, 17),
+	(1, 11),
+	(2, 15),
+	(3, 18),
+	(1, 13),
+	(3, 16),
+	(1, 38),
+	(2, 34),
+	(3, 21),
+	(2, 22),
+	(3, 30),
+	(1, 29),
+	(3, 40),
+	(2, 27),
+	(1, 23),
+	(3, 35),
+	(2, 26),
+	(1, 39),
+	(2, 24),
+	(3, 31),
+	(1, 37),
+	(3, 28),
+	(1, 36),
+	(2, 25),
+	(3, 32),
+	(2, 33);
 
 delete from reserva;
 insert into reserva(nombreusuario,cuentabancaria,idinstalacion,precioreserva,fechareserva,horaentrada,horasalida,minutoentrada,minutosalida,fechaventa,horaventa,minutoventa) values

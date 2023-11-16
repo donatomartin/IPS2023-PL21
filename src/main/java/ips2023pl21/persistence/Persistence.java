@@ -33,6 +33,8 @@ import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.model.horarios.franjas.FranjaPuntual;
 import ips2023pl21.model.horarios.franjas.FranjaSemanal;
+import ips2023pl21.model.lesiones.Juega;
+import ips2023pl21.model.lesiones.Lesion;
 import ips2023pl21.model.noticias.Noticia;
 import ips2023pl21.util.Database;
 import ips2023pl21.util.Util;
@@ -1014,5 +1016,29 @@ public class Persistence {
 
 	public void updateCapitalTotal(double vendidas) {
 		db.executeUpdate("update AmpliacionCapital set capitalTotal = ?", vendidas);
+	}
+
+	public List<Empleado> selectJugadoresPorEquipo(String eqid) {
+		List<Juega> l = db.executeQueryPojo(Juega.class, 
+				"select * from juega where eqid = ?", eqid);
+		
+		List<Empleado> jugadores = new ArrayList<Empleado>();
+		for (Juega j : l) {
+			jugadores.add(db.executeQueryPojo(Empleado.class, 
+				"select * from empleado where eid = ?", j.getEid()).get(0));
+		}
+		return jugadores;
+	}
+
+	public List<Empleado> selectLesionado(int eid) {
+		List<Lesion> list = db.executeQueryPojo(Lesion.class, "select * from lesion "
+				+ "where eid = ?", eid);
+		
+		List<Empleado> jugadores = new ArrayList<Empleado>();
+		for (Lesion j : list) {
+			jugadores.add(db.executeQueryPojo(Empleado.class, 
+				"select * from empleado where eid = ?", j.getEid()).get(0));
+		}
+		return jugadores;
 	}
 }

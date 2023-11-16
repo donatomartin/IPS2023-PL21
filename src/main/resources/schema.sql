@@ -295,8 +295,15 @@ create table AmpliacionCapital(
 --Lesiones
 drop table Lesion;
 create table Lesion(
-	eqid integer not null,
+	id integer primary key autoincrement,
 	eid integer not null,
-	
-	
+	causa varchar(30) not null,
+	pid integer,
+	enid integer,
+	descripcion varchar(500),
+	fecha varchar(10),
+	tipo varchar(50),
+	foreign key (eid) references Empleado(eid),
+	foreign key (pid) references Partido(id),
+	foreign key (enid) references HorarioEntrenamiento(enid)
 );
