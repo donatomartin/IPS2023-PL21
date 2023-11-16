@@ -119,10 +119,69 @@ public class Frame21916 {
 	}
 	
 	private void pedirDatos() {
-		String nombre=JOptionPane.showInputDialog(null, "Introduzca su nombre y apellidos");
+		String nombre=pedirNombre();
+		while(nombre.isEmpty() || !isCharacter(nombre)) {
+			JOptionPane.showMessageDialog(null, "Formato nombre incorrecto");
+			nombre=pedirNombre();
+		}
 		tl.setNombre(nombre);
+		String dni=pedirDni();
+		while(dni.isEmpty() || !checkDni(dni)) {
+			JOptionPane.showMessageDialog(null, "Formato DNI/NIF incorrecto");
+			dni=pedirDni();
+		}
+		tl.setDni(dni);
+		String domicilio=pedirDomicilio();	
+		while(domicilio.isEmpty()) {
+			JOptionPane.showMessageDialog(null, "El domicilio no puede quedar en blanco");
+			domicilio=pedirDomicilio();
+		}
+		tl.setDomicilio(domicilio);		
+				
+	}
+
+	
+	private boolean checkDni(String dni) {
+		if(dni.length()!=9) {
+			return false;
+		}
+		for (int i = 0; i < dni.length()-1; i++) {
+            if (!Character.isDigit(dni.charAt(i))) {
+                return false;
+            }
+        }
+		if(!Character.isLetter(dni.charAt(dni.length()-1))){
+			return false;
+		}
+		return true;
+	}
+
+	private boolean isCharacter(String nombre) {
+		String[]partes=nombre.split(" ");
+		for(String p : partes) {
+			for (int i = 0; i < partes.length; i++) {
+	            if (!Character.isLetter(p.charAt(i))) {
+	                return false;
+	            }
+	        }
+		}
+		
+		return true;
+	}
+
+	private String pedirNombre() {
+		String nombre=JOptionPane.showInputDialog(null, "Introduzca su nombre y apellidos");
+		return nombre;
+	}
+	
+	private String pedirDni() {
+		String dni=JOptionPane.showInputDialog(null, "Introduzca su DNI/NIF");
+		return dni;
+	}
+
+	private String pedirDomicilio() {
 		String domicilio=JOptionPane.showInputDialog(null, "Introduzca su domicilio");
-		tl.setDomicilio(domicilio);
+		return domicilio;
 	}
 	
 	private void finalizarCompra() {
@@ -159,7 +218,7 @@ public class Frame21916 {
 			btSalirTienda.setBackground(new Color(255, 255, 255));
 			btSalirTienda.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					System.exit(0);
+					frame.dispose();
 				}
 			});
 		}

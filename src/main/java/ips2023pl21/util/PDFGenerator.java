@@ -3,6 +3,7 @@ package ips2023pl21.util;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
@@ -29,7 +30,8 @@ public class PDFGenerator {
 		
 		try {
 			//2.Crear el escritor de PDF
-			PdfWriter.getInstance(document, new FileOutputStream("factura.pdf"));
+			String nombre="factura"+tl.getDni()+".pdf";
+			PdfWriter.getInstance(document, new FileOutputStream(nombre));
 			
 			//3.Abrir documento
 			document.open();
@@ -42,11 +44,16 @@ public class PDFGenerator {
 			document.add(escribirIdFiscal());
 			document.add(saltoDeLinea());
 			document.add(tituloDatosCliente());
-			document.add(escribirNombreApellido(tl.getNombre())); 
+			document.add(escribirDatosCliente(tl.getNombre(), tl.getDni())); 
 			document.add(escribirMotivo()); 
 			document.add(esribirDomicilio(tl.getDomicilio()));
+			document.add(saltoDeLinea());
+			document.add(escribirSeparador());
 			document.add(escribirProductos(tl.getSeleccionado()));
+			document.add(escribirSeparador());
+			document.add(saltoDeLinea());
 			document.add(escribirSubtotal(tl.getPrecioTotal()));
+			document.add(saltoDeLinea());
 			document.add(escribirTotal(tl.getPrecioTotal()));
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -70,25 +77,12 @@ public class PDFGenerator {
 		String filePath = "/ips2023pl21-local/imagenes/logo.png";
 		String dest=System.getProperty("user.dir")+"/imagenes/"+"logo.png";
 		Image image= Image.getInstance(dest);
-		image.scaleAbsolute(80, 80);
+		image.scaleAbsolute(90, 90);
 		image.setAlignment(50);
 		p.add(image);
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		return p;
 	}
-	
-//	private static Image insertarFoto() throws BadElementException, MalformedURLException, IOException  {
-////		String imageFile = "/ips2023pl21-local/imagenes/logo.png"; 
-////		String dest=System.getProperty("user.dir")+"/imagenes/"+"logo.png";
-////		Image imagen = new Image(ImageDataFactory.create(dest));
-////		return imagen;
-//		 String filePath = "/ips2023pl21-local/imagenes/logo.png";
-//		 String dest=System.getProperty("user.dir")+"/imagenes/"+"logo.png";
-//		Image image= Image.getInstance(dest);
-//		image.scaleAbsolute(90, 90);
-//		image.setAlignment(50);
-//		return image;
-//		
-//	}
 	
 	private static Paragraph escribirDatosEmpresa() {
 		Paragraph p=new Paragraph();
@@ -99,6 +93,7 @@ public class PDFGenerator {
 		Font f=new Font();
 		f.setSize(18);
 		p.setFont(f);
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		return p;
 	}
 
@@ -122,13 +117,15 @@ public class PDFGenerator {
 		return p;
 	}
 	
-	private static Paragraph escribirNombreApellido(String nombre) {
+	private static Paragraph escribirDatosCliente(String nombre, String dni) {
 		Paragraph p=new Paragraph();
-		p.add("Nombre y apellidos: "+nombre);
+		p.add("Nombre y apellidos: "+nombre+"\n");
+		p.add("DNI/NIF: "+dni);
 		p.setAlignment(Element.ALIGN_LEFT);
 		Font f=new Font();
 		f.setSize(20);
 		p.setFont(f);
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		return p;
 	}
 	
@@ -139,6 +136,7 @@ public class PDFGenerator {
 		Font f=new Font();
 		f.setSize(20);
 		p.setFont(f);
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		return p;
 	}
 	
@@ -161,10 +159,12 @@ public class PDFGenerator {
 	
 	private static Element tituloDatosCliente() {
 		Paragraph p=new Paragraph();
-		p.add("Datos del cliente:");
 		Font f=new Font();
-		f.setFamily("Courier");
-		f.setStyle("bold");
+		f.setStyle(Font.ITALIC);
+		f.setStyle(Font.BOLD);
+		p.setFont(f);
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
+		p.add("Datos del cliente:");
 		return p;
 	}
 	
@@ -172,19 +172,26 @@ public class PDFGenerator {
 		Paragraph p=new Paragraph();
 		p.add("Enviar a: " + domicilio);
 		p.setAlignment(Element.ALIGN_LEFT);
+		p.setAlignment(Element.ALIGN_JUSTIFIED);
 		Font f=new Font();
 		f.setSize(20);
 		p.setFont(f);
 		return p;
 	}
 	
-	private static Paragraph escribirProductos(List<Merchandaising> seleccionado) {
+	private static Paragraph escribirSeparador() {
 		Paragraph p=new Paragraph();
 		p.add("----------------------------------------------------------------------------------------------------------------------------------\n");
+		p.setAlignment(Element.ALIGN_JUSTIFIED_ALL); 
+		return p;
+	}
+	
+	private static Paragraph escribirProductos(List<Merchandaising> seleccionado) {
+		Paragraph p=new Paragraph();
 		p.add("Cantidad       Descripción       Precio unitario       Importe\n");
 		p.add("----------------------------------------------------------------------------------------------------------------------------------\n");
 		for(Merchandaising m:seleccionado) {
-			p.add(m.getUnidades()+"                   "+m.getNombre()+"                   "+m.getPrecio()+"                 "+m.getPrecioTotalArticulo()+"\n");
+			p.add(m.getUnidades()+"                   "+m.getNombre()+"                   "+m.getPrecio()+"\u20ac                 "+m.getPrecioTotalArticulo()+"\u20ac\n");
 		}
 		p.setAlignment(Element.ALIGN_LEFT);
 		p.setAlignment(Element.ALIGN_JUSTIFIED_ALL); 
@@ -197,7 +204,7 @@ public class PDFGenerator {
 	
 	private static Paragraph escribirSubtotal(double d) {
 		Paragraph p=new Paragraph();
-		p.add("Subtotal: "+d+"\n");
+		p.add("Subtotal: "+d+"\u20ac"+"\n");
 		p.add("IVA: 21%\n");
 		Font f=new Font();
 		f.setSize(18);
@@ -208,11 +215,20 @@ public class PDFGenerator {
 	
 	private static Element escribirTotal(double d) {
 		Paragraph p=new Paragraph();
-		p.add("TOTAL: "+d+d*0.21);
+		double total=d+d*0.21;
+		BigDecimal bigDecimal = BigDecimal.valueOf(total);
+
+		// Redondear utilizando el método setScale()
+		BigDecimal redondeadoBigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+
+		// Convertir de nuevo a double
+		total= redondeadoBigDecimal.doubleValue();
 		Font f=new Font();
 		f.setSize(18);
+		f.setStyle(Font.BOLD);
 		p.setFont(f);
 		p.setAlignment(Element.ALIGN_RIGHT);
+		p.add("TOTAL: "+total+"\u20ac");
 		return p;
 	}
 }

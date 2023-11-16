@@ -20,7 +20,8 @@ public class TiendaLogica {
 	int id;
 	private String nombre;
 	private String domicilio;
-
+	private String dni;
+	
 	public TiendaLogica() {
 		cargarArticulos();
 		this.precioTotal = 0;
@@ -196,6 +197,17 @@ public class TiendaLogica {
 	public void setDomicilio(String domicilio) {
 		this.domicilio = domicilio;
 	}
+
+	public void setDni(String dni) {
+		this.dni=dni;
+		
+	}
+
+	public String getDni() {
+		return dni;
+	}
+	
+	
 	
 	
 
