@@ -5,6 +5,7 @@ import java.util.List;
 import ips2023pl21.model.activos.*;
 import ips2023pl21.model.equipos.*;
 import ips2023pl21.persistence.Persistence;
+import ips2023pl21.util.PDFGenerator;
 
 public class Service21914_16 {
 
@@ -21,6 +22,7 @@ public class Service21914_16 {
 	
 	public void añadirVenta(TiendaLogica tl) {
 		p.insertVenta(tl);
+		PDFGenerator.generarPDF(tl);
 	}
 
 }

@@ -110,12 +110,21 @@ public class Frame21916 {
 			btConfirmarTienda.setBackground(new Color(255, 255, 255));
 			btConfirmarTienda.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
+					pedirDatos();
 					finalizarCompra();
 				}
 			});
 		}
 		return btConfirmarTienda;
 	}
+	
+	private void pedirDatos() {
+		String nombre=JOptionPane.showInputDialog(null, "Introduzca su nombre y apellidos");
+		tl.setNombre(nombre);
+		String domicilio=JOptionPane.showInputDialog(null, "Introduzca su domicilio");
+		tl.setDomicilio(domicilio);
+	}
+	
 	private void finalizarCompra() {
 		String[] botones = {"Si" , "No"};
 		int res = JOptionPane.showOptionDialog(null, "Precio: " + tl.getPrecioTotal() + "\n" + 

@@ -423,7 +423,7 @@ public class Persistence {
 		List<EntradaEntity>entradas= db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?",
 				tribuna, seccion, fila);
 		for(EntradaEntity e:entradas) {
-			System.out.println(e.getAsiento()+e.getTribuna()+e.getFila());
+			System.out.println(e.getTribuna()+e.getSeccion()+e.getFila()+e.getAsiento());
 		}
 		return entradas;
 	}

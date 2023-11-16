@@ -43,7 +43,7 @@ public class Service22733 {
 			try {
 				String dateString=currentYear+1+"-06-30";
 				p.insertAbono(tribuna, seccion, fila, asiento, precio, dateString);
-//			
+				System.out.println("abono insertado");
 				//insertar en abonado
 				p.insertAbonado(nombre);
 				return true;
@@ -53,8 +53,6 @@ public class Service22733 {
 			}
 		}
 		return false;
-		
-		
 	}
 
 	private boolean comprobarDisponibilidad(String tribuna, String seccion, int fila, int asiento) {

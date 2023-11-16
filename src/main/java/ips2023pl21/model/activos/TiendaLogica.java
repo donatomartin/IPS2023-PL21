@@ -18,6 +18,8 @@ public class TiendaLogica {
 	List<Merchandaising> seleccionado = new ArrayList<Merchandaising>();
 	double precioTotal;
 	int id;
+	private String nombre;
+	private String domicilio;
 
 	public TiendaLogica() {
 		cargarArticulos();
@@ -178,5 +180,23 @@ public class TiendaLogica {
 
 		return message;
 	}
+
+	public void setNombre(String nombre) {
+		this.nombre=nombre;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public String getDomicilio() {
+		return domicilio;
+	}
+
+	public void setDomicilio(String domicilio) {
+		this.domicilio = domicilio;
+	}
+	
+	
 
 }
