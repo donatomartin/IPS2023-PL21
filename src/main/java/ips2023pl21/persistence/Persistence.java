@@ -12,6 +12,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
+import ips2023pl21.model.Usuario;
 import ips2023pl21.model.abonos.Abono;
 import ips2023pl21.model.equipos.CategoriaEquipo;
 import ips2023pl21.model.equipos.EquipoDeportivo;
@@ -34,6 +35,7 @@ import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.model.horarios.franjas.FranjaPuntual;
 import ips2023pl21.model.horarios.franjas.FranjaSemanal;
 import ips2023pl21.model.noticias.Noticia;
+import ips2023pl21.service.State;
 import ips2023pl21.util.Database;
 import ips2023pl21.util.Util;
 import ips2023pl21.ui.UserInterface;
@@ -954,6 +956,16 @@ public class Persistence {
 		List<Accionista> acc = 
 				db.executeQueryPojo(Accionista.class, "select * from accionista");
 		return acc.size();
+	}
+
+	public State checkUser(String user, String password) {
+		List<Usuario> usuario = db.executeQueryPojo(Usuario.class, "select * from usuario where usuario=? and contrasena=?", user, password);
+		
+		if (usuario.size() == 0)
+			return State.LOGINFAIL_USERNOTFOUND;
+		
+		return State.SUCCESS;
+		
 	}
 
 	

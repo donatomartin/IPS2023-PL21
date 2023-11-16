@@ -289,3 +289,11 @@ create table AmpliacionCapital(
 	accionesTotales int not null,
 	precioAccion float not null
 );
+
+-- Usuario
+drop table Usuario;
+create table Usuario(
+	usuario varchar(30) primary key,
+	contrasena varchar(500) not null,
+	rol varchar(30) not null
+);

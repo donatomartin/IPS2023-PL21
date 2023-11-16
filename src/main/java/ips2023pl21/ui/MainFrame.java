@@ -13,18 +13,28 @@ import ips2023pl21.service.Service22759;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.CardLayout;
+import javax.swing.BoxLayout;
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.JTextField;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.JPasswordField;
 
 public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-	private static Service22748_9 s22748_9 = new Service22748_9();
+	private static MainService service = new MainService();
+	
 	private JPanel contentPane;
-	private JPanel pnCentro;
+	private JPanel pnWork;
 	private JPanel pnNorte;
 	private JLabel lbTitle;
 	private JButton btn21911;
@@ -43,6 +53,14 @@ public class MainFrame extends JFrame {
 	private JButton btn22748;
 	private JButton btn22749;
 	private JButton btnNewButton;
+	private JPanel pnCentro;
+	private JPanel pnLogin;
+	private JPanel pnCredentials;
+	private JTextField txUser;
+	private JButton btnLogin;
+	private JLabel lbPassword;
+	private JLabel lbUser;
+	private JPasswordField txPassword;
 
 	/**
 	 * Create the frame.
@@ -56,8 +74,8 @@ public class MainFrame extends JFrame {
 		setMinimumSize(getSize());
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
-		contentPane.add(getPnCentro());
 		contentPane.add(getPnNorte(), BorderLayout.NORTH);
+		contentPane.add(getPnCentro(), BorderLayout.CENTER);
 	}
 	
 	private static void run21911() {
@@ -240,6 +258,7 @@ public class MainFrame extends JFrame {
 		});
 	}
 	
+	private static Service22748_9 s22748_9 = new Service22748_9();
 
 	private static void run22748() {
 		EventQueue.invokeLater(new Runnable() {
@@ -267,29 +286,29 @@ private static void run22749() {
 		});
 	}
 	
-	private JPanel getPnCentro() {
-		if (pnCentro == null) {
-			pnCentro = new JPanel();
-			pnCentro.setBackground(new Color(255, 255, 255));
-			pnCentro.setLayout(new GridLayout(0, 4, 0, 0));
-			pnCentro.add(getBtn21911());
-			pnCentro.add(getBtn21912());
-			pnCentro.add(getBtn21913());
-			pnCentro.add(getBtn21914());
-			pnCentro.add(getBtn21915());
-			pnCentro.add(getBtn21916());
-			pnCentro.add(getBtn21917());
-			pnCentro.add(getBtn21918());
-			pnCentro.add(getBtn22733());
-			pnCentro.add(getBtn22739());
-			pnCentro.add(getBtn22759());
-			pnCentro.add(getBtn22784());
-			pnCentro.add(getBtn22785());
-			pnCentro.add(getBtn22748());
-			pnCentro.add(getBtn22749());
-			pnCentro.add(getBtnNewButton());
+	private JPanel getPnWork() {
+		if (pnWork == null) {
+			pnWork = new JPanel();
+			pnWork.setBackground(new Color(255, 255, 255));
+			pnWork.setLayout(new GridLayout(0, 4, 0, 0));
+			pnWork.add(getBtn21911());
+			pnWork.add(getBtn21912());
+			pnWork.add(getBtn21913());
+			pnWork.add(getBtn21914());
+			pnWork.add(getBtn21915());
+			pnWork.add(getBtn21916());
+			pnWork.add(getBtn21917());
+			pnWork.add(getBtn21918());
+			pnWork.add(getBtn22733());
+			pnWork.add(getBtn22739());
+			pnWork.add(getBtn22759());
+			pnWork.add(getBtn22784());
+			pnWork.add(getBtn22785());
+			pnWork.add(getBtn22748());
+			pnWork.add(getBtn22749());
+			pnWork.add(getBtnNewButton());
 		}
-		return pnCentro;
+		return pnWork;
 	}
 	private JPanel getPnNorte() {
 		if (pnNorte == null) {
@@ -501,5 +520,113 @@ private static void run22749() {
 			btnNewButton.setBackground(new Color(255, 228, 225));
 		}
 		return btnNewButton;
+	}
+	private JPanel getPnCentro() {
+		if (pnCentro == null) {
+			pnCentro = new JPanel();
+			pnCentro.setLayout(new CardLayout(0, 0));
+			pnCentro.add(getPnLogin(), "login");
+			pnCentro.add(getPnWork(), "work");
+		}
+		return pnCentro;
+	}
+	private JPanel getPnLogin() {
+		if (pnLogin == null) {
+			pnLogin = new JPanel();
+			pnLogin.setLayout(new BoxLayout(pnLogin, BoxLayout.X_AXIS));
+			pnLogin.add(getPanel_2());
+		}
+		return pnLogin;
+	}
+	private JPanel getPanel_2() {
+		if (pnCredentials == null) {
+			pnCredentials = new JPanel();
+			GroupLayout gl_pnCredentials = new GroupLayout(pnCredentials);
+			gl_pnCredentials.setHorizontalGroup(
+				gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_pnCredentials.createSequentialGroup()
+						.addContainerGap(337, Short.MAX_VALUE)
+						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.LEADING)
+							.addComponent(getLbUser(), GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
+							.addGroup(gl_pnCredentials.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(getBtnLogin())
+								.addGroup(gl_pnCredentials.createSequentialGroup()
+									.addComponent(getLbPassword())
+									.addGap(148))
+								.addComponent(getTxPassword())
+								.addComponent(getTxUser())))
+						.addGap(32))
+			);
+			gl_pnCredentials.setVerticalGroup(
+				gl_pnCredentials.createParallelGroup(Alignment.LEADING)
+					.addGroup(Alignment.TRAILING, gl_pnCredentials.createSequentialGroup()
+						.addContainerGap(126, Short.MAX_VALUE)
+						.addComponent(getLbUser())
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(getTxUser(), GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+						.addGap(22)
+						.addComponent(getLbPassword())
+						.addGap(17)
+						.addComponent(getTxPassword(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addComponent(getBtnLogin())
+						.addGap(132))
+			);
+			pnCredentials.setLayout(gl_pnCredentials);
+		}
+		return pnCredentials;
+	}
+	private JTextField getTxUser() {
+		if (txUser == null) {
+			txUser = new JTextField();
+			txUser.setColumns(10);
+		}
+		return txUser;
+	}
+	private JButton getBtnLogin() {
+		if (btnLogin == null) {
+			btnLogin = new JButton("Log In");
+			btnLogin.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					
+					State res = service.checkUser(getTxUser().getText(), new String(getTxPassword().getPassword()));
+					
+					switch (res) {
+					case LOGINFAIL_USERNOTFOUND:
+						JOptionPane.showMessageDialog(null, "Error: Usuario o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
+						break;
+					case LOGINFAIL_USERNOTALLOWED:
+						JOptionPane.showMessageDialog(null, "Error: Usuario no permitido en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
+						break;
+					case SUCCESS:
+						((CardLayout)getPnCentro().getLayout()).show(getPnCentro(), "work");
+						break;
+					default:
+						break;
+					}
+					
+					
+				}
+			});
+		}
+		return btnLogin;
+	}
+	private JLabel getLbPassword() {
+		if (lbPassword == null) {
+			lbPassword = new JLabel("Contraseña");
+		}
+		return lbPassword;
+	}
+	private JLabel getLbUser() {
+		if (lbUser == null) {
+			lbUser = new JLabel("Usuario");
+		}
+		return lbUser;
+	}
+	private JPasswordField getTxPassword() {
+		if (txPassword == null) {
+			txPassword = new JPasswordField();
+		}
+		return txPassword;
 	}
 }

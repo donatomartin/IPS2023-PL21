@@ -147,3 +147,9 @@ insert into accionista(nombreAccionista,apellidoAccionista,dniAccionista,cuentaB
 delete from ampliacioncapital;
 insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales) values
 	(0,0,0,1040.1,34.67,30);
+
+
+delete from Usuario;
+insert into Usuario(usuario, contrasena) values
+	('asdf', '912ec803b2ce49e4a541068d495ab570', 'entrenador'),
+	('donato', '35bc8cec895861697a0243c1304c7789', 'admin');
