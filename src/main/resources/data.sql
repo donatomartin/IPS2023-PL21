@@ -145,5 +145,5 @@ insert into accionista(nombreAccionista,apellidoAccionista,dniAccionista,cuentaB
 	('ccc', 'ddd', '5678X', 'efgh', 15, 50.0);
 	
 delete from ampliacioncapital;
-insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales) values
-	(0,0,0,1040.1,34.67,30);
+insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales,fase,vendidas) values
+	(0,0,0,1040.1,34.67,30, 'Fuera fase',0);

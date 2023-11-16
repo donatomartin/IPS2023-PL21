@@ -861,7 +861,7 @@ public class Persistence {
 
 	}
 
-
+	//Ampliaciones capital
 	public float getPrecioPorAccion() {
 		List<AmpliacionCapital> ac = db.
 				executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
@@ -870,11 +870,23 @@ public class Persistence {
 	}
 	
 	public void insertAmpliacion(int accionesNuevas) {
-		db.executeUpdate("update ampliacioncapital set faseUno = ?", accionesNuevas);
+		int reset = 0;
+		db.executeUpdate
+		("update ampliacioncapital set faseUno = ?, fase = 'Fase 1', vendidas = ?", accionesNuevas, reset);
 	}
 	
 	public void updateLimiteFaseUno() {
 		db.executeUpdate("update accionista set limiteAccionesFaseUno = numeroAcciones");
+	}
+	
+	public String getFase() {
+		List<AmpliacionCapital> list = 
+				db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital");
+		return list.get(0).getFase();
+	}
+	
+	public void updateFase(String fase) {
+		db.executeUpdate("update ampliacioncapital set fase = ?", fase);
 	}
 
 	
@@ -960,7 +972,47 @@ public class Persistence {
 		return acc.size();
 	}
 
+	public int selectRestantesFase1() {
+		return db.executeQueryPojo(AmpliacionCapital.class, 
+				"select * from ampliacioncapital").get(0).getFaseUno();
+		
+	}
 	
+	public int selectRestantesFase2() {
+		return db.executeQueryPojo(AmpliacionCapital.class, 
+				"select * from ampliacioncapital").get(0).getFaseDos();
+		
+	}
+	
+	public int selectRestantesFase3() {
+		return db.executeQueryPojo(AmpliacionCapital.class, 
+				"select * from ampliacioncapital").get(0).getFaseTres();
+		
+	}
 
+	public void updateAccionesFase1(int acc) {
+		db.executeUpdate("update AmpliacionCapital set faseUno = ?", acc);
+	}
+
+	public void updateAccionesFase2(int acc) {
+		db.executeUpdate("update AmpliacionCapital set faseDos = ?", acc);
+	}
 	
+	public void updateAccionesFase3(int acc) {
+		db.executeUpdate("update AmpliacionCapital set faseTres = ?", acc);
+	}
+
+	public void updateAccionesVendidas(int accionesVendidas) {
+		db.executeUpdate("update AmpliacionCapital set vendidas = ?", accionesVendidas);
+	}
+
+	public int selectAccionesVendidas() {
+		return 
+		 db.executeQueryPojo
+		 (AmpliacionCapital.class,"select * from AmpliacionCapital").get(0).getVendidas();
+	}
+
+	public void updateCapitalTotal(double vendidas) {
+		db.executeUpdate("update AmpliacionCapital set capitalTotal = ?", vendidas);
+	}
 }
