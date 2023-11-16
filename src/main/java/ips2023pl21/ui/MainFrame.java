@@ -42,7 +42,7 @@ public class MainFrame extends JFrame {
 	private JButton btn22785;
 	private JButton btn22748;
 	private JButton btn22749;
-	private JButton btnNewButton;
+	private JButton btn23558;
 
 	/**
 	 * Create the frame.
@@ -254,11 +254,25 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-private static void run22749() {
+	private static void run22749() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Frame22749 frame = new Frame22749(s22748_9);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	private static void run23558() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service23558 cs = new Service23558();
+					Frame23558 frame = new Frame23558(cs);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -287,7 +301,7 @@ private static void run22749() {
 			pnCentro.add(getBtn22785());
 			pnCentro.add(getBtn22748());
 			pnCentro.add(getBtn22749());
-			pnCentro.add(getBtnNewButton());
+			pnCentro.add(getBtn23558());
 		}
 		return pnCentro;
 	}
@@ -495,11 +509,16 @@ private static void run22749() {
 		return btn22749;
 	}
 	
-	private JButton getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new JButton("");
-			btnNewButton.setBackground(new Color(255, 228, 225));
+	private JButton getBtn23558() {
+		if (btn23558 == null) {
+			btn23558 = new JButton("<html><p>Seguimiento de lesiones</h1><p>(23558)</p><html>");
+			btn23558.setBackground(new Color(255, 228, 225));
+			btn23558.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run23558();
+				}
+			});
 		}
-		return btnNewButton;
+		return btn23558;
 	}
 }

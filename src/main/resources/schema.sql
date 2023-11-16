@@ -289,3 +289,12 @@ create table AmpliacionCapital(
 	accionesTotales int not null,
 	precioAccion float not null
 );
+
+--Lesiones
+drop table Lesion;
+create table Lesion(
+	eqid integer not null,
+	eid integer not null,
+	
+	
+);

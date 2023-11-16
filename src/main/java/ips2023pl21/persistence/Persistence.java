@@ -829,6 +829,10 @@ public class Persistence {
 			return result.get(0);
 		return null;
 	}
+	
+	public List<Equipo> selectAllEquipos(){
+		return db.executeQueryPojo(Equipo.class, "select * from equipo");
+	}
 
 	// Articulos
 	public List<Merchandaising> selectArticulos() {
