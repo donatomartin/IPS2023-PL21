@@ -106,9 +106,13 @@
    			 <version>5.5.10</version>
 		</dependency>
 		
+		<!-- generación de gráficoss-->
+		<dependency>
+        <groupId>org.jfree</groupId>
+        <artifactId>jfreechart</artifactId>
+        <version>1.5.3</version> <!-- Utiliza la última versión disponible -->
+    </dependency>
 		
-		
-
 	</dependencies>
 
 	<build>

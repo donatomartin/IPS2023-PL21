@@ -42,6 +42,7 @@ public class Service22733 {
 			try {
 				String dateString=currentYear+1+"-06-30";
 				p.insertAbono(tribuna, seccion, fila, asiento, precio, dateString);
+				p.insertarVenta("abono",Util.dateToIsoString(new Date()), new Date().getHours(), new Date().getMinutes(),precio);
 				System.out.println("abono insertado");
 				//insertar en abonado
 				p.insertAbonado(nombre);
@@ -70,7 +71,7 @@ public class Service22733 {
 	}
 
 	public List<EntradaEntity> getAsientosOcupados(String tribuna, String seccion) {
-		return p.getAsientosOcupados(tribuna, seccion);
+		return p.getAbonos(tribuna, seccion);
 	}
 
 	public int getIdAbonado() {

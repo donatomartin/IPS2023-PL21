@@ -34,6 +34,7 @@ import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.model.horarios.franjas.FranjaPuntual;
 import ips2023pl21.model.horarios.franjas.FranjaSemanal;
 import ips2023pl21.model.noticias.Noticia;
+import ips2023pl21.model.ventas.VentaDisplayDTO;
 import ips2023pl21.util.Database;
 import ips2023pl21.util.Util;
 import ips2023pl21.ui.UserInterface;
@@ -412,8 +413,8 @@ public class Persistence {
 				asiento);
 	}
 
-	public List<EntradaEntity> getAsientosOcupados(String tribuna, String seccion) { // aqui cambiar abono por entrada y
-																						// aplicar herencia
+	public List<EntradaEntity> getAbonos(String tribuna, String seccion) { 
+																						
 		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=?", tribuna,
 				seccion);
 
@@ -427,6 +428,7 @@ public class Persistence {
 		}
 		return entradas;
 	}
+	
 
 	// ENTRADA
 
@@ -436,16 +438,11 @@ public class Persistence {
 
 	}
 
-	public void insertarVenta(String string, String dateSql, int hours, int minutes, int i) {
-		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
-		db.executeUpdate(queryVenta, "entrada", dateSql, hours, minutes, 30);
-
-	}
-
 	public List<EntradaEntity> getTotalEntradas(String tribuna, String seccion, int fila) {
 		String query = "SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
 		return db.executeQueryPojo(EntradaEntity.class, query, tribuna, seccion, fila);
 	}
+	
 
 	// NOTICIAS
 	public void insertNoticia(String titulo, String subtitulo, String cuerpo, String img) {
@@ -1011,4 +1008,15 @@ public class Persistence {
 	public void updateCapitalTotal(double vendidas) {
 		db.executeUpdate("update AmpliacionCapital set capitalTotal = ?", vendidas);
 	}
+	
+	//VENTAS
+	public void insertarVenta(String string, String dateSql, int hours, int minutes, double i) {
+		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
+		db.executeUpdate(queryVenta, "entrada", dateSql, hours, minutes, 30);
+
+	}
+		public List<VentaDisplayDTO> getVentasByDate(Date min, Date max){
+			return db.executeQueryPojo(VentaDisplayDTO.class,"select * from ventas where fecha>=min "
+					+ "and fecha<=max");
+		}
 }
