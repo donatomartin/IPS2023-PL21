@@ -204,7 +204,7 @@ public class Service21913 {
 		db.executeUpdate(INSERTAR_RESERVA, nombre, tarjeta, idCampo, precioInt, fechaSeleccionada, 
 				horaEntrada, horaSalida, minutoEntrada, minutoSalida,fecha,horaReserva,minutoReserva);
 		
-		p.insertarVenta("reserva", fecha, horaReserva, minutoReserva, precioInt);
+		p.insertarVentaReserva(fecha, horaReserva, minutoReserva, precioInt);
 	}
 	
 	public List<Instalacion> cargarInstalaciones() {

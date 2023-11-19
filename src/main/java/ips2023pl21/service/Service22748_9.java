@@ -1,10 +1,14 @@
 package ips2023pl21.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import ips2023pl21.model.acciones.Accion;
 import ips2023pl21.model.acciones.Accionista;
 import ips2023pl21.persistence.Persistence;
+import ips2023pl21.util.Util;
 
 public class Service22748_9 {
 	
@@ -162,6 +166,14 @@ public class Service22748_9 {
 
 	public void crearAccion() {
 		p.insertAccion(accionistaActivo.getIdAccionista(), PRECIO_POR_ACCION);
+		
+		LocalDateTime fechaActual = LocalDateTime.now();
+		Date d = Date.from(fechaActual.atZone(ZoneId.systemDefault()).toInstant());
+		String fecha = Util.dateToIsoString(d);
+		int horaVenta = fechaActual.getHour();
+		int minutoventa = fechaActual.getMinute();
+		p.insertarVentaAccion
+		(fecha, horaVenta, minutoventa, PRECIO_POR_ACCION);
 	}
 
 	public void actualizaLimiteAccionista(Integer numAcciones) {

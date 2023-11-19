@@ -1011,4 +1011,18 @@ public class Persistence {
 	public void updateCapitalTotal(double vendidas) {
 		db.executeUpdate("update AmpliacionCapital set capitalTotal = ?", vendidas);
 	}
+
+	public void insertarVentaReserva(String fecha,
+			int horaReserva, int minutoReserva, int precioInt) {
+		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
+		db.executeUpdate(queryVenta, "reserva", fecha, horaReserva, minutoReserva, 50);
+
+	}
+
+	public void insertarVentaAccion(String fecha,
+			int horaVenta, int minutoVenta, double precioPorAccion) {
+		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
+		db.executeUpdate(queryVenta, "accion", fecha, horaVenta, minutoVenta, 34.67);
+
+	}
 }

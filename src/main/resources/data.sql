@@ -41,7 +41,7 @@ insert into Juega(eqid, eid) values
 
 delete from reserva;
 insert into reserva(nombreusuario,cuentabancaria,idinstalacion,precioreserva,fechareserva,horaentrada,horasalida,minutoentrada,minutosalida,fechaventa,horaventa,minutoventa) values
-	('aaa','1234567-k', 1,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24),
+	('aaa','1234567-k', 1,50,'2024-01-01',12,14,30,0,'2023-10-14',14,24),
 	('bbb','1234567-k', 2,50,'2024-01-01',14,16,30,0,'2023-10-14',14,24);
 	
 delete from horarioequipo;
@@ -66,7 +66,9 @@ delete from venta;
 insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchandising', '2023-10-13', '20','05',30),
 (2,'entradas', '2020-02-04','20','20',20),
 (3, 'merchandising','2013-02-02','20','00',50),
-(4, 'reserva','2013-09-09','21','11',30);
+(4, 'reserva','2023-10-14','14','24',50),
+(5, 'accion', '2023-11-19', '12', '00', 34.67);
+
 
 delete from merchandaising;
 insert into merchandaising(id,nombre,tipo,precio) values 
