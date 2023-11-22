@@ -43,6 +43,7 @@ public class MainFrame extends JFrame {
 	private JButton btn22748;
 	private JButton btn22749;
 	private JButton btnNewButton;
+	private JButton bt23523;
 
 	/**
 	 * Create the frame.
@@ -59,7 +60,7 @@ public class MainFrame extends JFrame {
 		contentPane.add(getPnCentro());
 		contentPane.add(getPnNorte(), BorderLayout.NORTH);
 	}
-	
+
 	private static void run21911() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -89,7 +90,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-	
+
 	private static void run21913() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -104,7 +105,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-	
+
 	private void run21914() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -115,7 +116,7 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		
+
 	}
 
 	private static void run21915() {
@@ -132,7 +133,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-	
+
 	private void run21916() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -143,21 +144,21 @@ public class MainFrame extends JFrame {
 				}
 			}
 		});
-		
+
 	}
-	
+
 	private static void run21917() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Service21917( new EntradasModel(),new Frame21917());
+					new Service21917(new EntradasModel(), new Frame21917());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-	
+
 	private static void run22784() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -171,7 +172,7 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-	
+
 	private static void run22785() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -190,28 +191,27 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new Service21918( new Frame21918(),new VentasModel());
+					new Service21918(new Frame21918(), new VentasModel());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-	
 
 	private void run22759() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Service22759 service=new Service22759();
-					Frame22759 f=new Frame22759(service);
+					Service22759 service = new Service22759();
+					Frame22759 f = new Frame22759(service);
 					f.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		
+
 	}
 
 	public static void run22739() {
@@ -225,13 +225,13 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-	
+
 	public static void run22733() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Service22733 service=new Service22733();
-					Frame22733 frame=new Frame22733(service);
+					Service22733 service = new Service22733();
+					Frame22733 frame = new Frame22733(service);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -239,7 +239,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-	
 
 	private static void run22748() {
 		EventQueue.invokeLater(new Runnable() {
@@ -254,7 +253,7 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-private static void run22749() {
+	private static void run22749() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -266,7 +265,21 @@ private static void run22749() {
 			}
 		});
 	}
-	
+
+	private void run23523() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame23523 frame = new Frame23523();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+	}
+
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
 			pnCentro = new JPanel();
@@ -288,9 +301,11 @@ private static void run22749() {
 			pnCentro.add(getBtn22748());
 			pnCentro.add(getBtn22749());
 			pnCentro.add(getBtnNewButton());
+			pnCentro.add(getBt23523());
 		}
 		return pnCentro;
 	}
+
 	private JPanel getPnNorte() {
 		if (pnNorte == null) {
 			pnNorte = new JPanel();
@@ -298,6 +313,7 @@ private static void run22749() {
 		}
 		return pnNorte;
 	}
+
 	private JLabel getLbTitle() {
 		if (lbTitle == null) {
 			lbTitle = new JLabel("Gestion Deportiva");
@@ -305,6 +321,7 @@ private static void run22749() {
 		}
 		return lbTitle;
 	}
+
 	private JButton getBtn21911() {
 		if (btn21911 == null) {
 			btn21911 = new JButton("<html><p>Gestion de empleados</p><p>(21911)</p><html>");
@@ -317,6 +334,7 @@ private static void run22749() {
 		}
 		return btn21911;
 	}
+
 	private JButton getBtn21912() {
 		if (btn21912 == null) {
 			btn21912 = new JButton("<html><p>Horarios Trabajo</p><p>(21912)</p><html>");
@@ -329,6 +347,7 @@ private static void run22749() {
 		}
 		return btn21912;
 	}
+
 	private JButton getBtn21913() {
 		if (btn21913 == null) {
 			btn21913 = new JButton("<html><p>Reserva Instalaciones</p><p>(21913)</p><html>");
@@ -341,6 +360,7 @@ private static void run22749() {
 		}
 		return btn21913;
 	}
+
 	private JButton getBtn21914() {
 		if (btn21914 == null) {
 			btn21914 = new JButton("<html><p>Añadir Equipos</p><p>(21914)</p><html>");
@@ -353,6 +373,7 @@ private static void run22749() {
 		}
 		return btn21914;
 	}
+
 	private JButton getBtn21915() {
 		if (btn21915 == null) {
 			btn21915 = new JButton("<html><p>Entrevistas</p><p>(21915)</p><html>");
@@ -365,6 +386,7 @@ private static void run22749() {
 		}
 		return btn21915;
 	}
+
 	private JButton getBtn21916() {
 		if (btn21916 == null) {
 			btn21916 = new JButton("<html><p>Tienda</p><p>(21916, 22758)</p><html>");
@@ -377,6 +399,7 @@ private static void run22749() {
 		}
 		return btn21916;
 	}
+
 	private JButton getBtn21917() {
 		if (btn21917 == null) {
 			btn21917 = new JButton("<html><p>Compra de Entradas</p><p>(21917)</p><html>");
@@ -389,6 +412,7 @@ private static void run22749() {
 		}
 		return btn21917;
 	}
+
 	private JButton getBtn21918() {
 		if (btn21918 == null) {
 			btn21918 = new JButton("<html><p>Historial de Ventas</p><p>(21918)</p><html>");
@@ -401,6 +425,7 @@ private static void run22749() {
 		}
 		return btn21918;
 	}
+
 	private JButton getBtn22733() {
 		if (btn22733 == null) {
 			btn22733 = new JButton("<html><p>Compra de abonos</p><p>(2733)</p><html>");
@@ -413,6 +438,7 @@ private static void run22749() {
 		}
 		return btn22733;
 	}
+
 	private JButton getBtn22739() {
 		if (btn22739 == null) {
 			btn22739 = new JButton("<html><p>Gestión Partidos</p><p>(22739)</p><html>");
@@ -425,6 +451,7 @@ private static void run22749() {
 		}
 		return btn22739;
 	}
+
 	private JButton getBtn22759() {
 		if (btn22759 == null) {
 			btn22759 = new JButton("<html><p>Noticias</p><p>(22759)</p><html>");
@@ -438,6 +465,7 @@ private static void run22749() {
 		}
 		return btn22759;
 	}
+
 	private JButton getBtn22784() {
 		if (btn22784 == null) {
 			btn22784 = new JButton("<html><p>Jardinería</h1><p>(22784)</p><html>");
@@ -448,11 +476,12 @@ private static void run22749() {
 				public void actionPerformed(ActionEvent e) {
 					run22784();
 				}
-				
+
 			});
 		}
 		return btn22784;
 	}
+
 	private JButton getBtn22785() {
 		if (btn22785 == null) {
 			btn22785 = new JButton("<html><p>Entrenamientos</h1><p>(22784)</p><html>");
@@ -463,12 +492,12 @@ private static void run22749() {
 				public void actionPerformed(ActionEvent e) {
 					run22785();
 				}
-				
+
 			});
 		}
 		return btn22785;
 	}
-	
+
 	private JButton getBtn22748() {
 		if (btn22748 == null) {
 			btn22748 = new JButton("<html><p>Portal de accionistas</h1><p>(22748)</p><html>");
@@ -481,7 +510,7 @@ private static void run22749() {
 		}
 		return btn22748;
 	}
-	
+
 	private JButton getBtn22749() {
 		if (btn22749 == null) {
 			btn22749 = new JButton("<html><p>Ampliaciones de capital</h1><p>(22749)</p><html>");
@@ -494,12 +523,24 @@ private static void run22749() {
 		}
 		return btn22749;
 	}
-	
+
 	private JButton getBtnNewButton() {
 		if (btnNewButton == null) {
 			btnNewButton = new JButton("");
 			btnNewButton.setBackground(new Color(255, 228, 225));
 		}
 		return btnNewButton;
+	}
+
+	private JButton getBt23523() {
+		if (bt23523 == null) {
+			bt23523 = new JButton("Sorteo (23523)");
+			bt23523.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run23523();
+				}
+			});
+		}
+		return bt23523;
 	}
 }
