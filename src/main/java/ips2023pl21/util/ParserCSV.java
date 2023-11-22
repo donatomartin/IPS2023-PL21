@@ -13,6 +13,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvValidationException;
 
+import ips2023pl21.model.equipos.EquipoDeportivo;
 import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.persistence.Persistence;
 
@@ -24,30 +25,25 @@ public class ParserCSV {
 			ArrayList<Partido> partidos = new ArrayList<>();
 			
 			CSVParser csvParser = new CSVParserBuilder().withSeparator(';').build();
-			try (CSVReader reader = new CSVReaderBuilder(new FileReader(archivo)).withCSVParser(csvParser).build()) {
+			try (CSVReader reader = new CSVReaderBuilder(new FileReader(archivo)).withCSVParser(csvParser).withSkipLines(1).build()) {
 				String[] lineInArray;
 				while ((lineInArray = reader.readNext()) != null) {
-					Partido p = new Partido();
-					p.setId(UUID.randomUUID().toString());
-					System.out.println(lineInArray[0]);
-					System.out.println(lineInArray[1]);
-					System.out.println(lineInArray[2]);
-					System.out.println(lineInArray[3]);
+
 					
-					partidos.add(p);
+					Partido par = new  Partido();
+					
+					EquipoDeportivo e = p.selectEquipoPorNombre(lineInArray[2]);
+					
+					par.setId(UUID.randomUUID().toString());
+					par.setLocal(e);
+					par.setVisitante(lineInArray[3]);
+					par.setFecha(lineInArray[0]);
+					par.setSuplemento(Float.parseFloat(lineInArray[4]));
+					
+					partidos.add(par);
 				}
 			}
-//			Partido par = new  Partido();
-//			
-//			EquipoDeportivo e = p.selectEquipoPorNombre("Sporting");
-//			
-//			par.setId(UUID.randomUUID().toString());
-//			par.setLocal(e);
-//			par.setVisitante("prueba csv");
-//			par.setFecha("1-1-1");
-//			par.setSuplemento(999);
-//			
-//			partidos.add(par);
+
 			return partidos;
 		}
 }

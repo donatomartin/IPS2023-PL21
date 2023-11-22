@@ -765,7 +765,7 @@ public class Frame22739 extends JFrame {
 		int resp = getSelector().showOpenDialog(null);
 		if(resp == JFileChooser.APPROVE_OPTION) {
 			File csv = getSelector().getSelectedFile();
-			String archivo = System.getProperty("user.dir")+"/partidos/"+csv.getName();
+			String archivo = System.getProperty("user.dir") + "/partidos/" + csv.getName();
 			Path destino = Paths.get(archivo);
 			String org = csv.getPath();
 			Path origen = Paths.get(org);
@@ -803,7 +803,7 @@ public class Frame22739 extends JFrame {
 	private JFileChooser getSelector() {
 		if(selector==null) {
 			selector=new JFileChooser();
-			selector.setFileFilter(new FileNameExtensionFilter("partidos","csv"));
+			selector.setFileFilter(new FileNameExtensionFilter(".csv","csv"));
 			String ruta = System.getProperty("user.home");
 			selector.setCurrentDirectory(new File(ruta));
 		}

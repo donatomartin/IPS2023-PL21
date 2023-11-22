@@ -596,14 +596,17 @@ public class Persistence {
 
 	public boolean existsPartido(Partido partido) {
 		//TODO
-		String idEquipo = partido.getLocal().getId();
-		String visitante = partido.getVisitante();
-		String fecha = partido.getFecha();
-		
-		List<Object[]> partidos = db.executeQueryArray("select * from Partido where idEquipo = ? and "
-				+ "equipoVisitante = ? and fecha = ?", idEquipo, visitante, fecha);
-		
-		return partidos.size() == 0 ? false : true;
+		if(partido != null) {
+			String idEquipo = partido.getLocal().getId();
+			String visitante = partido.getVisitante();
+			String fecha = partido.getFecha();
+			
+			List<Object[]> partidos = db.executeQueryArray("select * from Partido where idEquipo = ? and "
+					+ "equipoVisitante = ? and fecha = ?", idEquipo, visitante, fecha);
+			
+			return partidos.size() == 0 ? false : true;
+		}
+		return false;
 	}
 
 	// ABONADOS
