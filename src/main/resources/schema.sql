@@ -291,3 +291,11 @@ create table AmpliacionCapital(
 	fase varchar(30) not null,
 	vendidas int not null
 );
+
+--Compra
+drop table Compra;
+create table Compra(
+	id integer primary key autoincrement,
+	cuantia int not null,
+	fecha date not null
+);

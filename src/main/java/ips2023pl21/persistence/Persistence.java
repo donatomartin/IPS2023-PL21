@@ -21,6 +21,7 @@ import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.model.activos.Instalacion;
 import ips2023pl21.model.activos.Merchandaising;
 import ips2023pl21.model.activos.TiendaLogica;
+import ips2023pl21.model.compras.Compra;
 import ips2023pl21.model.entradas.EntradaEntity;
 import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.model.horarios.HorarioEntrenamiento;
@@ -1015,8 +1016,16 @@ public class Persistence {
 		db.executeUpdate(queryVenta, "entrada", dateSql, hours, minutes, 30);
 
 	}
-		public List<VentaDisplayDTO> getVentasByDate(Date min, Date max){
-			return db.executeQueryPojo(VentaDisplayDTO.class,"select * from ventas where fecha>=min "
-					+ "and fecha<=max");
+	public List<VentaDisplayDTO> getVentasByDate(String min, String max){
+//		System.out.println("min:"+minS);
+//		System.out.println("max:"+maxS);
+		return db.executeQueryPojo(VentaDisplayDTO.class,"select * from venta where fecha>=? "
+				+ "and fecha<=?", min, max);
+		}
+
+	//COMPRAS
+		public List<Compra> getComprasByDate(String min, String max) {
+			return db.executeQueryPojo(Compra.class,"select * from compra where fecha>=? "
+					+ "and fecha<=?", min, max);
 		}
 }

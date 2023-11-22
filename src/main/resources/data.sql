@@ -147,3 +147,7 @@ insert into accionista(nombreAccionista,apellidoAccionista,dniAccionista,cuentaB
 delete from ampliacioncapital;
 insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales,fase,vendidas) values
 	(0,0,0,1040.1,34.67,30, 'Fuera fase',0);
+	
+delete from compra;
+insert into compra values
+	(1, 30, '2023-10-10'),(2, 10, '2023-02-02');
