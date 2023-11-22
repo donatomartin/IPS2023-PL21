@@ -24,7 +24,7 @@ public class Service22748_9 {
 	}
 	
 	public Service22748_9() {
-		this.fase = CapitalFase.FUERA_FASE;
+		//this.fase = CapitalFase.FUERA_FASE;
 		accionesVendidas = 0;
 		accionesRestantes = 0;
 	}

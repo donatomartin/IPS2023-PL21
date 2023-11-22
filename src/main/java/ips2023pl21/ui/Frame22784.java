@@ -711,7 +711,37 @@ public class Frame22784 extends JFrame {
 			btnGuardar = new JButton("Guardar");
 			btnGuardar.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					service.guardarCambios();
+					State res = service.guardarCambios();
+					switch (res) {
+					case SUCCESS:
+						getTxJardinero().setText("NONE");
+						service.seleccionaJardinero("");
+						JOptionPane.showMessageDialog(null, "Horarios guardados con éxito", "Success",
+								JOptionPane.INFORMATION_MESSAGE);
+						break;
+					case JARDINERONULL:
+						JOptionPane.showMessageDialog(null, "Error: Jardinero no seleccionado.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						break;
+					case INSTALACIONNULL:
+						JOptionPane.showMessageDialog(null, "Error: Instalación no especificada.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						break;
+					case INICIOAFTERFIN:
+						JOptionPane.showMessageDialog(null, "Error: La hora de fin no puede ser anterior a la de inicio.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						break;
+					case INTERFIEREENTRENAMIENTO:
+						JOptionPane.showMessageDialog(null, "Error: Hay un entrenamiento programado para este intervalo.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						break;
+					case DBERROR:
+						JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.", "Error",
+								JOptionPane.ERROR_MESSAGE);
+						break;
+					default:
+						break;
+					}
 				}
 			});
 			btnGuardar.setBackground(new Color(211, 211, 211));

@@ -593,6 +593,9 @@ private static void run22749() {
 					State res = service.checkUser(getTxUser().getText(), new String(getTxPassword().getPassword()));
 					
 					switch (res) {
+					case ENCRYPTION_ERROR:
+						JOptionPane.showMessageDialog(null, "Error: Could not encrypt.", "Error", JOptionPane.ERROR_MESSAGE);
+						break;
 					case LOGINFAIL_USERNOTFOUND:
 						JOptionPane.showMessageDialog(null, "Error: Usuario o contraseña incorrectos.", "Error", JOptionPane.ERROR_MESSAGE);
 						break;
@@ -600,6 +603,7 @@ private static void run22749() {
 						JOptionPane.showMessageDialog(null, "Error: Usuario no permitido en el sistema.", "Error", JOptionPane.ERROR_MESSAGE);
 						break;
 					case SUCCESS:
+						showPnWork();
 						((CardLayout)getPnCentro().getLayout()).show(getPnCentro(), "work");
 						break;
 					default:
@@ -611,7 +615,13 @@ private static void run22749() {
 			});
 		}
 		return btnLogin;
+		
 	}
+	
+	private void showPnWork() {
+		
+	}
+	
 	private JLabel getLbPassword() {
 		if (lbPassword == null) {
 			lbPassword = new JLabel("Contraseña");
