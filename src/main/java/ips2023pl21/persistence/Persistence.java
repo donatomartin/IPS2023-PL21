@@ -68,7 +68,7 @@ public class Persistence {
 	public void insertHorarioEntrevista(String fecha, String datosMedio, String horaInicio, String horaFin, int eid)
 			throws IllegalStateException {
 		checkHorarioEntrenamiento(eid, fecha, horaInicio, horaFin);
-		
+
 		db.executeUpdate(
 				"insert into HorarioEntrevista (fechaEntrevista, datosMedio, horaInicio, horaFin, eid) values (?,?,?,?,?)",
 				fecha, datosMedio, horaInicio, horaFin, eid);
@@ -130,7 +130,8 @@ public class Persistence {
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardineria'");
 	}
 
-	public List<Empleado> selectJardinerosLibres(List<HorarioJardineria> hna, String fecha, String horaInicio, String horaFin, int iid) {
+	public List<Empleado> selectJardinerosLibres(List<HorarioJardineria> hna, String fecha, String horaInicio,
+			String horaFin, int iid) {
 
 		LocalTime sHoraInicio = Util.stringHoraToLocalTime(horaInicio);
 		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
@@ -166,7 +167,7 @@ public class Persistence {
 
 		List<HorarioJardineria> horarios = selectHorariosJardineria();
 		horarios.addAll(hna);
-		
+
 		for (HorarioJardineria jardineria : horarios) {
 
 			if (jardineria.getFechaJardineria().equals(fecha)) {
@@ -236,7 +237,7 @@ public class Persistence {
 			String telefono, String tipo, String posicion) {
 
 		posicion = Util.normalizeString(posicion);
-		
+
 		db.executeUpdate(
 				"insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values (?,?,?,?,?,?,?,?)",
 				nombre, apellido, dni, fechaNacimiento, salario, telefono, tipo, posicion);
@@ -328,7 +329,7 @@ public class Persistence {
 	}
 
 	public List<FranjaSemanal> getFranjasSemanales(int diaSem) {
-		
+
 		List<FranjaSemanal> franjas = db
 				.executeQueryPojo(FranjaSemanal.class, "select * from FranjaSemanal where diaSemana=?", diaSem).stream()
 				.sorted().collect(Collectors.toList());
@@ -387,22 +388,19 @@ public class Persistence {
 		;
 		return result;
 	}
-	
-	//CAPITAL CLUB
+
+	// CAPITAL CLUB
 	public float getCapitalClub() {
-		List<AmpliacionCapital> ac = db.
-				executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
+		List<AmpliacionCapital> ac = db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
 		float result = ac.get(0).getCapitalTotal();
 		return result;
 	}
-	
+
 	public int getAccionesClub() {
-		List<AmpliacionCapital> ac = db.
-				executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
+		List<AmpliacionCapital> ac = db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
 		int result = ac.get(0).getAccionesTotales();
 		return result;
 	}
-
 
 	// ABONOS
 	public void insertAbono(String tribuna, String seccion, int fila, int asiento, double precio, String dateString) {
@@ -425,10 +423,10 @@ public class Persistence {
 	}
 
 	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
-		List<EntradaEntity>entradas= db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?",
-				tribuna, seccion, fila);
-		for(EntradaEntity e:entradas) {
-			System.out.println(e.getTribuna()+e.getSeccion()+e.getFila()+e.getAsiento());
+		List<EntradaEntity> entradas = db.executeQueryPojo(EntradaEntity.class,
+				"select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
+		for (EntradaEntity e : entradas) {
+			System.out.println(e.getTribuna() + e.getSeccion() + e.getFila() + e.getAsiento());
 		}
 		return entradas;
 	}
@@ -646,14 +644,14 @@ public class Persistence {
 				asiento);
 
 	}
-	
+
 	public void insertAbonado(String nombre) {
 		db.executeUpdate("insert into abonado (nombre) values (?)", nombre);
-		
+
 	}
-	
+
 	public List<Object[]> getIdAbonado() {
-		return db.executeQueryArray( "select max(id)from abonado" );
+		return db.executeQueryArray("select max(id)from abonado");
 	}
 
 	// HORARIO JARDINERIA
@@ -745,7 +743,8 @@ public class Persistence {
 			LocalTime pHoraInicio = he.getParsedInicio();
 			LocalTime pHoraFin = he.getParsedFin();
 
-			if (solapa(pHoraInicio, pHoraFin, sHoraInicio, sHoraFin) && (he.getEid() == getEmpleadoIdByEquipoId(eqid))) {
+			if (solapa(pHoraInicio, pHoraFin, sHoraInicio, sHoraFin)
+					&& (he.getEid() == getEmpleadoIdByEquipoId(eqid))) {
 				if (ui.confirm("Estás seguro? Hay entrevistas que serán eliminadas si continúas.")) {
 					deleteHorarioEntrevista(he.getEid(), fecha, Util.localTimeToString(pHoraInicio),
 							Util.localTimeToString(pHoraFin));
@@ -775,7 +774,8 @@ public class Persistence {
 		LocalTime sHoraFin = Util.stringHoraToLocalTime(horaFin);
 
 		for (HorarioEntrenamiento he : selectHorariosEntrenamiento()) {
-			if (he.getFechaEntrenamiento().equals(fecha) && (he.getIid() == id || he.getEid() == getEquipoIdByEmpleadoId(id))) {
+			if (he.getFechaEntrenamiento().equals(fecha)
+					&& (he.getIid() == id || he.getEid() == getEquipoIdByEmpleadoId(id))) {
 
 				LocalTime pHoraInicio = he.getParsedInicio();
 				LocalTime pHoraFin = he.getParsedFin();
@@ -862,65 +862,61 @@ public class Persistence {
 
 	}
 
-	//Ampliaciones capital
+	// Ampliaciones capital
 	public float getPrecioPorAccion() {
-		List<AmpliacionCapital> ac = db.
-				executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
+		List<AmpliacionCapital> ac = db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
 		float result = ac.get(0).getPrecioAccion();
 		return result;
 	}
-	
+
 	public void insertAmpliacion(int accionesNuevas) {
 		int reset = 0;
-		db.executeUpdate
-		("update ampliacioncapital set faseUno = ?, fase = 'Fase 1', vendidas = ?", accionesNuevas, reset);
+		db.executeUpdate("update ampliacioncapital set faseUno = ?, fase = 'Fase 1', vendidas = ?", accionesNuevas,
+				reset);
 	}
-	
+
 	public void updateLimiteFaseUno() {
 		db.executeUpdate("update accionista set limiteAccionesFaseUno = numeroAcciones");
 	}
-	
+
 	public String getFase() {
-		List<AmpliacionCapital> list = 
-				db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital");
+		List<AmpliacionCapital> list = db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital");
 		return list.get(0).getFase();
 	}
-	
+
 	public void updateFase(String fase) {
 		db.executeUpdate("update ampliacioncapital set fase = ?", fase);
 	}
 
-	
-	//ACCIONISTAS
+	// ACCIONISTAS
 	public List<Accionista> selectAccionista(int numeroAccionista) {
-		return db.executeQueryPojo(Accionista.class, "select * from accionista "
-				+ "where idAccionista=?", numeroAccionista);
+		return db.executeQueryPojo(Accionista.class, "select * from accionista " + "where idAccionista=?",
+				numeroAccionista);
 	}
 
 	public List<Accionista> selectAccionista(String nombre, String apellido, String dni) {
-		return db.executeQueryPojo(Accionista.class, "select * from accionista "
-				+ "where nombreAccionista=? and apellidoAccionista=? and dniAccionista=?", nombre, apellido, dni);
+		return db.executeQueryPojo(Accionista.class,
+				"select * from accionista " + "where nombreAccionista=? and apellidoAccionista=? and dniAccionista=?",
+				nombre, apellido, dni);
 	}
 
 	public void insertAccionista(String nombre, String apellido, String dni, String cuenta) {
 		db.executeUpdate("insert into accionista(nombreAccionista, apellidoAccionista, "
-				+ "dniAccionista, cuentaBancaria, numeroAcciones,porcentajeCapital) values "
-				+ "(?,?,?,?, 0, 0.0)", nombre, apellido, dni, cuenta);
+				+ "dniAccionista, cuentaBancaria, numeroAcciones,porcentajeCapital) values " + "(?,?,?,?, 0, 0.0)",
+				nombre, apellido, dni, cuenta);
 	}
 
 	public List<Accionista> selectAccionistaById(int id) {
-		return db.executeQueryPojo(Accionista.class, "select * from accionista "
-				+ "where idAccionista=?", id);
+		return db.executeQueryPojo(Accionista.class, "select * from accionista " + "where idAccionista=?", id);
 	}
 
 	public List<Accion> selectAccionesByIdAccionista(int accionistaActivo) {
-		return db.executeQueryPojo(Accion.class, "select * from accion "
-				+ "where idAccionista=?", accionistaActivo);
+		return db.executeQueryPojo(Accion.class, "select * from accion " + "where idAccionista=?", accionistaActivo);
 	}
 
 	public List<Accion> selectAccionesEnVenta(int idAccionista) {
-		return db.executeQueryPojo(Accion.class, "select * from accion "
-				+ "where idAccionista <> ? and enVenta = 1", idAccionista);
+		return db.executeQueryPojo(Accion.class, "select * from accion " + "where idAccionista <> ? and enVenta = 1",
+				idAccionista);
 	}
 
 	public void updateAccionCompra(Integer idAccion, int idComprador, int idVendedor, float porcentaje) {
@@ -936,27 +932,28 @@ public class Persistence {
 	}
 
 	public int selectLimiteFase1(int idAccionista) {
-		List<Accionista> acc = db.executeQueryPojo(Accionista.class, "select * from accionista "
-				+ "where idAccionista=?", idAccionista);
+		List<Accionista> acc = db.executeQueryPojo(Accionista.class,
+				"select * from accionista " + "where idAccionista=?", idAccionista);
 		return acc.get(0).getLimiteAccionesFaseUno();
 	}
 
 	public void insertAccion(int idAccionista, double precioPorAccion) {
-		db.executeUpdate("insert into accion(idAccionista,precioCompra,enVenta,precioVenta) "
-				+ "values (?,?,0,?)", idAccionista, precioPorAccion, precioPorAccion);
+		db.executeUpdate("insert into accion(idAccionista,precioCompra,enVenta,precioVenta) " + "values (?,?,0,?)",
+				idAccionista, precioPorAccion, precioPorAccion);
 	}
 
 	public void updateLimiteAccionista(int idAccionista, Integer numAcciones) {
-		db.executeUpdate("update accionista set limiteAccionesFaseUno=limiteAccionesFaseUno-? "
-				+ "where idAccionista=?", numAcciones, idAccionista);
+		db.executeUpdate(
+				"update accionista set limiteAccionesFaseUno=limiteAccionesFaseUno-? " + "where idAccionista=?",
+				numAcciones, idAccionista);
 	}
 
 	public void updateCompraAccionista(int idAccionista, float porcentaje) {
 		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones+1 where idAccionista=?", idAccionista);
-		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital+? "
-				+ "where idAccionista=?", porcentaje, idAccionista);
-		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital-? "
-				+ "where idAccionista<>?", porcentaje, idAccionista);
+		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital+? " + "where idAccionista=?",
+				porcentaje, idAccionista);
+		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital-? " + "where idAccionista<>?",
+				porcentaje, idAccionista);
 	}
 
 	public void updateAccionesEnVenta(int idAccionista) {
@@ -968,57 +965,55 @@ public class Persistence {
 	}
 
 	public int countAccionistas() {
-		List<Accionista> acc = 
-				db.executeQueryPojo(Accionista.class, "select * from accionista");
+		List<Accionista> acc = db.executeQueryPojo(Accionista.class, "select * from accionista");
 		return acc.size();
 	}
 
 	public State checkUser(Usuario usuario) {
-		List<Usuario> result = db.executeQueryPojo(Usuario.class, "select * from usuario where usuario=? and contrasena=?", usuario.getUsuario(), usuario.getContrasena());
-		
+		List<Usuario> result = db.executeQueryPojo(Usuario.class,
+				"select * from usuario where usuario=? and contrasena=?", usuario.getUsuario(),
+				usuario.getContrasena());
+
 		if (result.size() == 0)
 			return State.LOGINFAIL_USERNOTFOUND;
-		
+
 		usuario.setRol(result.get(0).getRol());
 		usuario.setPid(result.get(0).getPid());
-		
+
 		return State.SUCCESS;
-		
-	}
-	
-	public void addUser(Usuario usuario) {
-		
-		db.executeUpdate("insert into usuario(usuario,contrasena,rol,pid) values (?,?,?,?)", usuario.getUsuario(), usuario.getContrasena(), usuario.getRol(), usuario.getPid());
-		
+
 	}
 
-	
+	public void addUser(Usuario usuario) {
+
+		db.executeUpdate("insert into usuario(usuario,contrasena,rol,pid) values (?,?,?,?)", usuario.getUsuario(),
+				usuario.getContrasena(), usuario.getRol(), usuario.getPid());
+
+	}
+
 	public int selectRestantesFase1() {
-		return db.executeQueryPojo(AmpliacionCapital.class, 
-				"select * from ampliacioncapital").get(0).getFaseUno();
-		
+		return db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital").get(0).getFaseUno();
+
 	}
-	
+
 	public int selectRestantesFase2() {
-		return db.executeQueryPojo(AmpliacionCapital.class, 
-				"select * from ampliacioncapital").get(0).getFaseDos();
-		
+		return db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital").get(0).getFaseDos();
+
 	}
-	
+
 	public int selectRestantesFase3() {
-		return db.executeQueryPojo(AmpliacionCapital.class, 
-				"select * from ampliacioncapital").get(0).getFaseTres();
-		
+		return db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital").get(0).getFaseTres();
+
 	}
 
 	public void updateAccionesFase1(int acc) {
 		db.executeUpdate("update AmpliacionCapital set faseUno = ?", acc);
 	}
-	
+
 	public void updateAccionesFase2(int acc) {
 		db.executeUpdate("update AmpliacionCapital set faseDos = ?", acc);
 	}
-	
+
 	public void updateAccionesFase3(int acc) {
 		db.executeUpdate("update AmpliacionCapital set faseTres = ?", acc);
 	}
@@ -1028,28 +1023,23 @@ public class Persistence {
 	}
 
 	public int selectAccionesVendidas() {
-		return 
-		 db.executeQueryPojo
-		 (AmpliacionCapital.class,"select * from AmpliacionCapital").get(0).getVendidas();
+		return db.executeQueryPojo(AmpliacionCapital.class, "select * from AmpliacionCapital").get(0).getVendidas();
 	}
 
 	public void updateCapitalTotal(double vendidas) {
 		db.executeUpdate("update AmpliacionCapital set capitalTotal = ?", vendidas);
 	}
 
-	public void insertarVentaReserva(String fecha,
-			int horaReserva, int minutoReserva, int precioInt) {
+	public void insertarVentaReserva(String fecha, int horaReserva, int minutoReserva, int precioInt) {
 		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
 		db.executeUpdate(queryVenta, "reserva", fecha, horaReserva, minutoReserva, 50);
 
 	}
 
-	public void insertarVentaAccion(String fecha,
-			int horaVenta, int minutoVenta, double precioPorAccion) {
+	public void insertarVentaAccion(String fecha, int horaVenta, int minutoVenta, double precioPorAccion) {
 		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
 		db.executeUpdate(queryVenta, "accion", fecha, horaVenta, minutoVenta, 34.67);
 
 	}
 
-	
 }

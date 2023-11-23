@@ -697,8 +697,9 @@ public class MainFrame extends JFrame {
 						int pid = 0;
 						if (!pidField.getText().isBlank())
 							try {
-								Integer.parseInt(pidField.getText());
-							} catch(Exception exception) {}
+								pid = Integer.parseInt(pidField.getText());
+							} catch(Exception exception) {
+							}
 						
 						Usuario u = new Usuario();
 						u.setUsuario(usuario);
