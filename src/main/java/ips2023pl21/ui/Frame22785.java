@@ -131,7 +131,6 @@ public class Frame22785 extends JFrame implements UserInterface {
 		if (pnWork == null) {
 			pnWork = new JPanel();
 			pnWork.setLayout(new CardLayout(0, 0));
-			pnWork.add(getPnLogin(), "pnLogin");
 			pnWork.add(getPnSeleccionInstalacion(), "pnSeleccionInstalacion");
 			pnWork.add(getPnSeleccionEquipo(), "pnSeleccionEquipos");
 			pnWork.add(getPnHorariosAsignados(), "pnHorarios");

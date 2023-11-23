@@ -14,7 +14,6 @@ import ips2023pl21.ui.parts.ValueButton;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -36,6 +35,8 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static MainService service = new MainService();
+	
+	private static Usuario usuario = new Usuario();
 
 	private JPanel contentPane;
 	private JPanel pnWork;
@@ -204,7 +205,7 @@ public class MainFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Frame22785 frame = new Frame22785(new Service22785());
+					Frame22785 frame = new Frame22785(new Service22785(usuario.getPid()));
 					frame.setVisible(true);
 					frame.setLocationRelativeTo(null);
 				} catch (Exception e) {
@@ -614,7 +615,7 @@ public class MainFrame extends JFrame {
 			btnLogin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
-					Usuario usuario = new Usuario();
+					usuario = new Usuario();
 					usuario.setUsuario(getTxUser().getText());
 					usuario.setContrasena(new String(getTxPassword().getPassword()));
 					State res = service.checkUser(usuario);
@@ -679,10 +680,12 @@ public class MainFrame extends JFrame {
 					JTextField usuarioField = new JTextField();
 					JPasswordField contrasenaField = new JPasswordField();
 					JTextField rolField = new JTextField();
+					JTextField pidField = new JTextField();
 					Object[] message = {
 						"Usuario:", usuarioField,
 						"Contraseña:", contrasenaField,
-						"Rol:", rolField
+						"Rol:", rolField,
+						"Id (optional):", pidField
 					};
 
 					int option = JOptionPane.showConfirmDialog(null, message, "Registro", JOptionPane.OK_CANCEL_OPTION);
@@ -691,11 +694,17 @@ public class MainFrame extends JFrame {
 						String contrasena = new String(contrasenaField.getPassword());
 						String rol = rolField.getText();
 						
+						int pid = 0;
+						if (!pidField.getText().isBlank())
+							try {
+								Integer.parseInt(pidField.getText());
+							} catch(Exception exception) {}
+						
 						Usuario u = new Usuario();
 						u.setUsuario(usuario);
 						u.setContrasena(contrasena);
 						u.setRol(rol);
-						
+						u.setPid(pid);
 						
 						State res = service.addUser(u);
 						
@@ -709,7 +718,7 @@ public class MainFrame extends JFrame {
 									JOptionPane.ERROR_MESSAGE);
 							break;
 						case SINGINFAIL_USEREXISTS:
-							JOptionPane.showMessageDialog(null, "Error: User exists encrypt.", "Error",
+							JOptionPane.showMessageDialog(null, "Error: User already exists.", "Error",
 									JOptionPane.ERROR_MESSAGE);
 							break;
 							

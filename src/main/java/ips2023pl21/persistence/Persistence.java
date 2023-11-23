@@ -980,6 +980,7 @@ public class Persistence {
 			return State.LOGINFAIL_USERNOTFOUND;
 		
 		usuario.setRol(result.get(0).getRol());
+		usuario.setPid(result.get(0).getPid());
 		
 		return State.SUCCESS;
 		
@@ -987,7 +988,7 @@ public class Persistence {
 	
 	public void addUser(Usuario usuario) {
 		
-		db.executeUpdate("insert into usuario(usuario,contrasena,rol) values (?,?,?)", usuario.getUsuario(), usuario.getContrasena(), usuario.getRol());
+		db.executeUpdate("insert into usuario(usuario,contrasena,rol,pid) values (?,?,?,?)", usuario.getUsuario(), usuario.getContrasena(), usuario.getRol(), usuario.getPid());
 		
 	}
 

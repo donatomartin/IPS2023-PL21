@@ -23,6 +23,10 @@ public class Service22785 {
 	private String fecha;
 	private String horaInicio;
 	private String horaFin;
+
+	public Service22785(int eid) {
+		login(eid);
+	}
 	
 	private LocalTime getParsedHoraInicio() {
 		return Util.stringHoraToLocalTime(horaInicio);

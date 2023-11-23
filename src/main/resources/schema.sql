@@ -297,5 +297,6 @@ drop table Usuario;
 create table Usuario(
 	usuario varchar(30) primary key,
 	contrasena varchar(500) not null,
-	rol varchar(30) not null
+	rol varchar(30) not null,
+	pid integer not null
 );

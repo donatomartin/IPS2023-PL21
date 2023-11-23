@@ -5,6 +5,7 @@ public class Usuario {
 	private String usuario;
 	private String contrasena;
 	private String rol;
+	private int pid;
 	
 	public Usuario() {
 		
@@ -22,6 +23,10 @@ public class Usuario {
 		return rol;
 	}
 	
+	public int getPid() {
+		return pid;
+	}
+	
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
 	}
@@ -34,6 +39,8 @@ public class Usuario {
 		this.rol = rol;
 	}
 	
-	
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
 
 }
