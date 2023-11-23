@@ -35,6 +35,7 @@ public class MainFrame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private static MainService service = new MainService();
+	private static Service22748_9 s22748_9 = new Service22748_9();
 	
 	private static Usuario usuario = new Usuario();
 
@@ -42,6 +43,8 @@ public class MainFrame extends JFrame {
 	private JPanel pnWork;
 	private JPanel pnNorte;
 	private JLabel lbTitle;
+	
+	private JButton btnRegistro;
 
 	private ValueButton<String> btn21911;
 	private ValueButton<String> btn21912;
@@ -62,7 +65,8 @@ public class MainFrame extends JFrame {
 	@SuppressWarnings("unchecked")
 	private ValueButton<String>[] buttons = new ValueButton[] { getBtn21911(), getBtn21912(), getBtn21913(),
 			getBtn21914(), getBtn21915(), getBtn21916(), getBtn21917(), getBtn21918(), getBtn22733(), getBtn22739(),
-			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749() };
+			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749() 
+		};
 
 	private JPanel pnCentro;
 	private JPanel pnLogin;
@@ -267,9 +271,6 @@ public class MainFrame extends JFrame {
 			}
 		});
 	}
-
-	private static Service22748_9 s22748_9 = new Service22748_9();
-	private JButton btnRegistro;
 
 	private static void run22748() {
 		EventQueue.invokeLater(new Runnable() {
@@ -528,7 +529,7 @@ public class MainFrame extends JFrame {
 	private ValueButton<String> getBtn22749() {
 		if (btn22749 == null) {
 			btn22749 = new ValueButton<String>("<html><p>Ampliaciones de capital</h1><p>(22749)</p><html>");
-			btn22749.setValue("gclub");
+			btn22749.setValue("admin");
 			btn22749.setBackground(new Color(240, 255, 240));
 			btn22749.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
