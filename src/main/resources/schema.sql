@@ -307,3 +307,11 @@ create table Lesion(
 	foreign key (pid) references Partido(id),
 	foreign key (enid) references HorarioEntrenamiento(enid)
 );
+
+--Compra
+drop table Compra;
+create table Compra(
+	id integer primary key autoincrement,
+	cuantia int not null,
+	fecha date not null
+);

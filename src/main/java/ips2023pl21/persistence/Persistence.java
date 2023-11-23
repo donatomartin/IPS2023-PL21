@@ -1041,4 +1041,14 @@ public class Persistence {
 		}
 		return jugadores;
 	}
+
+	public void deleteLesionado(String eid) {
+		db.executeUpdate("delete from lesion where eid=?", eid);
+	}
+
+	public List<HorarioEntrenamiento> getEntrenamientos(String equipoId) {
+		List<HorarioEntrenamiento> entrenos = db.executeQueryPojo(HorarioEntrenamiento.class,
+				"select * from HorarioEntrenamiento where eid=?", equipoId);
+		return entrenos;
+	}
 }

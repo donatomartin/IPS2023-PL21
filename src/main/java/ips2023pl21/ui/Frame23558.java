@@ -2,7 +2,9 @@ package ips2023pl21.ui;
 
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.swing.JFrame;
@@ -15,8 +17,13 @@ import javax.swing.table.DefaultTableModel;
 
 import ips2023pl21.model.Empleado;
 import ips2023pl21.model.equipos.Equipo;
+import ips2023pl21.model.horarios.HorarioEntrenamiento;
 import ips2023pl21.service.Service23558;
+import ips2023pl21.util.Util;
+
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
+
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.SwingConstants;
@@ -24,8 +31,17 @@ import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JScrollPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JRadioButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JTextPane;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Frame23558 extends JFrame {
 
@@ -33,10 +49,12 @@ public class Frame23558 extends JFrame {
 	private JPanel contentPane;
 	private Service23558 cs;
 	private JLabel lbTitulo;
+	private JPanel pnPrincipal;
+	private JPanel pnSeleccionAccion;
 	private JPanel pnBotonesAccion;
 	private JButton btAñadir;
 	private JButton btDarAlta;
-	private JPanel pnSeleccion;
+	private JPanel pnSeleccionJugadores;
 	private JPanel pnEquipo;
 	private JPanel pnSanos;
 	private JPanel pnLesionados;
@@ -92,6 +110,58 @@ public class Frame23558 extends JFrame {
 		        return false;
 	    }
 	};
+	private JPanel pnAñadirLesion;
+	private JPanel pnOrigen;
+	private JPanel pnDatosLesion;
+	private JPanel pnAñadir;
+	private JPanel pnLesionado;
+	private JPanel pnCausa;
+	private JLabel lbAñadir;
+	private JLabel lbLesionado;
+	private JLabel lblNewLabel;
+	private JPanel pnRadioBotones;
+	private JRadioButton rbEntrenamiento;
+	private JRadioButton rbPartido;
+	private JRadioButton rbCausaAjena;
+	private final ButtonGroup buttonGroup = new ButtonGroup();
+	private JButton btAñadirLesion;
+	private JButton btCancelar;
+	private JPanel pnCausaAjena;
+	private JScrollPane scrEntrenamientos;
+	private JScrollPane scrPartidos;
+	private JTable tableEntrenamientos;
+	private DefaultTableModel tableModelEntrenamientos = new DefaultTableModel(
+			new String[][] {
+			},
+			new String[] {
+				"ID", "Fecha"
+			}
+		) {
+			private static final long serialVersionUID = 1L;
+	
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+	    }
+	};
+	private JTable tablePartidos;
+	private DefaultTableModel tableModelPartidos = new DefaultTableModel(
+			new String[][] {
+			},
+			new String[] {
+				"ID", "Fecha"
+			}
+		) {
+			private static final long serialVersionUID = 1L;
+	
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		        return false;
+	    }
+	};
+	private JTextPane txCausasAjenas;
+	private JButton btActualizar;
+	private ActualizarLesion actualiza;
 
 	/**
 	 * Create the frame.
@@ -106,15 +176,14 @@ public class Frame23558 extends JFrame {
 			}
 		});
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		setBounds(100, 100, 794, 486);
+		setBounds(100, 100, 794, 535);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setLocationRelativeTo(null);
 		setContentPane(contentPane);
 		contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane.add(getPnPrincipal(), BorderLayout.CENTER);
 		contentPane.add(getLbTitulo(), BorderLayout.NORTH);
-		contentPane.add(getPnBotonesAccion(), BorderLayout.SOUTH);
-		contentPane.add(getPnSeleccion(), BorderLayout.CENTER);
 		rellenarTablaEquipos();
 	}
 	
@@ -124,6 +193,26 @@ public class Frame23558 extends JFrame {
 		if (respuesta == JOptionPane.YES_OPTION) {
 			dispose();
 		}
+	}
+	
+	private JPanel getPnPrincipal() {
+		if (pnPrincipal == null) {
+			pnPrincipal = new JPanel();
+			pnPrincipal.setLayout(new CardLayout(0,0));
+			pnPrincipal.add(getPnSeleccionAccion(), "pnSeleccionAccion");
+			pnPrincipal.add(getPnAñadirLesion(), "pnAñadirLesion");
+		}
+		return pnPrincipal;
+	}
+	
+	private JPanel getPnSeleccionAccion() {
+		if (pnSeleccionAccion == null) {
+			pnSeleccionAccion = new JPanel();
+			pnSeleccionAccion.setLayout(new BorderLayout(0,0));
+			pnSeleccionAccion.add(getPnBotonesAccion(), BorderLayout.SOUTH);
+			pnSeleccionAccion.add(getPnSeleccionJugadores(), BorderLayout.CENTER);
+		}
+		return pnSeleccionAccion;
 	}
 
 	private JLabel getLbTitulo() {
@@ -139,6 +228,7 @@ public class Frame23558 extends JFrame {
 		if (pnBotonesAccion == null) {
 			pnBotonesAccion = new JPanel();
 			pnBotonesAccion.add(getBtAñadir());
+			pnBotonesAccion.add(getBtActualizar());
 			pnBotonesAccion.add(getBtDarAlta());
 		}
 		return pnBotonesAccion;
@@ -146,6 +236,27 @@ public class Frame23558 extends JFrame {
 	private JButton getBtAñadir() {
 		if (btAñadir == null) {
 			btAñadir = new JButton("Añadir lesionado");
+			btAñadir.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getTableSanos().getSelectedRows().length < 1) {
+						JOptionPane.showMessageDialog(null, 
+								"No hay ningún jugador seleccionado en la tabla de jugadores sanos");
+						return;
+					}
+					int respuesta = JOptionPane.showConfirmDialog(null, 
+							"Está seguro de que quiere dar de baja al jugador seleccionado?");
+					if (respuesta == JOptionPane.YES_OPTION) {
+						int fila = getTableSanos().getSelectedRow();
+						String eid = getTableSanos().getValueAt(fila, 0).toString();
+						cs.setLesionado(eid);
+						getLbLesionado().setText(cs.getLesionado().getNombre()+" "+cs.getLesionado().getApellido());
+						mostrarPnAñadirLesion();
+						rellenarTablaEntrenamientos();
+						rellenarTablaPartidos();
+					}
+					
+				}
+			});
 			btAñadir.setForeground(new Color(0, 0, 0));
 			btAñadir.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -154,20 +265,36 @@ public class Frame23558 extends JFrame {
 	private JButton getBtDarAlta() {
 		if (btDarAlta == null) {
 			btDarAlta = new JButton("Dar de alta");
+			btDarAlta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getTableLesionados().getSelectedRows().length < 1) {
+						JOptionPane.showMessageDialog(null, 
+								"No hay ningún jugador seleccionado en la tabla de jugadores lesionados");
+						return;
+					}
+					int respuesta = JOptionPane.showConfirmDialog(null, 
+							"¿Está seguro de que quiere dar de alta al jugador seleccionado?");
+					if (respuesta == JOptionPane.YES_OPTION) {
+						eliminarLesionado();
+						rellenarTablaSanos();
+						rellenarTablaLesionados();
+					}
+				}
+			});
 			btDarAlta.setForeground(new Color(0, 0, 0));
 			btDarAlta.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return btDarAlta;
 	}
-	private JPanel getPnSeleccion() {
-		if (pnSeleccion == null) {
-			pnSeleccion = new JPanel();
-			pnSeleccion.setLayout(new GridLayout(1, 3, 20, 0));
-			pnSeleccion.add(getPnEquipo());
-			pnSeleccion.add(getPnSanos());
-			pnSeleccion.add(getPnLesionados());
+	private JPanel getPnSeleccionJugadores() {
+		if (pnSeleccionJugadores == null) {
+			pnSeleccionJugadores = new JPanel();
+			pnSeleccionJugadores.setLayout(new GridLayout(1, 3, 20, 0));
+			pnSeleccionJugadores.add(getPnEquipo());
+			pnSeleccionJugadores.add(getPnSanos());
+			pnSeleccionJugadores.add(getPnLesionados());
 		}
-		return pnSeleccion;
+		return pnSeleccionJugadores;
 	}
 	private JPanel getPnEquipo() {
 		if (pnEquipo == null) {
@@ -274,6 +401,21 @@ public class Frame23558 extends JFrame {
 	private JTable getTableLesionados() {
 		if (tableLesionados == null) {
 			tableLesionados = new JTable();
+			tableLesionados.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					if (e.getClickCount()== 2) {
+						int row = getTableLesionados().getSelectedRow();
+						String eid = getTableLesionados().getValueAt(row, 0).toString();
+						cs.setLesionado(eid);
+						
+						actualiza = new ActualizarLesion();
+						actualiza.getLbNombreYApellido_1().setText(cs.getLesionado().getNombre()+" "+cs.getLesionado().getApellido());
+						actualiza.mostrarPnVisualizarActualizacion();
+						actualiza.setVisible(true);
+					}
+				}
+			});
 			tableLesionados.setForeground(new Color(0, 0, 0));
 			tableLesionados.setFont(new Font("Tahoma", Font.PLAIN, 16));
 			tableLesionados.setModel(tableModelLesionados);
@@ -325,4 +467,564 @@ public class Frame23558 extends JFrame {
 					{e.getEid(), e.getNombre()});
 		}
 	}
+	private void eliminarLesionado() {
+		int fila = getTableLesionados().getSelectedRow();
+		String eid = getTableLesionados().getValueAt(fila, 0).toString();
+		cs.eliminarLesionado(eid);
+	}
+	private JPanel getPnAñadirLesion() {
+		if (pnAñadirLesion == null) {
+			pnAñadirLesion = new JPanel();
+			pnAñadirLesion.setLayout(new BorderLayout(0, 0));
+			pnAñadirLesion.add(getPnOrigen(), BorderLayout.NORTH);
+			pnAñadirLesion.add(getPnDatosLesion());
+			pnAñadirLesion.add(getPnAñadir(), BorderLayout.SOUTH);
+		}
+		return pnAñadirLesion;
+	}
+	private void mostrarPnAñadirLesion() {
+		((CardLayout) getPnPrincipal().getLayout()).show(getPnPrincipal(), "pnAñadirLesion");
+		getTableSanos().clearSelection();
+		getTableLesionados().clearSelection();
+	}
+	private JPanel getPnOrigen() {
+		if (pnOrigen == null) {
+			pnOrigen = new JPanel();
+			pnOrigen.setLayout(new GridLayout(2, 1, 0, 0));
+			pnOrigen.add(getPnLesionado());
+			pnOrigen.add(getPnCausa());
+		}
+		return pnOrigen;
+	}
+	private JPanel getPnDatosLesion() {
+		if (pnDatosLesion == null) {
+			pnDatosLesion = new JPanel();
+			pnDatosLesion.setLayout(new GridLayout(1, 3, 0, 0));
+			pnDatosLesion.add(getScrEntrenamientos());
+			pnDatosLesion.add(getScrPartidos());
+			pnDatosLesion.add(getPnCausaAjena());
+		}
+		return pnDatosLesion;
+	}
+	private JPanel getPnAñadir() {
+		if (pnAñadir == null) {
+			pnAñadir = new JPanel();
+			pnAñadir.add(getBtAñadirLesion());
+			pnAñadir.add(getBtCancelar());
+		}
+		return pnAñadir;
+	}
+	private JPanel getPnLesionado() {
+		if (pnLesionado == null) {
+			pnLesionado = new JPanel();
+			pnLesionado.setLayout(new GridLayout(0, 2, 0, 0));
+			pnLesionado.add(getLbAñadir());
+			pnLesionado.add(getLbLesionado());
+		}
+		return pnLesionado;
+	}
+	private JPanel getPnCausa() {
+		if (pnCausa == null) {
+			pnCausa = new JPanel();
+			pnCausa.setLayout(new GridLayout(2, 1, 0, 0));
+			pnCausa.add(getLblNewLabel());
+			pnCausa.add(getPnRadioBotones());
+		}
+		return pnCausa;
+	}
+	private JLabel getLbAñadir() {
+		if (lbAñadir == null) {
+			lbAñadir = new JLabel("Añadir a lesionados:");
+			lbAñadir.setForeground(new Color(0, 0, 0));
+			lbAñadir.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			lbAñadir.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		return lbAñadir;
+	}
+	private JLabel getLbLesionado() {
+		if (lbLesionado == null) {
+			lbLesionado = new JLabel("");
+			lbLesionado.setForeground(new Color(0, 0, 0));
+			lbLesionado.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			lbLesionado.setText("");
+		}
+		return lbLesionado;
+	}
+	private JLabel getLblNewLabel() {
+		if (lblNewLabel == null) {
+			lblNewLabel = new JLabel("Seleccione el origen de la lesión:");
+			lblNewLabel.setForeground(new Color(0, 0, 0));
+			lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return lblNewLabel;
+	}
+	private JPanel getPnRadioBotones() {
+		if (pnRadioBotones == null) {
+			pnRadioBotones = new JPanel();
+			pnRadioBotones.setLayout(new GridLayout(1, 3, 0, 0));
+			pnRadioBotones.add(getRbEntrenamiento());
+			pnRadioBotones.add(getRbPartido());
+			pnRadioBotones.add(getRbCausaAjena());
+		}
+		return pnRadioBotones;
+	}
+	private JRadioButton getRbEntrenamiento() {
+		if (rbEntrenamiento == null) {
+			rbEntrenamiento = new JRadioButton("Entrenamiento");
+			rbEntrenamiento.setSelected(true);
+			buttonGroup.add(rbEntrenamiento);
+			rbEntrenamiento.setForeground(new Color(0, 0, 0));
+			rbEntrenamiento.setHorizontalAlignment(SwingConstants.CENTER);
+			rbEntrenamiento.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		}
+		return rbEntrenamiento;
+	}
+	private JRadioButton getRbPartido() {
+		if (rbPartido == null) {
+			rbPartido = new JRadioButton("Partido");
+			buttonGroup.add(rbPartido);
+			rbPartido.setForeground(new Color(0, 0, 0));
+			rbPartido.setHorizontalAlignment(SwingConstants.CENTER);
+			rbPartido.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		}
+		return rbPartido;
+	}
+	private JRadioButton getRbCausaAjena() {
+		if (rbCausaAjena == null) {
+			rbCausaAjena = new JRadioButton("Causa ajena");
+			rbCausaAjena.setForeground(new Color(0, 0, 0));
+			buttonGroup.add(rbCausaAjena);
+			rbCausaAjena.setHorizontalAlignment(SwingConstants.CENTER);
+			rbCausaAjena.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		}
+		return rbCausaAjena;
+	}
+	private JButton getBtAñadirLesion() {
+		if (btAñadirLesion == null) {
+			btAñadirLesion = new JButton("Añadir");
+			btAñadirLesion.setForeground(new Color(0, 0, 0));
+			btAñadirLesion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return btAñadirLesion;
+	}
+	private JButton getBtCancelar() {
+		if (btCancelar == null) {
+			btCancelar = new JButton("Cancelar");
+			btCancelar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					mostrarPnSeleccionAccion();
+				}
+			});
+			btCancelar.setForeground(new Color(0, 0, 0));
+			btCancelar.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return btCancelar;
+	}
+	private JPanel getPnCausaAjena() {
+		if (pnCausaAjena == null) {
+			pnCausaAjena = new JPanel();
+			pnCausaAjena.setLayout(new GridLayout(2, 1, 0, 0));
+			pnCausaAjena.add(getTxCausasAjenas());
+		}
+		return pnCausaAjena;
+	}
+	private JScrollPane getScrEntrenamientos() {
+		if (scrEntrenamientos == null) {
+			scrEntrenamientos = new JScrollPane();
+			scrEntrenamientos.setViewportView(getTableEntrenamientos());
+		}
+		return scrEntrenamientos;
+	}
+	private JScrollPane getScrPartidos() {
+		if (scrPartidos == null) {
+			scrPartidos = new JScrollPane();
+			scrPartidos.setViewportView(getTablePartidos());
+		}
+		return scrPartidos;
+	}
+	private JTable getTableEntrenamientos() {
+		if (tableEntrenamientos == null) {
+			tableEntrenamientos = new JTable();
+			tableEntrenamientos.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			tableEntrenamientos.setForeground(new Color(0, 0, 0));
+			tableEntrenamientos.setModel(tableModelEntrenamientos);
+			tableEntrenamientos.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		}
+		return tableEntrenamientos;
+	}
+	private JTable getTablePartidos() {
+		if (tablePartidos == null) {
+			tablePartidos = new JTable();
+			tablePartidos.setForeground(new Color(0, 0, 0));
+			tablePartidos.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			tablePartidos.setModel(tableModelPartidos);
+			tablePartidos.getSelectionModel().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		}
+		return tablePartidos;
+	}
+	private JTextPane getTxCausasAjenas() {
+		if (txCausasAjenas == null) {
+			txCausasAjenas = new JTextPane();
+		}
+		return txCausasAjenas;
+	}
+	private JButton getBtActualizar() {
+		if (btActualizar == null) {
+			btActualizar = new JButton("Actualizar lesionado");
+			btActualizar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getTableLesionados().getSelectedRows().length < 1) {
+						JOptionPane.showMessageDialog(null, 
+								"No hay ningún jugador seleccionado en la tabla de jugadores lesionados");
+						return;
+					}
+					int respuesta = JOptionPane.showConfirmDialog(null, 
+							"¿Está seguro de que quiere actualizar el jugador seleccionado?");
+					if (respuesta == JOptionPane.YES_OPTION) {
+						int fila = getTableLesionados().getSelectedRow();
+						String eid = getTableLesionados().getValueAt(fila, 0).toString();
+						cs.setLesionado(eid);
+						mostrarPnActualizarLesionado();
+					}
+				}
+			});
+			btActualizar.setForeground(new Color(0, 0, 0));
+			btActualizar.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return btActualizar;
+	}
+	private void mostrarPnActualizarLesionado() {
+		actualiza = new ActualizarLesion();
+		actualiza.getLbNombreYApellido().setText(cs.getLesionado().getNombre()+" "+cs.getLesionado().getApellido());
+		actualiza.mostrarPnAñadirActuazalizacion();
+		actualiza.setVisible(true);
+	}
+	private void mostrarPnSeleccionAccion() {
+		((CardLayout) getPnPrincipal().getLayout()).show(getPnPrincipal(), "pnSeleccionAccion");
+		getRbEntrenamiento().setSelected(true);
+		getTxCausasAjenas().setText("");
+	}
+	private void rellenarTablaEntrenamientos() {
+		int fila = getTableEquipos().getSelectedRow();
+		String equipoId = getTableEquipos().getValueAt(fila, 0).toString();
+		List<HorarioEntrenamiento> entrenos = cs.getEntrenamientos(equipoId);
+		
+		for (HorarioEntrenamiento e : entrenos) {
+			Date date = Util.isoStringToDate(e.getFechaEntrenamiento());
+			if (date.before(Date.from(Instant.now()))) {
+				tableModelEntrenamientos.addRow(new Object[]
+						{e.getIid(), e.getFechaEntrenamiento()});
+			}
+		}
+	}
+	private void rellenarTablaPartidos() {
+		
+	}
+	
+	
+	private class ActualizarLesion extends JFrame {
+		private static final long serialVersionUID = 1L;
+		private JPanel contentPane;
+		private JLabel lbActualizaciones;
+		private JPanel pnCentral;
+		private JPanel pnAñadirActualizacion;
+		private JPanel pnVisualizarActualizacion;
+		private JPanel pnJugador;
+		private JLabel lbJugador;
+		private JLabel lbNombreYApellido;
+		private JPanel pnBotonesActualizacion;
+		private JButton btAceptarActualizacion;
+		private JButton btCancelarActualizacion;
+		private JPanel pnActualizacion;
+		private JLabel lbActualizacion;
+		private JLabel lblNewLabel_1;
+		private JPanel pnTexto;
+		private JTextField txActualizacion;
+		private JLabel lblNewLabel;
+		private JLabel lblNewLabel_2;
+		private JLabel lbRestriccion;
+		private JPanel pnJugador_1;
+		private JLabel lbJugador_1;
+		private JLabel lbNombreYApellido_1;
+		private JPanel pnBotonesActualizacion_1;
+		private JButton btAceptarActualizacion_1;
+		private JPanel pnActualizaciones;
+		private JLabel lbTodasActualizaciones;
+		private JTextArea txTodasActualizaciones;
+
+		//TODO
+		public ActualizarLesion() {
+			setTitle("Actualización de lesiones");
+			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+			setBounds(100, 100, 791, 457);
+			contentPane = new JPanel();
+			contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+			setLocationRelativeTo(null);
+			addWindowListener(new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					dispose();
+				}
+			});
+			setContentPane(contentPane);
+			contentPane.setLayout(new BorderLayout(0, 0));
+			contentPane.add(getLbActualizaciones(), BorderLayout.NORTH);
+			contentPane.add(getPnCentral(), BorderLayout.CENTER);
+		}
+
+		
+		private JLabel getLbActualizaciones() {
+			if (lbActualizaciones == null) {
+				lbActualizaciones = new JLabel("Actualizaciones");
+				lbActualizaciones.setForeground(new Color(0, 0, 0));
+				lbActualizaciones.setFont(new Font("Tahoma", Font.BOLD, 40));
+				lbActualizaciones.setHorizontalAlignment(SwingConstants.CENTER);
+			}
+			return lbActualizaciones;
+		}
+		private JPanel getPnCentral() {
+			if (pnCentral == null) {
+				pnCentral = new JPanel();
+				pnCentral.setLayout(new CardLayout(0, 0));
+				pnCentral.add(getPnAñadirActualizacion(), "pnAñadirActuazalizacion");
+				pnCentral.add(getPnVisualizarActualizacion(), "pnVisualizarActualizacion");
+			}
+			return pnCentral;
+		}
+		private JPanel getPnAñadirActualizacion() {
+			if (pnAñadirActualizacion == null) {
+				pnAñadirActualizacion = new JPanel();
+				pnAñadirActualizacion.setLayout(new BorderLayout(0, 0));
+				pnAñadirActualizacion.add(getPnJugador(), BorderLayout.NORTH);
+				pnAñadirActualizacion.add(getPnBotonesActualizacion(), BorderLayout.SOUTH);
+				pnAñadirActualizacion.add(getPnActualizacion(), BorderLayout.CENTER);
+			}
+			return pnAñadirActualizacion;
+		}
+		private JPanel getPnVisualizarActualizacion() {
+			if (pnVisualizarActualizacion == null) {
+				pnVisualizarActualizacion = new JPanel();
+				pnVisualizarActualizacion.setLayout(new BorderLayout(0, 0));
+				pnVisualizarActualizacion.add(getPnJugador_1(), BorderLayout.NORTH);
+				pnVisualizarActualizacion.add(getPnBotonesActualizacion_1(), BorderLayout.SOUTH);
+				pnVisualizarActualizacion.add(getPnActualizaciones(), BorderLayout.CENTER);
+			}
+			return pnVisualizarActualizacion;
+		}
+		private JPanel getPnJugador() {
+			if (pnJugador == null) {
+				pnJugador = new JPanel();
+				pnJugador.add(getLbJugador());
+				pnJugador.add(getLbNombreYApellido());
+			}
+			return pnJugador;
+		}
+		private JLabel getLbJugador() {
+			if (lbJugador == null) {
+				lbJugador = new JLabel("Jugador lesionado:	");
+				lbJugador.setForeground(new Color(0, 0, 0));
+				lbJugador.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			}
+			return lbJugador;
+		}
+		private JLabel getLbNombreYApellido() {
+			if (lbNombreYApellido == null) {
+				lbNombreYApellido = new JLabel("");
+				lbNombreYApellido.setForeground(new Color(0, 0, 0));
+				lbNombreYApellido.setFont(new Font("Tahoma", Font.PLAIN, 18));
+				lbNombreYApellido.setText("");
+			}
+			return lbNombreYApellido;
+		}
+		private JPanel getPnBotonesActualizacion() {
+			if (pnBotonesActualizacion == null) {
+				pnBotonesActualizacion = new JPanel();
+				pnBotonesActualizacion.add(getBtAceptarActualizacion());
+				pnBotonesActualizacion.add(getBtCancelarActualizacion());
+			}
+			return pnBotonesActualizacion;
+		}
+		private JButton getBtAceptarActualizacion() {
+			if (btAceptarActualizacion == null) {
+				btAceptarActualizacion = new JButton("Aceptar");
+				btAceptarActualizacion.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						if(getTxActualizacion().getText().isBlank()) {
+							JOptionPane.showMessageDialog(null, "El texto de actualización está vacío");
+							return;
+						}
+						else if(getTxActualizacion().getText().length() > 200) {
+							JOptionPane.showMessageDialog(null, "El texto es demasiado largo");
+							getTxActualizacion().setText("");
+							return;
+						}
+						getTxActualizacion().setText("");
+						dispose();
+					}
+				});
+				btAceptarActualizacion.setForeground(new Color(0, 0, 0));
+				btAceptarActualizacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			}
+			return btAceptarActualizacion;
+		}
+		private JButton getBtCancelarActualizacion() {
+			if (btCancelarActualizacion == null) {
+				btCancelarActualizacion = new JButton("Cancelar");
+				btCancelarActualizacion.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						getTxActualizacion().setText("");
+						dispose();
+					}
+				});
+				btCancelarActualizacion.setForeground(new Color(0, 0, 0));
+				btCancelarActualizacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			}
+			return btCancelarActualizacion;
+		}
+		private JPanel getPnActualizacion() {
+			if (pnActualizacion == null) {
+				pnActualizacion = new JPanel();
+				pnActualizacion.setLayout(new GridLayout(0, 3, 0, 0));
+				pnActualizacion.add(getLbActualizacion());
+				pnActualizacion.add(getPnTexto());
+			}
+			return pnActualizacion;
+		}
+		private JLabel getLbActualizacion() {
+			if (lbActualizacion == null) {
+				lbActualizacion = new JLabel("Actualización de lesión:");
+				lbActualizacion.setForeground(new Color(0, 0, 0));
+				lbActualizacion.setHorizontalAlignment(SwingConstants.CENTER);
+				lbActualizacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			}
+			return lbActualizacion;
+		}
+		private JLabel getLblNewLabel_1() {
+			if (lblNewLabel_1 == null) {
+				lblNewLabel_1 = new JLabel("");
+			}
+			return lblNewLabel_1;
+		}
+		private JPanel getPnTexto() {
+			if (pnTexto == null) {
+				pnTexto = new JPanel();
+				pnTexto.setLayout(new GridLayout(0, 1, 0, 0));
+				pnTexto.add(getLblNewLabel_2());
+				pnTexto.add(getLblNewLabel());
+				pnTexto.add(getTxActualizacion());
+				pnTexto.add(getLbRestriccion());
+				pnTexto.add(getLblNewLabel_1());
+			}
+			return pnTexto;
+		}
+		private JTextField getTxActualizacion() {
+			if (txActualizacion == null) {
+				txActualizacion = new JTextField();
+				txActualizacion.setForeground(new Color(0, 0, 0));
+				txActualizacion.setFont(new Font("Tahoma", Font.PLAIN, 18));
+				txActualizacion.setColumns(10);
+			}
+			return txActualizacion;
+		}
+		private JLabel getLblNewLabel() {
+			if (lblNewLabel == null) {
+				lblNewLabel = new JLabel("");
+			}
+			return lblNewLabel;
+		}
+		private JLabel getLblNewLabel_2() {
+			if (lblNewLabel_2 == null) {
+				lblNewLabel_2 = new JLabel("");
+			}
+			return lblNewLabel_2;
+		}
+		private JLabel getLbRestriccion() {
+			if (lbRestriccion == null) {
+				lbRestriccion = new JLabel("*Sea breve en la actualización");
+				lbRestriccion.setForeground(new Color(0, 0, 0));
+				lbRestriccion.setFont(new Font("Tahoma", Font.PLAIN, 12));
+				lbRestriccion.setVerticalAlignment(SwingConstants.TOP);
+			}
+			return lbRestriccion;
+		}
+		private JPanel getPnJugador_1() {
+			if (pnJugador_1 == null) {
+				pnJugador_1 = new JPanel();
+				pnJugador_1.add(getLbJugador_1());
+				pnJugador_1.add(getLbNombreYApellido_1());
+			}
+			return pnJugador_1;
+		}
+		private JLabel getLbJugador_1() {
+			if (lbJugador_1 == null) {
+				lbJugador_1 = new JLabel("Jugador lesionado:");
+				lbJugador_1.setForeground(Color.BLACK);
+				lbJugador_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			}
+			return lbJugador_1;
+		}
+		private JLabel getLbNombreYApellido_1() {
+			if (lbNombreYApellido_1 == null) {
+				lbNombreYApellido_1 = new JLabel("<dynamic> <dynamic>");
+				lbNombreYApellido_1.setForeground(Color.BLACK);
+				lbNombreYApellido_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			}
+			return lbNombreYApellido_1;
+		}
+		private JPanel getPnBotonesActualizacion_1() {
+			if (pnBotonesActualizacion_1 == null) {
+				pnBotonesActualizacion_1 = new JPanel();
+				pnBotonesActualizacion_1.add(getBtAceptarActualizacion_1());
+			}
+			return pnBotonesActualizacion_1;
+		}
+		private JButton getBtAceptarActualizacion_1() {
+			if (btAceptarActualizacion_1 == null) {
+				btAceptarActualizacion_1 = new JButton("Aceptar");
+				btAceptarActualizacion_1.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						dispose();
+					}
+				});
+				btAceptarActualizacion_1.setForeground(Color.BLACK);
+				btAceptarActualizacion_1.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			}
+			return btAceptarActualizacion_1;
+		}
+		private JPanel getPnActualizaciones() {
+			if (pnActualizaciones == null) {
+				pnActualizaciones = new JPanel();
+				pnActualizaciones.setLayout(new GridLayout(0, 3, 0, 0));
+				pnActualizaciones.add(getLbTodasActualizaciones());
+				pnActualizaciones.add(getTxTodasActualizaciones());
+			}
+			return pnActualizaciones;
+		}
+		private JLabel getLbTodasActualizaciones() {
+			if (lbTodasActualizaciones == null) {
+				lbTodasActualizaciones = new JLabel("Actualizaciones jugador:");
+				lbTodasActualizaciones.setHorizontalAlignment(SwingConstants.CENTER);
+				lbTodasActualizaciones.setForeground(new Color(0, 0, 0));
+				lbTodasActualizaciones.setFont(new Font("Tahoma", Font.PLAIN, 18));
+			}
+			return lbTodasActualizaciones;
+		}
+		private JTextArea getTxTodasActualizaciones() {
+			if (txTodasActualizaciones == null) {
+				txTodasActualizaciones = new JTextArea();
+				txTodasActualizaciones.setEditable(false);
+				txTodasActualizaciones.setColumns(1);
+				txTodasActualizaciones.setRows(100);
+				txTodasActualizaciones.setFont(new Font("Monospaced", Font.PLAIN, 18));
+			}
+			return txTodasActualizaciones;
+		}
+		private void mostrarPnAñadirActuazalizacion() {
+			((CardLayout) getPnCentral().getLayout()).show(getPnCentral(), "pnAñadirLesion");
+		}
+		private void mostrarPnVisualizarActualizacion() {
+			((CardLayout) getPnCentral().getLayout()).show(getPnCentral(), "pnVisualizarActualizacion");
+		}
+	}
+
 }
