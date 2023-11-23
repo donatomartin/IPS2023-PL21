@@ -18,6 +18,7 @@ import ips2023pl21.model.activos.Instalacion;
 import ips2023pl21.model.horarios.HorariosEquipos;
 import ips2023pl21.model.horarios.franjas.FranjaReservas;
 import ips2023pl21.model.ventas.Reservas;
+import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Database;
 import ips2023pl21.util.Util;
 
@@ -52,12 +53,15 @@ public class Service21913 {
 	private FranjaReservas franjaSeleccionada;
 	private List<Instalacion> instalaciones = new ArrayList<Instalacion>();
 	private int idCampo;
+	private Persistence p;
 	
 	public Service21913() {
 		//Cargar base de datos
 		db = new Database();
 		db.createDatabase(false);
 		db.loadDatabase();
+		
+		p = Persistence.getInstance();
 		
 		//Cargar lógica
 		horariosFechaSeleccionada = new ArrayList<HorariosEquipos>();
@@ -199,6 +203,8 @@ public class Service21913 {
 		int precioInt = Integer.parseInt(precio);
 		db.executeUpdate(INSERTAR_RESERVA, nombre, tarjeta, idCampo, precioInt, fechaSeleccionada, 
 				horaEntrada, horaSalida, minutoEntrada, minutoSalida,fecha,horaReserva,minutoReserva);
+		
+		p.insertarVentaReserva(fecha, horaReserva, minutoReserva, precioInt);
 	}
 	
 	public List<Instalacion> cargarInstalaciones() {

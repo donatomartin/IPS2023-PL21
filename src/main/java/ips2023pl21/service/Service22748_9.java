@@ -1,10 +1,14 @@
 package ips2023pl21.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import ips2023pl21.model.acciones.Accion;
 import ips2023pl21.model.acciones.Accionista;
 import ips2023pl21.persistence.Persistence;
+import ips2023pl21.util.Util;
 
 public class Service22748_9 {
 	
@@ -24,29 +28,62 @@ public class Service22748_9 {
 	}
 	
 	public Service22748_9() {
-		//this.fase = CapitalFase.FUERA_FASE;
-		accionesVendidas = 0;
-		accionesRestantes = 0;
+		this.fase = getFase();
+		accionesRestantes = getAccionesRestantes();
+		accionesVendidas = getAccionesVendidas();
 	}
-	
+
 	public int getAccionesVendidas() {
+		accionesVendidas =  p.selectAccionesVendidas();
 		return accionesVendidas;
 	}
 
-	public void setAccionesVendidas(int accionesRestantes) {
-		this.accionesVendidas = accionesRestantes;
+	public void setAccionesVendidas(int accionesVendidas) {
+		p.updateAccionesVendidas(accionesVendidas);
 	}
 	
 	public int getAccionesRestantes() {
+		if (fase.equals(CapitalFase.FUERA_FASE)) {
+			accionesRestantes = 0;
+			return accionesRestantes;
+		}
+		else if(fase.equals(CapitalFase.FASE1)) {
+			accionesRestantes = p.selectRestantesFase1();
+			return accionesRestantes;
+		}
+		else if (fase.equals(CapitalFase.FASE2)) {
+			accionesRestantes = p.selectRestantesFase2();
+			return accionesRestantes;
+		}
+		accionesRestantes = p.selectRestantesFase3();
 		return accionesRestantes;
 	}
 
 	public void setAccionesRestantes(int accionesRestantes) {
-		this.accionesRestantes = accionesRestantes;
+		String fase = p.getFase();
+		
+		if(fase.equals("Fase 1")) {
+			p.updateAccionesFase1(accionesRestantes);
+		}
+		else if (fase.equals("Fase 2")) {
+			p.updateAccionesFase2(accionesRestantes);
+		}
+		p.updateAccionesFase3(accionesRestantes);
 	}
 	
 	public CapitalFase getFase() {
-		return fase;
+		String fase = p.getFase();
+		
+		if (fase.equals("Fuera fase")) {
+			return CapitalFase.FUERA_FASE;
+		}
+		else if(fase.equals("Fase 1")) {
+			return CapitalFase.FASE1;
+		}
+		else if(fase.equals("Fase 2")) {
+			return CapitalFase.FASE2;
+		}
+		return CapitalFase.FASE3;
 	}
 
 	public void setFase(CapitalFase fase) {
@@ -129,6 +166,14 @@ public class Service22748_9 {
 
 	public void crearAccion() {
 		p.insertAccion(accionistaActivo.getIdAccionista(), PRECIO_POR_ACCION);
+		
+		LocalDateTime fechaActual = LocalDateTime.now();
+		Date d = Date.from(fechaActual.atZone(ZoneId.systemDefault()).toInstant());
+		String fecha = Util.dateToIsoString(d);
+		int horaVenta = fechaActual.getHour();
+		int minutoventa = fechaActual.getMinute();
+		p.insertarVentaAccion
+		(fecha, horaVenta, minutoventa, PRECIO_POR_ACCION);
 	}
 
 	public void actualizaLimiteAccionista(Integer numAcciones) {
@@ -150,5 +195,16 @@ public class Service22748_9 {
 	public int countAccionistas() {
 		return p.countAccionistas();
 	}
+
+	public void updateFase(String fase) {
+		p.updateFase(fase);
+	}
+
+	public void actualizarCapitalTotal() {
+		double capitalNuevo = getCapitalClub() + (getAccionesVendidas()*PRECIO_POR_ACCION);
+		p.updateCapitalTotal(capitalNuevo);
+	}
+	
+	
 	
 }

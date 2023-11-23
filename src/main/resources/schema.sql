@@ -287,7 +287,9 @@ create table AmpliacionCapital(
 	faseTres int not null,
 	capitalTotal float not null,
 	accionesTotales int not null,
-	precioAccion float not null
+	precioAccion float not null, 
+	fase varchar(30) not null,
+	vendidas int not null
 );
 
 -- Usuario

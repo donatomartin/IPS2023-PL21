@@ -206,6 +206,7 @@ public class Frame22748 extends JFrame {
 		contentPane.add(getPnCentro());
 		contentPane.add(getLbTitulo(), BorderLayout.NORTH);
 		this.setLocationRelativeTo(null);
+		
 	}
 	
 	private void confirmarSalida() {
@@ -1132,6 +1133,14 @@ public class Frame22748 extends JFrame {
 						}
 						
 					}
+					else if(cs.getFase() == CapitalFase.FASE2) {
+						if (comprobarCompraClub() == JOptionPane.YES_OPTION) {
+							actualizarAccionesRestantesYVendidas();
+							creaAcciones();
+							actualizaAccionista();
+							mostrarPnInicio();
+						}
+					}
 					else {
 						if (comprobarCompraClub() == JOptionPane.YES_OPTION) {
 							actualizarAccionesRestantesYVendidas();
@@ -1394,8 +1403,10 @@ public class Frame22748 extends JFrame {
 		}
 	}
 	private void actualizarAccionesRestantesYVendidas() {
-		cs.setAccionesRestantes(cs.getAccionesRestantes()-(int)getCbNumeroAcciones().getSelectedItem());
-		cs.setAccionesVendidas(cs.getAccionesVendidas()+(int)getCbNumeroAcciones().getSelectedItem());
+		cs.setAccionesRestantes
+		(cs.getAccionesRestantes()-(int)getCbNumeroAcciones().getSelectedItem());
+		cs.setAccionesVendidas
+		(cs.getAccionesVendidas()+(int)getCbNumeroAcciones().getSelectedItem());
 	}
 	private void creaAcciones() {
 		for (int i=0; i<(int)getCbNumeroAcciones().getSelectedItem(); i++) {
