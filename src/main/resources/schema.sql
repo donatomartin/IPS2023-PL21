@@ -87,6 +87,7 @@ create table HorarioJardineria(
 -- HorarioEntrenamiento
 drop table HorarioEntrenamiento;
 create table HorarioEntrenamiento(
+	id integer primary key autoincrement,
 	fechaEntrenamiento varchar(10) not null,
 	horaInicio varchar(5) not null,
 	horaFin varchar(5) not null,
@@ -94,7 +95,7 @@ create table HorarioEntrenamiento(
 	iid int not null,
 	eid int not null,
 	check (horaInicio != horaFin),
-	primary key(fechaEntrenamiento, enid, iid, eid),
+	unique (fechaEntrenamiento, enid, iid, eid),
 	foreign key(enid) references Empleado(eid),
 	foreign key(iid) references Instalacion(id),
 	foreign key(eid) references Equipo(id)
@@ -131,7 +132,7 @@ create table Abonado(
 -- Entrevista
 drop table HorarioEntrevista;
 create table HorarioEntrevista (
-    fechaEntrevista varchar(10) not null,
+	fechaEntrevista varchar(10) not null,
     horaInicio varchar(5) not null,
     horaFin varchar(5) not null,
     datosMedio varchar(30) not null,
@@ -302,10 +303,17 @@ create table Lesion(
 	enid integer,
 	descripcion varchar(500),
 	fecha varchar(10),
-	tipo varchar(50),
 	foreign key (eid) references Empleado(eid),
 	foreign key (pid) references Partido(id),
 	foreign key (enid) references HorarioEntrenamiento(enid)
+);
+
+--Actualizacion
+drop table actualizacion;
+create table Actualizacion(
+	id integer primary key autoincrement,
+	eid integer not null,
+	texto varchar(500) not null
 );
 
 --Compra

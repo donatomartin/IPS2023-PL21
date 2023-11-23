@@ -145,8 +145,25 @@ insert into ventaMerchandising(id, idProducto, cantidad) VALUES
 
 
 delete from Partido;
-insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1','1', 'EquipoVisitante', '2023-11-09', 10);
-insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('2','1', 'EquipoVisitante2', '2023-11-16', 0);
+insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values 
+	('1','1', 'EquipoVisitante', '2023-11-09', 10),
+	('2','1', 'EquipoVisitante2', '2023-11-16', 0), 
+    ('3', '3', 'EquipoVisitante3', '2023-10-25', 0),
+    ('4', '2', 'EquipoVisitante4', '2023-10-31', 0),
+    ('5', '5', 'EquipoVisitante5', '2023-11-06', 0),
+    ('6', '4', 'EquipoVisitante6', '2023-11-13', 0),
+    ('7', '1', 'EquipoVisitante7', '2023-11-20', 0),
+    ('8', '1', 'EquipoVisitante8', '2023-11-27', 0),
+    ('9', '3', 'EquipoVisitante9', '2023-12-04', 0),
+    ('10', '2', 'EquipoVisitante10', '2023-12-11', 0),
+    ('11', '5', 'EquipoVisitante11', '2023-12-18', 0),
+    ('12', '4', 'EquipoVisitante12', '2023-12-25', 0),
+    ('13', '2', 'EquipoVisitante13', '2024-01-01', 0),
+    ('14', '1', 'EquipoVisitante14', '2024-01-08', 0),
+    ('15', '3', 'EquipoVisitante15', '2024-01-15', 0),
+    ('16', '2', 'EquipoVisitante16', '2024-01-22', 0),
+    ('17', '3', 'EquipoVisitante17', '2024-01-29', 0);
+
 
 delete from Abonado;
 insert into Abonado(id) values('1'); 
@@ -194,5 +211,29 @@ insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion
 	(0,0,0,1040.1,34.67,30, 'Fuera fase',0);
 	
 delete from lesion;
-insert into lesion(eid, causa, pid, enid, descripcion, fecha, tipo) values
-	(14, 'causa ajena', null, null, 'Gastroenteritis', '2023-11-21', 'Enfermedad');
+insert into lesion(eid, causa, pid, enid, descripcion, fecha) values
+	(14, 'causa ajena', null, null, 'Gastroenteritis', '2023-11-21');
+
+delete from HorarioEntrenamiento;
+insert into HorarioEntrenamiento (fechaEntrenamiento, horaInicio, horaFin, enid, iid, eid) values
+    ('2023-10-05', '14', '15', 19, 7, 4),
+    ('2023-11-20', '16', '17', 19, 2, 2),
+    ('2023-09-08', '11', '12', 19, 5, 1),
+    ('2023-02-25', '10', '11', 19, 9, 5),
+    ('2023-08-30', '13', '14', 19, 3, 3),
+    ('2023-07-15', '09', '10', 19, 8, 6),
+    ('2023-11-02', '15', '16', 19, 4, 4),
+    ('2023-10-22', '17', '18', 19, 1, 2),
+    ('2023-10-12', '12', '13', 19, 6, 1),
+    ('2023-09-18', '18', '19', 19, 10, 3),
+    ('2023-08-05', '14', '15', 19, 7, 5),
+    ('2023-11-30', '11', '12', 19, 2, 4),
+    ('2023-07-28', '16', '17', 19, 5, 6),
+    ('2023-10-10', '13', '14', 19, 9, 2),
+    ('2023-02-15', '15', '16', 19, 3, 1);
+
+delete from Actualizacion;
+insert into Actualizacion (eid, texto) values 
+	(14, 'aaaaa'),
+	(14, 'bbbbb'),
+	(14, 'texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo');

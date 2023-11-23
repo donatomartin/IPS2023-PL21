@@ -4,6 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import javax.swing.table.DefaultTableModel;
 
 import ips2023pl21.model.Empleado;
 import ips2023pl21.model.equipos.Equipo;
+import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.model.horarios.HorarioEntrenamiento;
+import ips2023pl21.model.lesiones.Actualizacion;
 import ips2023pl21.service.Service23558;
 import ips2023pl21.util.Util;
 
@@ -25,23 +28,27 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 
 import javax.swing.JLabel;
+import javax.swing.JList;
+
 import java.awt.Font;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.GridLayout;
 import javax.swing.JTable;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.SpinnerDateModel;
 import javax.swing.JScrollPane;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
 import javax.swing.JTextPane;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import javax.swing.JSpinner;
 
 public class Frame23558 extends JFrame {
 
@@ -134,7 +141,7 @@ public class Frame23558 extends JFrame {
 			new String[][] {
 			},
 			new String[] {
-				"ID", "Fecha"
+				"ID", "Hora"
 			}
 		) {
 			private static final long serialVersionUID = 1L;
@@ -162,6 +169,11 @@ public class Frame23558 extends JFrame {
 	private JTextPane txCausasAjenas;
 	private JButton btActualizar;
 	private ActualizarLesion actualiza;
+	private JPanel pnFecha;
+	private JLabel lblNewLabel_3;
+	private JSpinner spFecha;
+	private JLabel lblNewLabel_4;
+	private JLabel lbFecha;
 
 	/**
 	 * Create the frame.
@@ -276,6 +288,7 @@ public class Frame23558 extends JFrame {
 							"¿Está seguro de que quiere dar de alta al jugador seleccionado?");
 					if (respuesta == JOptionPane.YES_OPTION) {
 						eliminarLesionado();
+						eliminarActualizacionesLesionado();
 						rellenarTablaSanos();
 						rellenarTablaLesionados();
 					}
@@ -409,8 +422,9 @@ public class Frame23558 extends JFrame {
 						String eid = getTableLesionados().getValueAt(row, 0).toString();
 						cs.setLesionado(eid);
 						
-						actualiza = new ActualizarLesion();
+						actualiza = new ActualizarLesion(cs);
 						actualiza.getLbNombreYApellido_1().setText(cs.getLesionado().getNombre()+" "+cs.getLesionado().getApellido());
+						actualiza.escribeActualizaciones(cs);
 						actualiza.mostrarPnVisualizarActualizacion();
 						actualiza.setVisible(true);
 					}
@@ -602,10 +616,78 @@ public class Frame23558 extends JFrame {
 	private JButton getBtAñadirLesion() {
 		if (btAñadirLesion == null) {
 			btAñadirLesion = new JButton("Añadir");
+			btAñadirLesion.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getRbEntrenamiento().isSelected()) {
+						if (getTableEntrenamientos().getSelectedRows().length < 1) {
+							JOptionPane.showMessageDialog(null, 
+									"No hay ningún entrenamiento seleccionado");
+							return;
+						}
+						int filaEnt = getTableEntrenamientos().getSelectedRow();
+						Integer entId = (Integer) getTableEntrenamientos().getValueAt(filaEnt, 0);
+						if (confirmarAccion()) {
+							mostrarPnSeleccionAccion();
+							cs.añadirLesionado(
+									entId,
+									null,
+									getRbEntrenamiento().getText(), 
+									getTxCausasAjenas().getText(), 
+									getSpFecha().getValue().toString());
+						}
+					}
+					
+					else if (getRbPartido().isSelected()) {
+						if (getTablePartidos().getSelectedRows().length < 1) {
+							JOptionPane.showMessageDialog(null, 
+									"No hay ningún partido seleccionado");
+							return;
+						}
+						int filaPart = getTablePartidos().getSelectedRow(); 
+						Integer partId = Integer.valueOf((String)getTablePartidos().getValueAt(filaPart, 0));
+						if (confirmarAccion()) {
+							mostrarPnSeleccionAccion(); 
+							cs.añadirLesionado(
+									null,
+									partId,
+									getRbPartido().getText(), 
+									getTxCausasAjenas().getText(), 
+									getSpFecha().getValue().toString());
+						}
+					}
+					
+					else {
+						Date date = (Date)getSpFecha().getValue();
+						if (date.after(Date.from(Instant.now()))) {
+							JOptionPane.showMessageDialog(null, "La fecha seleccionada no es válida. Es futura.");
+							return;
+						}
+						if (confirmarAccion()) {
+							mostrarPnSeleccionAccion();
+							cs.añadirLesionado(
+									null, 
+									null,
+									getRbCausaAjena().getText(), 
+									getTxCausasAjenas().getText(), 
+									getSpFecha().getValue().toString());
+						}
+					}
+					rellenarTablaLesionados();
+					rellenarTablaSanos();
+				}
+			});
 			btAñadirLesion.setForeground(new Color(0, 0, 0));
 			btAñadirLesion.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return btAñadirLesion;
+	}
+	private boolean confirmarAccion() {
+		int respuesta = JOptionPane.showConfirmDialog(null, 
+				"Está seguro de que quiere añadir a lesionados este jugador?");
+		if (respuesta == JOptionPane.YES_OPTION) {
+			return true;
+		}
+		return false;
 	}
 	private JButton getBtCancelar() {
 		if (btCancelar == null) {
@@ -625,6 +707,7 @@ public class Frame23558 extends JFrame {
 			pnCausaAjena = new JPanel();
 			pnCausaAjena.setLayout(new GridLayout(2, 1, 0, 0));
 			pnCausaAjena.add(getTxCausasAjenas());
+			pnCausaAjena.add(getPnFecha());
 		}
 		return pnCausaAjena;
 	}
@@ -665,6 +748,7 @@ public class Frame23558 extends JFrame {
 	private JTextPane getTxCausasAjenas() {
 		if (txCausasAjenas == null) {
 			txCausasAjenas = new JTextPane();
+			txCausasAjenas.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		}
 		return txCausasAjenas;
 	}
@@ -694,7 +778,7 @@ public class Frame23558 extends JFrame {
 		return btActualizar;
 	}
 	private void mostrarPnActualizarLesionado() {
-		actualiza = new ActualizarLesion();
+		actualiza = new ActualizarLesion(cs);
 		actualiza.getLbNombreYApellido().setText(cs.getLesionado().getNombre()+" "+cs.getLesionado().getApellido());
 		actualiza.mostrarPnAñadirActuazalizacion();
 		actualiza.setVisible(true);
@@ -705,6 +789,10 @@ public class Frame23558 extends JFrame {
 		getTxCausasAjenas().setText("");
 	}
 	private void rellenarTablaEntrenamientos() {
+		while (getTableEntrenamientos().getModel().getRowCount()>0) {
+			DefaultTableModel modelo = (DefaultTableModel) getTableEntrenamientos().getModel();
+			modelo.removeRow(0);
+		}
 		int fila = getTableEquipos().getSelectedRow();
 		String equipoId = getTableEquipos().getValueAt(fila, 0).toString();
 		List<HorarioEntrenamiento> entrenos = cs.getEntrenamientos(equipoId);
@@ -713,17 +801,78 @@ public class Frame23558 extends JFrame {
 			Date date = Util.isoStringToDate(e.getFechaEntrenamiento());
 			if (date.before(Date.from(Instant.now()))) {
 				tableModelEntrenamientos.addRow(new Object[]
-						{e.getIid(), e.getFechaEntrenamiento()});
+						{e.getId(), e.getFechaEntrenamiento()});
 			}
 		}
 	}
 	private void rellenarTablaPartidos() {
+		while (getTablePartidos().getModel().getRowCount()>0) {
+			DefaultTableModel modelo = (DefaultTableModel) getTablePartidos().getModel();
+			modelo.removeRow(0);
+		}
+		int fila = getTableEquipos().getSelectedRow();
+		String equipoId = getTableEquipos().getValueAt(fila, 0).toString();
+		List<Partido> partidos = cs.getPartidos(equipoId);
 		
+		for (Partido e : partidos) {
+			Date date = Util.isoStringToDate(e.getFecha());
+			if (date.before(Date.from(Instant.now()))) {
+				tableModelPartidos.addRow(new Object[]
+						{e.getId(), e.getFecha()});
+			}
+		}
+	}
+	private JPanel getPnFecha() {
+		if (pnFecha == null) {
+			pnFecha = new JPanel();
+			pnFecha.setLayout(new GridLayout(3, 2, 0, 0));
+			pnFecha.add(getLblNewLabel_3());
+			pnFecha.add(getLblNewLabel_4());
+			pnFecha.add(getLbFecha());
+			pnFecha.add(getSpFecha());
+		}
+		return pnFecha;
+	}
+	private JLabel getLblNewLabel_3() {
+		if (lblNewLabel_3 == null) {
+			lblNewLabel_3 = new JLabel("");
+		}
+		return lblNewLabel_3;
+	}
+	private JSpinner getSpFecha() {
+		if (spFecha == null) {
+			spFecha = new JSpinner();
+			spFecha.setFont(new Font("Tahoma", Font.PLAIN, 16));
+			spFecha.setModel(new SpinnerDateModel(new Date(1697061600000L), null, null, Calendar.DAY_OF_YEAR));
+			JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(spFecha, "yyyy-MM-dd");
+			spFecha.setEditor(dateEditor);
+		}
+		return spFecha;
+	}
+	private JLabel getLblNewLabel_4() {
+		if (lblNewLabel_4 == null) {
+			lblNewLabel_4 = new JLabel("");
+		}
+		return lblNewLabel_4;
+	}
+	private JLabel getLbFecha() {
+		if (lbFecha == null) {
+			lbFecha = new JLabel("Fecha:");
+			lbFecha.setHorizontalAlignment(SwingConstants.CENTER);
+			lbFecha.setForeground(new Color(0, 0, 0));
+			lbFecha.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return lbFecha;
+	}
+	private void eliminarActualizacionesLesionado() {
+		cs.eliminarActualizaciones();
 	}
 	
 	
+	//TODO
 	private class ActualizarLesion extends JFrame {
 		private static final long serialVersionUID = 1L;
+		private Service23558 cs;
 		private JPanel contentPane;
 		private JLabel lbActualizaciones;
 		private JPanel pnCentral;
@@ -750,10 +899,13 @@ public class Frame23558 extends JFrame {
 		private JButton btAceptarActualizacion_1;
 		private JPanel pnActualizaciones;
 		private JLabel lbTodasActualizaciones;
-		private JTextArea txTodasActualizaciones;
+		private JScrollPane scrList;
+		private JList<String> listTodasActualizaciones;
+		DefaultListModel<String> listModel = new DefaultListModel<>();
 
 		//TODO
-		public ActualizarLesion() {
+		public ActualizarLesion(Service23558 cs) {
+			this.cs = cs;
 			setTitle("Actualización de lesiones");
 			setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 			setBounds(100, 100, 791, 457);
@@ -853,11 +1005,7 @@ public class Frame23558 extends JFrame {
 							JOptionPane.showMessageDialog(null, "El texto de actualización está vacío");
 							return;
 						}
-						else if(getTxActualizacion().getText().length() > 200) {
-							JOptionPane.showMessageDialog(null, "El texto es demasiado largo");
-							getTxActualizacion().setText("");
-							return;
-						}
+						añadirActualizacion();
 						getTxActualizacion().setText("");
 						dispose();
 					}
@@ -940,7 +1088,7 @@ public class Frame23558 extends JFrame {
 		}
 		private JLabel getLbRestriccion() {
 			if (lbRestriccion == null) {
-				lbRestriccion = new JLabel("*Sea breve en la actualización");
+				lbRestriccion = new JLabel("*Intente ser breve en la actualización");
 				lbRestriccion.setForeground(new Color(0, 0, 0));
 				lbRestriccion.setFont(new Font("Tahoma", Font.PLAIN, 12));
 				lbRestriccion.setVerticalAlignment(SwingConstants.TOP);
@@ -996,7 +1144,7 @@ public class Frame23558 extends JFrame {
 				pnActualizaciones = new JPanel();
 				pnActualizaciones.setLayout(new GridLayout(0, 3, 0, 0));
 				pnActualizaciones.add(getLbTodasActualizaciones());
-				pnActualizaciones.add(getTxTodasActualizaciones());
+				pnActualizaciones.add(getScrList());
 			}
 			return pnActualizaciones;
 		}
@@ -1009,22 +1157,60 @@ public class Frame23558 extends JFrame {
 			}
 			return lbTodasActualizaciones;
 		}
-		private JTextArea getTxTodasActualizaciones() {
-			if (txTodasActualizaciones == null) {
-				txTodasActualizaciones = new JTextArea();
-				txTodasActualizaciones.setEditable(false);
-				txTodasActualizaciones.setColumns(1);
-				txTodasActualizaciones.setRows(100);
-				txTodasActualizaciones.setFont(new Font("Monospaced", Font.PLAIN, 18));
+		private JScrollPane getScrList() {
+			if (scrList == null) {
+				scrList = new JScrollPane();
+				scrList.setForeground(new Color(0, 0, 0));
+				scrList.setViewportView(getListTodasActualizaciones());
 			}
-			return txTodasActualizaciones;
+			return scrList;
 		}
+		private JList<String> getListTodasActualizaciones() {
+			if (listTodasActualizaciones == null) {
+				listTodasActualizaciones = new JList<String>(listModel);
+				listTodasActualizaciones.setFont(new Font("Tahoma", Font.PLAIN, 15));
+			}
+			return listTodasActualizaciones;
+		}
+		
 		private void mostrarPnAñadirActuazalizacion() {
 			((CardLayout) getPnCentral().getLayout()).show(getPnCentral(), "pnAñadirLesion");
 		}
 		private void mostrarPnVisualizarActualizacion() {
 			((CardLayout) getPnCentral().getLayout()).show(getPnCentral(), "pnVisualizarActualizacion");
 		}
-	}
+		
+		private void escribeActualizaciones(Service23558 cs) {
+		    DefaultListModel<String> model = (DefaultListModel<String>) getListTodasActualizaciones().getModel();
+		    List<Actualizacion> act = cs.getActualizaciones(cs.getLesionado().getEid());
+		    int maxLength = 35;
 
+		    for (Actualizacion a : act) {
+		        String texto = a.getTexto();
+
+		        while (texto.length() > maxLength) {
+		            int index = texto.substring(0, maxLength).lastIndexOf(' ');
+		            if (index == -1) {
+		                model.addElement(texto.substring(0, maxLength));
+		                texto = texto.substring(maxLength);
+		            } 
+		            else {
+		                model.addElement(texto.substring(0, index));
+		                texto = texto.substring(index + 1); 
+		            }
+		        }
+
+		        if (texto.length() > 0) {
+		            model.addElement(texto);
+		            model.addElement("_____________________________");
+		            model.addElement("");
+		        } else {
+		            model.addElement(""); 
+		        }
+		    }
+		}
+		private void añadirActualizacion() {
+			cs.añadirActualizacion(getTxActualizacion().getText());
+		}
+	}
 }

@@ -33,6 +33,7 @@ import ips2023pl21.model.horarios.HorarioPuntual;
 import ips2023pl21.model.horarios.HorarioSemanal;
 import ips2023pl21.model.horarios.franjas.FranjaPuntual;
 import ips2023pl21.model.horarios.franjas.FranjaSemanal;
+import ips2023pl21.model.lesiones.Actualizacion;
 import ips2023pl21.model.lesiones.Juega;
 import ips2023pl21.model.lesiones.Lesion;
 import ips2023pl21.model.noticias.Noticia;
@@ -863,6 +864,7 @@ public class Persistence {
 
 	}
 
+	//TODO
 	//Ampliaciones capital
 	public float getPrecioPorAccion() {
 		List<AmpliacionCapital> ac = db.
@@ -891,7 +893,51 @@ public class Persistence {
 		db.executeUpdate("update ampliacioncapital set fase = ?", fase);
 	}
 
+	public int selectRestantesFase1() {
+		return db.executeQueryPojo(AmpliacionCapital.class, 
+				"select * from ampliacioncapital").get(0).getFaseUno();
+		
+	}
 	
+	public int selectRestantesFase2() {
+		return db.executeQueryPojo(AmpliacionCapital.class, 
+				"select * from ampliacioncapital").get(0).getFaseDos();
+		
+	}
+	
+	public int selectRestantesFase3() {
+		return db.executeQueryPojo(AmpliacionCapital.class, 
+				"select * from ampliacioncapital").get(0).getFaseTres();
+		
+	}
+
+	public void updateAccionesFase1(int acc) {
+		db.executeUpdate("update AmpliacionCapital set faseUno = ?", acc);
+	}
+
+	public void updateAccionesFase2(int acc) {
+		db.executeUpdate("update AmpliacionCapital set faseDos = ?", acc);
+	}
+	
+	public void updateAccionesFase3(int acc) {
+		db.executeUpdate("update AmpliacionCapital set faseTres = ?", acc);
+	}
+
+	public void updateAccionesVendidas(int accionesVendidas) {
+		db.executeUpdate("update AmpliacionCapital set vendidas = ?", accionesVendidas);
+	}
+
+	public int selectAccionesVendidas() {
+		return 
+		 db.executeQueryPojo
+		 (AmpliacionCapital.class,"select * from AmpliacionCapital").get(0).getVendidas();
+	}
+
+	public void updateCapitalTotal(double vendidas) {
+		db.executeUpdate("update AmpliacionCapital set capitalTotal = ?", vendidas);
+	}
+	
+	//TODO
 	//ACCIONISTAS
 	public List<Accionista> selectAccionista(int numeroAccionista) {
 		return db.executeQueryPojo(Accionista.class, "select * from accionista "
@@ -974,50 +1020,8 @@ public class Persistence {
 		return acc.size();
 	}
 
-	public int selectRestantesFase1() {
-		return db.executeQueryPojo(AmpliacionCapital.class, 
-				"select * from ampliacioncapital").get(0).getFaseUno();
-		
-	}
-	
-	public int selectRestantesFase2() {
-		return db.executeQueryPojo(AmpliacionCapital.class, 
-				"select * from ampliacioncapital").get(0).getFaseDos();
-		
-	}
-	
-	public int selectRestantesFase3() {
-		return db.executeQueryPojo(AmpliacionCapital.class, 
-				"select * from ampliacioncapital").get(0).getFaseTres();
-		
-	}
-
-	public void updateAccionesFase1(int acc) {
-		db.executeUpdate("update AmpliacionCapital set faseUno = ?", acc);
-	}
-
-	public void updateAccionesFase2(int acc) {
-		db.executeUpdate("update AmpliacionCapital set faseDos = ?", acc);
-	}
-	
-	public void updateAccionesFase3(int acc) {
-		db.executeUpdate("update AmpliacionCapital set faseTres = ?", acc);
-	}
-
-	public void updateAccionesVendidas(int accionesVendidas) {
-		db.executeUpdate("update AmpliacionCapital set vendidas = ?", accionesVendidas);
-	}
-
-	public int selectAccionesVendidas() {
-		return 
-		 db.executeQueryPojo
-		 (AmpliacionCapital.class,"select * from AmpliacionCapital").get(0).getVendidas();
-	}
-
-	public void updateCapitalTotal(double vendidas) {
-		db.executeUpdate("update AmpliacionCapital set capitalTotal = ?", vendidas);
-	}
-
+	//TODO
+	//LESIONES
 	public List<Empleado> selectJugadoresPorEquipo(String eqid) {
 		List<Juega> l = db.executeQueryPojo(Juega.class, 
 				"select * from juega where eqid = ?", eqid);
@@ -1050,5 +1054,42 @@ public class Persistence {
 		List<HorarioEntrenamiento> entrenos = db.executeQueryPojo(HorarioEntrenamiento.class,
 				"select * from HorarioEntrenamiento where eid=?", equipoId);
 		return entrenos;
+	}
+
+	public List<Partido> getPartidos(String equipoId) {
+		List<Partido> entrenos = db.executeQueryPojo(Partido.class,
+				"select * from Partido where idEquipo=?", equipoId);
+		return entrenos;
+	}
+
+	public void insertLesionado(int eid, Integer ent, Integer part, String causa, String descripcion, String fecha) {
+		if (causa.equals("Entrenamiento")) {
+			db.executeUpdate("insert into Lesion (eid, causa, enid) values "
+					+ "(?,?,?)", eid, causa, ent);
+		}
+		else if (causa.equals("Partido")) {
+			db.executeUpdate("insert into Lesion (eid, causa, pid) values "
+					+ "(?,?,?)", eid, causa, part);
+		}
+		else {
+			db.executeUpdate("insert into Lesion (eid, causa, descripcion, fecha) values "
+					+ "(?,?,?,?)", eid, causa, descripcion, fecha);
+		}
+	}
+	
+	//TODO
+	//ACTUALIZACIONES
+	public List<Actualizacion> getActualizaciones(int eid) {
+		return db.executeQueryPojo(Actualizacion.class,
+				"select * from Actualizacion where eid=?", eid);
+	}
+
+	public void deleteActualizaciones(int eid) {
+		db.executeUpdate("delete from actualizacion where eid = ?", eid);
+	}
+
+	public void insertActualizacion(int eid, String texto) {
+		db.executeUpdate("insert into actualizacion (eid, texto) values "
+				+ "(?,?)", eid, texto);
 	}
 }
