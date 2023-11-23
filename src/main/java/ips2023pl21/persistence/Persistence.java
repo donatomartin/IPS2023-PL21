@@ -973,13 +973,21 @@ public class Persistence {
 		return acc.size();
 	}
 
-	public State checkUser(String user, String password) {
-		List<Usuario> usuario = db.executeQueryPojo(Usuario.class, "select * from usuario where usuario=? and contrasena=?", user, password);
+	public State checkUser(Usuario usuario) {
+		List<Usuario> result = db.executeQueryPojo(Usuario.class, "select * from usuario where usuario=? and contrasena=?", usuario.getUsuario(), usuario.getContrasena());
 		
-		if (usuario.size() == 0)
+		if (result.size() == 0)
 			return State.LOGINFAIL_USERNOTFOUND;
 		
+		usuario.setRol(result.get(0).getRol());
+		
 		return State.SUCCESS;
+		
+	}
+	
+	public void addUser(Usuario usuario) {
+		
+		db.executeUpdate("insert into usuario(usuario,contrasena,rol) values (?,?,?)", usuario.getUsuario(), usuario.getContrasena(), usuario.getRol());
 		
 	}
 
@@ -1041,4 +1049,6 @@ public class Persistence {
 		db.executeUpdate(queryVenta, "accion", fecha, horaVenta, minutoVenta, 34.67);
 
 	}
+
+	
 }

@@ -147,16 +147,18 @@ insert into accionista(nombreAccionista,apellidoAccionista,dniAccionista,cuentaB
 	('ccc', 'ddd', '5678X', 'efgh', 15, 50.0);
 	
 delete from ampliacioncapital;
-<<<<<<< HEAD
-insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales) values
-	(0,0,0,1040.1,34.67,30);
+insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales, fase, vendidas) values
+	(0,0,0,1040.1,34.67,30, 0, 0);
 
 
+-- asdf passwords
 delete from Usuario;
 insert into Usuario(usuario, contrasena, rol) values
-	('donato', '912ec803b2ce49e4a541068d495ab570', 'entrenador'),
-	('admin', '35bc8cec895861697a0243c1304c7789', 'admin');
-=======
-insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales,fase,vendidas) values
-	(0,0,0,1040.1,34.67,30, 'Fuera fase',0);
->>>>>>> branch 'master' of https://github.com/DonatoMartin/IPS2023-PL21.git
+	('gventas', '912ec803b2ce49e4a541068d495ab570', 'gventas'),
+	('gclub', '912ec803b2ce49e4a541068d495ab570', 'gclub'),
+	('ginstalaciones', '912ec803b2ce49e4a541068d495ab570', 'ginstalaciones'),
+	('accionista', '912ec803b2ce49e4a541068d495ab570', 'accionista'),
+	('cm', '912ec803b2ce49e4a541068d495ab570', 'cm'),
+	('vendedor', '912ec803b2ce49e4a541068d495ab570', 'vendedor'),
+	('entrenador', '912ec803b2ce49e4a541068d495ab570', 'entrenador'),
+	('admin', '912ec803b2ce49e4a541068d495ab570', 'admin');
