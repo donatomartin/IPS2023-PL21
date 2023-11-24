@@ -61,11 +61,12 @@ public class MainFrame extends JFrame {
 	private ValueButton<String> btn22785;
 	private ValueButton<String> btn22748;
 	private ValueButton<String> btn22749;
+	private ValueButton<String> btn23558;
 
 	@SuppressWarnings("unchecked")
 	private ValueButton<String>[] buttons = new ValueButton[] { getBtn21911(), getBtn21912(), getBtn21913(),
 			getBtn21914(), getBtn21915(), getBtn21916(), getBtn21917(), getBtn21918(), getBtn22733(), getBtn22739(),
-			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749() 
+			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749(), getBtn23558() 
 		};
 
 	private JPanel pnCentro;
@@ -76,6 +77,7 @@ public class MainFrame extends JFrame {
 	private JLabel lbPassword;
 	private JLabel lbUser;
 	private JPasswordField txPassword;
+	
 
 	/**
 	 * Create the frame.
@@ -290,6 +292,20 @@ public class MainFrame extends JFrame {
 			public void run() {
 				try {
 					Frame22749 frame = new Frame22749(s22748_9);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	private static void run23558() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service23558 cs = new Service23558();
+					Frame23558 frame = new Frame23558(cs);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -525,7 +541,7 @@ public class MainFrame extends JFrame {
 		}
 		return btn22748;
 	}
-
+	
 	private ValueButton<String> getBtn22749() {
 		if (btn22749 == null) {
 			btn22749 = new ValueButton<String>("<html><p>Ampliaciones de capital</h1><p>(22749)</p><html>");
@@ -538,6 +554,20 @@ public class MainFrame extends JFrame {
 			});
 		}
 		return btn22749;
+	}
+	
+	private ValueButton<String> getBtn23558() {
+		if (btn23558 == null) {
+			btn23558 = new ValueButton<String>("<html><p>Gestión y actualización de lesiones</h1><p>(23558)</p><html>");
+			btn23558.setValue("admin");
+			btn23558.setBackground(new Color(240, 255, 240));
+			btn23558.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run23558();
+				}
+			});
+		}
+		return btn23558;
 	}
 
 	private JPanel getPnCentro() {

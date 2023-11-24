@@ -19,7 +19,27 @@ insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telef
     ('Enrique', 'Lopez', '11111111P', '2003-05-15', 1000000, '666666650', 'deportivo', 'jugador'),
     ('Ernesto', 'Martinez', '11111111Q', '2003-05-15', 1000000, '666666649', 'deportivo', 'jugador'),
     ('Felipe', 'Sanchez', '11111111R', '2003-05-15', 1000000, '666666648', 'deportivo', 'entrenador'),
-    ('Javier', 'Perez', '11111111S', '2003-05-15', 1000000, '666666647', 'deportivo', 'entrenador');
+    ('Javier', 'Perez', '11111111S', '2003-05-15', 1000000, '666666647', 'deportivo', 'entrenador'),
+    ('Sofía', 'García', '22222222Q', '1995-08-20', 900000, '611223344', 'deportivo', 'jugador'),
+	('Carlos', 'Martínez', '33333333R', '1990-04-10', 1200000, '677889900', 'deportivo', 'jugador'),
+	('Laura', 'Hernández', '44444444S', '1987-11-25', 800000, '655443322', 'deportivo', 'jugador'),
+	('Javier', 'Pérez', '55555555T', '1998-02-18', 1100000, '622998877', 'deportivo', 'jugador'),
+	('María', 'López', '66666666U', '1993-06-30', 950000, '688776655', 'deportivo', 'jugador'),
+	('Daniel', 'Rodríguez', '77777777V', '1996-09-05', 850000, '633221100', 'deportivo', 'jugador'),
+	('Ana', 'Gómez', '88888888W', '1991-03-12', 1050000, '600112233', 'deportivo', 'jugador'),
+	('Pablo', 'Fernández', '99999999X', '1988-07-28', 1150000, '644556677', 'deportivo', 'jugador'),
+	('Lucía', 'Díaz', '10101010Y', '2000-12-03', 850000, '677889900', 'deportivo', 'jugador'),
+	('Manuel', 'Sánchez', '11111111A', '1985-05-20', 1000000, '688776655', 'deportivo', 'jugador'),
+	('Elena', 'Martín', '12121212B', '1994-10-15', 950000, '633221100', 'deportivo', 'jugador'),
+	('David', 'Gutiérrez', '13131313C', '1997-01-08', 1100000, '655443322', 'deportivo', 'jugador'),
+	('Carmen', 'Ruiz', '14141414D', '1989-08-22', 900000, '677889900', 'deportivo', 'jugador'),
+	('Alejandro', 'Jiménez', '15151515E', '1992-04-05', 1050000, '611223344', 'deportivo', 'jugador'),
+	('Paula', 'Torres', '16161616F', '1999-11-10', 950000, '600112233', 'deportivo', 'jugador'),
+	('Pedro', 'Flores', '17171717G', '1986-06-18', 1000000, '644556677', 'deportivo', 'jugador'),
+	('Isabel', 'Vázquez', '18181818H', '1995-03-24', 850000, '622998877', 'deportivo', 'jugador'),
+	('Francisco', 'Moreno', '19191919I', '1984-09-07', 1150000, '655443322', 'deportivo', 'jugador'),
+	('Raquel', 'Navarro', '20202020J', '1993-12-12', 900000, '677889900', 'deportivo', 'jugador'),
+	('Hugo', 'González', '21212121K', '1998-07-05', 1100000, '688776655', 'deportivo', 'jugador');
 
 insert into Empleado(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values
     (69, 'Luis', 'Rubiales', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador'),
@@ -35,9 +55,34 @@ insert into Equipo(peid, seid, nombre, categoria, esFilial) values
     (69, 70, 'Madrid', 'Primera', 'true');
 
 insert into Juega(eqid, eid) values
-    (1,11),
-    (2,12),
-    (3,13);
+    (1, 14),
+	(3, 12),
+	(2, 17),
+	(1, 11),
+	(2, 15),
+	(3, 18),
+	(1, 13),
+	(3, 16),
+	(1, 38),
+	(2, 34),
+	(3, 21),
+	(2, 22),
+	(3, 30),
+	(1, 29),
+	(3, 40),
+	(2, 27),
+	(1, 23),
+	(3, 35),
+	(2, 26),
+	(1, 39),
+	(2, 24),
+	(3, 31),
+	(1, 37),
+	(3, 28),
+	(1, 36),
+	(2, 25),
+	(3, 32),
+	(2, 33);
 
 delete from reserva;
 insert into reserva(nombreusuario,cuentabancaria,idinstalacion,precioreserva,fechareserva,horaentrada,horasalida,minutoentrada,minutosalida,fechaventa,horaventa,minutoventa) values
@@ -102,8 +147,25 @@ insert into ventaMerchandising(id, idProducto, cantidad) VALUES
 
 
 delete from Partido;
-insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1','1', 'EquipoVisitante', '2023-11-09', 10);
-insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('2','1', 'EquipoVisitante2', '2023-11-16', 0);
+insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values 
+	('1','1', 'EquipoVisitante', '2023-11-09', 10),
+	('2','1', 'EquipoVisitante2', '2023-11-16', 0), 
+    ('3', '3', 'EquipoVisitante3', '2023-10-25', 0),
+    ('4', '2', 'EquipoVisitante4', '2023-10-31', 0),
+    ('5', '5', 'EquipoVisitante5', '2023-11-06', 0),
+    ('6', '4', 'EquipoVisitante6', '2023-11-13', 0),
+    ('7', '1', 'EquipoVisitante7', '2023-11-20', 0),
+    ('8', '1', 'EquipoVisitante8', '2023-11-27', 0),
+    ('9', '3', 'EquipoVisitante9', '2023-12-04', 0),
+    ('10', '2', 'EquipoVisitante10', '2023-12-11', 0),
+    ('11', '5', 'EquipoVisitante11', '2023-12-18', 0),
+    ('12', '4', 'EquipoVisitante12', '2023-12-25', 0),
+    ('13', '2', 'EquipoVisitante13', '2024-01-01', 0),
+    ('14', '1', 'EquipoVisitante14', '2024-01-08', 0),
+    ('15', '3', 'EquipoVisitante15', '2024-01-15', 0),
+    ('16', '2', 'EquipoVisitante16', '2024-01-22', 0),
+    ('17', '3', 'EquipoVisitante17', '2024-01-29', 0);
+
 
 delete from Abonado;
 insert into Abonado(id) values('1'); 
@@ -160,3 +222,31 @@ insert into Usuario(usuario, contrasena, rol, pid) values
 	('cm', '912ec803b2ce49e4a541068d495ab570', 'cm', 0),
 	('entrenador', '912ec803b2ce49e4a541068d495ab570', 'entrenador', 69),
 	('admin', '912ec803b2ce49e4a541068d495ab570', 'admin', 0);
+	
+delete from lesion;
+insert into lesion(eid, causa, pid, enid, descripcion, fecha) values
+	(14, 'causa ajena', null, null, 'Gastroenteritis', '2023-11-21');
+
+delete from HorarioEntrenamiento;
+insert into HorarioEntrenamiento (fechaEntrenamiento, horaInicio, horaFin, enid, iid, eid) values
+    ('2023-10-05', '14', '15', 19, 7, 4),
+    ('2023-11-20', '16', '17', 19, 2, 2),
+    ('2023-09-08', '11', '12', 19, 5, 1),
+    ('2023-02-25', '10', '11', 19, 9, 5),
+    ('2023-08-30', '13', '14', 19, 3, 3),
+    ('2023-07-15', '09', '10', 19, 8, 6),
+    ('2023-11-02', '15', '16', 19, 4, 4),
+    ('2023-10-22', '17', '18', 19, 1, 2),
+    ('2023-10-12', '12', '13', 19, 6, 1),
+    ('2023-09-18', '18', '19', 19, 10, 3),
+    ('2023-08-05', '14', '15', 19, 7, 5),
+    ('2023-11-30', '11', '12', 19, 2, 4),
+    ('2023-07-28', '16', '17', 19, 5, 6),
+    ('2023-10-10', '13', '14', 19, 9, 2),
+    ('2023-02-15', '15', '16', 19, 3, 1);
+
+delete from Actualizacion;
+insert into Actualizacion (eid, texto) values 
+	(14, 'aaaaa'),
+	(14, 'bbbbb'),
+	(14, 'texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo');
