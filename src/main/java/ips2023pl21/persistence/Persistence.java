@@ -619,6 +619,22 @@ public class Persistence {
 		return false;
 
 	}
+	
+	public List<String> selectIdsAbonados() {
+		List<Object[]> abonados = db.executeQueryArray("select * from Abonado");
+		List<String> ids = new ArrayList<>();
+		
+		for(Object[] o : abonados) {
+			ids.add(o[0].toString());
+		}
+		
+		return ids;
+	}
+	
+	public void updateAbonadoSorteo(String idAbonado) {
+		db.executeUpdate("update Abonado set sorteo = 1 where id = ?", idAbonado);
+		
+	}
 
 	public void insertPartidoAbonado(String idAbonado, Partido partido) {
 		db.executeUpdate("insert into PartidoAbonado(idAbonado, idPartido) values (?,?)", idAbonado, partido.getId());

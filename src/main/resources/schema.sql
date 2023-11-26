@@ -125,7 +125,8 @@ create table PartidoAbonado(
 drop table Abonado;
 create table Abonado(
 	id integer primary key autoincrement,
-	nombre varchar(70)
+	nombre varchar(70),
+	sorteo bit
 );
 
 -- Entrevista
