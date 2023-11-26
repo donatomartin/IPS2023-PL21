@@ -472,6 +472,12 @@ public class Persistence {
 		db.executeUpdate("insert into Equipo(peid,seid,nombre, categoria, esFilial) values (?,?,?,?,?)",
 				equipo.getPrimerEntrenador().getEid(), equipo.getSegundoEntrenador().getEid(), equipo.getNombre(),
 				categoria, filial);
+		
+		String eqid = selectEquipoPorNombre(equipo.getNombre()).getId();
+		
+		for(Empleado j : equipo.getJugadores()) {
+			db.executeUpdate("insert into Juega(eqid,eid) values (?,?)", eqid, j.getEid());
+		}
 	}
 
 	public List<EquipoDeportivo> selectEquipo() {
@@ -495,8 +501,8 @@ public class Persistence {
 		ret.setId(equipo.get(0)[0].toString());
 		ret.setNombre(equipo.get(0)[3].toString());
 
-//			ret.setCategoria(o[2]);
-//			ret.setFilial(o[3]);
+		//ret.setCategoria(o[2]);
+		//ret.setFilial(o[3]);
 		return ret;
 	}
 
@@ -507,8 +513,8 @@ public class Persistence {
 		ret.setId(equipo.get(0)[0].toString());
 		ret.setNombre(equipo.get(0)[3].toString());
 
-//			ret.setCategoria(o[2]);
-//			ret.setFilial(o[3]);
+		//ret.setCategoria(o[2]);
+		//ret.setFilial(o[3]);
 		return ret;
 	}
 
@@ -595,7 +601,6 @@ public class Persistence {
 	
 
 	public boolean existsPartido(Partido partido) {
-		//TODO
 		if(partido != null) {
 			String idEquipo = partido.getLocal().getId();
 			String visitante = partido.getVisitante();
