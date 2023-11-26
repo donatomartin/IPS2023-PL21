@@ -23,6 +23,10 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.Dimension;
 import javax.swing.JScrollPane;
+import javax.swing.JCheckBox;
+import javax.swing.ScrollPaneConstants;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class Frame21916 {
 	
@@ -45,6 +49,7 @@ public class Frame21916 {
 	private JScrollPane spProductos;
 	private JPanel pnProductos;
 	private JScrollPane spSeleccion;
+	private JCheckBox chbxDescuento;
 	
 	/**
 	 * Create the application.
@@ -53,8 +58,11 @@ public class Frame21916 {
 		tl = new TiendaLogica();
 		pBP = new ProcesaBotonProducto();
 		pBS = new ProcesaBotonSeleccion();
+		
 		initialize();
 		
+		boolean ganadorSorteo = tl.isGanadorSorteo();
+		chbxDescuento.setEnabled(ganadorSorteo);
 	}
 
 	/**
@@ -80,8 +88,9 @@ public class Frame21916 {
 	private JPanel getPnHeaderTienda() {
 		if (pnHeaderTienda == null) {
 			pnHeaderTienda = new JPanel();
-			pnHeaderTienda.setLayout(new GridLayout(0, 2, 0, 0));
+			pnHeaderTienda.setLayout(new GridLayout(0, 3, 0, 0));
 			pnHeaderTienda.add(getLbTienda());
+			pnHeaderTienda.add(getChbxDescuento());
 			pnHeaderTienda.add(getLbPrecioTienda());
 		}
 		return pnHeaderTienda;
@@ -118,8 +127,24 @@ public class Frame21916 {
 	}
 	private void finalizarCompra() {
 		String[] botones = {"Si" , "No"};
-		int res = JOptionPane.showOptionDialog(null, "Precio: " + tl.getPrecioTotal() + "\n" + 
-		"¿Desea confirmar la compra?","Confirmacion", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+		String msg = "";
+		
+		if(tl.isGanadorSorteo()) {
+			if(chbxDescuento.isSelected()) {
+				msg = "Precio: " + tl.getPrecioTotal() + "\n" + 
+						"¿Desea confirmar la compra?" + "\n" + 
+						"(Vas a usar el descuento de un solo uso)";
+			} else {
+				msg = "Precio: " + tl.getPrecioTotal() + "\n" + 
+						"¿Desea confirmar la compra?" + "\n" + 
+						"(NO vas a usar el descuento de un solo uso)";
+			}
+		} else {
+			msg = "Precio: " + tl.getPrecioTotal() + "\n" + 
+					"¿Desea confirmar la compra?";
+		}
+		int res = JOptionPane.showOptionDialog(null, msg,"Confirmacion",
+				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
 		botones,botones[0]);
 		
 		if(res == 0) {
@@ -158,7 +183,7 @@ public class Frame21916 {
 	}
 	private JLabel getLbPrecioTienda() {
 		if (lbPrecioTienda == null) {
-			lbPrecioTienda = new JLabel("Precio: 0 €");
+			lbPrecioTienda = new JLabel("Precio: 0.0 €");
 			lbPrecioTienda.setHorizontalAlignment(SwingConstants.RIGHT);
 			lbPrecioTienda.setHorizontalTextPosition(SwingConstants.RIGHT);
 			lbPrecioTienda.setAlignmentX(Component.RIGHT_ALIGNMENT);
@@ -346,6 +371,7 @@ public class Frame21916 {
 	private JScrollPane getSpProductos() {
 		if (spProductos == null) {
 			spProductos = new JScrollPane();
+			spProductos.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			spProductos.setViewportView(getPnProductos());
 			crearBotonesProductos(true);
 		}
@@ -361,9 +387,29 @@ public class Frame21916 {
 	private JScrollPane getSpSeleccion() {
 		if (spSeleccion == null) {
 			spSeleccion = new JScrollPane();
+			spSeleccion.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 			spSeleccion.setViewportView(getPnSeleccion());
 			crearBotonesProductos(false);
 		}
 		return spSeleccion;
+	}
+	private JCheckBox getChbxDescuento() {
+		if (chbxDescuento == null) {
+			chbxDescuento = new JCheckBox("Descuento");
+			chbxDescuento.addItemListener(new ItemListener() {
+				public void itemStateChanged(ItemEvent e) {
+					actualizarPrecioYDescuento();
+				}
+			});
+
+			chbxDescuento.setHorizontalAlignment(SwingConstants.TRAILING);
+			chbxDescuento.setEnabled(false);
+		}
+		return chbxDescuento;
+	}
+	
+	private void actualizarPrecioYDescuento() {
+		tl.setDescuento(getChbxDescuento().isSelected());
+		actualizarPrecio();
 	}
 }

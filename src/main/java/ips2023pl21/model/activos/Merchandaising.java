@@ -52,11 +52,6 @@ public class Merchandaising {
 		return this.precio*this.unidades;
 	}
 
-	@Override
-	public String toString() {
-		return "Nombre: " + nombre + ", Tipo: " + tipo + ", Precio: " + precio + ", Unidades: " + unidades;
-	}
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -69,5 +64,9 @@ public class Merchandaising {
 		this.precio = precio;
 	}
 	
+	@Override
+	public String toString() {
+		return "Nombre: " + nombre + ", Tipo: " + tipo + ", Precio: " + precio + ", Unidades: " + unidades;
+	}
 	
 }
