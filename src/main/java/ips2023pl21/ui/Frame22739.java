@@ -780,19 +780,34 @@ public class Frame22739 extends JFrame {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void cargarPartidosDeFichero(String archivo) {
 		try {
 			int count = 0;
 			ParserCSV parser = new ParserCSV();
-			List<Partido> partidos = parser.parsePartidosCSV(archivo);
+			List<List> parsed = parser.parsePartidosCSV(archivo);
+			
+			List<Partido> partidos = parsed.get(0);
+			List<String> fallos = parsed.get(1);
+			
 			for(Partido p : partidos) {
 				if(!service.existsPartido(p)) {
 					service.insertPartido(p);
 					count++;
+				} else {
+					fallos.add("El partido " + p.getLocal().getNombre() + 
+							" vs. " + p.getVisitante() + " fecha: " + p.getFecha() + " ya existe");
 				}
 			}
 			
-			JOptionPane.showMessageDialog(this, "Partidos añadidos" + "\n" +"Se han añadido " + count + " partido(s)");
+			String msg = "Partidos añadidos" + "\n" +"Se han añadido " + count + " partido(s)";
+			
+			for(String f: fallos) {
+				msg = msg + "\n" + f;
+			}
+			
+			
+			JOptionPane.showMessageDialog(this, msg);
 
 		} catch(Exception e) {
 			e.printStackTrace();

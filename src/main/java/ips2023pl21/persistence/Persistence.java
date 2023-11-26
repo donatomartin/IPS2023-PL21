@@ -491,9 +491,13 @@ public class Persistence {
 	public EquipoDeportivo selectEquipoPorNombre(String nombre) {
 
 		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where nombre = ?", nombre);
-		EquipoDeportivo ret = new EquipoDeportivo();
-		ret.setId(equipo.get(0)[0].toString());
-		ret.setNombre(equipo.get(0)[3].toString());
+		EquipoDeportivo ret = null;
+		
+		if(equipo.size() > 0) {
+			ret = new EquipoDeportivo();
+			ret.setId(equipo.get(0)[0].toString());
+			ret.setNombre(equipo.get(0)[3].toString());
+		}
 
 //			ret.setCategoria(o[2]);
 //			ret.setFilial(o[3]);
