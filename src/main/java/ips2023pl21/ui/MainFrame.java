@@ -62,11 +62,12 @@ public class MainFrame extends JFrame {
 	private ValueButton<String> btn22748;
 	private ValueButton<String> btn22749;
 	private ValueButton<String> btn23558;
+	private ValueButton<String> btn23539;
 
 	@SuppressWarnings("unchecked")
 	private ValueButton<String>[] buttons = new ValueButton[] { getBtn21911(), getBtn21912(), getBtn21913(),
 			getBtn21914(), getBtn21915(), getBtn21916(), getBtn21917(), getBtn21918(), getBtn22733(), getBtn22739(),
-			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749(), getBtn23558() 
+			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749(), getBtn23558(), getBtn23539() 
 		};
 
 	private JPanel pnCentro;
@@ -326,6 +327,7 @@ private static void run23539() {
 			}
 		});
 	}
+	
 
 	private JPanel getPnWork() {
 		if (pnWork == null) {
@@ -578,6 +580,20 @@ private static void run23539() {
 			btn23558.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					run23558();
+				}
+			});
+		}
+		return btn23558;
+	}
+	
+	private ValueButton<String> getBtn23539() {
+		if (btn23539 == null) {
+			btn23539 = new ValueButton<String>("<html><p>Gráfico balance compra - venta</h1><p>(23539)</p><html>");
+			btn23539.setValue("gventas");
+			btn23539.setBackground(new Color(240, 255, 240));
+			btn23539.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run23539();
 				}
 			});
 		}
