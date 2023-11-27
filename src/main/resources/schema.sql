@@ -131,7 +131,7 @@ create table Abonado(
 
 -- Entrevista
 drop table HorarioEntrevista;
-create table HorarioEntrevista (
+create table HorarioEntrevista(
 	fechaEntrevista varchar(10) not null,
     horaInicio varchar(5) not null,
     horaFin varchar(5) not null,

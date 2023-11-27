@@ -113,9 +113,9 @@ insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchan
 (3, 'merchandising','2013-02-02','20','00',50),
 (4, 'reserva','2013-09-09','21','11',30),
 (5, 'abono', '2023-01-01','01','01',100000),
-(6, 'abono', '2023-02-01','01','01',180000);;
-(4, 'reserva','2023-10-14','14','24',50),
-(5, 'accion', '2023-11-19', '12', '00', 34.67);
+(6, 'abono', '2023-02-01','01','01',180000),
+(7, 'reserva','2023-10-14','14','24',50),
+(8, 'accion', '2023-11-19', '12', '00', 34.67);
 
 
 delete from merchandaising;
@@ -218,6 +218,7 @@ insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion
 delete from compra;
 insert into compra values
 	(1, 30, '2023-10-10'),(2, 10, '2023-02-02');
+	
 insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales, fase, vendidas) values
 	(0,0,0,1040.1,34.67,30, 0, 0);
 
