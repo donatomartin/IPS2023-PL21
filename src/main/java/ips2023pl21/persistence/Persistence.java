@@ -253,6 +253,11 @@ public class Persistence {
 		db.executeUpdate(updateEmpleado, nombre, apellido, dni, fecha, salario, telefono, posicion,
 				nombreEmpleadoGestion, apellidoEmpleadoGestion, dniEmpleadoGestion);
 	}
+	
+	public List<Empleado> getEmpleados() {
+		return db.executeQueryPojo(Empleado.class, "select * from empleado");
+		
+	}
 
 	// HORARIO SEMANAL
 
@@ -1022,10 +1027,23 @@ public class Persistence {
 		return db.executeQueryPojo(VentaDisplayDTO.class,"select * from venta where fecha>=? "
 				+ "and fecha<=?", min, max);
 		}
+	public List<VentaDisplayDTO> getTotalVentas() {
+		return db.executeQueryPojo(VentaDisplayDTO.class, "select * from venta");
+	}
 
 	//COMPRAS
 		public List<Compra> getComprasByDate(String min, String max) {
 			return db.executeQueryPojo(Compra.class,"select * from compra where fecha>=? "
 					+ "and fecha<=?", min, max);
 		}
+
+		public List<Compra> getTotalCompras() {
+			return db.executeQueryPojo(Compra.class,"select * from compra");
+		}
+
+		
+
+		
+
+	
 }

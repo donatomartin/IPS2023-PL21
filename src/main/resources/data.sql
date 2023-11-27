@@ -1,29 +1,29 @@
 delete from Empleado;
 insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values
-	('Donato', 'Martin', '21080919Q', '2003-05-15', 1000000, '666666666', 'nodeportivo', 'jardineria'),
-    ('Angel', 'Fernandez', '11111111A', '2003-05-15', 1000000, '666666665', 'nodeportivo', 'jardineria'),
-    ('Yago', 'Navajas', '11111111B', '2003-05-15', 1000000, '666666664', 'nodeportivo', 'jardineria'),
-    ('Carmen', 'Espinosa', '11111111C', '2003-05-15', 1000000, '666666663', 'nodeportivo', 'jardineria'),
-    ('Ana', 'Garcia', '11111111D', '2003-05-15', 1000000, '666666662', 'nodeportivo', 'jardineria'),
-    ('David', 'Fernandez', '11111111E', '2003-05-15', 1000000, '666666661', 'nodeportivo', 'jardineria'),
-    ('Jose', 'Torres', '11111111F', '2003-05-15', 1000000, '666666660', 'nodeportivo', 'jardineria'),
-    ('Miguel', 'Sanchez', '11111111G', '2003-05-15', 1000000, '666666659', 'nodeportivo', 'jardineria'),
-    ('Juan', 'Castro', '11111111H', '2003-05-15', 1000000, '666666658', 'nodeportivo', 'jardineria'),
-    ('Pedro', 'Ortiz', '11111111I', '2003-05-15', 1000000, '666666657', 'nodeportivo', 'jardineria'),
-    ('Sergio', 'Ramirez', '11111111J', '2003-05-15', 1000000, '666666656', 'deportivo', 'jugador'),
-    ('Rafael', 'Ruiz', '11111111K', '2003-05-15', 1000000, '666666655', 'deportivo', 'jugador'),
-    ('Alejandro', 'Garcia', '11111111L', '2003-05-15', 1000000, '666666654', 'deportivo', 'jugador'),
-    ('Antonio', 'Rodriguez', '11111111M', '2003-05-15', 1000000, '666666653', 'deportivo', 'jugador'),
-    ('Carlos', 'Gonzalez', '11111111N', '2003-05-15', 1000000, '666666652', 'deportivo', 'jugador'),
-    ('Diego', 'Fernandez', '11111111O', '2003-05-15', 1000000, '666666651', 'deportivo', 'jugador'),
-    ('Enrique', 'Lopez', '11111111P', '2003-05-15', 1000000, '666666650', 'deportivo', 'jugador'),
-    ('Ernesto', 'Martinez', '11111111Q', '2003-05-15', 1000000, '666666649', 'deportivo', 'jugador'),
-    ('Felipe', 'Sanchez', '11111111R', '2003-05-15', 1000000, '666666648', 'deportivo', 'entrenador'),
-    ('Javier', 'Perez', '11111111S', '2003-05-15', 1000000, '666666647', 'deportivo', 'entrenador');
+	('Donato', 'Martin', '21080919Q', '2003-05-15', 100000, '666666666', 'nodeportivo', 'jardineria'),
+    ('Angel', 'Fernandez', '11111111A', '2003-05-15', 100000, '666666665', 'nodeportivo', 'jardineria'),
+    ('Yago', 'Navajas', '11111111B', '2003-05-15', 100000, '666666664', 'nodeportivo', 'jardineria'),
+    ('Carmen', 'Espinosa', '11111111C', '2003-05-15', 100000, '666666663', 'nodeportivo', 'jardineria'),
+    ('Ana', 'Garcia', '11111111D', '2003-05-15', 100000, '666666662', 'nodeportivo', 'jardineria'),
+    ('David', 'Fernandez', '11111111E', '2003-05-15', 100000, '666666661', 'nodeportivo', 'jardineria'),
+    ('Jose', 'Torres', '11111111F', '2003-05-15', 100000, '666666660', 'nodeportivo', 'jardineria'),
+    ('Miguel', 'Sanchez', '11111111G', '2003-05-15', 100000, '666666659', 'nodeportivo', 'jardineria'),
+    ('Juan', 'Castro', '11111111H', '2003-05-15', 100000, '666666658', 'nodeportivo', 'jardineria'),
+    ('Pedro', 'Ortiz', '11111111I', '2003-05-15', 100000, '666666657', 'nodeportivo', 'jardineria'),
+    ('Sergio', 'Ramirez', '11111111J', '2003-05-15', 100000, '666666656', 'deportivo', 'jugador'),
+    ('Rafael', 'Ruiz', '11111111K', '2003-05-15', 100000, '666666655', 'deportivo', 'jugador'),
+    ('Alejandro', 'Garcia', '11111111L', '2003-05-15', 100000, '666666654', 'deportivo', 'jugador'),
+    ('Antonio', 'Rodriguez', '11111111M', '2003-05-15', 100000, '666666653', 'deportivo', 'jugador'),
+    ('Carlos', 'Gonzalez', '11111111N', '2003-05-15', 100000, '666666652', 'deportivo', 'jugador'),
+    ('Diego', 'Fernandez', '11111111O', '2003-05-15', 100000, '666666651', 'deportivo', 'jugador'),
+    ('Enrique', 'Lopez', '11111111P', '2003-05-15', 100000, '666666650', 'deportivo', 'jugador'),
+    ('Ernesto', 'Martinez', '11111111Q', '2003-05-15', 100000, '666666649', 'deportivo', 'jugador'),
+    ('Felipe', 'Sanchez', '11111111R', '2003-05-15', 100000, '666666648', 'deportivo', 'entrenador'),
+    ('Javier', 'Perez', '11111111S', '2003-05-15', 100000, '666666647', 'deportivo', 'entrenador');
 
 insert into Empleado(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values
-    (69, 'Luis', 'Rubiales', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador'),
-    (70, 'Luis', 'Enrique', 'asdf', '2003-05-15', 100000, '69', 'deportivo', 'entrenador');
+    (69, 'Luis', 'Rubiales', 'asdf', '2003-05-15', 10000, '69', 'deportivo', 'entrenador'),
+    (70, 'Luis', 'Enrique', 'asdf', '2003-05-15', 10000, '69', 'deportivo', 'entrenador');
 
 delete from Equipo;
 insert into Equipo(peid, seid, nombre, categoria, esFilial) values
@@ -66,7 +66,9 @@ delete from venta;
 insert into venta(id, concepto, fecha, hora, minuto, cuantia) VALUES (1,'merchandising', '2023-10-13', '20','05',30),
 (2,'entradas', '2020-02-04','20','20',20),
 (3, 'merchandising','2013-02-02','20','00',50),
-(4, 'reserva','2013-09-09','21','11',30);
+(4, 'reserva','2013-09-09','21','11',30),
+(5, 'abono', '2023-01-01','01','01',100000),
+(6, 'abono', '2023-02-01','01','01',180000);;
 
 delete from merchandaising;
 insert into merchandaising(id,nombre,tipo,precio) values 

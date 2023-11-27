@@ -1,8 +1,12 @@
 package ips2023pl21.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+import ips2023pl21.model.Empleado;
 import ips2023pl21.model.compras.Compra;
 import ips2023pl21.model.ventas.VentaDisplayDTO;
 import ips2023pl21.persistence.Persistence;
@@ -42,13 +46,29 @@ public class Service23539 {
 		List<Compra> compras=p.getComprasByDate(min,max);
 		for(Compra c:compras) {
 			perdidas+=c.getCuantia();
-		}return perdidas;
-		//TODO : hacer tabla compras y meter ahi las iyecciones de capital y la compra de jugadoress
+		}
+		Date d=Util.isoStringToDate(max);
+		LocalDate ld=d.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		if(ld.minusDays(1).isBefore(LocalDate.now())) {
+			List<Empleado> empleados=p.getEmpleados();
+			for(Empleado e:empleados) {
+				perdidas+=e.getSalarioAnual()/12.0;
+			}
+		}
+		
+		return perdidas;
 	}
 	
 	public double getBalance() {
 		return ganancias-perdidas;
 	}
 
+	public List<VentaDisplayDTO> getTotalVentas(){
+		return p.getTotalVentas();
+	}
+
+	public List<Compra> getTotalCompras() {
+		return p.getTotalCompras();
+	}
 	
 }

@@ -42,6 +42,7 @@ public class MainFrame extends JFrame {
 	private JButton btn22785;
 	private JButton btn22748;
 	private JButton btn22749;
+	private JButton btn23539;
 	private JButton btnNewButton;
 
 	/**
@@ -266,6 +267,19 @@ private static void run22749() {
 			}
 		});
 	}
+
+private static void run23539() {
+	EventQueue.invokeLater(new Runnable() {
+		public void run() {
+			try {
+				Frame23539_1 frame = new Frame23539_1(new Service23539());
+				frame.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	});
+}
 	
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
@@ -287,7 +301,7 @@ private static void run22749() {
 			pnCentro.add(getBtn22785());
 			pnCentro.add(getBtn22748());
 			pnCentro.add(getBtn22749());
-			pnCentro.add(getBtnNewButton());
+			pnCentro.add(getBtn23539());
 		}
 		return pnCentro;
 	}
@@ -494,12 +508,18 @@ private static void run22749() {
 		}
 		return btn22749;
 	}
+
 	
-	private JButton getBtnNewButton() {
-		if (btnNewButton == null) {
-			btnNewButton = new JButton("");
-			btnNewButton.setBackground(new Color(255, 228, 225));
+	private JButton getBtn23539() {
+		if (btn23539 == null) {
+			btn23539 = new JButton("<html><p>Visualización balance compra - venta</h1><p>(23539)</p><html>");
+			btn23539.setBackground(new Color(255, 228, 181));
+			btn23539.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run23539();
+				}
+			});
 		}
-		return btnNewButton;
+		return btn23539;
 	}
 }
