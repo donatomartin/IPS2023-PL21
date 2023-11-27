@@ -11,6 +11,7 @@ public class HorarioEntrenamiento {
 	
 	public HorarioEntrenamiento() {}
 	
+	private Integer id;
 	private String fechaEntrenamiento;
 	private String horaInicio;
 	private String horaFin;
@@ -18,6 +19,12 @@ public class HorarioEntrenamiento {
 	private int iid;
 	private int eid;
 	
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	public String getFechaEntrenamiento() {
 		return fechaEntrenamiento;
 	}

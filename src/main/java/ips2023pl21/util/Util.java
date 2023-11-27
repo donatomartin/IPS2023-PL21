@@ -1,6 +1,8 @@
 package ips2023pl21.util;
 
 import java.lang.reflect.InvocationTargetException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.Format;
 import java.text.Normalizer;
 import java.text.ParseException;
@@ -21,9 +23,21 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  * Utilidades varias con metodos generales de serializacion, conversion a csv y conversion de fechas
  */
 public class Util {
+	
 	private Util() {
 	    throw new IllegalStateException("Utility class");
 	}
+	
+	public static String getMD5Hash(String input) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(input.getBytes());
+        byte[] digest = md.digest();
+        StringBuilder sb = new StringBuilder();
+        for (byte b : digest) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
 	
 	/**
 	 * Lowercase and remove special characters like dots, commas, accents or apostrophes
