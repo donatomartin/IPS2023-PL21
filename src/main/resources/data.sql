@@ -47,12 +47,17 @@ insert into Empleado(eid, nombre, apellido, dni, fechaNacimiento, salarioAnual, 
 
 delete from Equipo;
 insert into Equipo(peid, seid, nombre, categoria, esFilial) values
-    (69, 70, 'Oviedo', 'Primera', 'true'),
-    (69, 70, 'Sporting', 'Primera', 'true'),
-    (69, 70, 'Llanes', 'Primera', 'true'),
-    (69, 70, 'Avilés', 'Primera', 'true'),
-    (69, 70, 'Barsa', 'Primera', 'true'),
-    (69, 70, 'Madrid', 'Primera', 'true');
+    (69, 70, 'Oviedo', 'ABSOLUTA', 'true'),
+    (69, 70, 'Sporting', 'ABSOLUTA', 'true'),
+    (69, 70, 'Llanes', 'ABSOLUTA', 'true'),
+    (69, 70, 'Avilés', 'ABSOLUTA', 'true'),
+    (69, 70, 'Barsa', 'ABSOLUTA', 'true'),
+    (69, 70, 'Madrid', 'ABSOLUTA', 'true'),
+    (69, 70, 'Juvenil A', 'JUVENIL', null),
+    (69, 70, 'Cadete A', 'CADETE', null),
+    (69, 70, 'Infantil A', 'INFANTIL', null),
+    (69, 70, 'Alevin A', 'ALEVIN', null);
+    
 
 insert into Juega(eqid, eid) values
     (1, 14),
@@ -259,3 +264,26 @@ insert into Actualizacion (eid, texto) values
 	(14, 'aaaaa'),
 	(14, 'bbbbb'),
 	(14, 'texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo');
+
+delete from JugadoresEnVenta;
+insert into JugadoresEnVenta (dni, nombre, apellido, telefono, fechaNacimiento, precio) values
+    ('23456789B', 'Lionel', 'Messi', '987654321', '2000-05-15', 150000),
+    ('34567890C', 'Cristiano', 'Ronaldo', '123456789', '2001-07-20', 140000),
+    ('45678901D', 'Neymar', 'Jr', '555555555', '2002-11-10', 130000),
+    ('56789012E', 'Kylian', 'Mbappé', '777777777', '2003-09-05', 120000),
+    ('67890123F', 'Mohamed', 'Salah', '999999999', '2004-12-18', 110000),
+    ('78901234G', 'Robert', 'Lewandowski', '111111111', '2005-03-22', 100000),
+    ('89012345H', 'Kevin', 'De Bruyne', '222222222', '2006-08-07', 90000),
+    ('90123456I', 'Harry', 'Kane', '333333333', '2007-04-30', 80000),
+    ('01234567J', 'Sergio', 'Ramos', '444444444', '2008-06-12', 70000),
+    ('12345678K', 'Luka', 'Modric', '666666666', '2009-10-25', 60000),
+    ('23456789L', 'Antoine', 'Griezmann', '888888888', '2010-02-28', 50000),
+    ('34567890M', 'Eden', 'Hazard', '101010101', '2011-06-11', 40000),
+    ('45678901N', 'Paul', 'Pogba', '121212121', '2012-09-20', 30000),
+    ('56789012O', 'Raheem', 'Sterling', '131313131', '2013-11-03', 20000),
+    ('67890123P', 'Toni', 'Kroos', '141414141', '2014-12-16', 15000),
+    ('78901234Q', 'Gareth', 'Bale', '151515151', '2015-08-09', 12000),
+    ('89012345R', 'Sadio', 'Mané', '161616161', '2000-01-02', 10000),
+    ('90123456S', 'David', 'Alaba', '171717171', '2001-03-17', 8000),
+    ('01234567T', 'Marco', 'Verratti', '181818181', '2002-07-29', 6000),
+    ('12345678U', 'Jadon', 'Sancho', '191919191', '2003-10-14', 4000);
