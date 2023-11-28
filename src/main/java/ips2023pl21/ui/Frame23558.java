@@ -175,9 +175,6 @@ public class Frame23558 extends JFrame {
 	private JLabel lblNewLabel_4;
 	private JLabel lbFecha;
 
-	/**
-	 * Create the frame.
-	 */
 	public Frame23558(Service23558 cs) {
 		setTitle("Seguimiento de lesiones");
 		this.cs = cs;
