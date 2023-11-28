@@ -13,6 +13,7 @@ import javax.swing.border.LineBorder;
 
 import ips2023pl21.model.activos.Merchandaising;
 import ips2023pl21.model.activos.TiendaLogica;
+import ips2023pl21.service.Service22739;
 
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
@@ -30,8 +31,10 @@ import java.awt.event.ItemEvent;
 
 public class Frame21916 {
 
+	private Service22739 service = new Service22739();
+
 	private TiendaLogica tl;
-	private int idAbonado;
+	private int idAbonado = -1;
 
 	private ProcesaBotonProducto pBP;
 	private ProcesaBotonSeleccion pBS;
@@ -56,14 +59,14 @@ public class Frame21916 {
 	 * Create the application.
 	 */
 	public Frame21916() {
-		//TODO conseguir el id de la sesion
-		this.idAbonado = 1;
+
 		tl = new TiendaLogica();
 		pBP = new ProcesaBotonProducto();
 		pBS = new ProcesaBotonSeleccion();
 
 		initialize();
 
+		pedirAbonado();
 		boolean ganadorSorteo = tl.isGanadorSorteo(idAbonado);
 		chbxDescuento.setEnabled(ganadorSorteo);
 	}
@@ -82,10 +85,36 @@ public class Frame21916 {
 		frame.getContentPane().add(getPnButtonsTienda(), BorderLayout.SOUTH);
 		frame.getContentPane().add(getPnContenido(), BorderLayout.CENTER);
 		frame.setSize(new Dimension(1100, 500));
-		frame.setMinimumSize(new Dimension(1100, 500));
+		frame.setMinimumSize(frame.getSize());
 
 		frame.setVisible(true);
 
+	}
+
+	private void pedirAbonado() {
+		String[] options = { "Si", "No" };
+		int option = JOptionPane.showOptionDialog(null, "¿Eres abonado?", "Abonado", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.INFORMATION_MESSAGE, null, options, options[0]);
+
+		if (option == 0) {
+			boolean pedirAbonado = true;
+			while (pedirAbonado) {
+				try {
+
+					String res = JOptionPane.showInputDialog(null, "Inserta el id del abonado", "");
+					int id = Integer.parseInt(res);
+					if (service.existsIdAbonado(res)) {
+						this.idAbonado = id;
+						pedirAbonado = false;
+					} else {
+						JOptionPane.showMessageDialog(null, "El abonado no existe");
+					}
+
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "numero no valido");
+				}
+			}
+		}
 	}
 
 	private JPanel getPnHeaderTienda() {

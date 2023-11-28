@@ -82,7 +82,7 @@ public class Frame23523 extends JFrame {
 	}
 	private JButton getBtSortear() {
 		if (btSortear == null) {
-			btSortear = new JButton("Sortear");
+			btSortear = new JButton("Realizar Sorteo");
 			btSortear.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					sortear();
