@@ -211,7 +211,9 @@ create table VentaMerchandising(
 	id varchar(30) not null,
 	idProducto int not null,
 	cantidad int,
-	primary key(id, idProducto)
+	primary key(id, idProducto),
+	foreign key(id) references Venta(id),
+	foreign key(idProducto) references Merchandaising(id)
 );
 
 --Entrada
