@@ -81,6 +81,7 @@ public class MainFrame extends JFrame {
 	private JLabel lbPassword;
 	private JLabel lbUser;
 	private JPasswordField txPassword;
+	private JButton btnPortalAccionistas;
 	
 
 	/**
@@ -197,7 +198,7 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-	private static void run22784() {
+	private static void run22784Login() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -278,11 +279,24 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-	private static void run22748() {
+	private static void run22748Login() {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Frame22748 frame = new Frame22748(s22748_9);
+					Frame22748 frame = new Frame22748(s22748_9, usuario.getPid());
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	private static void run22748Register() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Frame22748 frame = new Frame22748(s22748_9, 0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -521,7 +535,7 @@ public class MainFrame extends JFrame {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					run22784();
+					run22784Login();
 				}
 
 			});
@@ -553,7 +567,7 @@ public class MainFrame extends JFrame {
 			btn22748.setBackground(new Color(240, 255, 240));
 			btn22748.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					run22748();
+					run22748Login();
 				}
 			});
 		}
@@ -630,7 +644,9 @@ public class MainFrame extends JFrame {
 			gl_pnCredentials.setHorizontalGroup(
 				gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
 					.addGroup(gl_pnCredentials.createSequentialGroup()
-						.addContainerGap(343, Short.MAX_VALUE)
+						.addGap(30)
+						.addComponent(getBtnPortalAccionistas())
+						.addPreferredGap(ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
 						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.LEADING)
 							.addComponent(getLbUser(), GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
 							.addGroup(gl_pnCredentials.createParallelGroup(Alignment.TRAILING, false)
@@ -646,7 +662,7 @@ public class MainFrame extends JFrame {
 			gl_pnCredentials.setVerticalGroup(
 				gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
 					.addGroup(gl_pnCredentials.createSequentialGroup()
-						.addContainerGap(135, Short.MAX_VALUE)
+						.addContainerGap(139, Short.MAX_VALUE)
 						.addComponent(getLbUser())
 						.addPreferredGap(ComponentPlacement.UNRELATED)
 						.addComponent(getTxUser(), GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
@@ -657,7 +673,9 @@ public class MainFrame extends JFrame {
 						.addPreferredGap(ComponentPlacement.UNRELATED)
 						.addComponent(getBtnLogin())
 						.addGap(67)
-						.addComponent(getBtnRegistro())
+						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.BASELINE)
+							.addComponent(getBtnRegistro())
+							.addComponent(getBtnPortalAccionistas()))
 						.addGap(44))
 			);
 			pnCredentials.setLayout(gl_pnCredentials);
@@ -827,7 +845,15 @@ public class MainFrame extends JFrame {
 	    }
 	    return btnRegistro;
 	}
-
-
-
+	private JButton getBtnPortalAccionistas() {
+		if (btnPortalAccionistas == null) {
+			btnPortalAccionistas = new JButton("Portal de accionistas");
+			btnPortalAccionistas.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run22748Register();
+				}
+			});
+		}
+		return btnPortalAccionistas;
+	}
 }

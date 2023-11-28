@@ -25,7 +25,6 @@ public class MainService {
 
 	public State addUser(Usuario usuario) {
 		
-		
 		if (usuario.getRol().equals("entrenador") && usuario.getPid() == 0)
 			return State.SINGINFAIL_NOID;
 		

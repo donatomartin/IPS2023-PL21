@@ -227,7 +227,7 @@ delete from Usuario;
 insert into Usuario(usuario, contrasena, rol, pid) values
 	('gventas', '912ec803b2ce49e4a541068d495ab570', 'gventas', 0),
 	('ginstalaciones', '912ec803b2ce49e4a541068d495ab570', 'ginstalaciones', 0),
-	('accionista', '912ec803b2ce49e4a541068d495ab570', 'accionista', 0),
+	(1, '912ec803b2ce49e4a541068d495ab570', 'accionista', 1),
 	('cm', '912ec803b2ce49e4a541068d495ab570', 'cm', 0),
 	('entrenador', '912ec803b2ce49e4a541068d495ab570', 'entrenador', 69),
 	('admin', '912ec803b2ce49e4a541068d495ab570', 'admin', 0);

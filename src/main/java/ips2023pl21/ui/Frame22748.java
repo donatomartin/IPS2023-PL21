@@ -10,8 +10,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import ips2023pl21.model.Usuario;
 import ips2023pl21.model.acciones.Accion;
 import ips2023pl21.model.acciones.Accionista;
+import ips2023pl21.service.MainService;
 import ips2023pl21.service.Service22748_9;
 import ips2023pl21.service.Service22748_9.CapitalFase;
 
@@ -31,6 +33,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.JPasswordField;
 
 public class Frame22748 extends JFrame {
 
@@ -184,11 +187,14 @@ public class Frame22748 extends JFrame {
 		        return false;
 	    }
 	};
-
-	/**
-	 * Create the frame.
-	 */
-	public Frame22748(Service22748_9 cs) {
+	private JPanel panel;
+	private JLabel lbContrasena;
+	private JPasswordField txContrasena;
+	private JLabel lbVacia_13;
+	private JLabel lbVacia_14;
+	private JLabel lbVacia_15;
+	
+	public Frame22748(Service22748_9 cs, int id) {
 		setTitle("Portal de accionistas");
 		this.cs = cs;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -206,6 +212,18 @@ public class Frame22748 extends JFrame {
 		contentPane.add(getPnCentro());
 		contentPane.add(getLbTitulo(), BorderLayout.NORTH);
 		this.setLocationRelativeTo(null);
+		
+		if (id == 0) {
+			// Register
+			mostrarPnNuevoAccionista();			
+		}
+		else {
+			// Login
+			mostrarPnAcciones();
+			cargarDatosAccionista(id);
+			rellenarTablaAcciones();			
+		}
+		
 		
 	}
 	
@@ -380,12 +398,13 @@ public class Frame22748 extends JFrame {
 	private JPanel getPnNuevoAccionista() {
 		if (pnNuevoAccionista == null) {
 			pnNuevoAccionista = new JPanel();
-			pnNuevoAccionista.setLayout(new GridLayout(6, 1, 0, 0));
+			pnNuevoAccionista.setLayout(new GridLayout(7, 1, 0, 0));
 			pnNuevoAccionista.add(getPanel_1_2());
 			pnNuevoAccionista.add(getPanel_2_2());
 			pnNuevoAccionista.add(getPnIntroducirApellido());
 			pnNuevoAccionista.add(getPnIntroducirDni());
 			pnNuevoAccionista.add(getPnIntroducirCuenta());
+			pnNuevoAccionista.add(getPanel());
 			pnNuevoAccionista.add(getPnBotonesRegistro());
 		}
 		return pnNuevoAccionista;
@@ -488,6 +507,7 @@ public class Frame22748 extends JFrame {
 	private JButton getBtVolver() {
 		if (btVolver == null) {
 			btVolver = new JButton("Volver");
+			btVolver.setEnabled(false);
 			btVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					mostrarPnInicio();
@@ -1235,7 +1255,7 @@ public class Frame22748 extends JFrame {
 		getTxId().setText("");
 		((CardLayout) getPnCentro().getLayout()).show(getPnCentro(), "pnAcciones");
 	}
-	private void mostrarPnNuevoAccionista() {
+	public void mostrarPnNuevoAccionista() {
 		getTxId().setText("");
 		((CardLayout) getPnCentro().getLayout()).show(getPnCentro(), "pnNuevoAccionista");
 	}
@@ -1255,7 +1275,8 @@ public class Frame22748 extends JFrame {
 	}
 	private boolean comprobarCampos() {
 		if (getTxIntroducirNombre().getText().isBlank() || getTxIntroducirApellido().getText().isBlank() ||
-				getTxIntroducirDni().getText().isBlank() || getTxIntroducirCuenta().getText().isBlank()) {
+				getTxIntroducirDni().getText().isBlank() || getTxIntroducirCuenta().getText().isBlank() ||
+				new String(getTxContrasena().getPassword()).isBlank()){
 			return false;
 		}
 		else if(comprobarExistePersona()) {
@@ -1270,6 +1291,13 @@ public class Frame22748 extends JFrame {
 		cs.añadirAccionista(getTxIntroducirNombre().getText(), getTxIntroducirApellido().getText(), getTxIntroducirDni().getText(), getTxIntroducirCuenta().getText());
 		int id = cs.countAccionistas();
 		JOptionPane.showMessageDialog(null, "Su identificador como accionista es: "+ id);
+		
+		Usuario u = new Usuario();
+		u.setUsuario(""+id);
+		u.setPid(id);
+		u.setRol("accionista");
+		u.setContrasena(new String(getTxContrasena().getPassword()));
+		new MainService().addUser(u);
 	}
 	private JScrollPane getScrAcciones() {
 		if (scrAcciones == null) {
@@ -1485,5 +1513,50 @@ public class Frame22748 extends JFrame {
 		for (Integer id : idAcciones) {
 			cs.ponerEnVenta(id);
 		}
+	}
+	private JPanel getPanel() {
+		if (panel == null) {
+			panel = new JPanel();
+			panel.setLayout(new GridLayout(0, 4, 0, 0));
+			panel.add(getLbContrasena());
+			panel.add(getTxContrasena());
+			panel.add(getLbVacia_13());
+			panel.add(getLbVacia_14());
+			panel.add(getLbVacia_15());
+		}
+		return panel;
+	}
+	private JLabel getLbContrasena() {
+		if (lbContrasena == null) {
+			lbContrasena = new JLabel("Contraseña:");
+			lbContrasena.setHorizontalAlignment(SwingConstants.CENTER);
+			lbContrasena.setFont(new Font("Tahoma", Font.PLAIN, 18));
+		}
+		return lbContrasena;
+	}
+	private JPasswordField getTxContrasena() {
+		if (txContrasena == null) {
+			txContrasena = new JPasswordField();
+			txContrasena.setColumns(10);
+		}
+		return txContrasena;
+	}
+	private JLabel getLbVacia_13() {
+		if (lbVacia_13 == null) {
+			lbVacia_13 = new JLabel("");
+		}
+		return lbVacia_13;
+	}
+	private JLabel getLbVacia_14() {
+		if (lbVacia_14 == null) {
+			lbVacia_14 = new JLabel("");
+		}
+		return lbVacia_14;
+	}
+	private JLabel getLbVacia_15() {
+		if (lbVacia_15 == null) {
+			lbVacia_15 = new JLabel("");
+		}
+		return lbVacia_15;
 	}
 }
