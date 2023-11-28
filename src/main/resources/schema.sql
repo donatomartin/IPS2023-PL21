@@ -299,7 +299,9 @@ create table Usuario(
 	usuario varchar(30) primary key,
 	contrasena varchar(500) not null,
 	rol varchar(30) not null,
-	pid integer not null
+	pid integer not null,
+	foreign key (pid) references Empleado(eid),
+	foreign key (pid) references Accionista(idAccionista)
 );
 
 --Lesiones
