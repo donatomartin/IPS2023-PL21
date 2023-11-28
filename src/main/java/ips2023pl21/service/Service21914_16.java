@@ -23,4 +23,13 @@ public class Service21914_16 {
 		p.insertVenta(tl);
 	}
 
+	public boolean isGanadorSorteo(int idAbonado) {
+		return p.isGanadorSorteo(idAbonado);
+	}
+
+	public void deleteGanadorAbonado(String idAbonado) {
+		p.deleteGanadorAbonado(idAbonado);
+		
+	}
+
 }

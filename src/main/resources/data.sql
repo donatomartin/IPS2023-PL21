@@ -104,11 +104,11 @@ insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('1
 insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values ('2','1', 'EquipoVisitante2', '2023-11-16', 0);
 
 delete from Abonado;
-insert into Abonado(id) values('1');
-insert into Abonado(id) values('2'); 
-insert into Abonado(id) values('3'); 
-insert into Abonado(id) values('4'); 
-insert into Abonado(id) values('5'); 
+insert into Abonado(id,nombre,sorteo) values('1','a',0);
+insert into Abonado(id,nombre,sorteo) values('2','b',0); 
+insert into Abonado(id,nombre,sorteo) values('3','c',0); 
+insert into Abonado(id,nombre,sorteo) values('4','d',0); 
+insert into Abonado(id,nombre,sorteo) values('5','e',0); 
  
 
 delete from accion;

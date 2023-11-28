@@ -17,13 +17,11 @@ public class TiendaLogica {
 	List<Merchandaising> merchandaising = new ArrayList<Merchandaising>();
 	List<Merchandaising> seleccionado = new ArrayList<Merchandaising>();
 	double precioTotal;
-	int id;
 	boolean descuento;
 
 	public TiendaLogica() {
 		cargarArticulos();
 		this.precioTotal = 0;
-		this.id = 0;
 		this.descuento = false;
 	}
 
@@ -44,7 +42,7 @@ public class TiendaLogica {
 	/**
 	 * Devuelve el precio total
 	 * 
-	 * @return
+	 * @return precio total
 	 */
 	public double getPrecioTotal() {
 		calcularPrecioTotal();
@@ -127,9 +125,11 @@ public class TiendaLogica {
 	/**
 	 * Guarda el precio en la BD
 	 */
-	public void guardarPrecio() {
+	public void guardarPrecio(String idAbonado) {
 		service.añadirVenta(this);
-		//TODO si el ganador aplico el descuento quitar que sea ganador
+		if(descuento) {
+			service.deleteGanadorAbonado(idAbonado);
+		}
 	}
 	
 	/**
@@ -141,12 +141,11 @@ public class TiendaLogica {
 
 	/**
 	 * Devuelve si el abonado es ganador del sorteo
+	 * @param idAbonado 
 	 * @return
 	 */
-	public boolean isGanadorSorteo() {
-		//TODO conseguir si es ganador del sorteo
-		//service.isGanadorSorteo();
-		return true;
+	public boolean isGanadorSorteo(int idAbonado) {
+		return service.isGanadorSorteo(idAbonado);
 	}
 
 	/**

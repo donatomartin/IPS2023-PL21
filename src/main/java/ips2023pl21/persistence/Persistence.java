@@ -640,6 +640,11 @@ public class Persistence {
 		db.executeUpdate("update Abonado set sorteo = 1 where id = ?", idAbonado);
 		
 	}
+	
+	public void deleteGanadorAbonado(String idAbonado) {
+		db.executeUpdate("update Abonado set sorteo = 0 where id = ?", idAbonado);
+		
+	}
 
 	public void insertPartidoAbonado(String idAbonado, Partido partido) {
 		db.executeUpdate("insert into PartidoAbonado(idAbonado, idPartido) values (?,?)", idAbonado, partido.getId());
@@ -680,13 +685,25 @@ public class Persistence {
 	}
 	
 	public void insertAbonado(String nombre) {
-		db.executeUpdate("insert into abonado (nombre) values (?)", nombre);
+		db.executeUpdate("insert into abonado (nombre,sorteo) values (?,0)", nombre);
 		
 	}
 	
 	public List<Object[]> getIdAbonado() {
 		return db.executeQueryArray( "select max(id)from abonado" );
 	}
+	
+	public boolean isGanadorSorteo(int idAbonado) {
+		if(existsIdAbonado(String.valueOf(idAbonado))) {
+			List<Object[]> ganador = db.executeQueryArray("select * from abonado where id = ?", idAbonado);
+			int res = Integer.parseInt(ganador.get(0)[2].toString());
+			return  res == 1;
+		} 
+		return false;
+		
+	}
+	
+
 
 	// HORARIO JARDINERIA
 
@@ -992,6 +1009,5 @@ public class Persistence {
 				db.executeQueryPojo(Accionista.class, "select * from accionista");
 		return acc.size();
 	}
-
 	
 }

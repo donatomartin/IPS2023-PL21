@@ -29,12 +29,13 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
 public class Frame21916 {
-	
-	TiendaLogica tl;
-	
+
+	private TiendaLogica tl;
+	private int idAbonado;
+
 	private ProcesaBotonProducto pBP;
 	private ProcesaBotonSeleccion pBS;
-	
+
 	private JFrame frame;
 	private JPanel pnHeaderTienda;
 	private JLabel lbTienda;
@@ -42,7 +43,7 @@ public class Frame21916 {
 	private JButton btConfirmarTienda;
 	private JButton btSalirTienda;
 	private JLabel lbPrecioTienda;
-	
+
 	private JPanel pnContenido;
 	private JPanel pnSeleccion;
 	private JButton btEliminarTodo;
@@ -50,18 +51,20 @@ public class Frame21916 {
 	private JPanel pnProductos;
 	private JScrollPane spSeleccion;
 	private JCheckBox chbxDescuento;
-	
+
 	/**
 	 * Create the application.
 	 */
 	public Frame21916() {
+		//TODO conseguir el id de la sesion
+		this.idAbonado = 1;
 		tl = new TiendaLogica();
 		pBP = new ProcesaBotonProducto();
 		pBS = new ProcesaBotonSeleccion();
-		
+
 		initialize();
-		
-		boolean ganadorSorteo = tl.isGanadorSorteo();
+
+		boolean ganadorSorteo = tl.isGanadorSorteo(idAbonado);
 		chbxDescuento.setEnabled(ganadorSorteo);
 	}
 
@@ -78,13 +81,13 @@ public class Frame21916 {
 		frame.getContentPane().add(getPnHeaderTienda(), BorderLayout.NORTH);
 		frame.getContentPane().add(getPnButtonsTienda(), BorderLayout.SOUTH);
 		frame.getContentPane().add(getPnContenido(), BorderLayout.CENTER);
-		frame.setSize(new Dimension(1100,500));
+		frame.setSize(new Dimension(1100, 500));
 		frame.setMinimumSize(new Dimension(1100, 500));
-		
+
 		frame.setVisible(true);
-		
-		
+
 	}
+
 	private JPanel getPnHeaderTienda() {
 		if (pnHeaderTienda == null) {
 			pnHeaderTienda = new JPanel();
@@ -95,6 +98,7 @@ public class Frame21916 {
 		}
 		return pnHeaderTienda;
 	}
+
 	private JLabel getLbTienda() {
 		if (lbTienda == null) {
 			lbTienda = new JLabel("Tienda");
@@ -102,6 +106,7 @@ public class Frame21916 {
 		}
 		return lbTienda;
 	}
+
 	private JPanel getPnButtonsTienda() {
 		if (pnButtonsTienda == null) {
 			pnButtonsTienda = new JPanel();
@@ -112,6 +117,7 @@ public class Frame21916 {
 		}
 		return pnButtonsTienda;
 	}
+
 	private JButton getBtConfirmarTienda() {
 		if (btConfirmarTienda == null) {
 			btConfirmarTienda = new JButton("Confirmar");
@@ -125,62 +131,57 @@ public class Frame21916 {
 		}
 		return btConfirmarTienda;
 	}
+
 	private void finalizarCompra() {
-		String[] botones = {"Si" , "No"};
+		String[] botones = { "Si", "No" };
 		String msg = "";
-		
-		if(tl.isGanadorSorteo()) {
-			if(chbxDescuento.isSelected()) {
-				msg = "Precio: " + tl.getPrecioTotal() + "\n" + 
-						"¿Desea confirmar la compra?" + "\n" + 
-						"(Vas a usar el descuento de un solo uso)";
+
+		if (tl.isGanadorSorteo(this.idAbonado)) {
+			if (chbxDescuento.isSelected()) {
+				msg = "Precio: " + tl.getPrecioTotal() + "\n" + "¿Desea confirmar la compra?" + "\n"
+						+ "(Vas a usar el descuento de un solo uso)";
 			} else {
-				msg = "Precio: " + tl.getPrecioTotal() + "\n" + 
-						"¿Desea confirmar la compra?" + "\n" + 
-						"(NO vas a usar el descuento de un solo uso)";
+				msg = "Precio: " + tl.getPrecioTotal() + "\n" + "¿Desea confirmar la compra?" + "\n"
+						+ "(NO vas a usar el descuento de un solo uso)";
 			}
 		} else {
-			msg = "Precio: " + tl.getPrecioTotal() + "\n" + 
-					"¿Desea confirmar la compra?";
+			msg = "Precio: " + tl.getPrecioTotal() + "\n" + "¿Desea confirmar la compra?";
 		}
-		int res = JOptionPane.showOptionDialog(null, msg,"Confirmacion",
-				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-		botones,botones[0]);
-		
-		if(res == 0) {
-			tl.guardarPrecio();
-			
-			
-			boolean enviado = false;
-			while(!enviado) {
-				String correo = JOptionPane.showInputDialog(null, "Escibe tu correo electronico para recibir un sumario de la compra");
-				try{
-					tl.enviarCorreo(correo);
-					JOptionPane.showMessageDialog(null, "¡¡Correo Enviado!!");
-					enviado = true;
-					frame.dispose();
-				} catch (MessagingException e) {
-					JOptionPane.showMessageDialog(null, "no se pudo enviar el correo");
-					//e.printStackTrace();
-				}
+		int res = JOptionPane.showOptionDialog(null, msg, "Confirmacion", JOptionPane.DEFAULT_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, botones, botones[0]);
+
+		if (res == 0) {
+			tl.guardarPrecio(String.valueOf(idAbonado));
+
+			String correo = JOptionPane.showInputDialog(null,
+					"Escibe tu correo electronico para recibir un sumario de la compra");
+			try {
+				tl.enviarCorreo(correo);
+				JOptionPane.showMessageDialog(null, "¡¡Correo Enviado!!");
+				frame.dispose();
+			} catch (MessagingException e) {
+				JOptionPane.showMessageDialog(null, "no se pudo enviar el correo");
+				frame.dispose();
+				// e.printStackTrace();
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	private JButton getBtSalirTienda() {
 		if (btSalirTienda == null) {
 			btSalirTienda = new JButton("Salir");
 			btSalirTienda.setBackground(new Color(255, 255, 255));
 			btSalirTienda.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					System.exit(0);
+					frame.dispose();
 				}
 			});
 		}
 		return btSalirTienda;
 	}
+
 	private JLabel getLbPrecioTienda() {
 		if (lbPrecioTienda == null) {
 			lbPrecioTienda = new JLabel("Precio: 0.0 €");
@@ -191,7 +192,7 @@ public class Frame21916 {
 		}
 		return lbPrecioTienda;
 	}
-	
+
 	private JPanel getPnSeleccion() {
 		if (pnSeleccion == null) {
 			pnSeleccion = new JPanel();
@@ -199,119 +200,111 @@ public class Frame21916 {
 		}
 		return pnSeleccion;
 	}
-	
+
 	private void crearBotonesProductos(boolean enabled) {
-		if(enabled) {
-			for(int i = 0; i < tl.getMerchandaising().size(); i++) {
-				getPnProductos().add(nuevoBotonProductos(i,enabled));
+		if (enabled) {
+			for (int i = 0; i < tl.getMerchandaising().size(); i++) {
+				getPnProductos().add(nuevoBotonProductos(i, enabled));
 			}
 		} else {
-			for(int i = 0; i < tl.getMerchandaising().size(); i++) {
-				getPnSeleccion().add(nuevoBotonProductos(i,enabled));
+			for (int i = 0; i < tl.getMerchandaising().size(); i++) {
+				getPnSeleccion().add(nuevoBotonProductos(i, enabled));
 			}
 		}
-		
+
 	}
-	
+
 	private Component nuevoBotonProductos(Integer posicion, boolean enabled) {
 		JButton boton = new JButton("");
-		boton.setMinimumSize(new Dimension(1000000,1000000));
+		boton.setMinimumSize(new Dimension(1000000, 1000000));
 		String textoBt;
 		Merchandaising m = tl.getMerchandaising().get(posicion);
-		if(enabled) {
+		if (enabled) {
 			boton.addActionListener(pBP);
-			textoBt = "<html>" + m.getNombre() + "<br>" +
-					  m.getTipo() + "<br> Precio: " +
-					  m.getPrecio() + "<html>";
-			
+			textoBt = "<html>" + m.getNombre() + "<br>" + m.getTipo() + "<br> Precio: " + m.getPrecio() + "<html>";
+
 		} else {
 			boton.addActionListener(pBS);
-			textoBt = "<html>" + m.getNombre() + "<br>" +
-					  m.getTipo() + "<br> uds: " +
-					  m.getUnidades() + "<html>";
+			textoBt = "<html>" + m.getNombre() + "<br>" + m.getTipo() + "<br> uds: " + m.getUnidades() + "<html>";
 		}
 		boton.setBackground(Color.white);
 		boton.setBorder(new LineBorder(Color.LIGHT_GRAY, 2, true));
 		boton.setActionCommand(posicion.toString());
-		
+
 		boton.setVerticalAlignment(SwingConstants.CENTER);
-		
+
 		boton.setText(textoBt);
-		boton.setToolTipText("Articulo: " + m.getNombre() + 
-				", Precio: " + m.getPrecio());
+		boton.setToolTipText("Articulo: " + m.getNombre() + ", Precio: " + m.getPrecio());
 		boton.setEnabled(enabled);
 		return boton;
 	}
-	
-	public class ProcesaBotonProducto implements ActionListener{
+
+	public class ProcesaBotonProducto implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JButton source = (JButton) e.getSource();		
+			JButton source = (JButton) e.getSource();
 			int actionCommand = Integer.parseInt(source.getActionCommand());
-			
-			//Añade el articulo
+
+			// Añade el articulo
 			Merchandaising m = tl.getArticulo(actionCommand);
 			int unidades;
-			
+
 			try {
 				String text = JOptionPane.showInputDialog("¿Cuantas unidades quiere de "
 						+ tl.getArticulo(Integer.parseInt(source.getActionCommand())).getNombre() + "?");
 				unidades = Integer.parseInt(text);
-				
-				if(unidades < 0) {
+
+				if (unidades < 0) {
 					throw new NumberFormatException();
 				}
-				
+
 				tl.actualizarArticulosEnCesta(m, unidades);
 				actualizarPrecio();
 				getBtEliminarTodo().setEnabled(true);
 				getBtConfirmarTienda().setEnabled(true);
 				getPnSeleccion().getComponent(actionCommand).setEnabled(true);
-				((JButton)getPnSeleccion().getComponent(actionCommand)).setText("<html>" + m.getNombre() + "<br>" +
-																				m.getTipo() + "<br> uds: " +
-																				m.getUnidades() + "<html>");
+				((JButton) getPnSeleccion().getComponent(actionCommand)).setText(
+						"<html>" + m.getNombre() + "<br>" + m.getTipo() + "<br> uds: " + m.getUnidades() + "<html>");
 
 			} catch (NumberFormatException ex) {
 				JOptionPane.showMessageDialog(null, "numero no valido");
 			}
-				
+
 		}
 	}
 
-	
 	public class ProcesaBotonSeleccion implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			JButton source = (JButton) e.getSource();		
+			JButton source = (JButton) e.getSource();
 			int actionCommand = Integer.parseInt(source.getActionCommand());
-			
-			//Busca el articulo
+
+			// Busca el articulo
 			Merchandaising m = tl.getArticulo(actionCommand);
 			int unidades;
-			
+
 			try {
 				String text = JOptionPane.showInputDialog("¿Cuantas unidades quiere eliminar de "
 						+ tl.getArticulo(Integer.parseInt(source.getActionCommand())).getNombre() + "?");
 				unidades = Integer.parseInt(text);
-				
-				if(unidades < 0) {
+
+				if (unidades < 0) {
 					throw new NumberFormatException();
 				}
-				
+
 				tl.actualizarArticulosEnCesta(m, -unidades);
 				actualizarPrecio();
 				getBtEliminarTodo().setEnabled(true);
 				getBtConfirmarTienda().setEnabled(true);
-				((JButton)getPnSeleccion().getComponent(actionCommand)).setText("<html>" + m.getNombre() + "<br>" +
-						  m.getTipo() + "<br> uds: " +
-						  m.getUnidades() + "<html>");
-				
-				if(m.getUnidades() <= 0) {
+				((JButton) getPnSeleccion().getComponent(actionCommand)).setText(
+						"<html>" + m.getNombre() + "<br>" + m.getTipo() + "<br> uds: " + m.getUnidades() + "<html>");
+
+				if (m.getUnidades() <= 0) {
 					source.setEnabled(false);
 				}
-				
-				if(tl.getPrecioTotal() <= 0) {
+
+				if (tl.getPrecioTotal() <= 0) {
 					getBtConfirmarTienda().setEnabled(false);
 					getBtEliminarTodo().setEnabled(false);
 				}
@@ -319,30 +312,30 @@ public class Frame21916 {
 			} catch (NumberFormatException ex) {
 				JOptionPane.showMessageDialog(null, "numero no valido");
 			}
-			
+
 		}
-		
+
 	}
+
 	private void actualizarPrecio() {
 		double precioTotal = tl.getPrecioTotal();
-		getLbPrecioTienda().setText("Precio: " + Double.toString(precioTotal) +" €");
+		getLbPrecioTienda().setText("Precio: " + Double.toString(precioTotal) + " €");
 	}
-	
+
 	private void eliminarTodosLosArticulos() {
 		tl.eliminarSeleccion();
 		actualizarPrecio();
 		getBtConfirmarTienda().setEnabled(false);
 		getBtEliminarTodo().setEnabled(false);
-		
-		for(int i = 0; i < tl.getMerchandaising().size(); i++) {
+
+		for (int i = 0; i < tl.getMerchandaising().size(); i++) {
 			Merchandaising m = tl.getArticulo(i);
 			getPnSeleccion().getComponent(i).setEnabled(false);
-			((JButton)getPnSeleccion().getComponent(i)).setText("<html>" + m.getNombre() + "<br>" +
-					  m.getTipo() + "<br> uds: " +
-					  m.getUnidades() + "<html>");
-			
+			((JButton) getPnSeleccion().getComponent(i)).setText(
+					"<html>" + m.getNombre() + "<br>" + m.getTipo() + "<br> uds: " + m.getUnidades() + "<html>");
+
 		}
-		
+
 	}
 
 	private JPanel getPnContenido() {
@@ -354,6 +347,7 @@ public class Frame21916 {
 		}
 		return pnContenido;
 	}
+
 	private JButton getBtEliminarTodo() {
 		if (btEliminarTodo == null) {
 			btEliminarTodo = new JButton("Eliminar (Todo)");
@@ -368,6 +362,7 @@ public class Frame21916 {
 		}
 		return btEliminarTodo;
 	}
+
 	private JScrollPane getSpProductos() {
 		if (spProductos == null) {
 			spProductos = new JScrollPane();
@@ -377,6 +372,7 @@ public class Frame21916 {
 		}
 		return spProductos;
 	}
+
 	private JPanel getPnProductos() {
 		if (pnProductos == null) {
 			pnProductos = new JPanel();
@@ -384,6 +380,7 @@ public class Frame21916 {
 		}
 		return pnProductos;
 	}
+
 	private JScrollPane getSpSeleccion() {
 		if (spSeleccion == null) {
 			spSeleccion = new JScrollPane();
@@ -393,6 +390,7 @@ public class Frame21916 {
 		}
 		return spSeleccion;
 	}
+
 	private JCheckBox getChbxDescuento() {
 		if (chbxDescuento == null) {
 			chbxDescuento = new JCheckBox("Descuento");
@@ -407,7 +405,7 @@ public class Frame21916 {
 		}
 		return chbxDescuento;
 	}
-	
+
 	private void actualizarPrecioYDescuento() {
 		tl.setDescuento(getChbxDescuento().isSelected());
 		actualizarPrecio();
