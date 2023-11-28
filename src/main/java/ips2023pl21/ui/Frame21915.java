@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.service.Service21915;
 import ips2023pl21.service.State;
 
@@ -45,6 +46,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.border.TitledBorder;
+import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class Frame21915 extends JFrame {
 
@@ -61,9 +64,7 @@ public class Frame21915 extends JFrame {
 	private DefaultListModel<String> empleadoListModel = new DefaultListModel<String>();
 	private JPanel pnCabecera;
 	private JLabel lbTitulo;
-	private JLabel lblNewLabel;
 	private JPanel pnBotonesAsignacionFranja;
-	private JTextField txEmpleadoSeleccionado;
 	private JPanel pnCuerpo;
 	private JPanel pnSeleccionFecha;
 	private JLabel lbSeleccionFecha;
@@ -91,17 +92,22 @@ public class Frame21915 extends JFrame {
 	private JPanel pnWork;
 	private JButton btnSeleccionaHorario;
 	private JPanel pnBotonesSeleccionFranja;
-	private JPanel pnListHeader;
-	private JPanel pnJugadorSeleccionado;
 	private JPanel pnBotonesEntrevistas;
 	private JPanel pnBotonAtrasEntrevista;
 	private JPanel pnFechaFecha;
 	private JPanel pnFechaFranja;
-	private JPanel panel_2;
+	private JPanel pnBotonesSeleccionFranja2;
 	private JButton btnActualizar;
 	private JLabel lbFilterEmpleado;
+	private JButton btnAtras;
+	private JPanel pnJugadorSel;
+	private JLabel lbJugadorSel;
+	private JButton btnCrear;
+	private JList<HorarioEntrevista> listFranjas;
+	private DefaultListModel<HorarioEntrevista> franjasListModel = new DefaultListModel<>();
 
 	public Frame21915(Service21915 service) {
+		
 		setTitle("Gestion Entrevistas");
 		this.service = service;
 
@@ -139,6 +145,7 @@ public class Frame21915 extends JFrame {
 		if (pnWork == null) {
 			pnWork = new JPanel();
 			pnWork.setLayout(new CardLayout(0, 0));
+			pnWork.add(getPnSeleccionJugador(), "pnSeleccionJugador");
 			pnWork.add(getPnSeleccionFranja(), "pnSeleccionFranja");
 			pnWork.add(getPnAsignacionFranja(), "pnAsignacionFranja");
 			pnWork.add(getPnEntrevistas(), "pnEntrevistas");
@@ -210,7 +217,6 @@ public class Frame21915 extends JFrame {
 			pnList.setLayout(new BorderLayout(0, 0));
 			JScrollPane listScrollPane = new JScrollPane(getListEmpleados());
 			pnList.add(listScrollPane);
-			listScrollPane.setColumnHeaderView(getPnListHeader());
 		}
 		return pnList;
 	}
@@ -219,7 +225,7 @@ public class Frame21915 extends JFrame {
 		if (empleadoList == null) {
 			empleadoList = new JList<String>(empleadoListModel);
 			empleadoList.setToolTipText("dobleClick o Enter para seleccionar");
-			empleadoList.setBorder(new EmptyBorder(5, 5, 5, 5));
+			empleadoList.setBorder(new TitledBorder(null, "Jugadores", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 			empleadoList.setFont(new Font("Consolas", Font.BOLD, 15));
 
 			// Añadir MouseListener para el doble click
@@ -228,7 +234,7 @@ public class Frame21915 extends JFrame {
 					if (evt.getClickCount() == 2) {
 						int index = empleadoList.locationToIndex(evt.getPoint());
 						seleccionarEmpleado(index);
-
+						
 					}
 				}
 			});
@@ -250,7 +256,8 @@ public class Frame21915 extends JFrame {
 
 	private void seleccionarEmpleado(int index) {
 		service.seleccionaEmpleado(empleadoListModel.getElementAt(index));
-		getTxEmpleadoSeleccionado().setText(service.getNombreJugadorSeleccionado());
+		getLbJugadorSel().setText(service.getNombreJugadorSeleccionado());
+		((CardLayout)getPnWork().getLayout()).show(getPnWork(), "pnSeleccionFranja");
 	}
 
 	private void loadJugadorListModel(String filter) {
@@ -278,16 +285,6 @@ public class Frame21915 extends JFrame {
 		return lbTitulo;
 	}
 
-	private JLabel getLblNewLabel() {
-		if (lblNewLabel == null) {
-			lblNewLabel = new JLabel("Seleccionado:");
-			lblNewLabel.setBorder(new EmptyBorder(0, 0, 1, 0));
-			lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 11));
-			lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		}
-		return lblNewLabel;
-	}
-
 	private JPanel getPnBotonesAsignacionFranja() {
 		if (pnBotonesAsignacionFranja == null) {
 			pnBotonesAsignacionFranja = new JPanel();
@@ -297,18 +294,6 @@ public class Frame21915 extends JFrame {
 			pnBotonesAsignacionFranja.add(getPnBotonesAsignacionFranja1(), BorderLayout.EAST);
 		}
 		return pnBotonesAsignacionFranja;
-	}
-
-	private JTextField getTxEmpleadoSeleccionado() {
-		if (txEmpleadoSeleccionado == null) {
-			txEmpleadoSeleccionado = new JTextField();
-			txEmpleadoSeleccionado.setBorder(null);
-			txEmpleadoSeleccionado.setFont(new Font("Tahoma", Font.BOLD, 15));
-			txEmpleadoSeleccionado.setText("NONE");
-			txEmpleadoSeleccionado.setEditable(false);
-			txEmpleadoSeleccionado.setColumns(10);
-		}
-		return txEmpleadoSeleccionado;
 	}
 
 	private JPanel getPnCuerpo() {
@@ -324,7 +309,7 @@ public class Frame21915 extends JFrame {
 		if (pnSeleccionFecha == null) {
 			pnSeleccionFecha = new JPanel();
 			pnSeleccionFecha.setLayout(new GridLayout(0, 1, 0, 0));
-			pnSeleccionFecha.add(getPnSeleccionJugador());
+			pnSeleccionFecha.add(getListFranjas());
 		}
 		return pnSeleccionFecha;
 	}
@@ -368,16 +353,24 @@ public class Frame21915 extends JFrame {
 		if (pnFecha == null) {
 			pnFecha = new JPanel();
 			GroupLayout gl_pnFecha = new GroupLayout(pnFecha);
-			gl_pnFecha
-					.setHorizontalGroup(gl_pnFecha.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING,
-							gl_pnFecha
-									.createSequentialGroup().addGap(154).addComponent(getPnFechaFranja(),
-											GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-									.addGap(171)));
-			gl_pnFecha.setVerticalGroup(gl_pnFecha.createParallelGroup(Alignment.LEADING).addGroup(gl_pnFecha
-					.createSequentialGroup().addGap(0, 0, Short.MAX_VALUE)
-					.addComponent(getPnFechaFranja(), GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
-					.addGap(66)));
+			gl_pnFecha.setHorizontalGroup(
+				gl_pnFecha.createParallelGroup(Alignment.LEADING)
+					.addGroup(Alignment.TRAILING, gl_pnFecha.createSequentialGroup()
+						.addGap(154)
+						.addGroup(gl_pnFecha.createParallelGroup(Alignment.TRAILING)
+							.addComponent(getBtnCrear(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
+							.addComponent(getPnFechaFranja(), Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+						.addGap(171))
+			);
+			gl_pnFecha.setVerticalGroup(
+				gl_pnFecha.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnFecha.createSequentialGroup()
+						.addGap(0, 0, Short.MAX_VALUE)
+						.addComponent(getPnFechaFranja(), GroupLayout.PREFERRED_SIZE, 149, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(getBtnCrear())
+						.addGap(39))
+			);
 			pnFecha.setLayout(gl_pnFecha);
 		}
 		return pnFecha;
@@ -524,10 +517,10 @@ public class Frame21915 extends JFrame {
 
 	private JButton getAddEntrevista() {
 		if (addEntrevista == null) {
-			addEntrevista = new JButton("Añadir");
+			addEntrevista = new JButton("Asignar");
 			addEntrevista.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					addEntrevista();
+					asignaEntrevista();
 				}
 			});
 			addEntrevista.setBackground(new Color(211, 211, 211));
@@ -535,9 +528,10 @@ public class Frame21915 extends JFrame {
 		return addEntrevista;
 	}
 
-	private void addEntrevista() {
-		State res = service.addEntrevista(getTxMedio().getText());
-
+	private void asignaEntrevista() {
+		HorarioEntrevista he = getListFranjas().getSelectedValue();
+		State res = service.asignaEntrevista(he, getTxMedio().getText());
+		
 		switch (res) {
 		case EMPLEADONULL:
 			JOptionPane.showMessageDialog(null, "Error: Jugador no seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -545,27 +539,26 @@ public class Frame21915 extends JFrame {
 		case MEDIONULL:
 			JOptionPane.showMessageDialog(null, "Error: Medio no especificado.", "Error", JOptionPane.ERROR_MESSAGE);
 			break;
-		case INTERFIEREENTRENAMIENTO:
-			JOptionPane.showMessageDialog(null, "Error: Hay un entrenamiento programado para este intervalo.", "Error",
-					JOptionPane.ERROR_MESSAGE);
+		case FRANJANULL:
+			JOptionPane.showMessageDialog(null, "Error: Franja no especificada.", "Error", JOptionPane.ERROR_MESSAGE);
 			break;
 		case DBERROR:
 			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.", "Error", JOptionPane.ERROR_MESSAGE);
 			filter();
 			break;
 		case SUCCESS:
-			getTxEmpleadoSeleccionado().setText("NONE");
+			JOptionPane.showMessageDialog(null, "Franja asignada con éxito", "Success", JOptionPane.INFORMATION_MESSAGE);
 			getTxMedio().setText("");
 			break;
 		default:
 			break;
 		}
-
-		loadJugadorListModel(getTxFilterEmpleado().getText());
-		loadEntrevistasModel();
+		
+		loadEntrevistasListModel();
+		loadFranjasListModel();
 	}
 
-	private void loadEntrevistasModel() {
+	private void loadEntrevistasListModel() {
 
 		entrevistasListModel.removeAllElements();
 		entrevistasListModel.addAll(service.getEntrevistas());
@@ -647,6 +640,7 @@ public class Frame21915 extends JFrame {
 			pnSeleccionFranja.setLayout(new BorderLayout(0, 0));
 			pnSeleccionFranja.add(getPnFecha());
 			pnSeleccionFranja.add(getPanel_1(), BorderLayout.SOUTH);
+			pnSeleccionFranja.add(getPnJugadorSel(), BorderLayout.NORTH);
 		}
 		return pnSeleccionFranja;
 	}
@@ -697,27 +691,9 @@ public class Frame21915 extends JFrame {
 			pnBotonesSeleccionFranja.setBackground(new Color(211, 211, 211));
 			pnBotonesSeleccionFranja.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnBotonesSeleccionFranja.setLayout(new BorderLayout(0, 0));
-			pnBotonesSeleccionFranja.add(getPanel_2(), BorderLayout.EAST);
+			pnBotonesSeleccionFranja.add(getPnBotonesSeleccionFranja2(), BorderLayout.EAST);
 		}
 		return pnBotonesSeleccionFranja;
-	}
-
-	private JPanel getPnListHeader() {
-		if (pnListHeader == null) {
-			pnListHeader = new JPanel();
-			pnListHeader.setLayout(new BorderLayout(0, 0));
-			pnListHeader.add(getPanel_1_2(), BorderLayout.WEST);
-		}
-		return pnListHeader;
-	}
-
-	private JPanel getPanel_1_2() {
-		if (pnJugadorSeleccionado == null) {
-			pnJugadorSeleccionado = new JPanel();
-			pnJugadorSeleccionado.add(getLblNewLabel());
-			pnJugadorSeleccionado.add(getTxEmpleadoSeleccionado());
-		}
-		return pnJugadorSeleccionado;
 	}
 
 	private JPanel getPnBotonesEntrevistas() {
@@ -763,13 +739,14 @@ public class Frame21915 extends JFrame {
 		return pnFechaFranja;
 	}
 
-	private JPanel getPanel_2() {
-		if (panel_2 == null) {
-			panel_2 = new JPanel();
-			panel_2.setBackground(new Color(211, 211, 211));
-			panel_2.add(getBtnSeleccionaHorario());
+	private JPanel getPnBotonesSeleccionFranja2() {
+		if (pnBotonesSeleccionFranja2 == null) {
+			pnBotonesSeleccionFranja2 = new JPanel();
+			pnBotonesSeleccionFranja2.setBackground(new Color(211, 211, 211));
+			pnBotonesSeleccionFranja2.add(getBtnAtras());
+			pnBotonesSeleccionFranja2.add(getBtnSeleccionaHorario());
 		}
-		return panel_2;
+		return pnBotonesSeleccionFranja2;
 	}
 
 	private JButton getBtnActualizar() {
@@ -787,8 +764,92 @@ public class Frame21915 extends JFrame {
 
 	private JLabel getLbFilterEmpleado() {
 		if (lbFilterEmpleado == null) {
-			lbFilterEmpleado = new JLabel("Filtra Jugador");
+			lbFilterEmpleado = new JLabel("Seleccione el Jugador");
 		}
 		return lbFilterEmpleado;
+	}
+	private JButton getBtnAtras() {
+		if (btnAtras == null) {
+			btnAtras = new JButton("Atrás");
+			btnAtras.setBackground(new Color(211, 211, 211));
+			btnAtras.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((CardLayout)getPnWork().getLayout()).show(getPnWork(), "pnSeleccionJugador");
+				}
+			});
+		}
+		return btnAtras;
+	}
+	private JPanel getPnJugadorSel() {
+		if (pnJugadorSel == null) {
+			pnJugadorSel = new JPanel();
+			pnJugadorSel.add(getLbJugadorSel());
+		}
+		return pnJugadorSel;
+	}
+	private JLabel getLbJugadorSel() {
+		if (lbJugadorSel == null) {
+			lbJugadorSel = new JLabel("NONE");
+		}
+		return lbJugadorSel;
+	}
+	private JButton getBtnCrear() {
+		if (btnCrear == null) {
+			btnCrear = new JButton("Crear Franja");
+			btnCrear.setBackground(new Color(211, 211, 211));
+			btnCrear.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					creaFranja();
+				}
+			});
+		}
+		return btnCrear;
+	}
+	
+	private void creaFranja() {
+		State res = service.addEntrevista();
+
+		switch (res) {
+		case EMPLEADONULL:
+			JOptionPane.showMessageDialog(null, "Error: Jugador no seleccionado.", "Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case DIAOCUPADO:
+			JOptionPane.showMessageDialog(null, "Error: El jugador no puede tener más entrevistas este día.", "Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case MEDIONULL:
+			JOptionPane.showMessageDialog(null, "Error: Medio no especificado.", "Error", JOptionPane.ERROR_MESSAGE);
+			break;
+		case INTERFIEREENTRENAMIENTO:
+			JOptionPane.showMessageDialog(null, "Error: Hay un entrenamiento programado para este intervalo.", "Error",
+					JOptionPane.ERROR_MESSAGE);
+			break;
+		case DBERROR:
+			JOptionPane.showMessageDialog(null, "Error: Error de concurrencia.", "Error", JOptionPane.ERROR_MESSAGE);
+			filter();
+			break;
+		case SUCCESS:
+			JOptionPane.showMessageDialog(null, "Franja creada con éxito", "Success", JOptionPane.INFORMATION_MESSAGE);
+			getTxMedio().setText("");
+			break;
+		default:
+			break;
+		}
+
+		loadJugadorListModel(getTxFilterEmpleado().getText());
+		loadEntrevistasListModel();
+		loadFranjasListModel();
+	}
+	
+	private void loadFranjasListModel() {
+		franjasListModel.removeAllElements();
+		franjasListModel.addAll(service.getFranjasNoAsignadas());
+	}
+	
+	private JList<HorarioEntrevista> getListFranjas() {
+		if (listFranjas == null) {
+			listFranjas = new JList<HorarioEntrevista>(franjasListModel);
+			loadFranjasListModel();
+		}
+		return listFranjas;
 	}
 }

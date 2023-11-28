@@ -63,20 +63,36 @@ public class Persistence {
 	}
 
 	// ENTREVISTAS
-
-	public List<HorarioEntrevista> selectHorariosEntrevistas() {
+	
+	public boolean existeEntrevista(String fecha, int eid) {
 		List<HorarioEntrevista> result = db.executeQueryPojo(HorarioEntrevista.class,
-				"select * from HorarioEntrevista");
+				"select * from HorarioEntrevista where fechaEntrevista=? and eid=?", fecha, eid);
+		return !result.isEmpty();
+	}
+
+	public List<HorarioEntrevista> selectHorariosEntrevistasAsignados() {
+		List<HorarioEntrevista> result = db.executeQueryPojo(HorarioEntrevista.class,
+				"select * from HorarioEntrevista where datosmedio is not null");
+		return result;
+	}
+	
+	public List<HorarioEntrevista> selectHorariosEntrevistasNoAsignados() {
+		List<HorarioEntrevista> result = db.executeQueryPojo(HorarioEntrevista.class,
+				"select * from HorarioEntrevista where datosmedio is null");
 		return result;
 	}
 
-	public void insertHorarioEntrevista(String fecha, String datosMedio, String horaInicio, String horaFin, int eid)
+	public void insertHorarioEntrevista(String fecha, String horaInicio, String horaFin, int eid)
 			throws IllegalStateException {
 		checkHorarioEntrenamiento(eid, fecha, horaInicio, horaFin);
 
 		db.executeUpdate(
-				"insert into HorarioEntrevista (fechaEntrevista, datosMedio, horaInicio, horaFin, eid) values (?,?,?,?,?)",
-				fecha, datosMedio, horaInicio, horaFin, eid);
+				"insert into HorarioEntrevista (fechaEntrevista, horaInicio, horaFin, eid) values (?,?,?,?)",
+				fecha, horaInicio, horaFin, eid);
+	}
+	
+	public void asignaHorarioEntrevista(HorarioEntrevista he, String datosMedio) {
+		db.executeUpdate("update HorarioEntrevista set datosMedio=? where fechaEntrevista=? and eid=?", datosMedio, he.getFechaEntrevista(), he.getEid());
 	}
 
 	public void deleteHorarioEntrevista(int eqid, String fecha, String horaInicio, String horaFin) {
@@ -219,7 +235,7 @@ public class Persistence {
 
 		List<Integer> idsJugadoresConEntrevista = new ArrayList<>();
 
-		for (HorarioEntrevista entrevista : selectHorariosEntrevistas()) {
+		for (HorarioEntrevista entrevista : selectHorariosEntrevistasAsignados()) {
 
 			if (entrevista.getFechaEntrevista().equals(fechaSel))
 				idsJugadoresConEntrevista.add(entrevista.getEid());
@@ -741,7 +757,7 @@ public class Persistence {
 			}
 		}
 
-		for (HorarioEntrevista he : selectHorariosEntrevistas()) {
+		for (HorarioEntrevista he : selectHorariosEntrevistasAsignados()) {
 
 			if (!fecha.equals(he.getFechaEntrevista()))
 				continue;

@@ -21,6 +21,8 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.awt.GridLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
@@ -29,6 +31,7 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingUtilities;
 import javax.swing.JPasswordField;
 
 public class MainFrame extends JFrame {
@@ -300,7 +303,7 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-private static void run23539() {
+	private static void run23539() {
 	EventQueue.invokeLater(new Runnable() {
 		public void run() {
 			try {
@@ -606,6 +609,7 @@ private static void run23539() {
 	private JPanel getPnCredentials() {
 		if (pnCredentials == null) {
 			pnCredentials = new JPanel();
+			pnCredentials.setBackground(new Color(255, 255, 255));
 			GroupLayout gl_pnCredentials = new GroupLayout(pnCredentials);
 			gl_pnCredentials.setHorizontalGroup(
 				gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
@@ -718,63 +722,96 @@ private static void run23539() {
 		return txPassword;
 	}
 	private JButton getBtnRegistro() {
-		if (btnRegistro == null) {
-			btnRegistro = new JButton("Registrate");
-			btnRegistro.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					JTextField usuarioField = new JTextField();
-					JPasswordField contrasenaField = new JPasswordField();
-					JTextField rolField = new JTextField();
-					JTextField pidField = new JTextField();
-					Object[] message = {
-						"Usuario:", usuarioField,
-						"Contraseña:", contrasenaField,
-						"Rol:", rolField,
-						"Id (optional):", pidField
-					};
+	    if (btnRegistro == null) {
+	        btnRegistro = new JButton("Registrate");
+	        btnRegistro.setForeground(new Color(0, 0, 255));
+	        btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 13));
+	        btnRegistro.setBorder(null);
+	        btnRegistro.setBackground(new Color(255, 255, 255));
+	        btnRegistro.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	                JTextField usuarioField = new JTextField();
+	                JPasswordField contrasenaField = new JPasswordField();
+	                String[] roles = {"admin", "gventas", "entrenador", "cm", "ginstalaciones"};
+	                JComboBox<String> rolField = new JComboBox<>(roles);
+	                JTextField pidField = new JTextField();
+	                JLabel pidLabel = new JLabel("Id:");
 
-					int option = JOptionPane.showConfirmDialog(null, message, "Registro", JOptionPane.OK_CANCEL_OPTION);
-					if (option == JOptionPane.OK_OPTION) {
-						String usuario = usuarioField.getText();
-						String contrasena = new String(contrasenaField.getPassword());
-						String rol = rolField.getText();
-						
-						int pid = 0;
-						if (!pidField.getText().isBlank())
-							try {
-								pid = Integer.parseInt(pidField.getText());
-							} catch(Exception exception) {
-							}
-						
-						Usuario u = new Usuario();
-						u.setUsuario(usuario);
-						u.setContrasena(contrasena);
-						u.setRol(rol);
-						u.setPid(pid);
-						
-						State res = service.addUser(u);
-						
-						switch (res) {
-						case SUCCESS:
-							JOptionPane.showMessageDialog(null, "Success: User created.", "Sing in",
-									JOptionPane.INFORMATION_MESSAGE);
-							break;
-						case ENCRYPTION_ERROR:
-							JOptionPane.showMessageDialog(null, "Error: Could not encrypt.", "Error",
-									JOptionPane.ERROR_MESSAGE);
-							break;
-						case SINGINFAIL_USEREXISTS:
-							JOptionPane.showMessageDialog(null, "Error: User already exists.", "Error",
-									JOptionPane.ERROR_MESSAGE);
-							break;
-							
-						default: break;
-						}
-					}
-				}
-			});
-		}
-		return btnRegistro;
+	                JPanel panel = new JPanel(new GridLayout(0, 1));
+	                panel.add(new JLabel("Usuario:"));
+	                panel.add(usuarioField);
+	                panel.add(new JLabel("Contraseña:"));
+	                panel.add(contrasenaField);
+	                panel.add(new JLabel("Rol:"));
+	                panel.add(rolField);
+
+	                rolField.addActionListener(new ActionListener() {
+	                    public void actionPerformed(ActionEvent e) {
+	                        String rol = (String) rolField.getSelectedItem();
+	                        if ("entrenador".equals(rol)) {
+	                            panel.add(pidLabel);
+	                            panel.add(pidField);
+	                        } else {
+	                            panel.remove(pidLabel);
+	                            panel.remove(pidField);
+	                        }
+	                        panel.revalidate();
+	                        panel.repaint();
+	                        
+	                        SwingUtilities.getWindowAncestor(panel).pack();
+	                    }
+	                });
+
+	                int option = JOptionPane.showConfirmDialog(null, panel, "Registro", JOptionPane.OK_CANCEL_OPTION);
+	                if (option == JOptionPane.OK_OPTION) {
+	                    String usuario = usuarioField.getText();
+	                    String contrasena = new String(contrasenaField.getPassword());
+	                    String rol = (String) rolField.getSelectedItem();
+
+	                    int pid = 0;
+	                    if (!pidField.getText().isBlank()) {
+	                        try {
+	                            pid = Integer.parseInt(pidField.getText());
+	                        } catch(Exception exception) {
+	                        }
+	                    }
+
+	                    Usuario u = new Usuario();
+	                    u.setUsuario(usuario);
+	                    u.setContrasena(contrasena);
+	                    u.setRol(rol);
+	                    u.setPid(pid);
+
+	                    State res = service.addUser(u);
+
+	                    switch (res) {
+	                    case SUCCESS:
+	                        JOptionPane.showMessageDialog(null, "Success: Usuario creado con éxito.", "Sing in",
+	                                JOptionPane.INFORMATION_MESSAGE);
+	                        break;
+	                    case SINGINFAIL_NOID:
+	                    	JOptionPane.showMessageDialog(null, "Error: Este rol necesita ID asociada.", "Error",
+	                                JOptionPane.ERROR_MESSAGE);
+	                        break;
+	                    case ENCRYPTION_ERROR:
+	                        JOptionPane.showMessageDialog(null, "Error: No se ha podido encriptar.", "Error",
+	                                JOptionPane.ERROR_MESSAGE);
+	                        break;
+	                    case SINGINFAIL_USEREXISTS:
+	                        JOptionPane.showMessageDialog(null, "Error: Este usuario ya existe"
+	                        		+ ".", "Error",
+	                                JOptionPane.ERROR_MESSAGE);
+	                        break;
+
+	                    default: break;
+	                    }
+	                }
+	            }
+	        });
+	    }
+	    return btnRegistro;
 	}
+
+
 
 }

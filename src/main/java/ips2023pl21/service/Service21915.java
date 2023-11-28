@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ips2023pl21.model.Empleado;
+import ips2023pl21.model.horarios.HorarioEntrevista;
 import ips2023pl21.persistence.Persistence;
 import ips2023pl21.util.Util;
 
@@ -33,7 +34,11 @@ public class Service21915 {
 	}
 
 	public List<String> getEntrevistas() {
-		return persistence.selectHorariosEntrevistas().stream().map(x -> x.toString()).collect(Collectors.toList());
+		return persistence.selectHorariosEntrevistasAsignados().stream().map(x -> x.toString()).collect(Collectors.toList());
+	}
+	
+	public List<HorarioEntrevista> getFranjasNoAsignadas() {
+		return persistence.selectHorariosEntrevistasNoAsignados();
 	}
 
 	public List<String> getJugadoresLibresString(String filter) {
@@ -54,16 +59,16 @@ public class Service21915 {
 		return empleado.getNombre() + " " + empleado.getApellido();
 	}
 
-	public State addEntrevista(String datosMedio) {
+	public State addEntrevista() {
 		
 		if (empleado == null)
 			return State.EMPLEADONULL;
-
-		if (datosMedio.isBlank())
-			return State.MEDIONULL;
+		
+		if (persistence.existeEntrevista(fecha, empleado.getEid()))
+			return State.DIAOCUPADO;
 		
 		try {
-			persistence.insertHorarioEntrevista(fecha, datosMedio, horaInicio, horaFin, empleado.getEid());			
+			persistence.insertHorarioEntrevista(fecha, horaInicio, horaFin, empleado.getEid());			
 		} 
 		catch (IllegalStateException ise) {
 			return State.INTERFIEREENTRENAMIENTO;
@@ -71,8 +76,23 @@ public class Service21915 {
 		catch (Exception e) {
 			return State.DBERROR;
 		}
-		
-		empleado = null;
+				
+		return State.SUCCESS;
+	}
+
+	public State asignaEntrevista(HorarioEntrevista he, String datosMedio) {
+		if (he == null)
+			return State.FRANJANULL;
+		if (datosMedio == null || datosMedio.isBlank())
+			return State.MEDIONULL;
+		if (empleado == null)
+			return State.EMPLEADONULL;
+		try {
+			persistence.asignaHorarioEntrevista(he, datosMedio);			
+		} 
+		catch (Exception e) {
+			return State.DBERROR;
+		}
 		
 		return State.SUCCESS;
 	}

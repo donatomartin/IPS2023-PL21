@@ -70,6 +70,19 @@ create table HorarioEquipo(
     foreign key(idInstalacion) references Instalacion(id)
 );
 
+-- Horario Entrevista
+drop table HorarioEntrevista;
+create table HorarioEntrevista(
+	fechaEntrevista varchar(10) not null,
+    horaInicio varchar(5) not null,
+    horaFin varchar(5) not null,
+    datosMedio varchar(30),
+    eid int,
+	check (horaInicio != horaFin),
+    primary key (fechaEntrevista, eid),
+    foreign key (eid) references Empleado(eid)
+);
+
 -- Horario Jardineria
 drop table HorarioJardineria;
 create table HorarioJardineria(
@@ -127,19 +140,6 @@ drop table Abonado;
 create table Abonado(
 	id integer primary key autoincrement,
 	nombre varchar(70)
-);
-
--- Entrevista
-drop table HorarioEntrevista;
-create table HorarioEntrevista(
-	fechaEntrevista varchar(10) not null,
-    horaInicio varchar(5) not null,
-    horaFin varchar(5) not null,
-    datosMedio varchar(30) not null,
-    eid int,
-	check (horaInicio != horaFin),
-    primary key (fechaEntrevista, eid),
-    foreign key (eid) references Empleado(eid)
 );
 
 -- Equipo

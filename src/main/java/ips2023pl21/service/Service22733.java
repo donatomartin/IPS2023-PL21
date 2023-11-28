@@ -14,7 +14,7 @@ public class Service22733 {
 	
 	public Persistence p = Persistence.getInstance();
 	
-
+	@SuppressWarnings("deprecation")
 	public boolean comprar(String tribuna, String seccion, int fila, int asiento, String fechaNacimiento, String
 			nombre) {
 		if(comprobarDisponibilidad(tribuna, seccion, fila, asiento)) {
