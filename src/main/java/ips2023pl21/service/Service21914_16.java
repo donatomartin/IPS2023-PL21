@@ -25,4 +25,13 @@ public class Service21914_16 {
 		PDFGenerator.generarPDF(tl);
 	}
 
+	public boolean isGanadorSorteo(int idAbonado) {
+		return p.isGanadorSorteo(idAbonado);
+	}
+
+	public void deleteGanadorAbonado(String idAbonado) {
+		p.deleteGanadorAbonado(idAbonado);
+		
+	}
+
 }

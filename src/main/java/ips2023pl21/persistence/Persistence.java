@@ -472,8 +472,8 @@ public class Persistence {
 	}
 
 	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
-		return db.executeQueryPojo(EntradaEntity.class,
-				"select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
+		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?",
+				tribuna, seccion, fila);
 	}
 
 	// ENTRADA
@@ -517,6 +517,12 @@ public class Persistence {
 				equipo.getPrimerEntrenador().getEid(), equipo.getSegundoEntrenador().getEid(), equipo.getNombre(),
 				categoria, filial);
 		logger.logMessage("Equipo creado");
+
+		String eqid = selectEquipoPorNombre(equipo.getNombre()).getId();
+
+		for (Empleado j : equipo.getJugadores()) {
+			db.executeUpdate("insert into Juega(eqid,eid) values (?,?)", eqid, j.getEid());
+		}
 	}
 
 	public List<EquipoDeportivo> selectEquipo() {
@@ -544,8 +550,8 @@ public class Persistence {
 			ret.setNombre(equipo.get(0)[3].toString());
 		}
 
-//			ret.setCategoria(o[2]);
-//			ret.setFilial(o[3]);
+		// ret.setCategoria(o[2]);
+		// ret.setFilial(o[3]);
 		return ret;
 	}
 
@@ -556,8 +562,8 @@ public class Persistence {
 		ret.setId(equipo.get(0)[0].toString());
 		ret.setNombre(equipo.get(0)[3].toString());
 
-//			ret.setCategoria(o[2]);
-//			ret.setFilial(o[3]);
+		// ret.setCategoria(o[2]);
+		// ret.setFilial(o[3]);
 		return ret;
 	}
 
@@ -644,7 +650,7 @@ public class Persistence {
 	}
 
 	public boolean existsPartido(Partido partido) {
-		// TODO
+
 		if (partido != null) {
 			String idEquipo = partido.getLocal().getId();
 			String visitante = partido.getVisitante();
@@ -667,6 +673,27 @@ public class Persistence {
 			return true;
 		}
 		return false;
+
+	}
+
+	public List<String> selectIdsAbonados() {
+		List<Object[]> abonados = db.executeQueryArray("select * from Abonado");
+		List<String> ids = new ArrayList<>();
+
+		for (Object[] o : abonados) {
+			ids.add(o[0].toString());
+		}
+
+		return ids;
+	}
+
+	public void updateAbonadoSorteo(String idAbonado) {
+		db.executeUpdate("update Abonado set sorteo = 1 where id = ?", idAbonado);
+
+	}
+
+	public void deleteGanadorAbonado(String idAbonado) {
+		db.executeUpdate("update Abonado set sorteo = 0 where id = ?", idAbonado);
 
 	}
 
@@ -714,10 +741,22 @@ public class Persistence {
 		db.executeUpdate("insert into abonado (nombre) values (?)", nombre);
 		logger.logMessage("Abonado creado");
 
+		db.executeUpdate("insert into abonado (nombre,sorteo) values (?,0)", nombre);
+
 	}
 
 	public List<Object[]> getIdAbonado() {
 		return db.executeQueryArray("select max(id)from abonado");
+	}
+
+	public boolean isGanadorSorteo(int idAbonado) {
+		if (existsIdAbonado(String.valueOf(idAbonado))) {
+			List<Object[]> ganador = db.executeQueryArray("select * from abonado where id = ?", idAbonado);
+			int res = Integer.parseInt(ganador.get(0)[2].toString());
+			return res == 1;
+		}
+		return false;
+
 	}
 
 	// HORARIO JARDINERIA
@@ -932,7 +971,7 @@ public class Persistence {
 			db.executeUpdate("insert into ventamerchandising(id,idProducto,cantidad)" + " values(?,?,?)",
 					UUID.randomUUID().toString(), a.getId(), a.getUnidades());
 		}
-		
+
 		logger.logMessage("Venta creada");
 
 	}
@@ -1018,10 +1057,12 @@ public class Persistence {
 		logger.logMessage("Venta creada");
 
 	}
-	public List<VentaDisplayDTO> getVentasByDate(String min, String max){
-		return db.executeQueryPojo(VentaDisplayDTO.class,"select * from venta where fecha>=? "
-				+ "and fecha<=?", min, max);
-		}
+
+	public List<VentaDisplayDTO> getVentasByDate(String min, String max) {
+		return db.executeQueryPojo(VentaDisplayDTO.class, "select * from venta where fecha>=? " + "and fecha<=?", min,
+				max);
+	}
+
 	public List<VentaDisplayDTO> getTotalVentas() {
 		return db.executeQueryPojo(VentaDisplayDTO.class, "select * from venta");
 	}
@@ -1073,7 +1114,7 @@ public class Persistence {
 				+ "porcentajeCapital=porcentajeCapital+? where idAccionista=?", porcentaje, idComprador);
 		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones-1, "
 				+ "porcentajeCapital=porcentajeCapital-? where idAccionista=?", porcentaje, idVendedor);
-		
+
 		logger.logMessage("Acción compra realizada");
 	}
 
@@ -1107,7 +1148,7 @@ public class Persistence {
 				porcentaje, idAccionista);
 		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital-? " + "where idAccionista<>?",
 				porcentaje, idAccionista);
-		
+
 		logger.logMessage("Compra de accionista actualizada");
 	}
 
@@ -1145,7 +1186,7 @@ public class Persistence {
 
 		db.executeUpdate("insert into usuario(usuario,contrasena,rol,pid) values (?,?,?,?)", usuario.getUsuario(),
 				usuario.getContrasena(), usuario.getRol(), usuario.getPid());
-		
+
 		logger.logMessage("Usuario registrado");
 
 	}
@@ -1198,7 +1239,7 @@ public class Persistence {
 			db.executeUpdate("insert into Lesion (eid, causa, descripcion, fecha) values " + "(?,?,?,?)", eid, causa,
 					descripcion, fecha);
 		}
-		
+
 		logger.logMessage("Crea lesionado");
 	}
 

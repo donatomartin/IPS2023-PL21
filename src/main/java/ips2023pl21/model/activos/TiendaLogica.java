@@ -22,10 +22,12 @@ public class TiendaLogica {
 	private String domicilio;
 	private String dni;
 	
+	boolean descuento;
+
 	public TiendaLogica() {
 		cargarArticulos();
 		this.precioTotal = 0;
-		this.id = 0;
+		this.descuento = false;
 	}
 
 	public List<Merchandaising> getMerchandaising() {
@@ -45,9 +47,10 @@ public class TiendaLogica {
 	/**
 	 * Devuelve el precio total
 	 * 
-	 * @return
+	 * @return precio total
 	 */
 	public double getPrecioTotal() {
+		calcularPrecioTotal();
 		return this.precioTotal;
 	}
 
@@ -70,7 +73,7 @@ public class TiendaLogica {
 	public void actualizarArticulosEnCesta(Merchandaising merch, int unidades) {
 		Merchandaising merchSeleccionado = null;
 		for (Merchandaising m : seleccionado) {
-			if (m.getNombre().equals(merch.getNombre())) {
+			if (m.getId() == merch.getId()) {
 				merchSeleccionado = m;
 				merchSeleccionado.actualizarUnidades(unidades);
 
@@ -112,17 +115,43 @@ public class TiendaLogica {
 			precioTotal = precioTotal + seleccionado.get(i).getPrecioTotalArticulo();
 		}
 
+		if(descuento) {
+			if(precioTotal < 1000) {
+				precioTotal = precioTotal / 2.0;
+			} else {
+				precioTotal = precioTotal - 500;
+			}
+			
+		} 
+		
 		this.precioTotal = precioTotal;
 	}
 
 	/**
 	 * Guarda el precio en la BD
 	 */
-	public void guardarPrecio() {
+	public void guardarPrecio(String idAbonado) {
 		service.añadirVenta(this);
-
+		if(descuento) {
+			service.deleteGanadorAbonado(idAbonado);
+		}
+	}
+	
+	/**
+	 * Aplica el descuento a la compra
+	 */
+	public void setDescuento(boolean descuento) {
+		this.descuento = descuento;
 	}
 
+	/**
+	 * Devuelve si el abonado es ganador del sorteo
+	 * @param idAbonado 
+	 * @return
+	 */
+	public boolean isGanadorSorteo(int idAbonado) {
+		return service.isGanadorSorteo(idAbonado);
+	}
 
 	/**
 	 * Envia el correo

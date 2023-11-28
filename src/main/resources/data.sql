@@ -171,7 +171,12 @@ insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values
 
 
 delete from Abonado;
-insert into Abonado(id) values('1'); 
+insert into Abonado(id,nombre,sorteo) values('1','a',0);
+insert into Abonado(id,nombre,sorteo) values('2','b',0); 
+insert into Abonado(id,nombre,sorteo) values('3','c',0); 
+insert into Abonado(id,nombre,sorteo) values('4','d',0); 
+insert into Abonado(id,nombre,sorteo) values('5','e',0); 
+ 
 
 delete from accion;
 insert into accion(idAccionista,precioCompra,enVenta,precioVenta) values
