@@ -516,9 +516,13 @@ public class Persistence {
 	public EquipoDeportivo selectEquipoPorNombre(String nombre) {
 
 		List<Object[]> equipo = db.executeQueryArray("select * from Equipo where nombre = ?", nombre);
-		EquipoDeportivo ret = new EquipoDeportivo();
-		ret.setId(equipo.get(0)[0].toString());
-		ret.setNombre(equipo.get(0)[3].toString());
+		EquipoDeportivo ret = null;
+		
+		if(equipo.size() > 0) {
+			ret = new EquipoDeportivo();
+			ret.setId(equipo.get(0)[0].toString());
+			ret.setNombre(equipo.get(0)[3].toString());
+		}
 
 //			ret.setCategoria(o[2]);
 //			ret.setFilial(o[3]);
@@ -616,6 +620,22 @@ public class Persistence {
 			ret.add(p);
 		}
 		return ret;
+	}
+	
+
+	public boolean existsPartido(Partido partido) {
+		//TODO
+		if(partido != null) {
+			String idEquipo = partido.getLocal().getId();
+			String visitante = partido.getVisitante();
+			String fecha = partido.getFecha();
+			
+			List<Object[]> partidos = db.executeQueryArray("select * from Partido where idEquipo = ? and "
+					+ "equipoVisitante = ? and fecha = ?", idEquipo, visitante, fecha);
+			
+			return partidos.size() == 0 ? false : true;
+		}
+		return false;
 	}
 
 	// ABONADOS

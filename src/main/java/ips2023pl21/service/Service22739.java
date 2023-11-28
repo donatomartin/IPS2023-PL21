@@ -40,5 +40,9 @@ public class Service22739 {
 		p.insertPartidoAbonado(idAbonado,partido);
 		
 	}
+
+	public boolean existsPartido(Partido partido) {		
+		return p.existsPartido(partido) ? true : false;
+	}
 	
 }
