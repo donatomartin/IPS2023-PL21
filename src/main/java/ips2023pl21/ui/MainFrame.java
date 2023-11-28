@@ -8,12 +8,15 @@ import javax.swing.JPanel;
 import ips2023pl21.model.Usuario;
 import ips2023pl21.model.entradas.EntradasModel;
 import ips2023pl21.model.ventas.VentasModel;
+import ips2023pl21.persistence.Logger;
+import ips2023pl21.persistence.Persistence;
 import ips2023pl21.service.*;
 import ips2023pl21.service.Service22759;
 import ips2023pl21.ui.parts.ValueButton;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,6 +27,8 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import javax.swing.BoxLayout;
@@ -66,11 +71,13 @@ public class MainFrame extends JFrame {
 	private ValueButton<String> btn22749;
 	private ValueButton<String> btn23558;
 	private ValueButton<String> btn23539;
+	private ValueButton<String> btn23587;
 
 	@SuppressWarnings("unchecked")
 	private ValueButton<String>[] buttons = new ValueButton[] { getBtn21911(), getBtn21912(), getBtn21913(),
 			getBtn21914(), getBtn21915(), getBtn21916(), getBtn21917(), getBtn21918(), getBtn22733(), getBtn22739(),
-			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749(), getBtn23558(), getBtn23539() 
+			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749(), getBtn23558(), getBtn23539(),
+			getBtn23587()
 		};
 
 	private JPanel pnCentro;
@@ -98,6 +105,10 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		contentPane.add(getPnNorte(), BorderLayout.NORTH);
 		contentPane.add(getPnCentro(), BorderLayout.CENTER);
+	}
+	
+	public static void setLogger(String name) {
+		Persistence.getInstance().setLogger(new Logger(name));
 	}
 
 	private static void run21911() {
@@ -616,6 +627,36 @@ public class MainFrame extends JFrame {
 		}
 		return btn23539;
 	}
+	
+	private ValueButton<String> getBtn23587() {
+		if (btn23587 == null) {
+			btn23587 = new ValueButton<String>("<html><p>Log</h1><p>(23539)</p><html>");
+			btn23587.setValue("admin");
+			btn23587.setBackground(new Color(240, 255, 240));
+			btn23587.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					try {
+			            // Ruta de la carpeta que quieres abrir
+			            File file = new File("log");
+
+			            // Comprueba si el sistema operativo soporta la operación
+			            if (!Desktop.isDesktopSupported()) {
+			                System.out.println("No se puede abrir la carpeta en el explorador, tu SO no lo soporta.");
+			                return;
+			            }
+
+			            Desktop desktop = Desktop.getDesktop();
+			            if (file.exists()) {
+			                desktop.open(file);
+			            }
+			        } catch (IOException ex) {
+			            ex.printStackTrace();
+			        }
+				}
+			});
+		}
+		return btn23587;
+	}
 
 	private JPanel getPnCentro() {
 		if (pnCentro == null) {
@@ -723,6 +764,7 @@ public class MainFrame extends JFrame {
 							}
 						}
 						((CardLayout) getPnCentro().getLayout()).show(getPnCentro(), "work");
+						setLogger(usuario.getUsuario() + " (" + usuario.getRol() + ")");
 						break;
 					default:
 						break;
