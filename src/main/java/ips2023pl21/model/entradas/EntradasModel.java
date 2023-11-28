@@ -42,10 +42,7 @@ public class EntradasModel {
 		for(int i=0;i<10;i++) { //recorre las filas para una tribuna y seccion dada
 			asientoInicial=-1;
 			List<EntradaEntity> asientosOcupados=getTotalEntradas(tribuna, seccion, i);
-			List<EntradaEntity> abonos=getAbonosFila(tribuna, seccion, fila);
-			for(EntradaEntity e : abonos) {
-				System.out.println(e.getTribuna());
-			}
+			List<EntradaEntity> abonos=getAbonosFila(tribuna, seccion, i);
 			int asientosOcupadosFila=asientosOcupados.size()+abonos.size();
 			if(asientosOcupadosFila==0) { 
 				asientoInicial=0;

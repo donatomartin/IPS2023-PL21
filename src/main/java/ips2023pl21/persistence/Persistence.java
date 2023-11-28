@@ -449,12 +449,10 @@ public class Persistence {
 	}
 
 	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
-		List<EntradaEntity> entradas = db.executeQueryPojo(EntradaEntity.class,
+		return db.executeQueryPojo(EntradaEntity.class,
 				"select * from abono where tribuna=? and seccion=? and fila=?", tribuna, seccion, fila);
-		for (EntradaEntity e : entradas) {
-			System.out.println(e.getTribuna() + e.getSeccion() + e.getFila() + e.getAsiento());
-		}
-		return entradas;
+		
+		
 	}
 	
 
@@ -986,8 +984,6 @@ public class Persistence {
 
 	}
 	public List<VentaDisplayDTO> getVentasByDate(String min, String max){
-//		System.out.println("min:"+minS);
-//		System.out.println("max:"+maxS);
 		return db.executeQueryPojo(VentaDisplayDTO.class,"select * from venta where fecha>=? "
 				+ "and fecha<=?", min, max);
 		}

@@ -43,7 +43,6 @@ public class Service22733 {
 				String dateString=currentYear+1+"-06-30";
 				p.insertAbono(tribuna, seccion, fila, asiento, precio, dateString);
 				p.insertarVenta("abono",Util.dateToIsoString(new Date()), new Date().getHours(), new Date().getMinutes(),precio);
-				System.out.println("abono insertado");
 				//insertar en abonado
 				p.insertAbonado(nombre);
 				return true;
