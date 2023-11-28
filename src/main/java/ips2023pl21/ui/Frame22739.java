@@ -5,12 +5,14 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import ips2023pl21.model.entradas.EntradasModel;
 import ips2023pl21.model.equipos.EquipoDeportivo;
 import ips2023pl21.model.equipos.Partido;
 import ips2023pl21.service.Service21917;
 import ips2023pl21.service.Service22739;
+import ips2023pl21.util.ParserCSV;
 import ips2023pl21.util.Util;
 
 import java.awt.CardLayout;
@@ -19,11 +21,18 @@ import java.awt.Component;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.awt.event.ActionEvent;
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JTextField;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerDateModel;
@@ -54,7 +63,7 @@ public class Frame22739 extends JFrame {
 	private JPanel pnCrearComprar;
 	private JPanel pnCrearPartido;
 	private JPanel pnSeleccionarPartido;
-	private JButton btCrearPartido;
+	private JButton btCrearPartidos;
 	private JButton btComprarPartido;
 	private JPanel pnCrearLabel;
 	private JLabel lbCrearPartido;
@@ -89,7 +98,17 @@ public class Frame22739 extends JFrame {
 	private boolean abonado;
 	private String idAbonado;
 	private List<Partido> partidos = new ArrayList<>();
-	private JPanel panel_1;
+	private JPanel pnSuplementosInterno;
+	private JPanel pnCargarPartidos;
+	private JPanel pnCrearCargar;
+	private JButton btCrearIndividual;
+	private JButton btCrearDesdeFichero;
+	private JPanel pnVolver;
+	private JButton btVolver;
+	private JPanel pnCargar;
+	private JButton btCargarPartidos;
+	
+	private JFileChooser selector;
 
 
 	/**
@@ -109,7 +128,9 @@ public class Frame22739 extends JFrame {
 		frame.setLocationRelativeTo(null);
 		frame.getContentPane().setLayout(new CardLayout(0, 0));
 		frame.getContentPane().add(getPnCrearComprar(), "crearComprar");
+		frame.getContentPane().add(getPnCrearCargar(), "crearCargar");
 		frame.getContentPane().add(getPnCrearPartido(), "crear");
+		frame.getContentPane().add(getPnCargarPartidos(), "cargar");
 		frame.getContentPane().add(getPnAbonadoNoAbonado(), "Abonado");
 		frame.getContentPane().add(getPnSeleccionarPartido(), "seleccionar");
 
@@ -194,7 +215,7 @@ public class Frame22739 extends JFrame {
 		if (pnCrearComprar == null) {
 			pnCrearComprar = new JPanel();
 			pnCrearComprar.setLayout(new GridLayout(1, 0, 0, 0));
-			pnCrearComprar.add(getBtCrearPartido());
+			pnCrearComprar.add(getBtCrearPartidos());
 			pnCrearComprar.add(getBtComprarPartido());
 		}
 		return pnCrearComprar;
@@ -222,16 +243,16 @@ public class Frame22739 extends JFrame {
 		return pnSeleccionarPartido;
 	}
 
-	private JButton getBtCrearPartido() {
-		if (btCrearPartido == null) {
-			btCrearPartido = new JButton("Crear Partido");
-			btCrearPartido.addActionListener(new ActionListener() {
+	private JButton getBtCrearPartidos() {
+		if (btCrearPartidos == null) {
+			btCrearPartidos = new JButton("Crear Partidos");
+			btCrearPartidos.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					irACrearPartido();
+					irAPn("crearCargar");
 				}
 			});
 		}
-		return btCrearPartido;
+		return btCrearPartidos;
 	}
 	
 	private void irACrearPartido() {
@@ -397,13 +418,13 @@ public class Frame22739 extends JFrame {
 			gl_pnSuplemento.setHorizontalGroup(
 				gl_pnSuplemento.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_pnSuplemento.createSequentialGroup()
-						.addComponent(getPanel_1(), GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE)
+						.addComponent(getPnSuplementosInterno(), GroupLayout.PREFERRED_SIZE, 262, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(20, Short.MAX_VALUE))
 			);
 			gl_pnSuplemento.setVerticalGroup(
 				gl_pnSuplemento.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_pnSuplemento.createSequentialGroup()
-						.addComponent(getPanel_1(), GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+						.addComponent(getPnSuplementosInterno(), GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(86, Short.MAX_VALUE))
 			);
 			pnSuplemento.setLayout(gl_pnSuplemento);
@@ -636,30 +657,171 @@ public class Frame22739 extends JFrame {
 		}
 		return btActualizarPartidos;
 	}
-	private JPanel getPanel_1() {
-		if (panel_1 == null) {
-			panel_1 = new JPanel();
-			panel_1.setPreferredSize(new Dimension(0,15));
-			GroupLayout gl_panel_1 = new GroupLayout(panel_1);
-			gl_panel_1.setHorizontalGroup(
-				gl_panel_1.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel_1.createSequentialGroup()
+	private JPanel getPnSuplementosInterno() {
+		if (pnSuplementosInterno == null) {
+			pnSuplementosInterno = new JPanel();
+			pnSuplementosInterno.setPreferredSize(new Dimension(0,15));
+			GroupLayout gl_pnSuplementosInterno = new GroupLayout(pnSuplementosInterno);
+			gl_pnSuplementosInterno.setHorizontalGroup(
+				gl_pnSuplementosInterno.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnSuplementosInterno.createSequentialGroup()
 						.addContainerGap()
 						.addComponent(getChckSuplemento(), GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(getSpSuplemento(), GroupLayout.PREFERRED_SIZE, 131, GroupLayout.PREFERRED_SIZE)
 						.addGap(24))
 			);
-			gl_panel_1.setVerticalGroup(
-				gl_panel_1.createParallelGroup(Alignment.LEADING)
-					.addGroup(gl_panel_1.createSequentialGroup()
-						.addGroup(gl_panel_1.createParallelGroup(Alignment.BASELINE)
+			gl_pnSuplementosInterno.setVerticalGroup(
+				gl_pnSuplementosInterno.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_pnSuplementosInterno.createSequentialGroup()
+						.addGroup(gl_pnSuplementosInterno.createParallelGroup(Alignment.BASELINE)
 							.addComponent(getChckSuplemento(), GroupLayout.PREFERRED_SIZE, 15, GroupLayout.PREFERRED_SIZE)
 							.addComponent(getSpSuplemento(), GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
 						.addContainerGap())
 			);
-			panel_1.setLayout(gl_panel_1);
+			pnSuplementosInterno.setLayout(gl_pnSuplementosInterno);
 		}
-		return panel_1;
+		return pnSuplementosInterno;
+	}
+	private JPanel getPnCargarPartidos() {
+		if (pnCargarPartidos == null) {
+			pnCargarPartidos = new JPanel();
+			pnCargarPartidos.setLayout(new BorderLayout(0, 0));
+			pnCargarPartidos.add(getPnVolver(), BorderLayout.SOUTH);
+			pnCargarPartidos.add(getPnCargar(), BorderLayout.CENTER);
+		}
+		return pnCargarPartidos;
+	}
+	private JPanel getPnCrearCargar() {
+		if (pnCrearCargar == null) {
+			pnCrearCargar = new JPanel();
+			pnCrearCargar.setLayout(new GridLayout(1, 0, 0, 0));
+			pnCrearCargar.add(getBtCrearIndividual());
+			pnCrearCargar.add(getBtCrearDesdeFichero());
+		}
+		return pnCrearCargar;
+	}
+	private JButton getBtCrearIndividual() {
+		if (btCrearIndividual == null) {
+			btCrearIndividual = new JButton("Crear Partido Individual");
+			btCrearIndividual.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					irACrearPartido();
+				}
+			});
+		}
+		return btCrearIndividual;
+	}
+	private JButton getBtCrearDesdeFichero() {
+		if (btCrearDesdeFichero == null) {
+			btCrearDesdeFichero = new JButton("Crear Partidos desde Fichero");
+			btCrearDesdeFichero.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					irAPn("cargar");
+				}
+			});
+		}
+		return btCrearDesdeFichero;
+	}
+	private JPanel getPnVolver() {
+		if (pnVolver == null) {
+			pnVolver = new JPanel();
+			pnVolver.add(getBtVolver());
+		}
+		return pnVolver;
+	}
+	private JButton getBtVolver() {
+		if (btVolver == null) {
+			btVolver = new JButton("Volver");
+			btVolver.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					irAPn("crearComprar");
+				}
+			});
+		}
+		return btVolver;
+	}
+	private JPanel getPnCargar() {
+		if (pnCargar == null) {
+			pnCargar = new JPanel();
+			pnCargar.setLayout(new GridLayout(0, 1, 0, 0));
+			pnCargar.add(getBtCargarPartidos());
+		}
+		return pnCargar;
+	}
+	private JButton getBtCargarPartidos() {
+		if (btCargarPartidos == null) {
+			btCargarPartidos = new JButton("Cargar partidos");
+			btCargarPartidos.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					cargarPartidos();
+				}
+			});
+		}
+		return btCargarPartidos;
+	}
+	
+	private void cargarPartidos() {
+		int resp = getSelector().showOpenDialog(null);
+		if(resp == JFileChooser.APPROVE_OPTION) {
+			File csv = getSelector().getSelectedFile();
+			String archivo = System.getProperty("user.dir") + "/partidos/" + csv.getName();
+			Path destino = Paths.get(archivo);
+			String org = csv.getPath();
+			Path origen = Paths.get(org);
+			try {
+				Files.copy(origen, destino, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			cargarPartidosDeFichero(archivo);
+		
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private void cargarPartidosDeFichero(String archivo) {
+		try {
+			int count = 0;
+			ParserCSV parser = new ParserCSV();
+			List<List> parsed = parser.parsePartidosCSV(archivo);
+			
+			List<Partido> partidos = parsed.get(0);
+			List<String> fallos = parsed.get(1);
+			
+			for(Partido p : partidos) {
+				if(!service.existsPartido(p)) {
+					service.insertPartido(p);
+					count++;
+				} else {
+					fallos.add("El partido " + p.getLocal().getNombre() + 
+							" vs. " + p.getVisitante() + " fecha: " + p.getFecha() + " ya existe");
+				}
+			}
+			
+			String msg = "Partidos añadidos" + "\n" +"Se han añadido " + count + " partido(s)";
+			
+			for(String f: fallos) {
+				msg = msg + "\n" + f;
+			}
+			
+			
+			JOptionPane.showMessageDialog(this, msg);
+
+		} catch(Exception e) {
+			e.printStackTrace();
+			JOptionPane.showMessageDialog(this, "Fallo al importar");
+		}
+	}
+	
+	private JFileChooser getSelector() {
+		if(selector==null) {
+			selector=new JFileChooser();
+			selector.setFileFilter(new FileNameExtensionFilter(".csv","csv"));
+			String ruta = System.getProperty("user.home");
+			selector.setCurrentDirectory(new File(ruta));
+		}
+		return selector;
 	}
 }
