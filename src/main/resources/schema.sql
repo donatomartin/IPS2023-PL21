@@ -9,8 +9,7 @@ create table Empleado(
 	salarioAnual real not null, 
 	telefono varchar(30) not null,
 	tipo varchar(30) not null,
-	posicion varchar(30) not null,
-	enVenta int CHECK (enVenta IN (0, 1))
+	posicion varchar(30) not null
 );
 
 -- Horario Semanal
@@ -331,7 +330,9 @@ drop table Compra;
 create table Compra(
 	id integer primary key autoincrement,
 	cuantia real not null,
-	fecha date not null
+	fecha date not null,
+	eid varchar(30) not null,
+	foreign key (eid) references Empleado(eid)
 );
 
 --Jugadores en venta
@@ -342,5 +343,6 @@ create table JugadoresEnVenta(
 	apellido varchar(30) not null,
 	telefono varchar(30) not null,
 	fechaNacimiento varchar(10) not null,
-	precio real not null
+	precio real not null,
+	equipo varchar(30) not null
 );

@@ -172,7 +172,7 @@ public class Service22748_9 {
 		String fecha = Util.dateToIsoString(d);
 		int horaVenta = fechaActual.getHour();
 		int minutoventa = fechaActual.getMinute();
-		p.insertarVentaAccion
+		p.insertarVentaJugador
 		(fecha, horaVenta, minutoventa, PRECIO_POR_ACCION);
 	}
 

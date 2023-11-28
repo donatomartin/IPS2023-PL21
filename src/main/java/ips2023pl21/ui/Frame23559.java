@@ -13,8 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import ips2023pl21.model.Empleado;
 import ips2023pl21.model.compras.JugadoresEnVenta;
 import ips2023pl21.model.equipos.Equipo;
+import ips2023pl21.model.equipos.EquipoEnFormacion;
 import ips2023pl21.service.Service23559;
 import ips2023pl21.util.Util;
 
@@ -84,7 +86,7 @@ public class Frame23559 extends JFrame {
 			new String[][] {
 			},
 			new String[] {
-				"DNI", "Nombre", "Apellido", "Teléfono", "Nacimiento", "Edad", "Precio"
+				"DNI", "Nombre", "Apellido", "Teléfono", "Nacimiento", "Edad", "Precio", "Equipo"
 			}
 		) {
 			private static final long serialVersionUID = 1L;
@@ -131,7 +133,7 @@ public class Frame23559 extends JFrame {
 	
 			@Override
 		    public boolean isCellEditable(int row, int column) {
-		        return false;
+				return column == 3;
 	    }
 	};
 	
@@ -265,6 +267,19 @@ public class Frame23559 extends JFrame {
 	private JButton getBtVender() {
 		if (btVender == null) {
 			btVender = new JButton("Vender");
+			btVender.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getTableEquipos().getSelectedRows().length < 1) {
+						JOptionPane.showMessageDialog(null, 
+								"No hay ningún equipo seleccionado.");
+						return;
+					}
+					int idEquipo = (int) getTableEquipos().getValueAt(getTableEquipos().getSelectedRow(), 0);
+					cs.setEquipo(idEquipo);
+					rellenarTablaJugadoresEquipo();
+					mostrarPnJugadoresEquipo();
+				}
+			});
 			btVender.setForeground(new Color(0, 0, 0));
 			btVender.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -346,6 +361,19 @@ public class Frame23559 extends JFrame {
 	private JButton getBtComprarJugador() {
 		if (btComprarJugador == null) {
 			btComprarJugador = new JButton("Comprar");
+			btComprarJugador.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getTableJugadores().getSelectedRows().length < 1) {
+						JOptionPane.showMessageDialog(null, 
+								"No hay ningún jugador seleccionado.");
+						return;
+					}
+					String dniJugador = (String) getTableJugadores().getValueAt(getTableJugadores().getSelectedRow(), 0);
+					cs.setCompra(dniJugador);
+					mostrarPnSalario();
+					cambiarEtiquetaJugador();
+				}
+			});
 			btComprarJugador.setForeground(new Color(0, 0, 0));
 			btComprarJugador.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -354,6 +382,11 @@ public class Frame23559 extends JFrame {
 	private JButton getBtCancelarJugador() {
 		if (btCancelarJugador == null) {
 			btCancelarJugador = new JButton("Cancelar");
+			btCancelarJugador.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					mostrarPnEquipo();
+				}
+			});
 			btCancelarJugador.setForeground(new Color(0, 0, 0));
 			btCancelarJugador.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -386,7 +419,7 @@ public class Frame23559 extends JFrame {
 	}
 	private JLabel getLblNewLabel_5() {
 		if (lblNewLabel_5 == null) {
-			lblNewLabel_5 = new JLabel("            ");
+			lblNewLabel_5 = new JLabel("     ");
 			lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return lblNewLabel_5;
@@ -400,7 +433,7 @@ public class Frame23559 extends JFrame {
 	}
 	private JLabel getLblNewLabel_7() {
 		if (lblNewLabel_7 == null) {
-			lblNewLabel_7 = new JLabel("          ");
+			lblNewLabel_7 = new JLabel("     ");
 			lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
 		return lblNewLabel_7;
@@ -415,11 +448,7 @@ public class Frame23559 extends JFrame {
 	}
 	private JLabel getLbSalario() {
 		if (lbSalario == null) {
-			lbSalario = new JLabel("¿Está seguro de que quiere fichar a "
-					+ ""+ cs.getCompra().getNombre()+ " "
-							+ cs.getCompra().getApellido()+ " por "
-									+ cs.getCompra().getPrecio()+ "€?");
-			
+			lbSalario = new JLabel("");
 			lbSalario.setForeground(new Color(0, 0, 0));
 			lbSalario.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -453,6 +482,21 @@ public class Frame23559 extends JFrame {
 	private JButton getBtAceptar() {
 		if (btAceptar == null) {
 			btAceptar = new JButton("Aceptar");
+			btAceptar.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(notValidSalario()) {
+						JOptionPane.showMessageDialog(null, "El salario introducido no es válido");
+						return;
+					}
+					cs.eliminarJugadorEnVenta();
+					float salario = Float.valueOf(getTxSalario().getText());
+					cs.añadirEmpleado(salario);
+					cs.añadirJuega();
+					cs.añadirCompra();
+					rellenarTablaEquipos();
+					mostrarPnEquipo();
+				}
+			});
 			btAceptar.setForeground(new Color(0, 0, 0));
 			btAceptar.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -461,6 +505,12 @@ public class Frame23559 extends JFrame {
 	private JButton getBtCancelarSalario() {
 		if (btCancelarSalario == null) {
 			btCancelarSalario = new JButton("Cancelar");
+			btCancelarSalario.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					getTxSalario().setText("");
+					mostrarPnCompra();
+				}
+			});
 			btCancelarSalario.setForeground(new Color(0, 0, 0));
 			btCancelarSalario.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -476,7 +526,7 @@ public class Frame23559 extends JFrame {
 	}
 	private JLabel getLbAsignarSalario() {
 		if (lbAsignarSalario == null) {
-			lbAsignarSalario = new JLabel("Asígnele un salario: ");
+			lbAsignarSalario = new JLabel("Asígnele un salario.");
 			lbAsignarSalario.setHorizontalAlignment(SwingConstants.CENTER);
 			lbAsignarSalario.setForeground(new Color(0, 0, 0));
 			lbAsignarSalario.setFont(new Font("Tahoma", Font.PLAIN, 18));
@@ -556,6 +606,32 @@ public class Frame23559 extends JFrame {
 	private JButton getBtVenta() {
 		if (btVenta == null) {
 			btVenta = new JButton("Poner a la venta");
+			btVenta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (getTableJugadoresEquipo().getSelectedRows().length < 1) {
+						JOptionPane.showMessageDialog(null, 
+								"No hay ningún jugador seleccionado.");
+						return;
+					}
+					if (isNotValidPrecio()) {
+						JOptionPane.showMessageDialog(null, 
+								"El precio de venta estipulado no es válido");
+						return;
+					}
+					int row = getTableJugadoresEquipo().getSelectedRow();
+					String value = (String) getTableJugadoresEquipo().getValueAt(row, 3);
+					float precio = Float.valueOf(value);
+					int eid = (int) getTableJugadoresEquipo().getValueAt(row, 0);
+					cs.eliminarHorarioEntrevista(eid);
+					cs.eliminarHorarioEntrenamiento(eid);
+					cs.eliminarActualizacion(eid);
+					cs.eliminarJuega(eid);
+					cs.añadirVenta(precio);
+					cs.eliminarEmpleado(eid);
+					rellenarTablaEquipos();
+					mostrarPnEquipo();
+				}
+			});
 			btVenta.setForeground(new Color(0, 0, 0));
 			btVenta.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -564,6 +640,16 @@ public class Frame23559 extends JFrame {
 	private JButton getBtCancelarVenta() {
 		if (btCancelarVenta == null) {
 			btCancelarVenta = new JButton("Cancelar");
+			btCancelarVenta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					mostrarPnEquipo();
+					if(getTableJugadoresEquipo().getColumnCount() > 0) {
+						for (int i=0; i<getTableJugadoresEquipo().getColumnCount(); i++) {
+							getTableJugadoresEquipo().setValueAt("", i, 3);
+						}
+					}
+				}
+			});
 			btCancelarVenta.setForeground(new Color(0, 0, 0));
 			btCancelarVenta.setFont(new Font("Tahoma", Font.PLAIN, 18));
 		}
@@ -629,7 +715,7 @@ public class Frame23559 extends JFrame {
 		List<Equipo> equipos = cs.getEquipos();
 		for (Equipo e : equipos) {
 			tableModelEquipos.addRow(new Object[]
-					{e.getId(), e.getNombre(), cs.getJugadoresEquipo(e.getId())});
+					{e.getId(), e.getNombre(), cs.getNumJugadoresEquipo(e.getId())});
 		}
 	}
 	private void mostrarPnCompra() {
@@ -640,9 +726,11 @@ public class Frame23559 extends JFrame {
 		List<JugadoresEnVenta> jugadores = cs.getJugadoresEnVenta();
 		for (JugadoresEnVenta j : jugadores) {
 			int edad = calculaEdad(j.getFechaNacimiento());
-			tableModelJugadores.addRow(new Object[]
-					{j.getDni(), j.getNombre(), j.getApellido(), j.getTelefono(), 
-							j.getFechaNacimiento(), edad, j.getPrecio()});
+			if (isEdadValid(edad)) {
+				tableModelJugadores.addRow(new Object[]
+						{j.getDni(), j.getNombre(), j.getApellido(), j.getTelefono(), 
+								j.getFechaNacimiento(), edad, j.getPrecio(), j.getEquipo()});
+			}
 		}
 	}
 	private int calculaEdad(String fecha) {
@@ -654,5 +742,100 @@ public class Frame23559 extends JFrame {
         int edad = periodo.getYears();
         
         return edad;
+	}
+	private boolean isEdadValid(int edad) {
+		if (cs.getEquipo().getCategoria().equals("JUVENIL")) {
+			if (edad<=EquipoEnFormacion.EDAD_MAX_JUVENIL) {
+				return true;
+			}
+			return false;
+		}
+		else if (cs.getEquipo().getCategoria().equals("CADETE")) {
+			if (edad<=EquipoEnFormacion.EDAD_MAX_CADETE) {
+				return true;
+			}
+			return false;
+		}
+		else if (cs.getEquipo().getCategoria().equals("INFANTIL")) {
+			if (edad<=EquipoEnFormacion.EDAD_MAX_INFANTIL) {
+				return true;
+			}
+			return false;
+		}
+		else if (cs.getEquipo().getCategoria().equals("ALEVIN")) {
+			if (edad<=EquipoEnFormacion.EDAD_MAX_ALEVIN) {
+				return true;
+			}
+			return false;
+		}
+		else if (cs.getEquipo().getCategoria().equals("BENJAMIN")) {
+			if (edad<=EquipoEnFormacion.EDAD_MAX_BENJAMIN) {
+				return true;
+			}
+			return false;
+		}
+		else if (cs.getEquipo().getCategoria().equals("PREBENJAMIN")) {
+			if (edad<=EquipoEnFormacion.EDAD_MAX_PREBENJAMIN) {
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	private void rellenarTablaJugadoresEquipo() {
+		tableModelJugadoresEquipo.setRowCount(0);
+		List<Empleado> jugadoresEquipo = cs.getJugadoresEquipo();
+		for (Empleado j : jugadoresEquipo) {
+			tableModelJugadoresEquipo.addRow(new Object[]
+					{j.getEid(), j.getNombre(), j.getSalarioAnual(), ""});
+		}
+	}
+	private void mostrarPnJugadoresEquipo() {
+		((CardLayout) getPnCentro().getLayout()).show(getPnCentro(), "pnVenta");
+	}
+	private void mostrarPnEquipo() {
+		((CardLayout) getPnCentro().getLayout()).show(getPnCentro(), "pnEquipo");
+	}
+	private void mostrarPnSalario() {
+		((CardLayout) getPnCentro().getLayout()).show(getPnCentro(), "pnSalario");
+	}
+	private void cambiarEtiquetaJugador() {
+		lbSalario.setText("¿Está seguro de que quiere fichar a "
+				+ ""+ cs.getCompra().getNombre()+ " "
+						+ cs.getCompra().getApellido()+ " por "
+								+ cs.getCompra().getPrecio()+ "€?");
+	}
+	private boolean notValidSalario() {
+		float salario;
+		if (getTxSalario().getText().isBlank()) {
+			return true;
+		}
+		try {
+			salario = Float.valueOf(getTxSalario().getText());
+		} catch (NumberFormatException e) {
+			return true;
+		}
+		if (salario <= 0) {
+			return true;
+		}
+		return false;
+	}
+	private boolean isNotValidPrecio() {
+		int row = getTableJugadoresEquipo().getSelectedRow();
+		String value = (String) getTableJugadoresEquipo().getValueAt(row, 3);
+		
+		float precio;
+		if (value.isBlank()) {
+			return true;
+		}
+		try {
+			precio = Float.valueOf(value);
+		} catch (NumberFormatException e) {
+			return true;
+		}
+		if (precio <= 0) {
+			return true;
+		}
+		return false;
 	}
 }

@@ -8,6 +8,7 @@ public class JugadoresEnVenta {
 	private String telefono;
 	private String fechaNacimiento;
 	private float precio;
+	private String equipo;
 	
 	public JugadoresEnVenta() {}
 
@@ -57,6 +58,14 @@ public class JugadoresEnVenta {
 
 	public void setPrecio(float precio) {
 		this.precio = precio;
+	}
+
+	public String getEquipo() {
+		return equipo;
+	}
+
+	public void setEquipo(String equipo) {
+		this.equipo = equipo;
 	}
 
 }

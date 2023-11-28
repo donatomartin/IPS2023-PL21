@@ -219,13 +219,6 @@ insert into accionista(nombreAccionista,apellidoAccionista,dniAccionista,cuentaB
 delete from ampliacioncapital;
 insert into ampliacioncapital(faseUno,faseDos,faseTres,capitalTotal,precioAccion,accionesTotales, fase, vendidas) values
 	(0,0,0,1040.1,34.67,30, 0, 0);
-	
-delete from compra;
-insert into compra values
-	(1, 30, '2023-10-10'),(2, 10, '2023-02-02');
-	
-
-
 
 -- asdf passwords
 delete from Usuario;
@@ -266,24 +259,24 @@ insert into Actualizacion (eid, texto) values
 	(14, 'texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo texto muy largo');
 
 delete from JugadoresEnVenta;
-insert into JugadoresEnVenta (dni, nombre, apellido, telefono, fechaNacimiento, precio) values
-    ('23456789B', 'Lionel', 'Messi', '987654321', '2000-05-15', 150000),
-    ('34567890C', 'Cristiano', 'Ronaldo', '123456789', '2001-07-20', 140000),
-    ('45678901D', 'Neymar', 'Jr', '555555555', '2002-11-10', 130000),
-    ('56789012E', 'Kylian', 'Mbappé', '777777777', '2003-09-05', 120000),
-    ('67890123F', 'Mohamed', 'Salah', '999999999', '2004-12-18', 110000),
-    ('78901234G', 'Robert', 'Lewandowski', '111111111', '2005-03-22', 100000),
-    ('89012345H', 'Kevin', 'De Bruyne', '222222222', '2006-08-07', 90000),
-    ('90123456I', 'Harry', 'Kane', '333333333', '2007-04-30', 80000),
-    ('01234567J', 'Sergio', 'Ramos', '444444444', '2008-06-12', 70000),
-    ('12345678K', 'Luka', 'Modric', '666666666', '2009-10-25', 60000),
-    ('23456789L', 'Antoine', 'Griezmann', '888888888', '2010-02-28', 50000),
-    ('34567890M', 'Eden', 'Hazard', '101010101', '2011-06-11', 40000),
-    ('45678901N', 'Paul', 'Pogba', '121212121', '2012-09-20', 30000),
-    ('56789012O', 'Raheem', 'Sterling', '131313131', '2013-11-03', 20000),
-    ('67890123P', 'Toni', 'Kroos', '141414141', '2014-12-16', 15000),
-    ('78901234Q', 'Gareth', 'Bale', '151515151', '2015-08-09', 12000),
-    ('89012345R', 'Sadio', 'Mané', '161616161', '2000-01-02', 10000),
-    ('90123456S', 'David', 'Alaba', '171717171', '2001-03-17', 8000),
-    ('01234567T', 'Marco', 'Verratti', '181818181', '2002-07-29', 6000),
-    ('12345678U', 'Jadon', 'Sancho', '191919191', '2003-10-14', 4000);
+insert into JugadoresEnVenta (dni, nombre, apellido, telefono, fechaNacimiento, precio, equipo) values
+    ('23456789B', 'Lionel', 'Messi', '987654321', '2000-05-15', 150000, 'Paris Saint-Germain'),
+	('34567890C', 'Cristiano', 'Ronaldo', '123456789', '2001-07-20', 140000, 'Manchester United'),
+	('45678901D', 'Neymar', 'Jr', '555555555', '2002-11-10', 130000, 'Paris Saint-Germain'),
+	('56789012E', 'Kylian', 'Mbappé', '777777777', '2003-09-05', 120000, 'Paris Saint-Germain'),
+	('67890123F', 'Mohamed', 'Salah', '999999999', '2004-12-18', 110000, 'Liverpool'),
+	('78901234G', 'Robert', 'Lewandowski', '111111111', '2005-03-22', 100000, 'Bayern Munich'),
+	('89012345H', 'Kevin', 'De Bruyne', '222222222', '2006-08-07', 90000, 'Manchester City'),
+	('90123456I', 'Harry', 'Kane', '333333333', '2007-04-30', 80000, 'Tottenham Hotspur'),
+	('01234567J', 'Sergio', 'Ramos', '444444444', '2008-06-12', 70000, 'Paris Saint-Germain'),
+	('12345678K', 'Luka', 'Modric', '666666666', '2009-10-25', 60000, 'Real Madrid'),
+	('23456789L', 'Antoine', 'Griezmann', '888888888', '2010-02-28', 50000, 'Barcelona'),
+	('34567890M', 'Eden', 'Hazard', '101010101', '2011-06-11', 40000, 'Real Madrid'),
+	('45678901N', 'Paul', 'Pogba', '121212121', '2012-09-20', 30000, 'Manchester United'),
+	('56789012O', 'Raheem', 'Sterling', '131313131', '2013-11-03', 20000, 'Manchester City'),
+	('67890123P', 'Toni', 'Kroos', '141414141', '2014-12-16', 15000, 'Real Madrid'),
+	('78901234Q', 'Gareth', 'Bale', '151515151', '2015-08-09', 12000, 'Real Madrid'),
+	('89012345R', 'Sadio', 'Mané', '161616161', '2000-01-02', 10000, 'Liverpool'),
+	('90123456S', 'David', 'Alaba', '171717171', '2001-03-17', 8000, 'Real Madrid'),
+	('01234567T', 'Marco', 'Verratti', '181818181', '2002-07-29', 6000, 'Paris Saint-Germain'),
+	('12345678U', 'Jadon', 'Sancho', '191919191', '2003-10-14', 4000, 'Manchester United');

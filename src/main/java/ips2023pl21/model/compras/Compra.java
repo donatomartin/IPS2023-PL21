@@ -4,6 +4,7 @@ public class Compra {
 	private int id;
 	private float cuantia;
 	private String fecha;
+	private String eid;
 	
 	public Compra() {
 		super();
@@ -39,7 +40,13 @@ public class Compra {
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
-	
-	
+
+	public String getDni() {
+		return eid;
+	}
+
+	public void setDni(String dni) {
+		this.eid = dni;
+	}
 
 }

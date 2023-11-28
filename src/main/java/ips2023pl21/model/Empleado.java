@@ -19,7 +19,6 @@ public class Empleado {
 	private float salarioAnual;
 	private String tipo;
 	private String posicion;
-	private int enVenta;
 
 	public Empleado() {
 	}
@@ -54,10 +53,6 @@ public class Empleado {
 
 	public String getTipo() {
 		return tipo;
-	}
-	
-	public int getEnVenta() {
-		return enVenta;
 	}
 
 	public String getPosicion() {
@@ -98,10 +93,6 @@ public class Empleado {
 
 	public void setPosicion(String posicion) {
 		this.posicion = posicion;
-	}
-	
-	public void setEnVenta(int enVenta) {
-		this.enVenta = enVenta;
 	}
 
 	@Override
