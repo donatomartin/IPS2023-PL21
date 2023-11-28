@@ -614,7 +614,7 @@ public class MainFrame extends JFrame {
 				}
 			});
 		}
-		return btn23558;
+		return btn23539;
 	}
 
 	private JPanel getPnCentro() {
