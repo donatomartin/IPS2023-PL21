@@ -521,7 +521,7 @@ public class Persistence {
 
 		String eqid = selectEquipoPorNombre(equipo.getNombre()).getId();
 
-		for (Empleado j : equipo.getJugadores()) {
+		for (Empleado j : equipo.getJugadoresEquipo()) {
 			db.executeUpdate("insert into Juega(eqid,eid) values (?,?)", eqid, j.getEid());
 		}
 	}
