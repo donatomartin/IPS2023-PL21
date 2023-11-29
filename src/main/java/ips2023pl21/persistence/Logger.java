@@ -16,7 +16,7 @@ public class Logger {
         this.date = new Date();
     }
 
-    public void logMessage(String message) {
+    private void logMessage(String message) {
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH.mm.ss");
         String dateString = formatter.format(date);
         String logMessage = "[" + dateString + "] : " + message;
@@ -28,4 +28,21 @@ public class Logger {
             e.printStackTrace();
         }
     }
+    
+    public void logSelect(String tableName) {
+    	logMessage("(SELECT) Obtenidos elementos de la tabla " + tableName + ". ");
+    }
+    
+    public void logInsert(String tableName, String infoInsertado) {
+    	logMessage("(INSERT) Insertado elemento en la tabla " + tableName + ". Nuevo " + infoInsertado +".");
+    }
+    
+    public void logDelete(String tableName, String infoBorrado) {
+    	logMessage("(DELETE) Borrado elemento de la tabla " + tableName + ". Eliminado " + infoBorrado +".");
+    }
+    
+    public void logUpdate(String tableName, String infoAcualizado, String paramsActualizados) {
+    	logMessage("(UPDATE) Borrado elemento de la tabla " + tableName + ". Actualizado " + infoAcualizado +". Parametros actualizados: " + paramsActualizados + ".");
+    }
+    
 }
