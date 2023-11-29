@@ -73,12 +73,14 @@ public class MainFrame extends JFrame {
 	private ValueButton<String> btn23558;
 	private ValueButton<String> btn23539;
 	private ValueButton<String> btn23587;
+	private ValueButton<String> btn23559;
 
 	@SuppressWarnings("unchecked")
 	private ValueButton<String>[] buttons = new ValueButton[] { getBtn21911(), getBtn21912(), getBtn21913(),
 			getBtn21914(), getBtn21915(), getBtn21916(), getBtn21917(), getBtn21918(), getBtn22733(), getBtn22739(),
 			getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749(), getBtn23558(), getBtn23539(),
-			getBtn23587(), getBtn23523()
+			getBtn23587(), getBtn23523(),getBtn22759(), getBtn22784(), getBtn22785(), getBtn22748(), getBtn22749(), 
+			getBtn23558(),  getBtn23559()
 		};
 
 	private JPanel pnCentro;
@@ -370,8 +372,20 @@ public class MainFrame extends JFrame {
 		});
 	}
 	
-	
-	
+
+	private static void run23559() {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					Service23559 cs = new Service23559();
+					Frame23559 frame = new Frame23559(cs);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
 	private JPanel getPnWork() {
 		if (pnWork == null) {
@@ -686,6 +700,20 @@ public class MainFrame extends JFrame {
 			});
 		}
 		return btn23587;
+	}
+
+	private ValueButton<String> getBtn23559() {
+		if (btn23559 == null) {
+			btn23559 = new ValueButton<String>("<html><p>Mercado de fichajes</h1><p>(23559)</p><html>");
+			btn23559.setValue("dirdep");
+			btn23559.setBackground(new Color(240, 255, 240));
+			btn23559.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					run23559();
+				}
+			});
+		}
+		return btn23559;
 	}
 
 	private JPanel getPnCentro() {

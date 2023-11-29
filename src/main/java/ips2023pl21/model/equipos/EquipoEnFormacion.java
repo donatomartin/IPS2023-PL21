@@ -2,13 +2,13 @@ package ips2023pl21.model.equipos;
 
 public class EquipoEnFormacion extends EquipoDeportivo{
 	
-	private static final int EDAD_MAX_DEFAULT = 18;
-	private static final int EDAD_MAX_JUVENIL = 18;
-	private static final int EDAD_MAX_CADETE = 15;
-	private static final int EDAD_MAX_INFANTIL = 13;
-	private static final int EDAD_MAX_ALEVIN = 11;
-	private static final int EDAD_MAX_BENJAMIN = 9;
-	private static final int EDAD_MAX_PREBENJAMIN = 7;
+	public static final int EDAD_MAX_DEFAULT = 18;
+	public static final int EDAD_MAX_JUVENIL = 18;
+	public static final int EDAD_MAX_CADETE = 15;
+	public static final int EDAD_MAX_INFANTIL = 13;
+	public static final int EDAD_MAX_ALEVIN = 11;
+	public static final int EDAD_MAX_BENJAMIN = 9;
+	public static final int EDAD_MAX_PREBENJAMIN = 7;
 	
 	public CategoriaEquipo categoria;
 	

@@ -335,6 +335,20 @@ create table Actualizacion(
 drop table Compra;
 create table Compra(
 	id integer primary key autoincrement,
-	cuantia int not null,
-	fecha date not null
+	cuantia real not null,
+	fecha date not null,
+	eid varchar(30) not null,
+	foreign key (eid) references Empleado(eid)
+);
+
+--Jugadores en venta
+drop table JugadoresEnVenta;
+create table JugadoresEnVenta(
+	dni varchar(30) primary key,
+	nombre varchar(30) not null,
+	apellido varchar(30) not null,
+	telefono varchar(30) not null,
+	fechaNacimiento varchar(10) not null,
+	precio real not null,
+	equipo varchar(30) not null
 );

@@ -23,6 +23,7 @@ import ips2023pl21.model.activos.Instalacion;
 import ips2023pl21.model.activos.Merchandaising;
 import ips2023pl21.model.activos.TiendaLogica;
 import ips2023pl21.model.compras.Compra;
+import ips2023pl21.model.compras.JugadoresEnVenta;
 import ips2023pl21.model.entradas.EntradaEntity;
 import ips2023pl21.model.equipos.Equipo;
 import ips2023pl21.model.horarios.HorarioEntrenamiento;
@@ -1270,6 +1271,73 @@ public class Persistence {
 		db.executeUpdate(queryVenta, "accion", fecha, horaVenta, minutoVenta, 34.67);
 		logger.logMessage("Venta acción creada");
 
+	}
+
+	public int selectNumJugadoresByEquipo(int id) {
+		List<Juega> j = db.executeQueryPojo(Juega.class, "select * from Juega where eqid = ?", id);
+		return j.size();
+	}
+
+	public Equipo selectEquipoById(int id) {
+		
+		List<Equipo> e = db.executeQueryPojo(Equipo.class, "select * from Equipo where id = ?", id);
+		return e.get(0);
+	}
+
+	public List<JugadoresEnVenta> selectJugadoresEnVenta() {
+		List<JugadoresEnVenta> j = db.executeQueryPojo(JugadoresEnVenta.class, "select * from JugadoresEnVenta");
+		return j;
+	}
+
+	public List<Empleado> selectJugadoresByEquipo(int id) {
+		List<Juega> j = db.executeQueryPojo(Juega.class, "select * from Juega where eqid = ?", id);
+		List<Empleado> jugadoresEquipo = new ArrayList<>();
+		for (Juega jugador : j) {
+			List<Empleado> e = db.executeQueryPojo(Empleado.class, "select * from empleado where eid = ?", jugador.getEid());
+			jugadoresEquipo.add(e.get(0));
+		}
+		return jugadoresEquipo;
+	}
+
+	public JugadoresEnVenta selectJugadorEnVentaByDni(String dni) {
+		List<JugadoresEnVenta> j = db.executeQueryPojo(JugadoresEnVenta.class, 
+				"select * from JugadoresEnVenta where dni =?", dni);
+		return j.get(0);
+	}
+
+	public void deleteJugadorEnVenta(String dni) {
+		db.executeUpdate("delete from JugadoresEnVenta where dni = ?", dni);
+	}
+
+	public void insertJuega(int id, String dni) {
+		List<Empleado> es = db.executeQueryPojo(Empleado.class, "select * from empleado where dni = ?", dni);
+		Empleado e = es.get(0);
+		db.executeUpdate("insert into Juega (eqid, eid) values (?,?)", id, e.getEid());
+	}
+
+	public void insertCompra(Date d, float cuantia, String dni) {
+		List<Empleado> es = db.executeQueryPojo(Empleado.class, "select * from empleado where dni = ?", dni);
+		int eid = es.get(0).getEid();
+		
+		db.executeUpdate("insert into compra (cuantia, fecha, eid) values (?,?,?)", cuantia, d, eid);
+	}
+
+	public void deleteEmpleadoById(int eid) {
+		db.executeUpdate("delete from empleado where eid=?", eid);
+	}
+
+	public void deleteJuega(int eid) {
+		db.executeUpdate("delete from juega where eid=?", eid);
+	}
+
+	public void insertarVentaJugador(String fecha, int horaVenta,
+			int minutoVenta, double precio) {
+		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
+		db.executeUpdate(queryVenta, "jugador", fecha, horaVenta, minutoVenta, precio);
+	}
+
+	public void deleteHorarioEntrevistaById(int eid) {
+		db.executeUpdate("delete from horarioentrevista where eid=?", eid);
 	}
 
 }

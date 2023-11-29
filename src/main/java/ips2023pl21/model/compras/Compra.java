@@ -2,8 +2,9 @@ package ips2023pl21.model.compras;
 
 public class Compra {
 	private int id;
-	private int cuantia;
+	private float cuantia;
 	private String fecha;
+	private String eid;
 	
 	public Compra() {
 		super();
@@ -24,11 +25,11 @@ public class Compra {
 		this.id = id;
 	}
 
-	public int getCuantia() {
+	public float getCuantia() {
 		return cuantia;
 	}
 
-	public void setCuantia(int cuantia) {
+	public void setCuantia(float cuantia) {
 		this.cuantia = cuantia;
 	}
 
@@ -39,7 +40,13 @@ public class Compra {
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
 	}
-	
-	
+
+	public String getDni() {
+		return eid;
+	}
+
+	public void setDni(String dni) {
+		this.eid = dni;
+	}
 
 }
