@@ -495,6 +495,7 @@ public class Frame23559 extends JFrame {
 					cs.añadirCompra();
 					rellenarTablaEquipos();
 					mostrarPnEquipo();
+					getTxSalario().setText("");
 				}
 			});
 			btAceptar.setForeground(new Color(0, 0, 0));
@@ -643,7 +644,7 @@ public class Frame23559 extends JFrame {
 			btCancelarVenta.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					mostrarPnEquipo();
-					if(getTableJugadoresEquipo().getColumnCount() > 0) {
+					if(getTableJugadoresEquipo().getRowCount() > 0) {
 						for (int i=0; i<getTableJugadoresEquipo().getColumnCount(); i++) {
 							getTableJugadoresEquipo().setValueAt("", i, 3);
 						}
