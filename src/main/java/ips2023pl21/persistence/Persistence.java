@@ -111,7 +111,7 @@ public class Persistence {
 		db.executeUpdate(
 				"delete from HorarioEntrevista where eid=? and fechaEntrevista=? and horaInicio=? and horaFin=?", eqid,
 				fecha, horaInicio, horaFin);
-		logger.logMessage("Franja de entrevista eliminada");
+		logger.logDelete("HorarioEntrevista", "horarios " + fecha + " " + horaInicio + " " + horaFin);
 	}
 
 	// INSTALACIONES
@@ -281,7 +281,7 @@ public class Persistence {
 	public void deleteEmpleado(String nombre, String apellido, String dni, String tipo) {
 		String sqlElimminar = "delete from empleado where nombre = ? and apellido = ? and dni = ? and tipo = ?";
 		db.executeUpdate(sqlElimminar, nombre, apellido, dni, tipo);
-		logger.logMessage("Empleado eliminado");
+		logger.logDelete("Empleado", dni);
 	}
 
 	public void updateEmpleado(String nombre, String apellido, String dni, String fecha, double salario,
@@ -341,7 +341,7 @@ public class Persistence {
 	public void deleteFechaFin(int eid, HorarioSemanal ultimoHorario) {
 		db.executeUpdate("update HorarioSemanal set fechaFin=null where eid=? and diaSemana=? and fechaInicio=?", eid,
 				ultimoHorario.getDiaSemana(), ultimoHorario.getFechaInicio());
-		logger.logMessage("Horario semanal fechafin eliminada");
+		logger.logMessage();
 	}
 
 	public void insertFranjaSemanal(int dia, String fechaInicio, int eid, String horaInicio, String horaFin) {
@@ -356,7 +356,7 @@ public class Persistence {
 				eid);
 		db.executeUpdate("delete from FranjaSemanal where diaSemana=? and fechaInicio=? and eid=?", dia, fechaInicio,
 				eid);
-		logger.logMessage("Horario semanal y franjas eliminadas");
+		logger.logDelete("HorarioSemanal / FranjaSemanal", "horarios para el empleado " + getEmpleado(eid).getNombre() + " " + fechaInicio);
 	}
 
 	public List<FranjaSemanal> getFranjasSemanales(int diaSem, String fechaInicio, int eid) {
@@ -419,7 +419,7 @@ public class Persistence {
 	public void removeHorarioPuntual(String fechaPun) {
 		db.executeUpdate("delete from HorarioPuntual where fechaPuntual=?", fechaPun);
 		db.executeUpdate("delete from FranjaPuntual where fechaPuntual=?", fechaPun);
-		logger.logMessage("Horario puntual y franjas eliminados");
+		logger.logDelete("HorarioPuntual", fechaPun);
 	}
 
 	public List<FranjaPuntual> getFranjasPuntuales(String fechaPuntual, int eid) {
@@ -789,7 +789,7 @@ public class Persistence {
 		db.executeUpdate(
 				"delete from HorarioJardineria where fechaJardineria=? and horaInicio=? and horaFin=? and eid=?", fecha,
 				horaInicio, horaFin, eid);
-		logger.logMessage("Horario Jardinería eliminado");
+		logger.logDelete("HorarioJardineria", "horarios para el empleado " + getEmpleado(eid).getNombre());
 	}
 
 	// HORARIO ENTRENAMIENTO
@@ -1121,7 +1121,7 @@ public class Persistence {
 
 	public void deleteAccionistaACero() {
 		db.executeUpdate("delete from accionista where numeroAcciones = 0");
-		logger.logMessage("Borra accionstas con 0 acciones");
+		logger.logDelete("Accionista", "accionistas sin acciones");
 	}
 
 	public int selectLimiteFase1(int idAccionista) {
@@ -1217,7 +1217,7 @@ public class Persistence {
 
 	public void deleteLesionado(String eid) {
 		db.executeUpdate("delete from lesion where eid=?", eid);
-		logger.logMessage("Borra lesionado");
+		logger.logDelete("Lesion", getEmpleado(Integer.parseInt(eid)).getNombre());
 	}
 
 	public List<HorarioEntrenamiento> getEntrenamientos(String equipoId) {
@@ -1251,7 +1251,7 @@ public class Persistence {
 
 	public void deleteActualizaciones(int eid) {
 		db.executeUpdate("delete from actualizacion where eid = ?", eid);
-		logger.logMessage("Borra actualizaciones de lesión");
+		logger.logDelete("Actualizacion", getEmpleado(eid).getNombre());
 	}
 
 	public void insertActualizacion(int eid, String texto) {
@@ -1307,6 +1307,7 @@ public class Persistence {
 
 	public void deleteJugadorEnVenta(String dni) {
 		db.executeUpdate("delete from JugadoresEnVenta where dni = ?", dni);
+		logger.logDelete("JugadoresEnVenta", dni);
 	}
 
 	public void insertJuega(int id, String dni) {
@@ -1324,10 +1325,12 @@ public class Persistence {
 
 	public void deleteEmpleadoById(int eid) {
 		db.executeUpdate("delete from empleado where eid=?", eid);
+		logger.logDelete("Empleado", getEmpleado(eid).getNombre());
 	}
 
 	public void deleteJuega(int eid) {
 		db.executeUpdate("delete from juega where eid=?", eid);
+		logger.logDelete("Juega", "participaciones para el empleado " + getEmpleado(eid).getNombre());
 	}
 
 	public void insertarVentaJugador(String fecha, int horaVenta,
@@ -1338,6 +1341,7 @@ public class Persistence {
 
 	public void deleteHorarioEntrevistaById(int eid) {
 		db.executeUpdate("delete from horarioentrevista where eid=?", eid);
+		logger.logDelete("HorarioEntrevista", "horarios para el empleado " + getEmpleado(eid).getNombre());
 	}
 
 }
