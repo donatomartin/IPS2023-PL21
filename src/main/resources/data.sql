@@ -228,7 +228,8 @@ insert into Usuario(usuario, contrasena, rol, pid) values
 	('accionista', '912ec803b2ce49e4a541068d495ab570', 'accionista', 0),
 	('cm', '912ec803b2ce49e4a541068d495ab570', 'cm', 0),
 	('entrenador', '912ec803b2ce49e4a541068d495ab570', 'entrenador', 69),
-	('admin', '912ec803b2ce49e4a541068d495ab570', 'admin', 0);
+	('admin', '912ec803b2ce49e4a541068d495ab570', 'admin', 0),
+	('dirdep', '912ec803b2ce49e4a541068d495ab570', 'dirdep', 0);
 	
 delete from lesion;
 insert into lesion(eid, causa, pid, enid, descripcion, fecha) values

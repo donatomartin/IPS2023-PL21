@@ -602,7 +602,7 @@ private static void run23539() {
 	private ValueButton<String> getBtn23559() {
 		if (btn23559 == null) {
 			btn23559 = new ValueButton<String>("<html><p>Mercado de fichajes</h1><p>(23559)</p><html>");
-			btn23559.setValue("admin");
+			btn23559.setValue("dirdep");
 			btn23559.setBackground(new Color(240, 255, 240));
 			btn23559.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
