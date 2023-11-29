@@ -1269,12 +1269,12 @@ public class Persistence {
 
 	public void updateAccionesEnVenta(int idAccionista) {
 		db.executeUpdate("update accion set enVenta=1 where idAccionista=?", idAccionista);
-		logger.logMessage("Acciones en venta actualizadas");
+		logger.logUpdate("Accion", "accionista" + idAccionista, "enVenta=1");
 	}
 
 	public void updatePonerEnVenta(Integer id) {
 		db.executeUpdate("update accion set enVenta=1 where idAccion=?", id);
-		logger.logMessage("Acción puesta en venta");
+		logger.logUpdate("Accion", ""+id, "enVenta=1");
 	}
 
 	public int countAccionistas() {
