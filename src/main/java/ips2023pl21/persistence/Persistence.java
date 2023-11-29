@@ -75,18 +75,24 @@ public class Persistence {
 	public boolean existeEntrevista(String fecha, int eid) {
 		List<HorarioEntrevista> result = db.executeQueryPojo(HorarioEntrevista.class,
 				"select * from HorarioEntrevista where fechaEntrevista=? and eid=?", fecha, eid);
+		
+		logger.logSelect("HorarioEntrevista");
 		return !result.isEmpty();
 	}
 
 	public List<HorarioEntrevista> selectHorariosEntrevistasAsignados() {
 		List<HorarioEntrevista> result = db.executeQueryPojo(HorarioEntrevista.class,
 				"select * from HorarioEntrevista where datosmedio is not null");
+		
+		logger.logSelect("HorarioEntrevista");
 		return result;
 	}
 
 	public List<HorarioEntrevista> selectHorariosEntrevistasNoAsignados() {
 		List<HorarioEntrevista> result = db.executeQueryPojo(HorarioEntrevista.class,
 				"select * from HorarioEntrevista where datosmedio is null");
+		
+		logger.logSelect("HorarioEntrevista");
 		return result;
 	}
 
@@ -118,48 +124,62 @@ public class Persistence {
 
 	public List<Instalacion> selectInstalaciones() {
 		List<Instalacion> result = db.executeQueryPojo(Instalacion.class, "select * from Instalacion");
+		
+		logger.logSelect("Instalacion");
 		return result;
 	}
 
 	public Instalacion getInstalacion(int id) {
+		
+		logger.logSelect("Instalacion"); 
 		return db.executeQueryPojo(Instalacion.class, "select * from Instalacion where id=?", id).get(0);
+		
 	}
 
 	// EMPLEADOS
 
 	public Empleado getEmpleado(int eid) {
 		List<Empleado> result = db.executeQueryPojo(Empleado.class, "select * from Empleado where eid=?", eid);
+		
+		logger.logSelect("Empleado");
 		if (result.size() > 0)
 			return result.get(0);
 		return null;
 	}
 
 	public Empleado getEmpleado(String nombre, String apellido, String dni) {
+		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where nombre=? and apellido=? and dni=?",
 				nombre, apellido, dni).get(0);
 	}
 
 	public List<Empleado> selectEmpleadosNoDeportivos() {
+		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where tipo = 'nodeportivo'");
 	}
 
 	public List<Empleado> selectEmpleadosDeportivos() {
+		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where tipo = 'deportivo'");
 	}
 
 	public List<Empleado> selectEntrenadores() {
+		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'entrenador'");
 	}
 
 	public List<Empleado> selectJugadores() {
+		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jugador'");
 	}
 
 	public List<Empleado> selectJugadoresProfesionales() {
+		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jugador'");
 	}
 
 	public List<Empleado> selectJardineros() {
+		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from Empleado where posicion = 'jardineria'");
 	}
 
@@ -295,6 +315,8 @@ public class Persistence {
 	}
 
 	public List<Empleado> getEmpleados() {
+		
+		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from empleado");
 
 	}
@@ -303,13 +325,18 @@ public class Persistence {
 
 	public List<HorarioSemanal> selectHorariosSemanales(String fecha) {
 		int diaSemana = HorarioSemanal.getNumeroDia(fecha);
+		
+		logger.logSelect("HorarioSemanal");
 		return db.executeQueryPojo(HorarioSemanal.class, "select * from HorarioSemanal where diaSemana=?", diaSemana)
 				.stream().sorted(Comparator.reverseOrder()).collect(Collectors.toList());
 	}
 
 	public List<HorarioSemanal> selectHorariosSemanales() {
+
 		List<HorarioSemanal> result = db.executeQueryPojo(HorarioSemanal.class, "select * from HorarioSemanal").stream()
 				.sorted().collect(Collectors.toList());
+		
+		logger.logSelect("HorarioSemanal");
 		return result;
 	}
 
@@ -317,10 +344,14 @@ public class Persistence {
 		List<HorarioSemanal> result = db
 				.executeQueryPojo(HorarioSemanal.class, "select * from HorarioSemanal where eid=?", eid).stream()
 				.sorted().collect(Collectors.toList());
+		
+		logger.logSelect("HorarioSemanal");
 		return result;
 	}
 
 	public HorarioSemanal getHorarioSemanal(int eid, int numeroDiaSemana, String fechaInicio) {
+		
+		logger.logSelect("HorarioSemanal");
 		return db.executeQueryPojo(HorarioSemanal.class,
 				"select * from HorarioSemanal where eid=? and diaSemana=? and fechaInicio=?", eid, numeroDiaSemana,
 				fechaInicio).get(0);
@@ -363,6 +394,8 @@ public class Persistence {
 		List<FranjaSemanal> result = db.executeQueryPojo(FranjaSemanal.class,
 				"select * from FranjaSemanal where diaSemana=? and fechaInicio=? and eid=?", diaSem, fechaInicio, eid)
 				.stream().sorted().collect(Collectors.toList());
+		
+		logger.logSelect("FranjaSemanal");
 		return result;
 	}
 
@@ -371,6 +404,8 @@ public class Persistence {
 				.executeQueryPojo(FranjaSemanal.class,
 						"select * from FranjaSemanal where diaSemana=? and fechaInicio=?", diaSem, fechaInicio)
 				.stream().sorted().collect(Collectors.toList());
+		
+		logger.logSelect("FranjaSemanal");
 		return result;
 	}
 
@@ -379,7 +414,8 @@ public class Persistence {
 		List<FranjaSemanal> franjas = db
 				.executeQueryPojo(FranjaSemanal.class, "select * from FranjaSemanal where diaSemana=?", diaSem).stream()
 				.sorted().collect(Collectors.toList());
-
+		
+		logger.logSelect("FranjaSemanal");
 		return franjas;
 	}
 
@@ -388,6 +424,8 @@ public class Persistence {
 	public List<HorarioPuntual> selectHorariosPuntuales(String fecha) {
 		List<HorarioPuntual> result = db.executeQueryPojo(HorarioPuntual.class,
 				"select * from HorarioPuntual where fechaPuntual=?", fecha);
+		
+		logger.logSelect("HorarioPuntual");
 		return result;
 
 	}
@@ -396,11 +434,15 @@ public class Persistence {
 		List<HorarioPuntual> result = db
 				.executeQueryPojo(HorarioPuntual.class, "select * from HorarioPuntual where eid=?", eid).stream()
 				.sorted().collect(Collectors.toList());
-
+		
+		
+		logger.logSelect("HorarioPuntual");
 		return result;
 	}
 
 	public HorarioPuntual getHorarioPuntual(int eid, String fechaPuntual) {
+		
+		logger.logSelect("HorarioPuntual");
 		return db.executeQueryPojo(HorarioPuntual.class, "select * from HorarioPuntual where eid=? and fechaPuntual=?",
 				eid, fechaPuntual).get(0);
 	}
@@ -426,7 +468,8 @@ public class Persistence {
 		List<FranjaPuntual> result = db.executeQueryPojo(FranjaPuntual.class,
 				"select * from FranjaPuntual where fechaPuntual=? and eid=?", fechaPuntual, eid).stream().sorted()
 				.collect(Collectors.toList());
-		;
+		
+		logger.logSelect("FranjaPuntual");
 		return result;
 	}
 
@@ -434,7 +477,8 @@ public class Persistence {
 		List<FranjaPuntual> result = db
 				.executeQueryPojo(FranjaPuntual.class, "select * from FranjaPuntual where fechaPuntual=?", fechaPuntual)
 				.stream().sorted().collect(Collectors.toList());
-		;
+		
+		logger.logSelect("FranjaPuntual");
 		return result;
 	}
 
@@ -442,12 +486,16 @@ public class Persistence {
 	public float getCapitalClub() {
 		List<AmpliacionCapital> ac = db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
 		float result = ac.get(0).getCapitalTotal();
+		
+		logger.logSelect("ampliacionCapital");
 		return result;
 	}
 
 	public int getAccionesClub() {
 		List<AmpliacionCapital> ac = db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
 		int result = ac.get(0).getAccionesTotales();
+		
+		logger.logSelect("ampliacionCapital");
 		return result;
 	}
 
@@ -460,19 +508,21 @@ public class Persistence {
 	}
 
 	public List<Abono> selectAbono(String tribuna, String seccion, int fila, int asiento) {
+		logger.logSelect("abono");
 		return db.executeQueryPojo(Abono.class,
 				"select * from abono where tribuna=? and seccion=? and fila=? and asiento=?", tribuna, seccion, fila,
 				asiento);
 	}
 
 	public List<EntradaEntity> getAbonos(String tribuna, String seccion) {
-
+		logger.logSelect("abono");
 		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=?", tribuna,
 				seccion);
 
 	}
 
 	public List<EntradaEntity> getAbonosFila(String tribuna, String seccion, int fila) {
+		logger.logSelect("abono");
 		return db.executeQueryPojo(EntradaEntity.class, "select * from abono where tribuna=? and seccion=? and fila=?",
 				tribuna, seccion, fila);
 	}
@@ -488,6 +538,7 @@ public class Persistence {
 
 	public List<EntradaEntity> getTotalEntradas(String tribuna, String seccion, int fila) {
 		String query = "SELECT * FROM entrada where tribuna=? and seccion=? and fila=?";
+		logger.logSelect("entrada");
 		return db.executeQueryPojo(EntradaEntity.class, query, tribuna, seccion, fila);
 	}
 
@@ -499,6 +550,7 @@ public class Persistence {
 	}
 
 	public List<Noticia> selectNoticias() {
+		logger.logSelect("noticia");
 		return db.executeQueryPojo(Noticia.class, "select * from noticia");
 
 	}
@@ -537,6 +589,8 @@ public class Persistence {
 
 			ret.add(equipo);
 		}
+		
+		logger.logSelect("Equipo");
 		return ret;
 	}
 
@@ -551,8 +605,7 @@ public class Persistence {
 			ret.setNombre(equipo.get(0)[3].toString());
 		}
 
-		// ret.setCategoria(o[2]);
-		// ret.setFilial(o[3]);
+		logger.logSelect("Equipo");
 		return ret;
 	}
 
@@ -563,8 +616,7 @@ public class Persistence {
 		ret.setId(equipo.get(0)[0].toString());
 		ret.setNombre(equipo.get(0)[3].toString());
 
-		// ret.setCategoria(o[2]);
-		// ret.setFilial(o[3]);
+		logger.logSelect("Equipo");
 		return ret;
 	}
 
@@ -573,6 +625,8 @@ public class Persistence {
 		try {
 			var res = db.executeQueryArray("select eqid from juega where eid=?", eid);
 			String str = (String) res.get(0)[0].toString();
+			
+			logger.logSelect("juega");
 			return Integer.parseInt(str);
 		} catch (Exception e) {
 			return -1;
@@ -584,6 +638,8 @@ public class Persistence {
 		try {
 			var res = db.executeQueryArray("select eid from juega where eqid=?", eqid);
 			String str = (String) res.get(0)[0].toString();
+			
+			logger.logSelect("juega");
 			return Integer.parseInt(str);
 		} catch (Exception e) {
 			return -1;
@@ -596,6 +652,8 @@ public class Persistence {
 			int id = getEquipoIdByEmpleadoId(eid);
 			var res = db.executeQueryArray("select nombre from equipo where id=?", id);
 			var res1 = (String) res.get(0)[0];
+			
+			logger.logSelect("Equipo");
 			return res1;
 		} catch (Exception e) {
 			return null;
@@ -628,6 +686,8 @@ public class Persistence {
 
 			ret.add(p);
 		}
+		
+		logger.logSelect("Partido");
 		return ret;
 	}
 
@@ -647,6 +707,8 @@ public class Persistence {
 
 			ret.add(p);
 		}
+		
+		logger.logSelect("Partido");
 		return ret;
 	}
 
@@ -660,7 +722,8 @@ public class Persistence {
 			List<Object[]> partidos = db.executeQueryArray(
 					"select * from Partido where idEquipo = ? and " + "equipoVisitante = ? and fecha = ?", idEquipo,
 					visitante, fecha);
-
+			
+			logger.logSelect("Partido");
 			return partidos.size() == 0 ? false : true;
 		}
 		return false;
@@ -671,6 +734,7 @@ public class Persistence {
 	public boolean existsIdAbonado(String id) {
 		List<Object[]> abonado = db.executeQueryArray("select * from Abonado where id = ?", id);
 		if (abonado.size() == 1) {
+			logger.logSelect("Abonado");
 			return true;
 		}
 		return false;
@@ -684,7 +748,7 @@ public class Persistence {
 		for (Object[] o : abonados) {
 			ids.add(o[0].toString());
 		}
-
+		logger.logSelect("Abonado");
 		return ids;
 	}
 
@@ -727,6 +791,8 @@ public class Persistence {
 			String idPartido = o[1].toString();
 			ret.addAll(selectPartidosPorId(idPartido));
 		}
+		
+		logger.logSelect("PartidoAbonado");
 		return ret;
 
 	}
@@ -747,6 +813,8 @@ public class Persistence {
 	}
 
 	public List<Object[]> getIdAbonado() {
+		logger.logSelect("abonado");
+
 		return db.executeQueryArray("select max(id)from abonado");
 	}
 
@@ -754,6 +822,8 @@ public class Persistence {
 		if (existsIdAbonado(String.valueOf(idAbonado))) {
 			List<Object[]> ganador = db.executeQueryArray("select * from abonado where id = ?", idAbonado);
 			int res = Integer.parseInt(ganador.get(0)[2].toString());
+			
+			logger.logSelect("abonado");
 			return res == 1;
 		}
 		return false;
@@ -765,6 +835,8 @@ public class Persistence {
 	public List<HorarioJardineria> selectHorariosJardineria() {
 		List<HorarioJardineria> result = db.executeQueryPojo(HorarioJardineria.class,
 				"select * from HorarioJardineria");
+		
+		logger.logSelect("HorarioJardineria");
 
 		return result;
 	}
@@ -772,6 +844,8 @@ public class Persistence {
 	public List<HorarioJardineria> selectHorariosJardineria(int iid) {
 		List<HorarioJardineria> result = db.executeQueryPojo(HorarioJardineria.class,
 				"select * from HorarioJardineria where iid=?", iid);
+		
+		logger.logSelect("HorarioJardineria");
 
 		return result;
 	}
@@ -797,6 +871,8 @@ public class Persistence {
 	public List<HorarioEntrenamiento> selectHorariosEntrenamiento(int iid) {
 		List<HorarioEntrenamiento> result = db.executeQueryPojo(HorarioEntrenamiento.class,
 				"select * from HorarioEntrenamiento where iid=?", iid);
+		
+		logger.logSelect("HorarioEntrenamiento");
 
 		return result;
 	}
@@ -805,6 +881,8 @@ public class Persistence {
 		List<HorarioEntrenamiento> result = db.executeQueryPojo(HorarioEntrenamiento.class,
 				"select * from HorarioEntrenamiento where iid=? and fechaEntrenamiento=?", iid, fecha);
 
+		logger.logSelect("HorarioEntrenamiento");
+		
 		return result;
 	}
 
@@ -812,6 +890,8 @@ public class Persistence {
 		List<HorarioEntrenamiento> result = db.executeQueryPojo(HorarioEntrenamiento.class,
 				"select * from HorarioEntrenamiento");
 
+		logger.logSelect("HorarioEntrenamiento");
+		
 		return result;
 	}
 
@@ -901,6 +981,8 @@ public class Persistence {
 		List<Equipo> result = db.executeQueryPojo(Equipo.class, "select * from Equipo where peid=? or seid=?", eid,
 				eid);
 
+		logger.logSelect("Equipo");
+		
 		return result;
 	}
 
@@ -932,20 +1014,29 @@ public class Persistence {
 
 	public Equipo getEquipo(String nombre) {
 		List<Equipo> result = db.executeQueryPojo(Equipo.class, "select * from Equipo where nombre=?", nombre);
-		if (result.size() > 0)
+		if (result.size() > 0) {
+			logger.logSelect("Equipo");
+			
 			return result.get(0);
+		}	
 		return null;
 	}
 
 	public Equipo getEquipo(int id) {
 		List<Equipo> result = db.executeQueryPojo(Equipo.class, "select * from Equipo where id=?", id);
-		if (result.size() > 0)
+		if (result.size() > 0) {
+			logger.logSelect("Equipo");
+			
 			return result.get(0);
+		}
 		return null;
 	}
 
 	public List<Equipo> selectAllEquipos() {
+		logger.logSelect("Equipo");
+		
 		return db.executeQueryPojo(Equipo.class, "select * from equipo");
+		
 	}
 
 	// Articulos
@@ -957,6 +1048,9 @@ public class Persistence {
 		for (Object[] o : articulos) {
 			ret.add(new Merchandaising((int) o[0], o[1].toString(), o[2].toString(), (double) o[3]));
 		}
+		
+		logger.logSelect("merchandaising");
+
 		return ret;
 
 	}
@@ -981,6 +1075,9 @@ public class Persistence {
 	public float getPrecioPorAccion() {
 		List<AmpliacionCapital> ac = db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacionCapital");
 		float result = ac.get(0).getPrecioAccion();
+		
+		logger.logSelect("ampliacionCapital");
+		
 		return result;
 	}
 
@@ -998,6 +1095,8 @@ public class Persistence {
 
 	public String getFase() {
 		List<AmpliacionCapital> list = db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital");
+		
+		logger.logSelect("ampliacionCapital");
 		return list.get(0).getFase();
 	}
 
@@ -1008,16 +1107,19 @@ public class Persistence {
 
 	// ACCIONISTAS
 	public int selectRestantesFase1() {
+		logger.logSelect("ampliacionCapital");
 		return db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital").get(0).getFaseUno();
 
 	}
 
 	public int selectRestantesFase2() {
+		logger.logSelect("ampliacionCapital");
 		return db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital").get(0).getFaseDos();
 
 	}
 
 	public int selectRestantesFase3() {
+		logger.logSelect("ampliacionCapital");
 		return db.executeQueryPojo(AmpliacionCapital.class, "select * from ampliacioncapital").get(0).getFaseTres();
 
 	}
@@ -1043,6 +1145,7 @@ public class Persistence {
 	}
 
 	public int selectAccionesVendidas() {
+		logger.logSelect("ampliacionCapital");
 		return db.executeQueryPojo(AmpliacionCapital.class, "select * from AmpliacionCapital").get(0).getVendidas();
 	}
 
@@ -1060,30 +1163,36 @@ public class Persistence {
 	}
 
 	public List<VentaDisplayDTO> getVentasByDate(String min, String max) {
+		logger.logSelect("venta");
 		return db.executeQueryPojo(VentaDisplayDTO.class, "select * from venta where fecha>=? " + "and fecha<=?", min,
 				max);
 	}
 
 	public List<VentaDisplayDTO> getTotalVentas() {
+		logger.logSelect("venta");
 		return db.executeQueryPojo(VentaDisplayDTO.class, "select * from venta");
 	}
 
 	// COMPRAS
 	public List<Compra> getComprasByDate(String min, String max) {
+		logger.logSelect("compra");
 		return db.executeQueryPojo(Compra.class, "select * from compra where fecha>=? " + "and fecha<=?", min, max);
 	}
 
 	public List<Compra> getTotalCompras() {
+		logger.logSelect("compra");
 		return db.executeQueryPojo(Compra.class, "select * from compra");
 	}
 
 	// ACCIONISTAS
 	public List<Accionista> selectAccionista(int numeroAccionista) {
+		logger.logSelect("accionista");
 		return db.executeQueryPojo(Accionista.class, "select * from accionista " + "where idAccionista=?",
 				numeroAccionista);
 	}
 
 	public List<Accionista> selectAccionista(String nombre, String apellido, String dni) {
+		logger.logSelect("accionista");
 		return db.executeQueryPojo(Accionista.class,
 				"select * from accionista " + "where nombreAccionista=? and apellidoAccionista=? and dniAccionista=?",
 				nombre, apellido, dni);
@@ -1097,14 +1206,17 @@ public class Persistence {
 	}
 
 	public List<Accionista> selectAccionistaById(int id) {
+		logger.logSelect("accionista");
 		return db.executeQueryPojo(Accionista.class, "select * from accionista " + "where idAccionista=?", id);
 	}
 
 	public List<Accion> selectAccionesByIdAccionista(int accionistaActivo) {
+		logger.logSelect("accion");
 		return db.executeQueryPojo(Accion.class, "select * from accion " + "where idAccionista=?", accionistaActivo);
 	}
 
 	public List<Accion> selectAccionesEnVenta(int idAccionista) {
+		logger.logSelect("accion");
 		return db.executeQueryPojo(Accion.class, "select * from accion " + "where idAccionista <> ? and enVenta = 1",
 				idAccionista);
 	}
@@ -1127,6 +1239,9 @@ public class Persistence {
 	public int selectLimiteFase1(int idAccionista) {
 		List<Accionista> acc = db.executeQueryPojo(Accionista.class,
 				"select * from accionista " + "where idAccionista=?", idAccionista);
+		
+		logger.logSelect("accionista");
+
 		return acc.get(0).getLimiteAccionesFaseUno();
 	}
 
@@ -1172,9 +1287,12 @@ public class Persistence {
 		List<Usuario> result = db.executeQueryPojo(Usuario.class,
 				"select * from usuario where usuario=? and contrasena=?", usuario.getUsuario(),
 				usuario.getContrasena());
-
-		if (result.size() == 0)
+		
+		logger.logSelect("usuario");
+		
+		if (result.size() == 0) 
 			return State.LOGINFAIL_USERNOTFOUND;
+			
 
 		usuario.setRol(result.get(0).getRol());
 		usuario.setPid(result.get(0).getPid());
@@ -1195,22 +1313,26 @@ public class Persistence {
 	// LESIONES
 	public List<Empleado> selectJugadoresPorEquipo(String eqid) {
 		List<Juega> l = db.executeQueryPojo(Juega.class, "select * from juega where eqid = ?", eqid);
-
+		logger.logSelect("juega");
+		
 		List<Empleado> jugadores = new ArrayList<Empleado>();
 		for (Juega j : l) {
 			jugadores.add(
 					db.executeQueryPojo(Empleado.class, "select * from empleado where eid = ?", j.getEid()).get(0));
+			logger.logSelect("empleado");
 		}
 		return jugadores;
 	}
 
 	public List<Empleado> selectLesionado(int eid) {
 		List<Lesion> list = db.executeQueryPojo(Lesion.class, "select * from lesion " + "where eid = ?", eid);
-
+		logger.logSelect("lesion");
+		
 		List<Empleado> jugadores = new ArrayList<Empleado>();
 		for (Lesion j : list) {
 			jugadores.add(
 					db.executeQueryPojo(Empleado.class, "select * from empleado where eid = ?", j.getEid()).get(0));
+			logger.logSelect("empleado");
 		}
 		return jugadores;
 	}
@@ -1223,11 +1345,15 @@ public class Persistence {
 	public List<HorarioEntrenamiento> getEntrenamientos(String equipoId) {
 		List<HorarioEntrenamiento> entrenos = db.executeQueryPojo(HorarioEntrenamiento.class,
 				"select * from HorarioEntrenamiento where eid=?", equipoId);
+		logger.logSelect("HorarioEntrenamiento");
+		
 		return entrenos;
 	}
 
 	public List<Partido> getPartidos(String equipoId) {
 		List<Partido> entrenos = db.executeQueryPojo(Partido.class, "select * from Partido where idEquipo=?", equipoId);
+		logger.logSelect("Partido");
+		
 		return entrenos;
 	}
 
@@ -1246,6 +1372,7 @@ public class Persistence {
 
 	// ACTUALIZACIONES
 	public List<Actualizacion> getActualizaciones(int eid) {
+		logger.logSelect("Actualizacion");
 		return db.executeQueryPojo(Actualizacion.class, "select * from Actualizacion where eid=?", eid);
 	}
 
@@ -1275,26 +1402,30 @@ public class Persistence {
 
 	public int selectNumJugadoresByEquipo(int id) {
 		List<Juega> j = db.executeQueryPojo(Juega.class, "select * from Juega where eqid = ?", id);
+		logger.logSelect("Juega");
 		return j.size();
 	}
 
 	public Equipo selectEquipoById(int id) {
-		
 		List<Equipo> e = db.executeQueryPojo(Equipo.class, "select * from Equipo where id = ?", id);
+		logger.logSelect("Equipo");
 		return e.get(0);
 	}
 
 	public List<JugadoresEnVenta> selectJugadoresEnVenta() {
 		List<JugadoresEnVenta> j = db.executeQueryPojo(JugadoresEnVenta.class, "select * from JugadoresEnVenta");
+		logger.logSelect("JugadoresEnVenta");
 		return j;
 	}
 
 	public List<Empleado> selectJugadoresByEquipo(int id) {
 		List<Juega> j = db.executeQueryPojo(Juega.class, "select * from Juega where eqid = ?", id);
+		logger.logSelect("Juega");
 		List<Empleado> jugadoresEquipo = new ArrayList<>();
 		for (Juega jugador : j) {
 			List<Empleado> e = db.executeQueryPojo(Empleado.class, "select * from empleado where eid = ?", jugador.getEid());
 			jugadoresEquipo.add(e.get(0));
+			logger.logSelect("empleado");
 		}
 		return jugadoresEquipo;
 	}
@@ -1302,6 +1433,8 @@ public class Persistence {
 	public JugadoresEnVenta selectJugadorEnVentaByDni(String dni) {
 		List<JugadoresEnVenta> j = db.executeQueryPojo(JugadoresEnVenta.class, 
 				"select * from JugadoresEnVenta where dni =?", dni);
+		logger.logSelect("JugadoresEnVenta");
+		
 		return j.get(0);
 	}
 
@@ -1311,12 +1444,14 @@ public class Persistence {
 
 	public void insertJuega(int id, String dni) {
 		List<Empleado> es = db.executeQueryPojo(Empleado.class, "select * from empleado where dni = ?", dni);
+		logger.logSelect("empleado");
 		Empleado e = es.get(0);
 		db.executeUpdate("insert into Juega (eqid, eid) values (?,?)", id, e.getEid());
 	}
 
 	public void insertCompra(Date d, float cuantia, String dni) {
 		List<Empleado> es = db.executeQueryPojo(Empleado.class, "select * from empleado where dni = ?", dni);
+		logger.logSelect("empleado");
 		int eid = es.get(0).getEid();
 		
 		db.executeUpdate("insert into compra (cuantia, fecha, eid) values (?,?,?)", cuantia, d, eid);
