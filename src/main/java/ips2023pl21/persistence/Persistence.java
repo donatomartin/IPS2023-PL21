@@ -109,7 +109,9 @@ public class Persistence {
 
 		db.executeUpdate("update HorarioEntrevista set datosMedio=? where fechaEntrevista=? and eid=?", datosMedio,
 				he.getFechaEntrevista(), he.getEid());
-		logger.logMessage("Franja de entrevista asignada");
+		
+		String datos = datosMedio + ", " + he.getFechaEntrevista() + ", " + he.getEid();
+		logger.logUpdate("HorarioEntrevista",datos,"datosMedio, fechaEntrevista, eid");
 	}
 
 	public void deleteHorarioEntrevista(int eqid, String fecha, String horaInicio, String horaFin) {
@@ -311,11 +313,13 @@ public class Persistence {
 				+ "salarioAnual = ?, telefono = ?, posicion = ?" + "where nombre = ? and apellido = ? and dni = ?";
 		db.executeUpdate(updateEmpleado, nombre, apellido, dni, fecha, salario, telefono, posicion,
 				nombreEmpleadoGestion, apellidoEmpleadoGestion, dniEmpleadoGestion);
-		logger.logMessage("Empleado actualizado");
+		
+		String datos = nombre+ ", " +apellido+ ", " +dni+ ", " +fecha+ ", " +salario+ ", " +telefono+ ", " +posicion+ ", " +
+				nombreEmpleadoGestion+ ", " +apellidoEmpleadoGestion+ ", " +dniEmpleadoGestion;
+		logger.logUpdate("empleado",datos,"nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, posicion");
 	}
 
-	public List<Empleado> getEmpleados() {
-		
+	public List<Empleado> getEmpleados() {	
 		logger.logSelect("Empleado");
 		return db.executeQueryPojo(Empleado.class, "select * from empleado");
 
@@ -366,13 +370,17 @@ public class Persistence {
 	public void updateFechaFin(int eid, HorarioSemanal actual, String fechaFinString) {
 		db.executeUpdate("update HorarioSemanal set fechaFin=? where eid=? and diaSemana=? and fechaInicio=?",
 				fechaFinString, eid, actual.getDiaSemana(), actual.getFechaInicio());
-		logger.logMessage("Horario semanal fechafin actualizada");
+		
+		String datos = fechaFinString;
+		logger.logUpdate("HorarioSemanal",datos,"fechaFin");
 	}
 
 	public void deleteFechaFin(int eid, HorarioSemanal ultimoHorario) {
 		db.executeUpdate("update HorarioSemanal set fechaFin=null where eid=? and diaSemana=? and fechaInicio=?", eid,
 				ultimoHorario.getDiaSemana(), ultimoHorario.getFechaInicio());
-		logger.logMessage();
+		
+		String datos = "null";
+		logger.logUpdate("HorarioSemanal",datos,"fechaFin");
 	}
 
 	public void insertFranjaSemanal(int dia, String fechaInicio, int eid, String horaInicio, String horaFin) {
@@ -754,12 +762,16 @@ public class Persistence {
 
 	public void updateAbonadoSorteo(String idAbonado) {
 		db.executeUpdate("update Abonado set sorteo = 1 where id = ?", idAbonado);
-
+		
+		String datos = "1";
+		logger.logUpdate("Abonado",datos,"sorteo");
 	}
 
 	public void deleteGanadorAbonado(String idAbonado) {
 		db.executeUpdate("update Abonado set sorteo = 0 where id = ?", idAbonado);
 
+		String datos = "0";
+		logger.logUpdate("Abonado",datos,"sorteo");
 	}
 
 	public void insertPartidoAbonado(String idAbonado, Partido partido) {
@@ -1085,12 +1097,16 @@ public class Persistence {
 		int reset = 0;
 		db.executeUpdate("update ampliacioncapital set faseUno = ?, fase = 'Fase 1', vendidas = ?", accionesNuevas,
 				reset);
-		logger.logMessage("Ampliación creada");
+		
+		String datos = accionesNuevas + ", " + "Fase 1, " + reset;
+		logger.logUpdate("ampliacioncapital",datos,"faseUno, fase, vendidas");
 	}
 
 	public void updateLimiteFaseUno() {
 		db.executeUpdate("update accionista set limiteAccionesFaseUno = numeroAcciones");
-		logger.logMessage("Límite acciones fase 1 actualizado");
+		
+		String datos = "numeroAcciones";
+		logger.logUpdate("accionista",datos,"limiteAccionesFaseUno");
 	}
 
 	public String getFase() {
@@ -1102,7 +1118,9 @@ public class Persistence {
 
 	public void updateFase(String fase) {
 		db.executeUpdate("update ampliacioncapital set fase = ?", fase);
-		logger.logMessage("Fase actualizada");
+		
+		String datos = fase;
+		logger.logUpdate("ampliacioncapital",datos,"fase");
 	}
 
 	// ACCIONISTAS
@@ -1126,22 +1144,30 @@ public class Persistence {
 
 	public void updateAccionesFase1(int acc) {
 		db.executeUpdate("update AmpliacionCapital set faseUno = ?", acc);
-		logger.logMessage("Acciones de fase 1 actualizadas");
+		
+		String datos = String.valueOf(acc);
+		logger.logUpdate("ampliacioncapital",datos,"faseUno");
 	}
 
 	public void updateAccionesFase2(int acc) {
 		db.executeUpdate("update AmpliacionCapital set faseDos = ?", acc);
-		logger.logMessage("Acciones de fase 2 actualizadas");
+		
+		String datos = String.valueOf(acc);
+		logger.logUpdate("ampliacioncapital",datos,"faseDos");
 	}
 
 	public void updateAccionesFase3(int acc) {
 		db.executeUpdate("update AmpliacionCapital set faseTres = ?", acc);
-		logger.logMessage("Acciones de fase 3 actualizadas");
+		
+		String datos = String.valueOf(acc);
+		logger.logUpdate("ampliacioncapital",datos,"faseTres");
 	}
 
 	public void updateAccionesVendidas(int accionesVendidas) {
 		db.executeUpdate("update AmpliacionCapital set vendidas = ?", accionesVendidas);
-		logger.logMessage("Acciones vendidas actualizadas");
+		
+		String datos = String.valueOf(accionesVendidas);
+		logger.logUpdate("ampliacioncapital",datos,"vendidas");
 	}
 
 	public int selectAccionesVendidas() {
@@ -1151,7 +1177,9 @@ public class Persistence {
 
 	public void updateCapitalTotal(double vendidas) {
 		db.executeUpdate("update AmpliacionCapital set capitalTotal = ?", vendidas);
-		logger.logMessage("Capital total actualizado");
+		
+		String datos = String.valueOf(vendidas);
+		logger.logUpdate("ampliacioncapital",datos,"capitalTotal");
 	}
 
 	// VENTAS
@@ -1223,12 +1251,21 @@ public class Persistence {
 
 	public void updateAccionCompra(Integer idAccion, int idComprador, int idVendedor, float porcentaje) {
 		db.executeUpdate("update accion set idAccionista=?, enVenta=0 where idAccion=?", idComprador, idAccion);
+		
+		String datos = idComprador + ", " + idAccion;
+		logger.logUpdate("accion",datos,"idAccionista, enVenta");
+		
 		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones+1, "
 				+ "porcentajeCapital=porcentajeCapital+? where idAccionista=?", porcentaje, idComprador);
+		
+		String datosDos = porcentaje + ", " + idComprador;
+		logger.logUpdate("accionista",datosDos,"numeroAcciones, porcentajeCapital");
+		
 		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones-1, "
 				+ "porcentajeCapital=porcentajeCapital-? where idAccionista=?", porcentaje, idVendedor);
 
-		logger.logMessage("Acción compra realizada");
+		String datosTres = porcentaje + "";
+		logger.logUpdate("accionista",datosTres,"numeroAcciones,porcentajeCapital");
 	}
 
 	public void deleteAccionistaACero() {
@@ -1255,17 +1292,28 @@ public class Persistence {
 		db.executeUpdate(
 				"update accionista set limiteAccionesFaseUno=limiteAccionesFaseUno-? " + "where idAccionista=?",
 				numAcciones, idAccionista);
-		logger.logMessage("Limite de accionista actualizado");
+		
+		String datosTres = numAcciones + "";
+		logger.logUpdate("accionista",datosTres,"limiteAccionesFaseUno");
 	}
 
 	public void updateCompraAccionista(int idAccionista, float porcentaje) {
 		db.executeUpdate("update accionista set numeroAcciones=numeroAcciones+1 where idAccionista=?", idAccionista);
+		
+		String datos = "numAcciones + 1";
+		logger.logUpdate("accionista",datos,"numeroAcciones");
+		
 		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital+? " + "where idAccionista=?",
 				porcentaje, idAccionista);
+		
+		String datosDos = porcentaje + "";
+		logger.logUpdate("accionista",datosDos,"porcentajeCapital");
+		
 		db.executeUpdate("update accionista set porcentajeCapital=porcentajeCapital-? " + "where idAccionista<>?",
 				porcentaje, idAccionista);
-
-		logger.logMessage("Compra de accionista actualizada");
+		
+		String datosTres = porcentaje + "";
+		logger.logUpdate("accionista",datosTres,"porcentajeCapital");
 	}
 
 	public void updateAccionesEnVenta(int idAccionista) {
