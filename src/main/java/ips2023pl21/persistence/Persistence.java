@@ -813,7 +813,7 @@ public class Persistence {
 	public void borrarAbonado(String tribuna, String seccion, int fila, int asiento) {
 		db.executeUpdate("remove from abono where tribuna=?, seccion=?, fila=?, asiento=?", tribuna, seccion, fila,
 				asiento);
-		logger.logMessage("Abonado borrado");
+		logger.logDelete("Abono", tribuna + " " + seccion );
 
 	}
 
@@ -1444,8 +1444,7 @@ public class Persistence {
 	public void insertarVentaAccion(String fecha, int horaVenta, int minutoVenta, double precioPorAccion) {
 		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
 		db.executeUpdate(queryVenta, "accion", fecha, horaVenta, minutoVenta, 34.67);
-		logger.logMessage("Venta acción creada");
-
+		logger.logInsert("Venta", fecha);
 	}
 
 	public int selectNumJugadoresByEquipo(int id) {
