@@ -327,7 +327,8 @@ drop table actualizacion;
 create table Actualizacion(
 	id integer primary key autoincrement,
 	eid integer not null,
-	texto varchar(500) not null
+	texto varchar(500) not null,
+	foreign key (eid) references Empleado(eid)
 );
 
 --Compra

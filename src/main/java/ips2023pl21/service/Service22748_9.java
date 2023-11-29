@@ -195,6 +195,10 @@ public class Service22748_9 {
 	public int countAccionistas() {
 		return p.countAccionistas();
 	}
+	
+	public void setAccionista() {
+		this.accionistaActivo = p.selectAccionista(countAccionistas()).get(0);
+	}
 
 	public void updateFase(String fase) {
 		p.updateFase(fase);

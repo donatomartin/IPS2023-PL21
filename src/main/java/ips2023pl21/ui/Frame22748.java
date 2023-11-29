@@ -479,10 +479,14 @@ public class Frame22748 extends JFrame {
 			btRegistrarse = new JButton("Registrarse y comprar");
 			btRegistrarse.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					if (cs.getAccionesRestantes() == 0) {
+					if (!cs.getFase().equals(CapitalFase.FASE3)) {
+						JOptionPane.showMessageDialog(null, "Lo sentimos, pero "
+								+ "no se puede registrar en estos momentos");
+						
+					}
+					else if (cs.getAccionesRestantes() == 0) {
 						JOptionPane.showMessageDialog(null, "Lo sentimos, pero "
 								+ "las acciones destinadas a la ampliación han sido agotadas");
-						mostrarPnInicio();
 					}
 					else if(comprobarCampos()) {
 						getBtAccionComprarClub().setEnabled(true);
@@ -507,10 +511,11 @@ public class Frame22748 extends JFrame {
 	private JButton getBtVolver() {
 		if (btVolver == null) {
 			btVolver = new JButton("Volver");
-			btVolver.setEnabled(false);
+			btVolver.setEnabled(true);
 			btVolver.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					mostrarPnInicio();
+//					mostrarPnInicio();
+					dispose();
 				}
 			});
 			btVolver.setForeground(new Color(0, 0, 0));
@@ -1166,7 +1171,8 @@ public class Frame22748 extends JFrame {
 							actualizarAccionesRestantesYVendidas();
 							creaAcciones();
 							actualizaAccionista();
-							mostrarPnInicio();
+							//mostrarPnInicio();
+							dispose();
 						}
 					}
 				}
@@ -1289,7 +1295,9 @@ public class Frame22748 extends JFrame {
 	}
 	private void añadirAccionista() {
 		cs.añadirAccionista(getTxIntroducirNombre().getText(), getTxIntroducirApellido().getText(), getTxIntroducirDni().getText(), getTxIntroducirCuenta().getText());
+		
 		int id = cs.countAccionistas();
+		cs.setAccionista();
 		JOptionPane.showMessageDialog(null, "Su identificador como accionista es: "+ id);
 		
 		Usuario u = new Usuario();
