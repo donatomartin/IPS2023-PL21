@@ -20,9 +20,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class Frame23539_1 extends JFrame{
+
+	private static final long serialVersionUID = 1L;
 	private JLabel lbTitulo;
 	private JLabel lbAño;
-	private JComboBox comboBox;
+	private JComboBox<String> comboBox;
 	private JButton btVerGrafico;
 	private JPanel pnCentro;
 	private JPanel pnNorte;
@@ -53,9 +55,9 @@ public class Frame23539_1 extends JFrame{
 		}
 		return lbAño;
 	}
-	public JComboBox getComboBox() {
+	public JComboBox<String> getComboBox() {
 		if (comboBox == null) {
-			comboBox = new JComboBox();
+			comboBox = new JComboBox<String>();
 			List<VentaDisplayDTO> ventas=service.getTotalVentas();
 			List<Compra>compras=service.getTotalCompras();
 			List<String> result=combinarListas(ventas, compras);

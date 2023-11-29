@@ -2,7 +2,6 @@ package ips2023pl21.ui;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -11,7 +10,6 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 
-import javax.swing.JComboBox;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 

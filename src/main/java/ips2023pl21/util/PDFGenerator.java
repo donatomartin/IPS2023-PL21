@@ -74,6 +74,7 @@ public class PDFGenerator {
 		f.setSize(40);
 		p.setFont(f);
 		p.add("FACTURA");
+		@SuppressWarnings("unused")
 		String filePath = "/ips2023pl21-local/imagenes/logo.png";
 		String dest=System.getProperty("user.dir")+"/imagenes/"+"logo.png";
 		Image image= Image.getInstance(dest);
@@ -219,6 +220,7 @@ public class PDFGenerator {
 		BigDecimal bigDecimal = BigDecimal.valueOf(total);
 
 		// Redondear utilizando el método setScale()
+		@SuppressWarnings("deprecation")
 		BigDecimal redondeadoBigDecimal = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_UP);
 
 		// Convertir de nuevo a double

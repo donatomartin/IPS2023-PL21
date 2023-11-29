@@ -700,6 +700,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 		return lbEquipoFilter;
 	}
 
+	@SuppressWarnings("unused")
 	private JPanel getPnLogin() {
 		if (pnLogin == null) {
 			pnLogin = new JPanel();
