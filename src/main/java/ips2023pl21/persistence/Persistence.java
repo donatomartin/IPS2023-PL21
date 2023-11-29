@@ -102,7 +102,7 @@ public class Persistence {
 
 		db.executeUpdate("insert into HorarioEntrevista (fechaEntrevista, horaInicio, horaFin, eid) values (?,?,?,?)",
 				fecha, horaInicio, horaFin, eid);
-		logger.logMessage("Franja de entrevista creada");
+		logger.logInsert("HorarioEntrevista", fecha + " para " + getEmpleado(eid).getNombre());
 	}
 
 	public void asignaHorarioEntrevista(HorarioEntrevista he, String datosMedio) {
@@ -296,7 +296,7 @@ public class Persistence {
 		db.executeUpdate(
 				"insert into Empleado(nombre, apellido, dni, fechaNacimiento, salarioAnual, telefono, tipo, posicion) values (?,?,?,?,?,?,?,?)",
 				nombre, apellido, dni, fechaNacimiento, salario, telefono, tipo, posicion);
-		logger.logMessage("Empleado creado");
+		logger.logInsert("Empleado", nombre);
 
 	}
 
@@ -364,7 +364,7 @@ public class Persistence {
 	public void insertHorarioSemanal(int diaSemana, String fechaString, int eid) {
 		db.executeUpdate("insert into HorarioSemanal(diaSemana, fechaInicio, eid) values (?, ?, ?)", diaSemana,
 				fechaString, eid);
-		logger.logMessage("Horario semanal creado");
+		logger.logInsert("HorarioSemanal", diaSemana + " " + fechaString + " para " + getEmpleado(eid).getNombre());
 	}
 
 	public void updateFechaFin(int eid, HorarioSemanal actual, String fechaFinString) {
@@ -387,7 +387,7 @@ public class Persistence {
 		db.executeUpdate(
 				"insert into FranjaSemanal(diaSemana, fechaInicio, eid, horaInicio, horaFin) values (?, ?, ?, ?, ?)",
 				dia, fechaInicio, eid, horaInicio, horaFin);
-		logger.logMessage("Franja semanal añadida");
+		logger.logInsert("FranjaSemanal", dia + " " + fechaInicio + " para " + getEmpleado(eid).getNombre());
 	}
 
 	public void deleteHorarioSemanal(int dia, String fechaInicio, int eid) {
@@ -457,13 +457,13 @@ public class Persistence {
 
 	public void insertHorarioPuntual(String fechaString, int eid) {
 		db.executeUpdate("insert into HorarioPuntual(fechaPuntual, eid) values (?, ?)", fechaString, eid);
-		logger.logMessage("Horario puntual creado");
+		logger.logInsert("HorarioPuntual", fechaString + " para " + getEmpleado(eid).getNombre());
 	}
 
 	public void insertFranjaPuntual(String fechaPun, int eid, String horaInicio, String horaFin) {
 		db.executeUpdate("insert into FranjaPuntual(fechaPuntual, eid, horaInicio, horaFin) values (?, ?, ?, ?)",
 				fechaPun, eid, horaInicio, horaFin);
-		logger.logMessage("Franja puntual creada");
+		logger.logInsert("FranjaPuntual", fechaPun + " para " + getEmpleado(eid).getNombre());
 	}
 
 	public void removeHorarioPuntual(String fechaPun) {
@@ -512,7 +512,7 @@ public class Persistence {
 		db.executeUpdate(
 				"insert into abono (tribuna, seccion, fila, asiento, precio, fechaCaducidad) values (?,?,?,?,?,?)",
 				tribuna, seccion, fila, asiento, precio, dateString);
-		logger.logMessage("Abono creado");
+		logger.logInsert("Abono", tribuna + " " + seccion + " " + fila + " " + asiento);
 	}
 
 	public List<Abono> selectAbono(String tribuna, String seccion, int fila, int asiento) {
@@ -540,7 +540,7 @@ public class Persistence {
 	public void insertarEntrada(String tribuna, String seccion, int fila, int asientoInicial, int i) {
 		String queryEntrada = "Insert into Entrada(tribuna, seccion, fila, asiento, precio) VALUES (?,?,?,?,?)";
 		db.executeUpdate(queryEntrada, tribuna, seccion, fila, asientoInicial, i);
-		logger.logMessage("Entrada creada");
+		logger.logInsert("Entrada", tribuna + " " + seccion + " " + fila);
 
 	}
 
@@ -554,7 +554,7 @@ public class Persistence {
 	public void insertNoticia(String titulo, String subtitulo, String cuerpo, String img) {
 		db.executeUpdate("insert into noticia (titulo, subtitulo, cuerpo, img) values (?,?,?,?)", titulo, subtitulo,
 				cuerpo, img);
-		logger.logMessage("Noticia creada");
+		logger.logInsert("Noticia", titulo);
 	}
 
 	public List<Noticia> selectNoticias() {
@@ -577,13 +577,14 @@ public class Persistence {
 		db.executeUpdate("insert into Equipo(peid,seid,nombre, categoria, esFilial) values (?,?,?,?,?)",
 				equipo.getPrimerEntrenador().getEid(), equipo.getSegundoEntrenador().getEid(), equipo.getNombre(),
 				categoria, filial);
-		logger.logMessage("Equipo creado");
 
 		String eqid = selectEquipoPorNombre(equipo.getNombre()).getId();
 
 		for (Empleado j : equipo.getJugadoresEquipo()) {
 			db.executeUpdate("insert into Juega(eqid,eid) values (?,?)", eqid, j.getEid());
 		}
+		
+		logger.logInsert("Equipo / Juega", equipo.getNombre());
 	}
 
 	public List<EquipoDeportivo> selectEquipo() {
@@ -675,7 +676,7 @@ public class Persistence {
 		db.executeUpdate("insert into Partido(id, idEquipo, equipoVisitante, fecha, suplemento) values (?,?,?,?,?)",
 				partido.getId(), partido.getLocal().getId(), partido.getVisitante(), partido.getFecha(),
 				partido.getSuplemento());
-		logger.logMessage("Partido creado");
+		logger.logInsert("Partido", partido.getFecha());
 	}
 
 	public List<Partido> selectPartidosPorIdEquipo(String id) {
@@ -776,7 +777,7 @@ public class Persistence {
 
 	public void insertPartidoAbonado(String idAbonado, Partido partido) {
 		db.executeUpdate("insert into PartidoAbonado(idAbonado, idPartido) values (?,?)", idAbonado, partido.getId());
-		logger.logMessage("Partido Abonado creado");
+		logger.logInsert("PartidoAbonado", partido.getFecha());
 
 	}
 
@@ -818,9 +819,8 @@ public class Persistence {
 
 	public void insertAbonado(String nombre) {
 		db.executeUpdate("insert into abonado (nombre) values (?)", nombre);
-		logger.logMessage("Abonado creado");
-
 		db.executeUpdate("insert into abonado (nombre,sorteo) values (?,0)", nombre);
+		logger.logInsert("Abonado", nombre);
 
 	}
 
@@ -868,7 +868,7 @@ public class Persistence {
 		db.executeUpdate(
 				"insert into HorarioJardineria (fechaJardineria, horaInicio, horaFin, eid, iid) values (?,?,?,?,?)",
 				fecha, horaInicio, horaFin, eid, iid);
-		logger.logMessage("Horario Jardinería creado");
+		logger.logInsert("HorarioJardineria", fecha + "para" + getEmpleado(eid).getNombre());
 	}
 
 	public void deleteHorarioJardineria(int eid, String fecha, String horaInicio, String horaFin) {
@@ -965,7 +965,7 @@ public class Persistence {
 		db.executeUpdate(
 				"insert into HorarioEntrenamiento (fechaEntrenamiento, horaInicio, horaFin, enid, eid, iid) values (?,?,?,?,?,?)",
 				fecha, horaInicio, horaFin, enid, eid, iid);
-		logger.logMessage("Horario Entrenamiento creado");
+		logger.logInsert("HorarioEntrenamiento", fecha + " para " + getInstalacion(iid).getNombreInstalacion());
 	}
 
 	private void checkHorarioEntrenamiento(int id, String fecha, String horaInicio, String horaFin)
@@ -1079,7 +1079,7 @@ public class Persistence {
 					UUID.randomUUID().toString(), a.getId(), a.getUnidades());
 		}
 
-		logger.logMessage("Venta creada");
+		logger.logInsert("Venta / VentaMerchandising", tl.getNombre());
 
 	}
 
@@ -1097,9 +1097,13 @@ public class Persistence {
 		int reset = 0;
 		db.executeUpdate("update ampliacioncapital set faseUno = ?, fase = 'Fase 1', vendidas = ?", accionesNuevas,
 				reset);
+<<<<<<< HEAD
 		
 		String datos = accionesNuevas + ", " + "Fase 1, " + reset;
 		logger.logUpdate("ampliacioncapital",datos,"faseUno, fase, vendidas");
+=======
+		logger.logInsert("AmpliacionCapital", "accionesNuevas: " + accionesNuevas);
+>>>>>>> branch 'master' of https://github.com/DonatoMartin/IPS2023-PL21
 	}
 
 	public void updateLimiteFaseUno() {
@@ -1186,8 +1190,7 @@ public class Persistence {
 	public void insertarVenta(String string, String dateSql, int hours, int minutes, double i) {
 		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
 		db.executeUpdate(queryVenta, "entrada", dateSql, hours, minutes, 30);
-		logger.logMessage("Venta creada");
-
+		logger.logInsert("Venta", dateSql);
 	}
 
 	public List<VentaDisplayDTO> getVentasByDate(String min, String max) {
@@ -1230,7 +1233,7 @@ public class Persistence {
 		db.executeUpdate("insert into accionista(nombreAccionista, apellidoAccionista, "
 				+ "dniAccionista, cuentaBancaria, numeroAcciones,porcentajeCapital) values " + "(?,?,?,?, 0, 0.0)",
 				nombre, apellido, dni, cuenta);
-		logger.logMessage("Accionista creado");
+		logger.logInsert("Accionista", nombre);
 	}
 
 	public List<Accionista> selectAccionistaById(int id) {
@@ -1285,7 +1288,7 @@ public class Persistence {
 	public void insertAccion(int idAccionista, double precioPorAccion) {
 		db.executeUpdate("insert into accion(idAccionista,precioCompra,enVenta,precioVenta) " + "values (?,?,0,?)",
 				idAccionista, precioPorAccion, precioPorAccion);
-		logger.logMessage("Acción añadida");
+		logger.logInsert("Accion", "Accionista " + idAccionista);
 	}
 
 	public void updateLimiteAccionista(int idAccionista, Integer numAcciones) {
@@ -1354,7 +1357,7 @@ public class Persistence {
 		db.executeUpdate("insert into usuario(usuario,contrasena,rol,pid) values (?,?,?,?)", usuario.getUsuario(),
 				usuario.getContrasena(), usuario.getRol(), usuario.getPid());
 
-		logger.logMessage("Usuario registrado");
+		logger.logInsert("Usuario", usuario.getRol() + " " + usuario.getUsuario());
 
 	}
 
@@ -1415,7 +1418,7 @@ public class Persistence {
 					descripcion, fecha);
 		}
 
-		logger.logMessage("Crea lesionado");
+		logger.logInsert("Lesion", getEmpleado(eid).getNombre());
 	}
 
 	// ACTUALIZACIONES
@@ -1431,13 +1434,13 @@ public class Persistence {
 
 	public void insertActualizacion(int eid, String texto) {
 		db.executeUpdate("insert into actualizacion (eid, texto) values " + "(?,?)", eid, texto);
-		logger.logMessage("Creada actualización de lesión");
+		logger.logInsert("Actualizacion", getEmpleado(eid).getNombre());
 	}
 
 	public void insertarVentaReserva(String fecha, int horaReserva, int minutoReserva, int precioInt) {
 		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
 		db.executeUpdate(queryVenta, "reserva", fecha, horaReserva, minutoReserva, 50);
-		logger.logMessage("Venta reserva creada");
+		logger.logInsert("Venta", fecha);
 
 	}
 
@@ -1520,6 +1523,7 @@ public class Persistence {
 			int minutoVenta, double precio) {
 		String queryVenta = "Insert into Venta(concepto, fecha, hora, minuto, cuantia) VALUES" + "(?,?,?,?,?)";
 		db.executeUpdate(queryVenta, "jugador", fecha, horaVenta, minutoVenta, precio);
+		logger.logInsert("Venta", fecha);
 	}
 
 	public void deleteHorarioEntrevistaById(int eid) {
