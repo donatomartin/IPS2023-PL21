@@ -1097,13 +1097,10 @@ public class Persistence {
 		int reset = 0;
 		db.executeUpdate("update ampliacioncapital set faseUno = ?, fase = 'Fase 1', vendidas = ?", accionesNuevas,
 				reset);
-<<<<<<< HEAD
 		
 		String datos = accionesNuevas + ", " + "Fase 1, " + reset;
 		logger.logUpdate("ampliacioncapital",datos,"faseUno, fase, vendidas");
-=======
 		logger.logInsert("AmpliacionCapital", "accionesNuevas: " + accionesNuevas);
->>>>>>> branch 'master' of https://github.com/DonatoMartin/IPS2023-PL21
 	}
 
 	public void updateLimiteFaseUno() {
