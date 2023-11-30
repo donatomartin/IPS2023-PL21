@@ -29,6 +29,8 @@ import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+import java.util.Random;
 import java.awt.event.ActionEvent;
 import java.awt.CardLayout;
 import javax.swing.BoxLayout;
@@ -38,6 +40,8 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingUtilities;
 import javax.swing.JPasswordField;
+import java.awt.Toolkit;
+import javax.swing.ImageIcon;
 
 public class MainFrame extends JFrame {
 
@@ -48,7 +52,7 @@ public class MainFrame extends JFrame {
 	private static Usuario usuario = new Usuario();
 
 	private JPanel contentPane;
-	private JPanel pnWork;
+	private JPanel pnFun;
 	private JPanel pnNorte;
 	private JLabel lbTitle;
 	
@@ -92,12 +96,20 @@ public class MainFrame extends JFrame {
 	private JLabel lbUser;
 	private JPasswordField txPassword;
 	private JButton btnPortalAccionistas;
+	private JPanel pnWork;
+	private JPanel pnLogout;
+	private JButton btnLogout;
+	private JLabel lbLogo;
 	
 
 	/**
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		
+		String path = System.getProperty("user.dir")+"/imagenes/messichiquito.png";
+		setIconImage(Toolkit.getDefaultToolkit().getImage(path));
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 589, 485);
 		contentPane = new JPanel();
@@ -387,13 +399,13 @@ public class MainFrame extends JFrame {
 		});
 	}
 
-	private JPanel getPnWork() {
-		if (pnWork == null) {
-			pnWork = new JPanel();
-			pnWork.setBackground(new Color(255, 235, 205));
-			pnWork.setLayout(new GridLayout(4, 4, 0, 0));
+	private JPanel getPnFun() {
+		if (pnFun == null) {
+			pnFun = new JPanel();
+			pnFun.setBackground(new Color(255, 235, 205));
+			pnFun.setLayout(new GridLayout(4, 4, 0, 0));
 		}
-		return pnWork;
+		return pnFun;
 	}
 
 	private JPanel getPnNorte() {
@@ -651,7 +663,16 @@ public class MainFrame extends JFrame {
 			btn23523.setBackground(new Color(240, 255, 240));
 			btn23523.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
-					run23523();
+					
+					Service23523 service = new Service23523();
+					List<String> abonados = service.selectIdsAbonado();
+					
+					Random r = new Random();
+					int resultado = r.nextInt(abonados.size());
+					
+					service.updateAbonadoSorteo(abonados.get(resultado));
+					
+					JOptionPane.showMessageDialog(null, "El abonado " + abonados.get(resultado) + " es el ganador");
 				}
 			});
 		}
@@ -720,8 +741,8 @@ public class MainFrame extends JFrame {
 		if (pnCentro == null) {
 			pnCentro = new JPanel();
 			pnCentro.setLayout(new CardLayout(0, 0));
-			pnCentro.add(getPnLogin(), "login");
-			pnCentro.add(getPnWork(), "work");
+			pnCentro.add(getPnLogin(), "pnLogin");
+			pnCentro.add(getPnWork(), "pnWork");
 		}
 		return pnCentro;
 	}
@@ -743,9 +764,11 @@ public class MainFrame extends JFrame {
 			gl_pnCredentials.setHorizontalGroup(
 				gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
 					.addGroup(gl_pnCredentials.createSequentialGroup()
-						.addGap(30)
-						.addComponent(getBtnPortalAccionistas())
-						.addPreferredGap(ComponentPlacement.RELATED, 228, Short.MAX_VALUE)
+						.addContainerGap(30, Short.MAX_VALUE)
+						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.LEADING)
+							.addComponent(getBtnPortalAccionistas())
+							.addComponent(getLbLogo()))
+						.addGap(51)
 						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.LEADING)
 							.addComponent(getLbUser(), GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
 							.addGroup(gl_pnCredentials.createParallelGroup(Alignment.TRAILING, false)
@@ -761,17 +784,22 @@ public class MainFrame extends JFrame {
 			gl_pnCredentials.setVerticalGroup(
 				gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
 					.addGroup(gl_pnCredentials.createSequentialGroup()
-						.addContainerGap(139, Short.MAX_VALUE)
-						.addComponent(getLbUser())
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(getTxUser(), GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
-						.addGap(22)
-						.addComponent(getLbPassword())
-						.addGap(17)
-						.addComponent(getTxPassword(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addComponent(getBtnLogin())
-						.addGap(67)
+						.addContainerGap(48, Short.MAX_VALUE)
+						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.LEADING)
+							.addGroup(Alignment.TRAILING, gl_pnCredentials.createSequentialGroup()
+								.addComponent(getLbUser())
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(getTxUser(), GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
+								.addGap(22)
+								.addComponent(getLbPassword())
+								.addGap(17)
+								.addComponent(getTxPassword(), GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.UNRELATED)
+								.addComponent(getBtnLogin())
+								.addGap(67))
+							.addGroup(Alignment.TRAILING, gl_pnCredentials.createSequentialGroup()
+								.addComponent(getLbLogo())
+								.addGap(38)))
 						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.BASELINE)
 							.addComponent(getBtnRegistro())
 							.addComponent(getBtnPortalAccionistas()))
@@ -816,13 +844,16 @@ public class MainFrame extends JFrame {
 								JOptionPane.ERROR_MESSAGE);
 						break;
 					case SUCCESS:
+						getPnFun().removeAll();
 						for (ValueButton<String> button : buttons) {
 							if (usuario.getRol().equals(button.getValue())) {
-								getPnWork().add(button);
+								getPnFun().add(button);
 							}
 						}
-						((CardLayout) getPnCentro().getLayout()).show(getPnCentro(), "work");
+						((CardLayout) getPnCentro().getLayout()).show(getPnCentro(), "pnWork");
 						setLogger(usuario.getUsuario() + " (" + usuario.getRol() + ")");
+						getTxUser().setText("");
+						getTxPassword().setText("");
 						break;
 					default:
 						break;
@@ -955,5 +986,43 @@ public class MainFrame extends JFrame {
 			});
 		}
 		return btnPortalAccionistas;
+	}
+	private JPanel getPnWork() {
+		if (pnWork == null) {
+			pnWork = new JPanel();
+			pnWork.setLayout(new BorderLayout(0, 0));
+			pnWork.add(getPnFun());
+			pnWork.add(getPnLogout(), BorderLayout.SOUTH);
+		}
+		return pnWork;
+	}
+	private JPanel getPnLogout() {
+		if (pnLogout == null) {
+			pnLogout = new JPanel();
+			pnLogout.setLayout(new BorderLayout(0, 0));
+			pnLogout.add(getBtnLogout());
+		}
+		return pnLogout;
+	}
+	private JButton getBtnLogout() {
+		if (btnLogout == null) {
+			btnLogout = new JButton("Logout");
+			btnLogout.setBackground(new Color(250, 250, 210));
+			btnLogout.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					((CardLayout)getPnCentro().getLayout()).show(getPnCentro(), "pnLogin");
+				}
+			});
+		}
+		return btnLogout;
+	}
+	private JLabel getLbLogo() {
+		if (lbLogo == null) {
+			lbLogo = new JLabel("");
+			String path = System.getProperty("user.dir")+"/imagenes/messichiquito.png";
+			lbLogo.setIcon(new ImageIcon(path));
+			//lbLogo.setIcon(new ImageIcon("C:\\Users\\dono\\OneDrive - Universidad de Oviedo\\asignaturas\\Ing Proceso Software\\ips-eclipse-workspace\\IPS2023-PL21\\imagenes\\messichiquito.png"));
+		}
+		return lbLogo;
 	}
 }

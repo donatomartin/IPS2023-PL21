@@ -11,6 +11,11 @@ public class Logger {
     private String name;
     private Date date;
 
+    
+    public Logger() {
+    	this("System");
+    }
+    
     public Logger(String name) {
         this.name = name;
         this.date = new Date();

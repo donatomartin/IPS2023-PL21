@@ -248,7 +248,12 @@ public class Frame21914 {
 		}
 		equipo = null;
 		
-		modeloListJugador.removeAllElements();
+		try {
+			modeloListJugador.removeAllElements();
+		} catch (Exception e) {
+			
+		}
+		
 		getLbDatosEntrenador().setText("No se ha añadido Entrenador todavia");
 		getLbDatosSegundo().setText("No se ha añadido Segundo Entrenador todavia");
 		

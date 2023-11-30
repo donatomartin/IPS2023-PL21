@@ -55,7 +55,6 @@ public class Frame22748 extends JFrame {
 	private JPanel pnVacio_4;
 	private JPanel pnVacio_5;
 	private JButton btAcceder;
-	private JButton btNuevoAccionista;
 	private JPanel pnNuevoAccionista;
 	private JPanel pnBotonesRegistro;
 	private JPanel pnIntroducirDatos;
@@ -300,7 +299,6 @@ public class Frame22748 extends JFrame {
 		if (pnBotonesAcceso == null) {
 			pnBotonesAcceso = new JPanel();
 			pnBotonesAcceso.add(getBtAcceder());
-			pnBotonesAcceso.add(getBtNuevoAccionista());
 		}
 		return pnBotonesAcceso;
 	}
@@ -373,27 +371,6 @@ public class Frame22748 extends JFrame {
 			btAcceder.setForeground(new Color(0, 0, 0));
 		}
 		return btAcceder;
-	}
-	private JButton getBtNuevoAccionista() {
-		if (btNuevoAccionista == null) {
-			btNuevoAccionista = new JButton("Nuevo accionista");
-			btNuevoAccionista.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					if (cs.getFase() != CapitalFase.FASE3) {
-						JOptionPane.showMessageDialog(null, "Ahora mismo no se pueden "
-								+ "añadir nuevos accionistas. Espere a que el club esté "
-								+ "en su tercera fase de ampliaciones de capital");
-					}
-					else {
-						mostrarPnNuevoAccionista();
-					}
-					
-				}
-			});
-			btNuevoAccionista.setFont(new Font("Tahoma", Font.PLAIN, 18));
-			btNuevoAccionista.setForeground(new Color(0, 0, 0));
-		}
-		return btNuevoAccionista;
 	}
 	private JPanel getPnNuevoAccionista() {
 		if (pnNuevoAccionista == null) {

@@ -59,7 +59,7 @@ public class Persistence {
 		db.createDatabase(false);
 		db.loadDatabase();
 
-		logger = new Logger("Unknown");
+		logger = new Logger();
 	}
 
 	public static Persistence getInstance() {
@@ -1367,8 +1367,8 @@ public class Persistence {
 		for (Juega j : l) {
 			jugadores.add(
 					db.executeQueryPojo(Empleado.class, "select * from empleado where eid = ?", j.getEid()).get(0));
-			logger.logSelect("empleado");
 		}
+		logger.logSelect("empleado");
 		return jugadores;
 	}
 
@@ -1380,8 +1380,8 @@ public class Persistence {
 		for (Lesion j : list) {
 			jugadores.add(
 					db.executeQueryPojo(Empleado.class, "select * from empleado where eid = ?", j.getEid()).get(0));
-			logger.logSelect("empleado");
 		}
+		logger.logSelect("empleado");
 		return jugadores;
 	}
 
@@ -1472,8 +1472,8 @@ public class Persistence {
 		for (Juega jugador : j) {
 			List<Empleado> e = db.executeQueryPojo(Empleado.class, "select * from empleado where eid = ?", jugador.getEid());
 			jugadoresEquipo.add(e.get(0));
-			logger.logSelect("empleado");
 		}
+		logger.logSelect("empleado");
 		return jugadoresEquipo;
 	}
 
