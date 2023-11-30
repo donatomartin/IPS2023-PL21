@@ -39,6 +39,8 @@ public class Service22784 {
 		catch (Exception e) {
 			return State.DBERROR;
 		}
+		
+		hna = new ArrayList<>();
 		return State.SUCCESS;
 	}
 	

@@ -88,7 +88,6 @@ public class Frame22785 extends JFrame implements UserInterface {
 	private JLabel lbIDEntrenador;
 	private JLabel lbPasswordEntrenador;
 	private JTextField txPassword;
-	private JButton btnLogout;
 	private JPanel panel;
 	private JLabel lbSeleccionados;
 
@@ -173,7 +172,6 @@ public class Frame22785 extends JFrame implements UserInterface {
 			pnSeleccionInstalacion.setBorder(new EmptyBorder(5, 5, 5, 5));
 			pnSeleccionInstalacion.setLayout(new BorderLayout(5, 5));
 			pnSeleccionInstalacion.add(getPnListInstalacion());
-			pnSeleccionInstalacion.add(getBtnLogout(), BorderLayout.SOUTH);
 		}
 		return pnSeleccionInstalacion;
 	}
@@ -362,7 +360,7 @@ public class Frame22785 extends JFrame implements UserInterface {
 
 			JLabel lbInstalacion = new JLabel("Instalación:");
 
-			JLabel lbJardinero = new JLabel("Jardinero:");
+			JLabel lbJardinero = new JLabel("Equipo:");
 			GroupLayout gl_pnSpinners = new GroupLayout(pnSpinners);
 			gl_pnSpinners.setHorizontalGroup(
 				gl_pnSpinners.createParallelGroup(Alignment.LEADING)
@@ -799,19 +797,6 @@ public class Frame22785 extends JFrame implements UserInterface {
 			txPassword.setColumns(10);
 		}
 		return txPassword;
-	}
-	
-	private JButton getBtnLogout() {
-		if (btnLogout == null) {
-			btnLogout = new JButton("Sign Out");
-			btnLogout.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					((CardLayout)getPnWork().getLayout()).show(getPnWork(), "pnLogin");
-				}
-			});
-			btnLogout.setBackground(new Color(211, 211, 211));
-		}
-		return btnLogout;
 	}
 
 	@Override

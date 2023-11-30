@@ -106,6 +106,7 @@ public class MainFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MainFrame() {
+		setTitle("Gestión Deportiva");
 		
 		String path = System.getProperty("user.dir")+"/imagenes/messichiquito.png";
 		setIconImage(Toolkit.getDefaultToolkit().getImage(path));
@@ -411,6 +412,7 @@ public class MainFrame extends JFrame {
 	private JPanel getPnNorte() {
 		if (pnNorte == null) {
 			pnNorte = new JPanel();
+			pnNorte.setBackground(new Color(0, 191, 255));
 			pnNorte.add(getLbTitle());
 		}
 		return pnNorte;
@@ -759,15 +761,15 @@ public class MainFrame extends JFrame {
 	private JPanel getPnCredentials() {
 		if (pnCredentials == null) {
 			pnCredentials = new JPanel();
-			pnCredentials.setBackground(new Color(255, 255, 255));
+			pnCredentials.setBackground(new Color(255, 218, 185));
 			GroupLayout gl_pnCredentials = new GroupLayout(pnCredentials);
 			gl_pnCredentials.setHorizontalGroup(
 				gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
 					.addGroup(gl_pnCredentials.createSequentialGroup()
-						.addContainerGap(30, Short.MAX_VALUE)
+						.addContainerGap(155, Short.MAX_VALUE)
 						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.LEADING)
-							.addComponent(getBtnPortalAccionistas())
-							.addComponent(getLbLogo()))
+							.addComponent(getLbLogo())
+							.addComponent(getBtnPortalAccionistas()))
 						.addGap(51)
 						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.LEADING)
 							.addComponent(getLbUser(), GroupLayout.PREFERRED_SIZE, 79, GroupLayout.PREFERRED_SIZE)
@@ -784,9 +786,9 @@ public class MainFrame extends JFrame {
 			gl_pnCredentials.setVerticalGroup(
 				gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
 					.addGroup(gl_pnCredentials.createSequentialGroup()
-						.addContainerGap(48, Short.MAX_VALUE)
-						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.LEADING)
-							.addGroup(Alignment.TRAILING, gl_pnCredentials.createSequentialGroup()
+						.addContainerGap(122, Short.MAX_VALUE)
+						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.TRAILING)
+							.addGroup(gl_pnCredentials.createSequentialGroup()
 								.addComponent(getLbUser())
 								.addPreferredGap(ComponentPlacement.UNRELATED)
 								.addComponent(getTxUser(), GroupLayout.PREFERRED_SIZE, 19, GroupLayout.PREFERRED_SIZE)
@@ -797,12 +799,12 @@ public class MainFrame extends JFrame {
 								.addPreferredGap(ComponentPlacement.UNRELATED)
 								.addComponent(getBtnLogin())
 								.addGap(67))
-							.addGroup(Alignment.TRAILING, gl_pnCredentials.createSequentialGroup()
+							.addGroup(gl_pnCredentials.createSequentialGroup()
 								.addComponent(getLbLogo())
 								.addGap(38)))
 						.addGroup(gl_pnCredentials.createParallelGroup(Alignment.BASELINE)
 							.addComponent(getBtnRegistro())
-							.addComponent(getBtnPortalAccionistas()))
+							.addComponent(getBtnPortalAccionistas(), GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
 						.addGap(44))
 			);
 			pnCredentials.setLayout(gl_pnCredentials);
@@ -821,6 +823,8 @@ public class MainFrame extends JFrame {
 	private JButton getBtnLogin() {
 		if (btnLogin == null) {
 			btnLogin = new JButton("Log In");
+			btnLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
+			btnLogin.setBackground(new Color(0, 191, 255));
 			btnLogin.setMnemonic('l');
 			btnLogin.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -889,10 +893,9 @@ public class MainFrame extends JFrame {
 	private JButton getBtnRegistro() {
 	    if (btnRegistro == null) {
 	        btnRegistro = new JButton("Registrate");
-	        btnRegistro.setForeground(new Color(0, 0, 255));
+	        btnRegistro.setForeground(new Color(0, 0, 0));
 	        btnRegistro.setFont(new Font("Tahoma", Font.BOLD, 13));
-	        btnRegistro.setBorder(null);
-	        btnRegistro.setBackground(new Color(255, 255, 255));
+	        btnRegistro.setBackground(new Color(0, 191, 255));
 	        btnRegistro.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
 	                JTextField usuarioField = new JTextField();
@@ -979,6 +982,8 @@ public class MainFrame extends JFrame {
 	private JButton getBtnPortalAccionistas() {
 		if (btnPortalAccionistas == null) {
 			btnPortalAccionistas = new JButton("Portal de accionistas");
+			btnPortalAccionistas.setFont(new Font("Tahoma", Font.BOLD, 13));
+			btnPortalAccionistas.setBackground(new Color(0, 191, 255));
 			btnPortalAccionistas.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					run22748Register();
@@ -1007,7 +1012,7 @@ public class MainFrame extends JFrame {
 	private JButton getBtnLogout() {
 		if (btnLogout == null) {
 			btnLogout = new JButton("Logout");
-			btnLogout.setBackground(new Color(250, 250, 210));
+			btnLogout.setBackground(new Color(0, 191, 255));
 			btnLogout.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					((CardLayout)getPnCentro().getLayout()).show(getPnCentro(), "pnLogin");
