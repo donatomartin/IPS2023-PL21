@@ -110,7 +110,7 @@
 		<dependency>
         <groupId>org.jfree</groupId>
         <artifactId>jfreechart</artifactId>
-        <version>1.5.3</version> <!-- Utiliza la última versión disponible -->
+        <version>1.5.4</version> <!-- Utiliza la última versión disponible -->
     </dependency>
 		
 		<dependency>
